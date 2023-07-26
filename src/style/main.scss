@@ -1,3 +1,12 @@
 @import "components/_import.scss";
-@import "components/_import.scss";
+@import "theme/framework7.scss";
+
+
+
+:root{
+	--base-color: #1e1e2e;
+	--base-mantle: #181825;
+	--base-crust: #11111b;
+}
+
 /* s */

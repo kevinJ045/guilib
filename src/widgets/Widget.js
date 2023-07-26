@@ -5,7 +5,7 @@ import generateRandomID from "../utils/id.js";
 import { elementTypes, findEl, registerElement } from "../utils/elman.js";
 import { createEventData, getEventName, onHold } from "../utils/events.js";
 import getDefaults from "../utils/options.js";
-import { htmlPseudos } from "../utils/misc.js";
+import { htmlPseudos, filteredChildren } from "../utils/misc.js";
 
 const defaults = getDefaults({});
 
@@ -211,11 +211,11 @@ class Widget {
 	}
 
 	children(){
-		return findEl(this.id).children().toArray().map(element => element.GUIWIDGET);
+		return filteredChildren(findEl(this.id).children());
 	}
 
 	find(q){
-		return findEl(this.id).find(q).toArray().map(element => element.GUIWIDGET);
+		return filteredChildren(findEl(this.id).find(q));
 	}
 
 	attr(props){
@@ -367,4 +367,12 @@ class Widget {
 	}
 }
 
+function AssemblyWidget(Func, el){
+	const widget = Widget.from(el);
+	widget.__proto__.__proto__ = Func.__proto__;
+	Func.__proto__ = widget;
+	return Func;
+}
+
+export { AssemblyWidget };
 export default Widget;

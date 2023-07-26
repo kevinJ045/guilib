@@ -38,6 +38,30 @@ module.exports = {
           },
         ],
       },
-    ],
+      {
+        test: /\.css$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+        ]
+      },
+      {
+        test: /\.js/,
+        use: ['./preset-f7-jsx.js'],
+      }
+    ]
+    //   {
+    //     test: /\.js$/,
+    //     exclude: /node_modules/,
+    //     use: {
+    //       loader: 'babel-loader',
+    //       options: {
+    //         presets: [
+    //           ['./preset-f7-jsx.js']
+    //         ]
+    //       }
+    //     }
+    //   }
+    // ],
   }
 }
