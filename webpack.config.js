@@ -1,6 +1,7 @@
-import path from 'node:path';
+const path = require('path');
+const sass = require('sass');
 
-export default {
+module.exports = {
   mode: 'development',
   entry: './src/main.js',
   output: {
@@ -19,7 +20,7 @@ export default {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.ts?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
