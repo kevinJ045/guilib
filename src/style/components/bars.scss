@@ -1,0 +1,18 @@
+
+:root {
+	--f7-bars-bg-color: var(--base-mantle);
+}
+
+.navbar-bg::after{
+	display: none;
+}
+
+.navbar, .toolbar{
+	background: var(--f7-bars-bg-color);
+	border-radius: $radius-normal;
+	overflow: hidden;
+}
+
+.card {
+	--f7-bars-bg-color: transparent;
+}

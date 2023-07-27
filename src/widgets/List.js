@@ -4,12 +4,12 @@ import getDefaults from "../utils/options.js";
 import { findEl } from "../utils/elman.js";
 import Icon from "./Icon.js";
 
-const defaultList = getDefaults({
+const defaultList = () => getDefaults({
 	element: { name: 'div' },
 	class: 'list'
 });
 
-const defaultListItem = getDefaults({
+const defaultListItem = () => getDefaults({
 	element: { name: 'li' },
 	class: 'item-content',
 	title: "",
@@ -19,6 +19,7 @@ const defaultListItem = getDefaults({
 	onHold: () => {},
 	link: false
 });
+
 
 function _initList(list, state){
 	if(state.items && Array.isArray(state.items)){
@@ -31,7 +32,9 @@ function _initList(list, state){
 class ListItem extends Widget {
 
 	constructor(selectedOptions){
-		const options = {...defaultListItem, ...selectedOptions};
+		const options = {...defaultListItem(), ...selectedOptions};
+
+		console.log(options);
 
 		const { title,
 			subtitle,
@@ -41,47 +44,51 @@ class ListItem extends Widget {
 			onHold
 		} = options;
 
-		if(link) options.element.name = 'a';
+		if(link === true) options.element.name = 'a';
 
 		super(options);
 
-		findEl(this.id).append(`<div class="item-inner">
+		this.mainParentClass = '.item-inner';
+		this.textWrapper = '.item-title';
+		this.elementsPlace = this.id;
+
+		if(!options.customLI){
+			findEl(this.id).append(`<div class="item-inner">
 	        <div class="item-title">
 	            ${title}
 	        </div>
 	    </div>`).addClass(link ? 'item-link' : '');
 
-		this.mainParentClass = '.item-inner';
-		this.textWrapper = '.item-title';
-		this.elementsPlace = this.el;
+			if(typeof onClick == "function"){
+				this.on('click', onClick);
+			}
+			if(typeof onHold == "function"){
+				this.on('hold', onHold);
+			}
 
-		if(typeof onClick == "function"){
-			this.on('click', onClick);
-		}
-		if(typeof onHold == "function"){
-			this.on('hold', onHold);
+			if(subtitle){
+				this.subtitle(subtitle);
+			}	
 		}
 
 		if(icon instanceof Icon){
 			this.media(icon);
 		}
-
-		if(subtitle){
-			this.subtitle(subtitle);
-		}
-
-		console.log(findEl(this.id));
+		
 	}
 
 	media(icon){
-		if(icon === 'rm' || icon == null) {findEl(this.el, this.frame).find('.item-media').remove();return this};
+		if(icon === 'rm' || icon == null) {findEl(this.el).find('.item-media').remove();return this};
 		if(!icon instanceof Icon) throw new Error("Only icons allowed");
-		if(findEl(this.elementsPlace, this.frame).find('.item-media')){
-			findEl(this.elementsPlace, this.frame).find('.item-media').remove();
+		if(findEl(this.id).find('.item-media')){
+			findEl(this.id).find('.item-media').remove();
 		}
-		findEl(this.elementsPlace, this.frame).prepend(`<div class="item-media">
-        ${icon}
-    </div>`);
+		let ic = $(`<div class="item-media"></div>`);
+		ic.append(findEl(icon.id));
+		if(!ic.children().length){
+			ic.append(icon.toString());
+		}
+		findEl(this.id).prepend(ic);
 		return this;
 	}
 	subtitle(text){
@@ -89,10 +96,10 @@ class ListItem extends Widget {
 			findEl(this.id).find(this.mainParentClass).find('.item-after').remove();
 			return this;
 		}
-		if(findEl(this.elementsPlace, this.frame).find('.item-after')){
-			findEl(this.elementsPlace, this.frame).find('.item-after').remove();
+		if(findEl(this.elementsPlace).find('.item-after')){
+			findEl(this.elementsPlace).find('.item-after').remove();
 		}
-		findEl(this.el, this.frame).find(this.mainParentClass).append(`<div class="item-after">
+		findEl(this.el).find(this.mainParentClass).append(`<div class="item-after">
             ${text}
         </div>`);
     return this;
@@ -105,7 +112,7 @@ class List extends Widget {
 	state = {items: []};
 
 	constructor(selectedOptions){
-		const options = {...defaultList, ...selectedOptions};
+		const options = {...defaultList(), ...selectedOptions};
 		super(options);
 
 		findEl(this.id).append('<ul></ul>');

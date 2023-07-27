@@ -9,6 +9,4 @@ function Body(options){
 
 AssemblyWidget(Body, $('body')[0]);
 
-console.log([Body]);
-
 export default Body;

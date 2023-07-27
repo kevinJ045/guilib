@@ -72,16 +72,19 @@ function _init(widget, options){
 		});
 	}
 
+	if(!widget.__generated){
+		Object.defineProperty(widget, 'id', {
+			writable: false,
+			value: generateRandomID()
+		});
+		element[0].GUIWIDGET = widget;
+		registerElement(element, widget.id);
+	}
+
 	if(options.children && options.children.length){
 		options.children.forEach(element => {
 			widget.add(element);
 		});
-	}
-
-	if(!widget.__generated){
-		widget.id = generateRandomID();
-		element[0].GUIWIDGET = widget;
-		registerElement(element, widget.id);
 	}
 
 	if(options.private === true){
@@ -108,9 +111,9 @@ function _init(widget, options){
 	}
 
 	if(options.type && options.type.length){
-		elementTypes(options.element.name, options.type, this.id);
-		if(typeof this._onTypeChange == "function"){
-			this._onTypeChange(...options.type);
+		elementTypes(options.element.name, options.type, widget.id);
+		if(typeof widget._onTypeChange == "function"){
+			widget._onTypeChange(...options.type);
 		}
 	}
 
@@ -161,21 +164,22 @@ class Widget {
 	}
 
 	addHTMLElement(child, subchild){
-		if(this.accepts === false) return this;
-		if(this.sealed === true) return this;
-		if(isHTMLElement(child)){
-			if(subchild && findEl(this.id).find(subchild).length) findEl(this.id).find(subchild).append(child);
-			else findEl(this.id).append(child);
-		}
-		return this;
+		let hadGUI = child.GUIWIDGET;
+		const elt = this.add(hadGUI ? child.GUIWIDGET : Widget.from(child), subchild);
+		if(!hadGUI) elt.stripElement();
+		return elt;
 	}
 
 	addWidget(child, subchild){
 		if(this.accepts === false) return this;
 		if(this.sealed === true) return this;
 		if(isWidget(child)){
-			if(subchild && findEl(this.id).find(subchild).length) child.toHTMLElement(findEl(this.id).find(subchild)[0]);
-			else child.to(this);
+			const l = resolveSubchild(findEl(this.id), subchild);
+			if(child.is('prefix')){
+				l.prepend(findEl(child.id));
+			} else {
+				l.append(findEl(child.id));
+			}
 		}
 		return this;
 	}
@@ -190,10 +194,51 @@ class Widget {
 		}
 		return this;
 	}
+	
+	addBefore(child, subchild){
+		this.is('prefix', true);
+		this.add(child, subchild);
+		this.is('prefix', false);
+		return this;
+	}
+	
+	addAll(...children){
+		let subchild = "";
+		let last = children[children.length-1];
+		if(typeof last == 'string'){
+			subchild = children.pop();
+		}
+		children.forEach(child => this.add(child, subchild));
+		return this;
+	}
 
-	remove(child){
+	addWrappedElement(elt, elementText, where, subchild){
+		const el = resolveSubchild(findEl(this.id), subchild);
+		let [cssClass, element] = elementText.split(' ');
+		if(!elt) {
+			el.find('.'+cssClass).remove();
+			return this;
+		}
+		if(!element) element = 'div';
+		let additionEl;
+		if(elt instanceof Widget){
+			additionEl = findEl(elt.id);
+		} else if(elt instanceof HTMLElement){
+			additionEl = $(elt);
+		} else {
+			throw new Error("Unexpected Element: not HTMLElement nor Widget")
+		}
+		const h = $('<'+element+' class="'+cssClass+'" />');
+		h.append(additionEl);
+		if(where == 'before') el.prepend(h);
+		else el.append(h);
+		return this;
+	}
+
+	remove(child, subchild){
 		if(this.sealed === true) return this;
-		if(!child) findEl(this.id).remove(); 
+		if(!child) resolveSubchild(findEl(this.id), subchild).remove(); 
+		else if (child == '*') resolveSubchild(findEl(this.id), subchild).empty();
 		else child.remove();
 		return this;
 	}
@@ -216,7 +261,7 @@ class Widget {
 		return filteredChildren(resolveSubchild(findEl(this.id), subchild).children());
 	}
 
-	find(q){
+	find(q, subchild){
 		return filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q));
 	}
 
@@ -256,21 +301,23 @@ class Widget {
 		return findEl(this.id).html() || this;
 	}
 
-	toHTMLElement(parent){
+	toHTMLElement(parent, direction){
 		if(this.sealed === true) return this;
-		findEl(this.id).appendTo(parent);
+		if(direction == 'before') findEl(this.id).prependTo(parent);
+		else findEl(this.id).appendTo(parent);
+		return this;
 	}
 
-	toWidget(parent){
+	toWidget(parent, direction){
 		if(this.sealed === true) return this;
-		findEl(this.id).appendTo(findEl(parent.id));
+		return this.toHTMLElement(findEl(parent.id), direction);
 	}
 
-	to(parent){
+	to(parent, direction){
 		if(isWidget(parent)){
-			this.toWidget(parent);
+			this.toWidget(parent, direction);
 		} else if(isHTMLElement(parent)){
-			this.toHTMLElement(parent);
+			this.toHTMLElement(parent, direction);
 		} else {
 			throw new Error('Only Widgets or HTMLElements Allowed');
 		}
@@ -301,6 +348,21 @@ class Widget {
 
 	emit(event, data){
 		findEl(this.id).trigger(event, data);
+		return this;
+	}
+
+	hide(time){
+		findEl(this.id).hide(time);
+		return this;
+	}
+
+	show(time){
+		findEl(this.id).show(time);
+		return this;
+	}
+
+	toggle(time){
+		findEl(this.id).toggle(time);
 		return this;
 	}
 
@@ -358,6 +420,13 @@ class Widget {
     return this;
   }
 
+	shareState(elt){
+		elt.on('state:change', (e, {new: state}) => {
+			this.setState({ ...(elt.getState()) });
+		});
+		return this.setState({ ...(elt.getState()) });
+	}
+
   getState() {
     return { ...this.state };
   }
@@ -365,6 +434,12 @@ class Widget {
 	toString(){
 		return findEl(this.id)[0].outerHTML;
 	}
+
+	stripElement(){
+		return delete findEl(this.id)[0].GUIWIDGET;
+	}
+
+	set id(id) { this._id = id };
 
 	static from(raw){
 		return new Widget({

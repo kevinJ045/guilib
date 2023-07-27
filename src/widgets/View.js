@@ -2,7 +2,7 @@ import $ from "jquery";
 import Widget from "./Widget.js";
 import getDefaults from "../utils/options.js";
 
-const defaultView = getDefaults({
+const defaultView = () => getDefaults({
 	element: { name: 'div' },
 	class: 'view'
 });
@@ -10,7 +10,7 @@ const defaultView = getDefaults({
 class View extends Widget {
 
 	constructor(selectedOptions){
-		const options = {...defaultView, ...selectedOptions};
+		const options = {...defaultView(), ...selectedOptions};
 		super(options);
 	}
 

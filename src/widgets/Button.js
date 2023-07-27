@@ -1,24 +1,37 @@
 import $ from "jquery";
 import Widget from "./Widget.js";
 import getDefaults from "../utils/options.js";
+import Text from "./Text.js";
 
-const defaultButton = getDefaults({
+const defaultButton = () => getDefaults({
 	element: { name: 'button' },
 	class: 'button',
 	accepts: false
 });
 
-class Button extends Widget {
+const defaultButtonsegment = () => getDefaults({
+	element: { name: 'div' },
+	class: 'button-segment'
+});
+
+class Button extends Text {
 
 	state = {text: "Button"};
 
-	constructor(selectedOptions){
-		const options = {...defaultButton, ...selectedOptions};
+	constructor(selectedOptions, otheroptions){
+		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultButton());
 		super(options);
+	}
+	
+}
 
-		this.text(this.state.text);
+class ButtonSegment extends Widget {
+
+	constructor(selectedOptions){
+		super({...defaultButtonsegment(), ...selectedOptions});
 	}
 
 }
 
+export { ButtonSegment };
 export default Button;

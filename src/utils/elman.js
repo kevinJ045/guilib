@@ -9,6 +9,7 @@ function findEl(id){
 }
 
 function elementTypes(type1, types, id){
+	if(type1 == 'div') type1 = null;
 	types.forEach(type => {
 		var t = (type1 ? type1+'-' : '')+type;
 		var el = findEl(id);

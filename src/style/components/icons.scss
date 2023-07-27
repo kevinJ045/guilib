@@ -1,0 +1,22 @@
+.icon-empty {
+	background: #ccc;
+	display: block;
+	position: relative
+}
+
+.dark .icon-empty {
+	background-color: #555
+}
+
+.ios .icon-empty{
+	width: 28px;
+	height: 28px;
+	border-radius: 6px;
+	box-sizing: border-box
+}
+
+.md .icon-empty {
+	width: 24px;
+	height: 24px;
+	border-radius: 4px
+}
