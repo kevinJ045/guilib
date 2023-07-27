@@ -26,6 +26,12 @@ function filteredChildren(children){
 		.map(element => element.GUIWIDGET);
 }
 
+function resolveSubchild(element, child){
+  let el = element;
+  if(child && el.find(child).length) el = el.find(child);
+  return el;
+}
+
 function generateFixedId(inputString) {
   let hash = 0;
   for (let i = 0; i < inputString.length; i++) {
@@ -39,5 +45,6 @@ function generateFixedId(inputString) {
 
 export {
 	htmlPseudos,
-	filteredChildren
+	filteredChildren,
+  resolveSubchild
 }

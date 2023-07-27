@@ -5,7 +5,7 @@ import generateRandomID from "../utils/id.js";
 import { elementTypes, findEl, registerElement } from "../utils/elman.js";
 import { createEventData, getEventName, onHold } from "../utils/events.js";
 import getDefaults from "../utils/options.js";
-import { htmlPseudos, filteredChildren } from "../utils/misc.js";
+import { htmlPseudos, filteredChildren, resolveSubchild } from "../utils/misc.js";
 
 const defaults = getDefaults({});
 
@@ -160,29 +160,31 @@ class Widget {
 		return this;
 	}
 
-	addHTMLElement(child){
+	addHTMLElement(child, subchild){
 		if(this.accepts === false) return this;
 		if(this.sealed === true) return this;
 		if(isHTMLElement(child)){
-			findEl(this.id).append(child);
+			if(subchild && findEl(this.id).find(subchild).length) findEl(this.id).find(subchild).append(child);
+			else findEl(this.id).append(child);
 		}
 		return this;
 	}
 
-	addWidget(child){
+	addWidget(child, subchild){
 		if(this.accepts === false) return this;
 		if(this.sealed === true) return this;
 		if(isWidget(child)){
-			child.to(this);
+			if(subchild && findEl(this.id).find(subchild).length) child.toHTMLElement(findEl(this.id).find(subchild)[0]);
+			else child.to(this);
 		}
 		return this;
 	}
 
-	add(child){
+	add(child, subchild){
 		if(isWidget(child)){
-			this.addWidget(child);
+			this.addWidget(child, subchild);
 		} else if(isHTMLElement(child)){
-			this.addHTMLElement(child);
+			this.addHTMLElement(child, subchild);
 		} else {
 			throw new Error('Only Widgets or HTMLElements Allowed');
 		}
@@ -210,12 +212,12 @@ class Widget {
 		}
 	}
 
-	children(){
-		return filteredChildren(findEl(this.id).children());
+	children(subchild){
+		return filteredChildren(resolveSubchild(findEl(this.id), subchild).children());
 	}
 
 	find(q){
-		return filteredChildren(findEl(this.id).find(q));
+		return filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q));
 	}
 
 	attr(props){
@@ -360,10 +362,18 @@ class Widget {
     return { ...this.state };
   }
 
+	toString(){
+		return findEl(this.id)[0].outerHTML;
+	}
+
 	static from(raw){
 		return new Widget({
 			element: { raw }
 		});
+	}
+
+	static html(widget){
+		return findEl(widget.id)[0].outerHTML;
 	}
 }
 

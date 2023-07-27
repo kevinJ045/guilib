@@ -9,6 +9,7 @@ import Button from "./widgets/Button.js";
 import Framework7 from "framework7";
 import { setThemeMap } from "./theme/base.js";
 import View from "./widgets/View.js";
+import List from "./widgets/List.js";
 
 const view = new View();
 
@@ -16,7 +17,9 @@ const f = Body({
 	child: view
 });
 
-f.toHTMLElement($("body")[0]);
+const list = new List();
+
+// f.toHTMLElement($("body")[0]);
 
 console.log(f.children());
 
@@ -34,7 +37,7 @@ var app = new Framework7({
 	routes: [
 		{
       path: '/',
-      component: (props, { $h, $update }) => {
+      component: (props, { $h, $update, $el, $on }) => {
 				let value = 10;
 				const items = ['s', 'c', 'e'];
 
@@ -45,6 +48,23 @@ var app = new Framework7({
 				const onClick = () => {
 					console.log('click');
 				}
+
+				$on('pageInit', () => {
+					console.log($el);
+
+					list.to($el.value[0]);
+
+
+					list.addItem({
+						title: "helow",
+						link: true
+					})
+					.onItems('hold', (e, { index }) => {
+						console.log(index);
+					});
+
+					console.log(list);
+				})
 			
 				return () => (
 					<div className="page">
