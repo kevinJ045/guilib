@@ -7,6 +7,7 @@ import { createEventData, getEventName, onHold } from "../../utils/events.js";
 import getDefaults from "../../utils/options.js";
 import { htmlPseudos, filteredChildren, resolveSubchild } from "../../utils/misc.js";
 import Store from "../../data/Store.js";
+import Dialog from "../popup/dialog.js";
 
 const defaults = getDefaults({});
 let $1$app = {};
@@ -388,6 +389,18 @@ class Widget {
 		return findEl(this.id).val() || this;
 	}
 
+	height(h){
+		if(this.sealed === true) return this;
+		findEl(this.id).height(h)
+		return findEl(this.id).height() || this;
+	}
+
+	width(w){
+		if(this.sealed === true) return this;
+		findEl(this.id).width(w)
+		return findEl(this.id).width() || this;
+	}
+
 	html(text){
 		if(this.sealed === true) return this;
 		findEl(this.id).html(text)
@@ -429,6 +442,7 @@ class Widget {
 			if(this.is('disabled')) return;
 			if(event == 'click' && this.is('held')) return;
 			var data = createEventData(e, event);
+			data.target = this;
 			if(this.getState().value) this.setState({value: findEl(this.id).val()})
 			return callback.call(this, data, args);
 		});
@@ -563,6 +577,7 @@ class Widget {
 
 	static injectApp(app){
 		$1$app = app;
+		Dialog.injectApp(app);
 	}
 }
 

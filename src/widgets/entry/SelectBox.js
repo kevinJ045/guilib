@@ -35,7 +35,7 @@ class SelectBox extends ListItem {
 		findEl(this.id).removeClass('item-content');
 
 		findEl(this.id).html(`<a class="smart-select item-link smart-select-init" data-open-in="popup" data-searchbar="true"
-		data-searchbar-placeholder="Search car">${findEl(this.id).html()}</a>`);
+		data-searchbar-placeholder="Search car"><div class="item-content">${findEl(this.id).html()}</div></a>`);
 
 		findEl(this.id).find('a').prepend(`<select class="selectbox-wrapper" name="${options.name || ""}" ${options.multiple ? 'multiple' : ""} />`);
 
@@ -57,7 +57,7 @@ class SelectBox extends ListItem {
 		app.smartSelect.create({
 			app,
 			el: findEl(this.id).find('a')[0],
-			openIn: this.options.openIn,
+			openIn: this.options.openIn || "popover",
 			on: {
 				open: this.options.onOpen,
 				close: this.options.onClose

@@ -31,8 +31,15 @@ import SelectBox from "./widgets/entry/SelectBox.js";
 import Badge from "./widgets/others/Badge.js";
 import Preloader from "./widgets/loading/Preloader.js";
 import Center from "./widgets/containers/Center.js";
+import Sidebar from "./widgets/menus/Sidebar.js";
+import Dialog from "./widgets/popup/dialog.js";
+import Image from "./widgets/main/Image.js";
 
-const view = new View();
+const view = new View({
+	type: 'view-main'
+});
+
+view.attr('data-url', '/profile');
 
 const f = Body({
 	child: view
@@ -198,7 +205,7 @@ class HomePage extends Component {
 		const t = this;
 	};
 
-	_onBuild(props, { $useState, $body }){
+	_onBuild(props, { $useState, $body, $f7 }){
 		const lmso = $useState('s');
 
 		this.c = new EntryController();
@@ -208,9 +215,16 @@ class HomePage extends Component {
 			body: $body,
 			header: new Header({
 				left: [
-					new IconLink(Icons.menu)
+					new IconLink(Icons.menu, {
+						onClick(e){
+							$body.find('#sidemenu')
+								.show();
+						}
+					})
 				],
-				title: new SearchBar()
+				title: new SearchBar({
+					type: 'transparent'
+				})
 			}),
 			fab: new FloatingActionButton({
 				text: "Hello",
@@ -228,26 +242,34 @@ class HomePage extends Component {
 				}
 			}),
 			children: [
+				new Sidebar({
+					id: 'sidemenu',
+					children: [
+						new List({
+							children: [
+								...('Home|Terminal|Profile'.split('|').map(title => new ListItem({title, link:true, url: '/profile/'})))
+							]
+						}),
+					]
+				}),
 				new List({
 					id: 'manaspace',
 					itemsStateName: 'items101',
 					items: [],
 					type: ['inset'],
 					loading: true,
-					loader: Center({child: new Preloader({
-						color: 'blue',
-						type: 'large'
-					})})
-				}),
-				new List({
-					children: [
-						...(['s'].map(title => new ListItem({title, link:true})))
-					]
+					loader: new Center({
+						height: 70,
+						child: new Preloader({
+							color: 'blue',
+							type: 'large'
+						})
+					})
 				}),
 				new Grid({
 					id: 'monaspace',
 					style: {
-						width: "97%"
+						width: "95%"
 					},
 					itemsStateName: 'hellow',
 					template: (title) => {
@@ -259,21 +281,21 @@ class HomePage extends Component {
 					},
 					items: ['Woah wait a minute']
 				}),
-				new Grid({
-					empty: false,
-					style: {
-						width: "97%"
-					},
-					children: [
-						...([2,12, 44, 65].map(title => new Card({
-							children: [
-								new Text(title),
-							]
-						})))
-					]
-				}),
 				new Container({
 					children: [
+						new Grid({
+							empty: false,
+							style: {
+								width: "95.5%"
+							},
+							children: [
+								...([2,12, 44, 65].map(title => new Card({
+									children: [
+										new Text(title),
+									]
+								})))
+							]
+						}),
 						new Card({
 							header: new Header({
 								title: "Hii",
@@ -346,17 +368,33 @@ class HomePage extends Component {
 	}) {
 		setTimeout(() => {
 			$widget.find('#manaspace')
-			.updateList({items: [{
-				title: "Hi",
+			.updateList({items: "Hi|Hello|Desmond|Man".split('|').map(i => ({
+				title: i,
 				link: true,
-			}], loading: false});
+			})), loading: false});
 
 
 			$widget.find('#monaspace')
 			.updateList({items: ['lemao'], loading: false});
-		}, 1000);
+		}, 2000);
 	}
 
+}
+
+class ProfilePage extends Component {
+
+	_onBuild(props, { $useState, $body }){
+		return new Page({
+			body: $body,
+			children: [
+				new Center({
+					height: 400,
+					child: new Image('res/img/wall.png')
+				})
+			]
+		});
+	}
+	
 }
 
 var app = new Framework7({
@@ -370,6 +408,10 @@ var app = new Framework7({
 	colors: {},
 
 	routes: [
+		{
+      path: '/profile/',
+      component: new ProfilePage()
+    },
 		{
       path: '/',
       component: new HomePage()

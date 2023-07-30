@@ -29,3 +29,7 @@
 .navbar .title:has(.searchbar){ 
 	width: 100%
 };
+
+.navbar .searchbar.searchbar-transparent input{
+	background-color: transparent;
+}

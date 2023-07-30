@@ -4,9 +4,9 @@ import StateMan from "../../utils/stateman.js";
 
 // const { state, update } = $useState('text');
 
-function runOverWidget(component, widget){
+function runOverWidget(component, widget, state){
 	function doStates(widget){
-		widget.setStore(component.state);
+		widget.setState({...state});
 		widget.children().forEach(widget => {
 			if(typeof widget._onBuilt == "function"){
 				widget._onBuilt(component, component.state);
@@ -90,7 +90,7 @@ class Component extends StateMan {
 	_after(){}
 
 	_onStateChange({new: state}){
-		runOverWidget(this, this.__MainWidget);
+		runOverWidget(this, this.__MainWidget, state);
 	}
 
 }

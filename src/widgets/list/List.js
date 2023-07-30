@@ -21,7 +21,8 @@ const defaultListItem = () => getDefaults({
 	icon: null,
 	onClick: () => {},
 	onHold: () => {},
-	link: false
+	link: false,
+	_setters: ['url']
 });
 
 
@@ -80,6 +81,10 @@ class ListItem extends Widget {
 			this.media(icon);
 		}
 		
+	}
+
+	set url(link){
+		findEl(this.id).attr('href', link);
 	}
 
 	media(icon){

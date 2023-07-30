@@ -14,16 +14,19 @@ class Sidebar extends Widget {
 
 		if(side) element.addClass('panel-'+side);
 		if(type) element.addClass('panel-'+type);
-		if(swipe) element.date('swipe', true);
-		if(hideWidth) element.date('collapsed-breakpoint', hideWidth);
-		if(showWidth) element.date('visible-breakpoint', showWidth);
+		if(swipe) element.data('swipe', true);
+		if(hideWidth) element.data('collapsed-breakpoint', hideWidth);
+		if(showWidth) element.data('visible-breakpoint', showWidth);
 
-		if(options.app){
-			element[0].GUISIDEBAR = options.app.panel.create({
-				el: element[0]
+	}
+
+	_onMount(parent, app){
+		if(app){
+			findEl(this.id)[0].GUISIDEBAR = app.panel.create({
+				el: findEl(this.id)[0]
 			});
+			if(this.options.open) findEl(this.id)[0].GUISIDEBAR.open();
 		}
-
 	}
 
 	hide(){
