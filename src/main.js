@@ -18,6 +18,7 @@ let app = createApp({
 							}),
 							new Tag({
 								title: "hello",
+								color: 'blue',
 								type: 'outline',
 								close: (a) => a.remove()
 							})

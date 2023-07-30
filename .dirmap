@@ -1,25 +1,39 @@
 src/
 	components/
 		Animate.js
+		App.js
+		Macy.js
 		Renderer.js
 		Router.js
 	data/
 		Color.js
 		Colors.js
+		Controller.js
 		IconData.js
 		Icons.js
+		Store.js
+	index.js
 	main.js
+	modules/
+		f7.js
 	style/
 		components/
-			_import.components.scss
 			_import.scss
-			_import.utilities.scss
+			bars.scss
 			base.scss
 			button.scss
+			dialog.scss
+			icons.scss
+			layout.scss
+			list.scss
 			mixin.scss
+			popover.scss
 			variables.scss
 		main.scss
 		theme/
+			framework7.scss
+	theme/
+		base.js
 	utils/
 		color.js
 		elman.js
@@ -33,17 +47,51 @@ src/
 		template.js
 		type.js
 	widgets/
-		Body.js
-		BreadCrumb.js
-		Button.js
-		Card.js
-		Column.js
-		Container.js
-		Icon.js
-		MenuBar.js
-		Row.js
-		Sidebar.js
-		Sidepanel.js
-		Text.js
-		View.js
-		Widget.js
+		buttons/
+			Button.js
+			Checkbox.js
+			FAB.js
+			Radio.js
+			Toggle.js
+		canvas/
+			Canvas.js
+		containers/
+			Body.js
+			Card.js
+			Center.js
+			Column.js
+			Container.js
+			DirectedWidget.js
+			Header.js
+			Page.js
+			Row.js
+			Toolbar.js
+			View.js
+		entry/
+			Form.js
+			Searchbar.js
+			SelectBox.js
+		file/
+		icons/
+			Icon.js
+		list/
+			GridBuilder.js
+			List.js
+			ListBuilder.js
+		loading/
+			Preloader.js
+		main/
+			Image.js
+			Link.js
+			Text.js
+			Widget.js
+		menus/
+			MenuBar.js
+			Sidebar.js
+		others/
+			Badge.js
+			BreadCrumb.js
+			Component.js
+			Tag.js
+		popup/
+			dialog.js

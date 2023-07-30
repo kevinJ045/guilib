@@ -21,8 +21,15 @@ class Tag extends Widget {
 	constructor(selectedOptions){
 		const options = {...defaultTag(), ...selectedOptions};
 		super(options);
+		if(options.color){
+			this.color = options.color;
+		}
 	}
 
+	set color(color){
+		findEl(this.id)
+			.addClass('color-'+color);
+	}
 	set title(text){
 		findEl(this.id).find('.chip-label').text(text);
 	}

@@ -1,0 +1,14 @@
+static/
+	css/
+		codemirror.css
+		darcula.css
+		index.css
+	js/
+		highlight.js
+		index.js
+		jquery.min.js
+		turndown.js
+	views/
+		home.md
+		socket.md
+		widgets.md
