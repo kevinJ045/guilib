@@ -1,26 +1,27 @@
 import $ from "jquery";
 import Widget from "./Widget.js";
-import getDefaults from "../utils/options.js";
+import getDefaults from "../../utils/options.js";
 
 const defaultText = () => getDefaults({
 	element: { name: 'div' },
 	class: 'text-wrapper',
-	accepts: false
+	accepts: false,
+	stateWrapperName: '$text_text'
 });
 
 class Text extends Widget {
 
-	state = {text: "Text"};
+	state = {$text_text: "Text"};
 
 	constructor(selectedOptions, otheroptions){
 		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultText());
 		super(options);
 
 		if(options.text){
-			this.setState({text: options.text});
+			this.setState({[options.stateWrapperName]: options.text});
 		}
 
-		this.text(this.state.text);
+		this.text(this.state[options.stateWrapperName]);
 	}
 
 

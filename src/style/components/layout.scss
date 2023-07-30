@@ -1,0 +1,18 @@
+
+
+
+.widget-row,.widget-column {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.widget-row {
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.widget-column {
+  flex-direction: column;
+  flex-wrap: nowrap;
+}

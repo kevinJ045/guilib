@@ -1,7 +1,7 @@
 import $ from "jquery";
-import Widget from "./Widget.js";
-import getDefaults from "../utils/options.js";
-import Text from "./Text.js";
+import Widget from "../main/Widget.js";
+import getDefaults from "../../utils/options.js";
+import Text from "../main/Text.js";
 
 const defaultButton = () => getDefaults({
 	element: { name: 'button' },

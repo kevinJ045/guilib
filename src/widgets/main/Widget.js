@@ -1,13 +1,22 @@
 import $ from "jquery";
 import _ from "lodash";
-import { isHTMLElement, isPosition, isWidget } from "../utils/type.js";
-import generateRandomID from "../utils/id.js";
-import { elementTypes, findEl, registerElement } from "../utils/elman.js";
-import { createEventData, getEventName, onHold } from "../utils/events.js";
-import getDefaults from "../utils/options.js";
-import { htmlPseudos, filteredChildren, resolveSubchild } from "../utils/misc.js";
+import { isHTMLElement, isPosition, isWidget } from "../../utils/type.js";
+import generateRandomID from "../../utils/id.js";
+import { elementTypes, findEl, registerElement } from "../../utils/elman.js";
+import { createEventData, getEventName, onHold } from "../../utils/events.js";
+import getDefaults from "../../utils/options.js";
+import { htmlPseudos, filteredChildren, resolveSubchild } from "../../utils/misc.js";
 
 const defaults = getDefaults({});
+let $1$app = {};
+
+function initiateSetters(widget, setterFunctions, options){
+	setterFunctions.forEach((setter) => {
+		if(options[setter]){
+			widget[setter == 'id' ? '$id' : setter] = options[setter];
+		}
+	});
+}
 
 function _init(widget, options){
 	let elementRaw;
@@ -82,9 +91,11 @@ function _init(widget, options){
 	}
 
 	if(options.children && options.children.length){
+		widget.options = options;
 		options.children.forEach(element => {
 			widget.add(element);
 		});
+		delete widget.options;
 	}
 
 	if(options.private === true){
@@ -110,19 +121,43 @@ function _init(widget, options){
 		}
 	}
 
-	if(options.type && options.type.length){
-		elementTypes(options.element.name, options.type, widget.id);
-		if(typeof widget._onTypeChange == "function"){
-			widget._onTypeChange(...options.type);
-		}
-	}
-
 	if(options.props){
 		element.prop(options.props);
 	}
 
 	widget.options = options;
+
+	const setterFunctions = [
+		'padding',
+		'margin',
+		'type',
+		'id'
+	];
+
+	if(options._setters){
+		setterFunctions.push(...options._setters);
+	}
+	
+	initiateSetters(widget, setterFunctions, options);
+	
 	if(!widget.__generated) widget.__generated = true;
+
+
+	if(typeof widget._onBuild == "function"){
+		widget._onBuild($1$app);
+	}
+
+	if(options.state){
+		widget.setState(options.state);
+	}
+
+	const targetProxy = new Proxy(widget.options, {
+		set: function (target, key, value) {
+			target[key] = value;
+			widget.set(target);
+			return true;
+		},
+	});
 }
 
 class Widget {
@@ -140,6 +175,30 @@ class Widget {
 	constructor(selectedOptions){
 		const options = {...defaults, ...selectedOptions};
 		_init(this, options);
+	}
+
+	set padding(value){
+		findEl(this.id).css({ "padding": value });
+	}
+
+	set margin(value){
+		findEl(this.id).css({ "margin": value });
+	}
+
+	set type(type){
+
+		if(typeof type == 'string'){
+			type = [type];
+		} else if(Array.isArray(type)){
+			type = type;
+		} else {
+			throw new Error('Undefined type type');
+		}
+
+		elementTypes(this.options.element.name, type, this.id);
+		if(typeof this._onTypeChange == "function"){
+			this._onTypeChange(...type);
+		}
 	}
 
 	set(options){
@@ -180,6 +239,7 @@ class Widget {
 			} else {
 				l.append(findEl(child.id));
 			}
+			// if(this.options.shareState) child.inheritState(this);
 		}
 		return this;
 	}
@@ -262,7 +322,15 @@ class Widget {
 	}
 
 	find(q, subchild){
-		return filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q));
+		return filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q), true);
+	}
+
+	parent(){
+		let parent = findEl(this.id).parent();
+		while(!parent[0].GUIWIDGET){
+			parent = parent.parent();
+		}
+		return parent;
 	}
 
 	attr(props){
@@ -310,6 +378,7 @@ class Widget {
 
 	toWidget(parent, direction){
 		if(this.sealed === true) return this;
+		// if(parent.options.shareState) this.setState(parent.state);
 		return this.toHTMLElement(findEl(parent.id), direction);
 	}
 
@@ -371,12 +440,32 @@ class Widget {
 		return this.private ? this : findEl(this.id);
 	}
 
+	toString(){
+		return findEl(this.id)[0].outerHTML;
+	}
+
+	stripElement(){
+		return delete findEl(this.id)[0].GUIWIDGET;
+	}
+
+	set $id(id) { this._id = id, findEl(this.id).attr('id', id); };
+
+
+
+
+	/*
+
+		State Management
+	
+	*/
+	state = {};
+
 	setState(newState) {
     if (this.sealed === true) return this;
 		const old = { ...this.state };
     this.state = { ...this.state, ...newState };
-		if(this.state.text) this.text(this.state.text);
-		if(this.state.value) this.val(this.state.value);
+		// if(this.state.text) this.text(this.state.text);
+		// if(this.state.value) this.val(this.state.value);
 		this.emit('state:change', { old, current: this.state, new: newState });
 
 		if(this.state.$children){
@@ -431,15 +520,12 @@ class Widget {
     return { ...this.state };
   }
 
-	toString(){
-		return findEl(this.id)[0].outerHTML;
+	inheritState(p){
+		if(!p) p = this.parent();
+		this.setState(p.state);
+		p.on('state:change', ({new: state}) => this.setState(state));
+		return this;
 	}
-
-	stripElement(){
-		return delete findEl(this.id)[0].GUIWIDGET;
-	}
-
-	set id(id) { this._id = id };
 
 	static from(raw){
 		return new Widget({
@@ -450,6 +536,10 @@ class Widget {
 	static html(widget){
 		return findEl(widget.id)[0].outerHTML;
 	}
+
+	static injectApp(app){
+		$1$app = app;
+	}
 }
 
 function AssemblyWidget(Func, el){
@@ -459,5 +549,5 @@ function AssemblyWidget(Func, el){
 	return Func;
 }
 
-export { AssemblyWidget };
+export { AssemblyWidget, initiateSetters };
 export default Widget;

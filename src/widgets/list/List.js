@@ -1,12 +1,15 @@
 import $ from "jquery";
-import Widget from "./Widget.js";
-import getDefaults from "../utils/options.js";
-import { findEl } from "../utils/elman.js";
-import Icon from "./Icon.js";
+import Widget from "../main/Widget.js";
+import getDefaults from "../../utils/options.js";
+import { findEl } from "../../utils/elman.js";
+import Icon from "../icons/Icon.js";
+import StateMan from "../../utils/stateman.js";
+import ListBuilder from "./ListBuilder.js";
 
 const defaultList = () => getDefaults({
-	element: { name: 'div' },
-	class: 'list'
+	element: { name: 'div', html: `<ul></ul>` },
+	class: 'list',
+	itemsStateName: '$items_list'
 });
 
 const defaultListItem = () => getDefaults({
@@ -22,8 +25,9 @@ const defaultListItem = () => getDefaults({
 
 
 function _initList(list, state){
-	if(state.items && Array.isArray(state.items)){
-		state.items.forEach(item => {
+	if(state[list.options.itemsStateName] && Array.isArray(state[list.options.itemsStateName])){
+		list.empty();
+		state[list.options.itemsStateName].forEach(item => {
 			list.appendItem(item);
 		});
 	}
@@ -107,25 +111,29 @@ class ListItem extends Widget {
 
 }
 
-class List extends Widget {
-
-	state = {items: []};
+class List extends ListBuilder {
 
 	constructor(selectedOptions){
 		const options = {...defaultList(), ...selectedOptions};
-		super(options);
+		super(options, _initList);
+	}
 
-		findEl(this.id).append('<ul></ul>');
-
-		if(options.items){
-			this.setState({items: options.items});
+	updateList(newOptions){
+		if(Array.isArray(newOptions)){
+			newOptions = {items: newOptions};
 		}
-
-		_initList(this, this.state);
-
-		this.on('state:change', (e, {new: state}) => {
-			_initList(this, state);
-		});
+		const options = {...this.options, ...newOptions};
+		if(options.items){
+			this.setState({[options.itemsStateName]: options.items});
+		}
+		if(options.loader){
+			super.add(options.loader);
+		}
+		if(options.loading){
+			options.loader?.show();
+		} else {
+			options.loader?.hide();
+		}
 	}
 
 	add(child){
@@ -135,46 +143,12 @@ class List extends Widget {
 	appendItem(item){
 		return this.add(new ListItem(item));
 	}
-
-	addItem(...items){
-		this.setState({items: [...items].concat(this.state.items)});
-		return this;
+	onItems(event, handler){
+		return this.onItems(event, handler, 'ul');
 	}
 
-	removeItems(...itemsToRemove) {
-    const currentItems = this.state.items;
-
-    const remain = currentItems.filter((item, index) => {
-      let shouldRemove = false;
-
-      itemsToRemove.forEach(it => {
-
-				if(index == it.index) {
-					shouldRemove = true;
-          return;
-				}
-				
-        const allPropertiesMatch = Object.keys(it).every(prop => item[prop] === it[prop]);
-
-        if (allPropertiesMatch) {
-          shouldRemove = true;
-          return;
-        }
-      });
-
-      return !shouldRemove;
-    });
-
-    this.setState({ items: remain });
-		return this;
-  }
-
-	onItems(event, handler){
-		this.children('ul').forEach((child, index) => {
-			child.on(event, (e) => {
-				handler(e, { child, index });
-			});
-		});
+	empty(){
+		findEl(this.id).find('ul').empty();
 		return this;
 	}
 }

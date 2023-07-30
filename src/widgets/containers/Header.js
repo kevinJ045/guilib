@@ -1,8 +1,8 @@
 import $ from "jquery";
-import Widget from "./Widget.js";
-import getDefaults from "../utils/options.js";
-import { findEl } from "../utils/elman.js";
-import Text from "./Text.js";
+import Widget from "../main/Widget.js";
+import getDefaults from "../../utils/options.js";
+import { findEl } from "../../utils/elman.js";
+import Text from "../main/Text.js";
 
 const defaultHeader = () => getDefaults({
 	element: { name: 'div', html: `<div class="navbar-inner" />` },

@@ -1,5 +1,5 @@
-import { findEl } from "../utils/elman.js";
-import Widget from "./Widget.js";
+import { findEl } from "../../utils/elman.js";
+import Widget from "../main/Widget.js";
 
 
 class Icon extends Widget {

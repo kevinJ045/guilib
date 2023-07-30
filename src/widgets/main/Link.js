@@ -1,6 +1,6 @@
 import $ from "jquery";
 import Widget from "./Widget.js";
-import getDefaults from "../utils/options.js";
+import getDefaults from "../../utils/options.js";
 import Text from "./Text.js";
 
 const defaultLink = () => getDefaults({
@@ -20,4 +20,12 @@ class Link extends Text {
 	
 }
 
+class IconLink extends Widget {
+	constructor(icon, selectedOptions = {}){
+		const options = {...defaultLink(), ...{children: [icon]}, ...selectedOptions};
+		super(options);
+	}
+}
+
+export { IconLink };
 export default Link;

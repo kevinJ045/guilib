@@ -1,4 +1,4 @@
-import Widget from "../widgets/Widget.js";
+import Widget from "../widgets/main/Widget.js";
 
 function isPosition(pos){
 	return pos == "absolute" 

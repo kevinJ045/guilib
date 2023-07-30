@@ -1,9 +1,10 @@
 
 :root {
 	--f7-bars-bg-color: var(--base-mantle);
+	--f7-searchbar-bg-color-rgb: var(--base-mantle-rgb);
 }
 
-.navbar-bg::after{
+.navbar-bg::after, .searchbar::after {
 	display: none;
 }
 
@@ -11,8 +12,16 @@
 	background: var(--f7-bars-bg-color);
 	border-radius: $radius-normal;
 	overflow: hidden;
+	margin: 10px 15px;
+	width: calc(100% - 40px);
+	height: 50px;
 }
 
 .card {
 	--f7-bars-bg-color: transparent;
 }
+
+
+.navbar .title:has(.searchbar){ 
+	width: 100%
+};

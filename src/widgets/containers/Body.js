@@ -1,6 +1,6 @@
 import $ from "jquery";
-import Widget, { AssemblyWidget } from "./Widget.js";
-import getDefaults from "../utils/options.js";
+import Widget, { AssemblyWidget } from "../main/Widget.js";
+import getDefaults from "../../utils/options.js";
 
 function Body(options){
 	Body.add(options.child);

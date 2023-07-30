@@ -1,6 +1,6 @@
 import $ from "jquery";
-import Widget from "./Widget.js";
-import getDefaults from "../utils/options.js";
+import Widget from "../main/Widget.js";
+import getDefaults from "../../utils/options.js";
 
 const defaultView = () => getDefaults({
 	element: { name: 'div' },

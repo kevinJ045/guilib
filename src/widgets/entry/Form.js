@@ -1,10 +1,10 @@
 import $ from "jquery";
-import Widget from "./Widget.js";
-import getDefaults from "../utils/options.js";
-import { findEl } from "../utils/elman.js";
-import Icon from "./Icon.js";
-import List, { ListItem } from "./List.js";
-import Controller from "../data/Controller.js";
+import Widget from "../main/Widget.js";
+import getDefaults from "../../utils/options.js";
+import { findEl } from "../../utils/elman.js";
+import Icon from "../icons/Icon.js";
+import List, { ListItem } from "../list/List.js";
+import Controller from "../../data/Controller.js";
 
 class EntryController extends Controller {
 	constructor(val){super(val)}
@@ -12,12 +12,13 @@ class EntryController extends Controller {
 
 class Entry extends ListItem {
 
-	state = {value: ""};
+	state = {$text_value: ""};
 
 	constructor(options){
 		super({...{
 			class: "item-content item-input",
-			entryType: "text"
+			entryType: "text",
+			stateWrapperName: '$text_value'
 		}, ...options, link: false, customLI: true});
 
 		const {
@@ -51,13 +52,13 @@ class Entry extends ListItem {
 
 
 		this.on('state:change', (e, {new: state}) => {
-			if(state.value != null){
-				this.val(state.value);
+			if(state[options.stateWrapperName] != null){
+				this.val(state[options.stateWrapperName]);
 			}
 		});
 
 		if(value){
-			this.setState({value})
+			this.setState({[options.stateWrapperName]: value})
 		}
 	}
 

@@ -20,10 +20,15 @@ const htmlPseudos = [
   ':checked',
 ];
 
-function filteredChildren(children){
-	return children.toArray()
-		.filter(element => element.GUIWIDGET)
-		.map(element => element.GUIWIDGET);
+function filteredChildren(children, makeOne){
+  const filtered = children.toArray()
+    .filter(element => element.GUIWIDGET)
+    .map(element => element.GUIWIDGET);
+  const isOne = filtered.length == 1 && makeOne;
+  if(isOne){
+    filtered[0].toArray = () => [filtered[0]];
+  }
+	return isOne ? filtered[0] : filtered;
 }
 
 function resolveSubchild(element, child){
