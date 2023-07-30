@@ -34,6 +34,7 @@ import Center from "./widgets/containers/Center.js";
 import Sidebar from "./widgets/menus/Sidebar.js";
 import Dialog from "./widgets/popup/dialog.js";
 import Image from "./widgets/main/Image.js";
+import { findEl } from "./utils/elman.js";
 
 const view = new View({
 	type: 'view-main'
@@ -41,13 +42,29 @@ const view = new View({
 
 view.attr('data-url', '/profile');
 
-const f = Body({
-	child: view
+const sidebar = new Sidebar({
+	id: 'sidemenu',
+	type: 'panel-main panel-in-breakpoint',
+	sidebar: {
+		swipe: true
+	},
+	open: true,
+	children: [
+		new List({
+			children: [
+				...('Home|Terminal|Profile'.split('|').map(title => new ListItem({title, link:true, url: '/profile/'})))
+			]
+		}),
+	]
+});
+
+const f = new Widget({
+	children: [view, sidebar]
 });
 
 const list = new List();
 
-// f.toHTMLElement($("body")[0]);
+f.toHTMLElement($("body")[0]);
 
 console.log(f.children());
 
@@ -217,8 +234,7 @@ class HomePage extends Component {
 				left: [
 					new IconLink(Icons.menu, {
 						onClick(e){
-							$body.find('#sidemenu')
-								.show();
+							sidebar.show();
 						}
 					})
 				],
@@ -242,16 +258,6 @@ class HomePage extends Component {
 				}
 			}),
 			children: [
-				new Sidebar({
-					id: 'sidemenu',
-					children: [
-						new List({
-							children: [
-								...('Home|Terminal|Profile'.split('|').map(title => new ListItem({title, link:true, url: '/profile/'})))
-							]
-						}),
-					]
-				}),
 				new List({
 					id: 'manaspace',
 					itemsStateName: 'items101',
@@ -426,3 +432,8 @@ Widget.injectApp(app);
 setThemeMap(app);
 
 app.views.create(view.raw()[0]);
+
+sidebar.reMount();
+
+setInterval(() => 
+findEl(sidebar.id)[0].GUISIDEBAR.enableVisibleBreakpoint(), 100);

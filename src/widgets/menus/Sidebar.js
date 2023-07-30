@@ -8,7 +8,9 @@ class Sidebar extends Widget {
 		const options = {...(getDefaults({element: {name: 'div'}, class: 'panel'})), ...selectedOptions};
 		super(options);
 
-		const { side, hideWidth, showWidth, swipe, type } = {swipe: false, type: "push", side: 'left', hideWidth: 500, showWidth: 600, ...options.sidebar};
+		const { side, hideWidth, showWidth, swipe, type } = {swipe: false, type: null, side: 'left', hideWidth: 200, showWidth: 400, ...options.sidebar};
+
+		options.sidebar = { side, hideWidth, showWidth, swipe, type };
 
 		const element = findEl(this.id);
 
@@ -21,11 +23,19 @@ class Sidebar extends Widget {
 	}
 
 	_onMount(parent, app){
-		if(app){
+		if(app && app.panel){
+			const { hideWidth, showWidth, swipe, side } = {...this.options.sidebar};
 			findEl(this.id)[0].GUISIDEBAR = app.panel.create({
-				el: findEl(this.id)[0]
+				el: findEl(this.id)[0],
+				side,
+				visibleBreakpoint: showWidth,
+				collapsedBreakpoint: hideWidth,
+				swipe,
+				opened: this.options.open || false,
+				swipeOnlyClose: findEl(this.id).hasClass('panel-main'),
+				backdrop: !findEl(this.id).hasClass('panel-main')
 			});
-			if(this.options.open) findEl(this.id)[0].GUISIDEBAR.open();
+			findEl(this.id)[0].GUISIDEBAR.enableVisibleBreakpoint();
 		}
 	}
 

@@ -255,6 +255,10 @@ class Widget {
 		this.setStore(parent.state);
 	}
 
+	reMount(){
+		this._onMount(this, $1$app);
+	}
+
 	addWidget(child, subchild){
 		if(this.accepts === false) return this;
 		if(this.sealed === true) return this;
