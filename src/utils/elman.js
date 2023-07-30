@@ -1,5 +1,5 @@
 const elementList = {};
-const specificTypes = 'large|transparent'.split('|')
+const specificTypes = 'large|transparent|outline'.split('|')
 
 function registerElement(element, id){
 	elementList[id] = element;
