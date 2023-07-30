@@ -5,6 +5,7 @@ import { findEl } from "../../utils/elman.js";
 import Icon from "../icons/Icon.js";
 import List, { ListItem } from "../list/List.js";
 import Controller from "../../data/Controller.js";
+import Store from "../../data/Store.js";
 
 class EntryController extends Controller {
 	constructor(val){super(val)}
@@ -12,7 +13,7 @@ class EntryController extends Controller {
 
 class Entry extends ListItem {
 
-	state = {$text_value: ""};
+	state = new Store({$text_value: ""});
 
 	constructor(options){
 		super({...{
@@ -66,9 +67,9 @@ class Entry extends ListItem {
 		if(this.__controller) throw new Error('Input already is married to a controller.');
 		if(controller instanceof EntryController){
 			this.on('input', () => {
-				controller.set(this.val());
+				controller.set(this.val(), true);
 			});
-			controller.on('change', (v) => this.val(v));
+			controller.onChange((v) => this.val() !== v ? this.val(v) : []);
 			this.__controller = controller;
 		}
 	}
@@ -90,7 +91,7 @@ class Entry extends ListItem {
 
 	val(text){
 		if(this.sealed === true) return this;
-		findEl(this.id).find('.input-wrapper').val(text)
+		if(text) findEl(this.id).find('.input-wrapper').val(text);
 		return findEl(this.id).find('.input-wrapper').val() || this;
 	}
 }

@@ -2,6 +2,7 @@ import $ from "jquery";
 import Widget from "../main/Widget.js";
 import getDefaults from "../../utils/options.js";
 import Text from "../main/Text.js";
+import Store from "../../data/Store.js";
 
 const defaultButton = () => getDefaults({
 	element: { name: 'button' },
@@ -16,7 +17,7 @@ const defaultButtonsegment = () => getDefaults({
 
 class Button extends Text {
 
-	state = {text: "Button"};
+	state = new Store({text: "Button"});
 
 	constructor(selectedOptions, otheroptions){
 		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultButton());

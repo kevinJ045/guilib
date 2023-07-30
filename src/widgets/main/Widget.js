@@ -6,6 +6,7 @@ import { elementTypes, findEl, registerElement } from "../../utils/elman.js";
 import { createEventData, getEventName, onHold } from "../../utils/events.js";
 import getDefaults from "../../utils/options.js";
 import { htmlPseudos, filteredChildren, resolveSubchild } from "../../utils/misc.js";
+import Store from "../../data/Store.js";
 
 const defaults = getDefaults({});
 let $1$app = {};
@@ -98,6 +99,10 @@ function _init(widget, options){
 		delete widget.options;
 	}
 
+	if(typeof widget.state == "object" && !widget.state instanceof Store){
+		widget.state = new Store(widget.state);
+	}
+
 	if(options.private === true){
 		widget.seal();
 		delete options.private;
@@ -125,6 +130,10 @@ function _init(widget, options){
 		element.prop(options.props);
 	}
 
+	if(options.style){
+		element.css(options.style);
+	}
+
 	widget.options = options;
 
 	const setterFunctions = [
@@ -147,6 +156,10 @@ function _init(widget, options){
 		widget._onBuild($1$app);
 	}
 
+	if(options.store){
+		widget.state = options.store;
+	}
+
 	if(options.state){
 		widget.setState(options.state);
 	}
@@ -155,6 +168,14 @@ function _init(widget, options){
 		set: function (target, key, value) {
 			target[key] = value;
 			widget.set(target);
+			return true;
+		},
+	});
+	
+	new Proxy(widget.state, {
+		set: function (target, key, value) {
+			target[key] = value;
+			widget.setState(target);
 			return true;
 		},
 	});
@@ -168,7 +189,7 @@ class Widget {
 	private = false;
 	options = {};
 	__generated;
-	state = {};
+	state = new Store();
 
 	__events__ = [];
 
@@ -229,6 +250,10 @@ class Widget {
 		return elt;
 	}
 
+	_onMount(parent){
+		this.setStore(parent.state);
+	}
+
 	addWidget(child, subchild){
 		if(this.accepts === false) return this;
 		if(this.sealed === true) return this;
@@ -239,7 +264,7 @@ class Widget {
 			} else {
 				l.append(findEl(child.id));
 			}
-			// if(this.options.shareState) child.inheritState(this);
+			if(typeof child._onMount == "function") child._onMount(this, $1$app);
 		}
 		return this;
 	}
@@ -404,7 +429,7 @@ class Widget {
 			if(this.is('disabled')) return;
 			if(event == 'click' && this.is('held')) return;
 			var data = createEventData(e, event);
-			if(this.state.value) this.setState({value: findEl(this.id).val()})
+			if(this.getState().value) this.setState({value: findEl(this.id).val()})
 			return callback.call(this, data, args);
 		});
 		return this;
@@ -458,48 +483,61 @@ class Widget {
 		State Management
 	
 	*/
-	state = {};
+
+	setStore(store){
+		if(store instanceof Store){
+			this.state = store;
+			store.setStore(this.getState(), this.id);
+		}
+	}
 
 	setState(newState) {
     if (this.sealed === true) return this;
-		const old = { ...this.state };
-    this.state = { ...this.state, ...newState };
+
+		// if(!this.state instanceof Store) 
+
+		let state = this.state;
+
+		const old = { ...this.state.getStore() };
+    this.state.setStore({...old, ...newState});
 		// if(this.state.text) this.text(this.state.text);
 		// if(this.state.value) this.val(this.state.value);
-		this.emit('state:change', { old, current: this.state, new: newState });
+		this.emit('state:change', { old, current: this.state.getStore(), new: newState });
 
-		if(this.state.$children){
-			this.state.$children = this.state.$children.map(element => {
+		state = this.state.getStore();
+
+		if(state.$children){
+			state.$children = state.$children.map(element => {
 				if(isWidget(element)){
 					return element;
 				} else {
 					return Widget.from(element);
 				}
 			});
-			if(!_.isEqual(old.$children || [], this.state.$children)){
-				if (this.state.$children.length > old.$children.length) {
+			if(!_.isEqual(old.$children || [], state.$children)){
+				if (state.$children.length > old.$children.length) {
 					
 					const elementsToRemove = old.$children.filter(
-						(oldChild) => !this.state.$children.includes(oldChild)
+						(oldChild) => !state.$children.includes(oldChild)
 					);
 
 					elementsToRemove.forEach((element) => this.remove(element));
-				} else if (this.state.$children.length < old.$children.length) {
+				} else if (state.$children.length < old.$children.length) {
 					
-					const elementsToRemove = this.state.$children.filter(
+					const elementsToRemove = state.$children.filter(
 						(newChild) => !old.$children.includes(newChild)
 					);
 
 					elementsToRemove.forEach((element) => this.remove(element));
 				}
 
-				const newlyAddedElements = this.state.$children.filter(
+				const newlyAddedElements = state.$children.filter(
 					(newChild) => !old.$children.includes(newChild)
 				);
 			
 				newlyAddedElements.forEach((element) => this.add(element));
 
-				const oldElements = this.state.$children.filter(
+				const oldElements = state.$children.filter(
 					(newChild) => old.$children.includes(newChild)
 				);
 
@@ -509,23 +547,9 @@ class Widget {
     return this;
   }
 
-	shareState(elt){
-		elt.on('state:change', (e, {new: state}) => {
-			this.setState({ ...(elt.getState()) });
-		});
-		return this.setState({ ...(elt.getState()) });
-	}
-
   getState() {
-    return { ...this.state };
+    return this.state.getStore();
   }
-
-	inheritState(p){
-		if(!p) p = this.parent();
-		this.setState(p.state);
-		p.on('state:change', ({new: state}) => this.setState(state));
-		return this;
-	}
 
 	static from(raw){
 		return new Widget({

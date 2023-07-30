@@ -3,10 +3,11 @@ import Widget from "../main/Widget.js";
 import getDefaults from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";
 import Icon from "../icons/Icon.js";
+import Store from "../../data/Store.js";
 
 class ListBuilder extends Widget {
 
-	state = {items: []};
+	state = new Store({items: []});
 
 	constructor(selectedOptions, _initList){
 		const options = {...selectedOptions};
@@ -14,11 +15,18 @@ class ListBuilder extends Widget {
 
 		this.updateList(options);
 
-		_initList(this, this.state);
+		_initList(this, this.getState());
 
 		this.on('state:change', (e, {new: state}) => {
 			_initList(this, state);
 		});
+	}
+
+	_fromTemplate(item, index){
+		if(!index) index = this.state.getStore()[this.options.itemsStateName].length || 0;
+		let widget = this.options.template.call(this, item, index);
+		if(!widget instanceof Widget) throw new Error("ListBuilder requires for a widget as a template");
+		return widget;
 	}
 
 	updateList(newOptions){
@@ -37,16 +45,20 @@ class ListBuilder extends Widget {
 		} else {
 			options.loader?.hide();
 		}
+
+		if(typeof this._onUpdate == "function"){
+			this._onUpdate(options);
+		}
 		return this;
 	}
 
 	addItem(...items){
-		this.setState({items: [...items].concat(this.state.items)});
+		this.setState({items: [...items].concat(this.getState()[this.options.itemsStateName])});
 		return this;
 	}
 
 	removeItems(...itemsToRemove) {
-    const currentItems = this.state.items;
+    const currentItems = this.getState()[this.options.itemsStateName];
 
     const remain = currentItems.filter((item, index) => {
       let shouldRemove = false;

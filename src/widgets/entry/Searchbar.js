@@ -1,9 +1,10 @@
+import Store from "../../data/Store.js";
 import { findEl } from "../../utils/elman.js";
 import getDefaults from "../../utils/options.js";
 import Widget from "../main/Widget.js";
 
 class SearchBar extends Widget {
-  state = { value: "" };
+  state = new Store({ value: "" });
 
   constructor(selectedOptions) {
     const options = {
@@ -50,7 +51,7 @@ class SearchBar extends Widget {
   }
 
   getValue() {
-    return this.state.value;
+    return this.getState().value;
   }
 
   setValue(value) {

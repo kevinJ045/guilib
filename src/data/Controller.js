@@ -4,9 +4,9 @@ class Controller {
     this.changeListeners = [];
   }
 
-  set(newValue) {
+  set(newValue, doNoyNotify) {
     this.value = newValue;
-    this.notifyChangeListeners();
+    if(!doNoyNotify) this.notifyChangeListeners();
   }
 
   get() {

@@ -6,8 +6,11 @@ import StateMan from "../../utils/stateman.js";
 
 function runOverWidget(component, widget){
 	function doStates(widget){
-		widget.setState(component.state);
+		widget.setStore(component.state);
 		widget.children().forEach(widget => {
+			if(typeof widget._onBuilt == "function"){
+				widget._onBuilt(component, component.state);
+			}
 			doStates(widget);
 		});
 	}
@@ -30,6 +33,10 @@ class Component extends StateMan {
 		}) => {
 
 			this.setState(objects);
+
+			this.setState({$app: $f7});
+
+			this.state.$app = $f7;
 
 			let values = {};
 
@@ -56,9 +63,7 @@ class Component extends StateMan {
 				const element = $el.value[0];
 				if(typeof this._onBuild == "function"){
 					__MainWidget = this._onBuild(props, { $f7, $update, $useState, $ref, $body: Widget.from(element) });
-					__MainWidget.setState(this.state);
 					this.__MainWidget = __MainWidget;
-					runOverWidget(__MainWidget);
 					__MainWidget.to(element);
 				}
 			});

@@ -1,25 +1,26 @@
+import Store from "../data/Store.js";
 import Widget from "../widgets/main/Widget.js";
 import { isWidget } from "./type.js";
 
 
 class StateMan {
 
-	state = {};
+	state = new Store();
 
 	setState(newState) {
     if (this.sealed === true) return this;
-		const old = { ...this.state };
-    this.state = { ...this.state, ...newState };
-		if(this._onStateChange) this._onStateChange({ old, current: this.state, new: newState });
+		const old = { ...this.state.getStore() };
+    this.state.getStore({ ...old, ...newState });
+		if(this._onStateChange) this._onStateChange({ old, current: this.state.getStore(), new: newState });
     return this;
   }
 
   getState() {
-    return { ...this.state };
+    return this.state.getStore();
   }
 
 	switchWidgetState(widget){
-		return widget.setState(this.state);
+		return widget.setStore(this.state);
 	}
 
 }

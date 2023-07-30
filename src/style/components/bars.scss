@@ -4,6 +4,10 @@
 	--f7-searchbar-bg-color-rgb: var(--base-mantle-rgb);
 }
 
+.navbar-bg{
+	display: none;
+}
+
 .navbar-bg::after, .searchbar::after {
 	display: none;
 }

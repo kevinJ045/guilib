@@ -1,0 +1,52 @@
+@font-face {
+  font-family: 'Material Icons Rounded';
+  font-style: normal;
+  font-weight: 400;
+  src: url("../res/fonts/mi.woff2") format('woff2');
+}
+
+@font-face{
+  font-family: Inter;
+  src: url("../res/fonts/til.ttf");
+  font-size: normal;
+  font-style: normal;
+}
+
+@font-face{
+  font-family: Boost;
+  src: url("../res/fonts/nc.ttf");
+  font-size: normal;
+  font-style: normal;
+}
+
+@font-face{
+  font-family: ConsolasCarrier;
+  src: url("../res/fonts/Consolas.ttf");
+  font-size: normal;
+  font-style: normal;
+}
+
+.material-icons, .material-icons:before, .material-icons:after, .mio, .mi, .material-symbols-outlined{
+  font-family: 'Material Icons Rounded';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}

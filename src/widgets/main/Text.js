@@ -1,6 +1,7 @@
 import $ from "jquery";
 import Widget from "./Widget.js";
 import getDefaults from "../../utils/options.js";
+import Store from "../../data/Store.js";
 
 const defaultText = () => getDefaults({
 	element: { name: 'div' },
@@ -11,7 +12,7 @@ const defaultText = () => getDefaults({
 
 class Text extends Widget {
 
-	state = {$text_text: "Text"};
+	state = new Store({$text_text: "Text"});
 
 	constructor(selectedOptions, otheroptions){
 		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultText());
@@ -21,7 +22,7 @@ class Text extends Widget {
 			this.setState({[options.stateWrapperName]: options.text});
 		}
 
-		this.text(this.state[options.stateWrapperName]);
+		this.text(this.getState()[options.stateWrapperName]);
 	}
 
 

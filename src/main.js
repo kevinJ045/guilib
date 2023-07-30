@@ -6,7 +6,7 @@ import Widget from "./widgets/main/Widget.js";
 import Body from "./widgets/containers/Body.js";
 import Button, { ButtonSegment } from "./widgets/buttons/Button.js";
 
-import Framework7 from "framework7";
+import Framework7 from "framework7/bundle";
 import { setThemeMap } from "./theme/base.js";
 import View from "./widgets/containers/View.js";
 import List, { ListItem } from "./widgets/list/List.js";
@@ -15,8 +15,8 @@ import Card from "./widgets/containers/Card.js";
 import Text from "./widgets/main/Text.js";
 import Header from "./widgets/containers/Header.js";
 import Link, { IconLink } from "./widgets/main/Link.js";
-import Form from "./widgets/entry/Form.js";
-import Icon from "./widgets/icons/Icon.js";
+import Form, { Entry, EntryController } from "./widgets/entry/Form.js";
+import Icon, { Icons } from "./widgets/icons/Icon.js";
 import Toggle from "./widgets/buttons/Toggle.js";
 import Checkbox from "./widgets/buttons/Checkbox.js";
 import Radio from "./widgets/buttons/Radio.js";
@@ -26,6 +26,11 @@ import Component from "./widgets/others/Component.js";
 import Page from "./widgets/containers/Page.js";
 import FloatingActionButton from "./widgets/buttons/FAB.js";
 import SearchBar from "./widgets/entry/Searchbar.js";
+import Grid from "./widgets/list/GridBuilder.js";
+import SelectBox from "./widgets/entry/SelectBox.js";
+import Badge from "./widgets/others/Badge.js";
+import Preloader from "./widgets/loading/Preloader.js";
+import Center from "./widgets/containers/Center.js";
 
 const view = new View();
 
@@ -68,7 +73,8 @@ const oldHome = (props, { $h, $update, $el, $on }) => {
 		}, {
 			title: "hel2ow",
 			link: true,
-			icon: new Icon()
+			icon: Icons.home,
+			after: new Badge("haha")
 		})
 		.onItems('hold', (e, { index }) => {
 			console.log(index);
@@ -159,6 +165,10 @@ const oldHome = (props, { $h, $update, $el, $on }) => {
 						<li> <label className="checkbox"><input type="checkbox" /><i className="icon-checkbox"></i></label> {item}</li>
 					))}
 				</ul>
+				<label className="checkbox checkbox-active">
+					<input type="checkbox" />
+					<span className="icon-checkbox"></span>
+				</label>
 			</div>
 		</div>
 	);
@@ -173,7 +183,7 @@ class HomePage extends Component {
 			items: [{
 				title: '${me}',
 				link: true,
-				icon: new Icon()
+				icon: new Icon('person')
 			}, {
 				title: "s",
 				link: true,
@@ -191,12 +201,14 @@ class HomePage extends Component {
 	_onBuild(props, { $useState, $body }){
 		const lmso = $useState('s');
 
+		this.c = new EntryController();
+
 		console.log(this.me);
 		return new Page({
 			body: $body,
 			header: new Header({
 				left: [
-					new IconLink(new Icon())
+					new IconLink(Icons.menu)
 				],
 				title: new SearchBar()
 			}),
@@ -222,11 +234,42 @@ class HomePage extends Component {
 					items: [],
 					type: ['inset'],
 					loading: true,
-					loader: new Text('loading')
+					loader: Center({child: new Preloader({
+						color: 'blue',
+						type: 'large'
+					})})
 				}),
 				new List({
 					children: [
 						...(['s'].map(title => new ListItem({title, link:true})))
+					]
+				}),
+				new Grid({
+					id: 'monaspace',
+					style: {
+						width: "97%"
+					},
+					itemsStateName: 'hellow',
+					template: (title) => {
+						return new Card({
+							children: [
+								new Text(title),
+							]
+						});
+					},
+					items: ['Woah wait a minute']
+				}),
+				new Grid({
+					empty: false,
+					style: {
+						width: "97%"
+					},
+					children: [
+						...([2,12, 44, 65].map(title => new Card({
+							children: [
+								new Text(title),
+							]
+						})))
 					]
 				}),
 				new Container({
@@ -276,16 +319,21 @@ class HomePage extends Component {
 					]
 				}),
 				new Form({
-					items: [
-						{
-							title: "Ha",
-							subtitle: "Hu",
-							icon: new Icon()
-						}
-					],
 					type: ['inset'],
 					children: [
-						new Radio()
+						new SelectBox({
+							title: "Hamad",
+							options: [
+								'haha',
+								'huhu'
+							]
+						}),
+						new Entry({
+							title: 'hi',
+							subtitle: 'hello',
+							icon: new Icon(),
+							controller: this.c,
+						})
 					]
 				}),
 			]
@@ -302,6 +350,10 @@ class HomePage extends Component {
 				title: "Hi",
 				link: true,
 			}], loading: false});
+
+
+			$widget.find('#monaspace')
+			.updateList({items: ['lemao'], loading: false});
 		}, 1000);
 	}
 
@@ -331,4 +383,4 @@ Widget.injectApp(app);
 
 setThemeMap(app);
 
-app.views.create(view.raw()[0])
+app.views.create(view.raw()[0]);

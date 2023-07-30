@@ -9,7 +9,8 @@ import ListBuilder from "./ListBuilder.js";
 const defaultList = () => getDefaults({
 	element: { name: 'div', html: `<ul></ul>` },
 	class: 'list',
-	itemsStateName: '$items_list'
+	itemsStateName: '$items_list',
+	template: (item) => new ListItem(item),
 });
 
 const defaultListItem = () => getDefaults({
@@ -27,8 +28,8 @@ const defaultListItem = () => getDefaults({
 function _initList(list, state){
 	if(state[list.options.itemsStateName] && Array.isArray(state[list.options.itemsStateName])){
 		list.empty();
-		state[list.options.itemsStateName].forEach(item => {
-			list.appendItem(item);
+		state[list.options.itemsStateName].forEach((item, index) => {
+			list.appendItem(item, index);
 		});
 	}
 }
@@ -118,31 +119,14 @@ class List extends ListBuilder {
 		super(options, _initList);
 	}
 
-	updateList(newOptions){
-		if(Array.isArray(newOptions)){
-			newOptions = {items: newOptions};
-		}
-		const options = {...this.options, ...newOptions};
-		if(options.items){
-			this.setState({[options.itemsStateName]: options.items});
-		}
-		if(options.loader){
-			super.add(options.loader);
-		}
-		if(options.loading){
-			options.loader?.show();
-		} else {
-			options.loader?.hide();
-		}
-	}
-
 	add(child){
 		return super.add(child, 'ul');
 	}
 
-	appendItem(item){
-		return this.add(new ListItem(item));
+	appendItem(item, index){
+		return this.add(this._fromTemplate(item, index));
 	}
+	
 	onItems(event, handler){
 		return this.onItems(event, handler, 'ul');
 	}
