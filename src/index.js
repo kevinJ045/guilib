@@ -5,7 +5,7 @@ import $ from "jquery";
 import { createApp } from "./components/App.js";
 import Widget from "./widgets/main/Widget.js";
 import Body from "./widgets/containers/Body.js";
-import Button, { ButtonSegment } from "./widgets/buttons/Button.js";
+import Button, { ButtonSegment, IconButton, LinkButton } from "./widgets/buttons/Button.js";
 
 import { setThemeMap } from "./theme/base.js";
 import View from "./widgets/containers/View.js";
@@ -37,11 +37,18 @@ import Image from "./widgets/main/Image.js";
 import Canvas from "./widgets/canvas/Canvas.js";
 import Toolbar from "./widgets/containers/Toolbar.js";
 import Tag from "./widgets/others/Tag.js";
+import Tab, { TabsWrapper, TabBar } from "./widgets/containers/Tabs.js";
+import Span from "./widgets/main/Span.js";
+import { toast } from "./widgets/popup/toast.js";
 import { findEl } from "./utils/elman.js";
+import Swiper, { SwiperWrapper } from "./widgets/others/Swiper.js";
+import DataTable from "./widgets/list/DataTable.js";
 
 export {
 	createApp,
 	setThemeMap,
+	toast,
+	findEl as connectToElement
 }
 
 export {
@@ -56,6 +63,7 @@ export {
 	Column,
 	Component,
 	Container,
+	DataTable,
 	Dialog,
 	Entry,
 	EntryController,
@@ -64,10 +72,12 @@ export {
 	Grid,
 	Header,
 	Icon,
+	IconButton,
 	IconLink,
 	Icons,
 	Image,
 	Link,
+	LinkButton,
 	List,
 	ListItem,
 	Page,
@@ -77,6 +87,12 @@ export {
 	SearchBar,
 	SelectBox,
 	Sidebar,
+	Span,
+	Swiper,
+	SwiperWrapper,
+	Tab,
+	TabBar,
+	TabsWrapper,
 	Tag,
 	Text,
 	Toggle,

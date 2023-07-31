@@ -20,7 +20,13 @@ class Icon extends Widget {
 }
 
 for(var i in Icons.data){
-	Icons[i] = new Icon(Icons.data[i]);
+	Icons[i] = new (class IconSpecial extends Icon{
+		constructor(f) { super(f) };
+		to(f){
+			if(f instanceof Widget) f = findEl(f.id);
+			findEl(this.id).clone().appendTo(f);
+		}
+	})(Icons.data[i]);
 }
 
 export { Icons };

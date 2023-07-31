@@ -280,7 +280,8 @@ class Widget {
 		} else if(isHTMLElement(child)){
 			this.addHTMLElement(child, subchild);
 		} else {
-			throw new Error('Only Widgets or HTMLElements Allowed');
+			console.log(child, ' was given');
+			throw new Error('Only Widgets or HTMLElements Allowed, The given child was logged.');
 		}
 		return this;
 	}
@@ -570,8 +571,8 @@ class Widget {
   }
 
 	static from(raw){
-		return new Widget({
-			element: { raw }
+		return $(raw)[0].GUIWIDGET ?  $(raw)[0].GUIWIDGET : new Widget({
+			element: { raw: $(raw)[0] }
 		});
 	}
 

@@ -8,7 +8,7 @@
 	display: none;
 }
 
-.navbar-bg::after, .searchbar::after {
+.navbar-bg::after, .searchbar::after, .toolbar::after {
 	display: none;
 }
 
@@ -32,4 +32,13 @@
 
 .navbar .searchbar.searchbar-transparent input{
 	background-color: transparent;
+}
+
+:root {
+	--f7-panel-width: 260px;
+	--f7-panel-collapsed-width: var(--f7-panel-width);
+}
+
+.panel-mini{
+	--f7-panel-width: 60px;
 }

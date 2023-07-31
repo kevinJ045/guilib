@@ -8,7 +8,7 @@ class Sidebar extends Widget {
 		const options = {...(getDefaults({element: {name: 'div'}, class: 'panel'})), ...selectedOptions};
 		super(options);
 
-		const { side, hideWidth, showWidth, swipe, type } = {swipe: false, type: null, side: 'left', hideWidth: 200, showWidth: 400, ...options.sidebar};
+		const { side, hideWidth, showWidth, swipe, type } = {swipe: false, type: null, side: 'left', hideWidth: 768, showWidth: 1024, ...options.sidebar};
 
 		options.sidebar = { side, hideWidth, showWidth, swipe, type };
 
@@ -16,9 +16,9 @@ class Sidebar extends Widget {
 
 		if(side) element.addClass('panel-'+side);
 		if(type) element.addClass('panel-'+type);
-		if(swipe) element.data('swipe', true);
-		if(hideWidth) element.data('collapsed-breakpoint', hideWidth);
-		if(showWidth) element.data('visible-breakpoint', showWidth);
+		if(swipe) element.attr('data-swipe', true);
+		if(hideWidth) element.attr('data-collapsed-breakpoint', hideWidth);
+		if(showWidth) element.attr('data-visible-breakpoint', showWidth);
 
 	}
 

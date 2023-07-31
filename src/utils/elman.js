@@ -1,5 +1,6 @@
 const elementList = {};
 const specificTypes = 'large|transparent|outline'.split('|')
+const typedElements = 'button|input'.split('|')
 
 function registerElement(element, id){
 	elementList[id] = element;
@@ -10,7 +11,7 @@ function findEl(id){
 }
 
 function elementTypes(type1, types, id){
-	if(type1 == 'div') type1 = null;
+	if(!typedElements.includes(type1)) type1 = null;
 	types.forEach(type => {
 		let el = findEl(id);
 		if(specificTypes.includes(type)){

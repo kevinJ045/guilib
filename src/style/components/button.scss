@@ -7,7 +7,27 @@
 	--f7-button-padding-horizontal: 24px;
   --f7-button-border-radius: 25px;
 	--f7-button-height: 35px;
+	line-height: 35px;
 	width: auto;
+}
+
+.button.icon-only{
+	--f7-button-padding-horizontal: 5px;
+	--f7-button-border-radius: 15px;
+}
+
+.button:not(.icon-only):has(.icon){
+	--f7-button-padding-horizontal: 15px;
+	padding-left: 15px;
+}
+
+.button:not(.icon-only) .icon{
+	margin-left: -10px;
+}
+
+.toast .button, .button-transparent {
+	--f7-button-bg-color: transparent;
+	--f7-button-text-color: var(--f7-theme-color, #fff);
 }
 
 .button-outline {
@@ -36,4 +56,12 @@
 
 .button-segment .button:last-child{
   border-radius: 0.2rem var(--rad) var(--rad) 0.2rem;
+}
+
+// .button-segment .button.icon-only{
+// 	width: 40px;
+// 	padding: 0;
+// }
+.button-segment .button.icon-only .icon{
+	transform: translate(-2px, 1px);
 }
