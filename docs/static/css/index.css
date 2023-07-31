@@ -16,8 +16,10 @@ body{
 	--body-width: calc(100% - var(--nav-width));
 	transition: .6s;
 	-webkit-transition: .6s;
-
-	font-family: "Victor Mono";
+	background: var(--theme-gray);
+	color: lightgray;
+	font-family: "Inter";
+	font-weight: 400;
 } 
 
 ::-webkit-scrollbar {
@@ -332,13 +334,11 @@ h1{
 	-webkit-transition: .6s;
 }
 
-.mngr-code{
+pre{
 	position: relative;
 	width: 90%;
 	height: auto;
-	max-width: 100%;
 	overflow: auto;
-	margin: 5px auto;
 	border-radius: 10px;
 	background: var(--theme-code);
 	color: #A9B7C6;
@@ -346,13 +346,24 @@ h1{
 	font-family: monospace;
 }
 
-.mngr-code br{
+pre br{
 	line-height: 1px;
 	height: 1px;
 	display: none !important;
 }
 
-ul,li{
+code{
+	padding: 1px 5px;
+	border-radius: 5px;
+	background: var(--theme-code);
+}
+
+pre code{
+	padding: 0;
+	background: transparent;
+}
+
+ul,li,ol{
 	list-style: none;
 }
 
@@ -360,17 +371,14 @@ ul,li{
 	list-style: none;
 }
 
-.list-list li{
+ul li, ol li{
 	list-style: none;
 	display: flex;
 	flex-wrap: wrap-reverse;
 }
 
-.list-list li icon{
+#app li:not(:has(p)):before{
 	padding-right: 10px;
-}
-
-.list-list li icon:before{
 	font-family: 'FontAwesome';
 	content: "\f00c";
 	display: block;
@@ -484,7 +492,7 @@ span:not([uncolor]),b{
 }
 
 strong{
-	color: #990000;
+	color: #09D0D0;
 }
 
 footer{
@@ -597,12 +605,22 @@ a.next, a.prev{
 	text-align: center;
 	background: var(--theme-color);
 	color: var(--theme-dark);
+	border-radius: 10px;
+	cursor: pointer;
 }
 
-a.next{
+.navigation:has(a.prev) a.next{
 	float: right;
 }
 
-a.prev{
+.navigation:has(a.prev) a.prev{
 	float: left;
+}
+
+.navigation:not(.navigation:has(a.prev)),
+.navigation:not(.navigation:has(a.nexr)){
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
 }

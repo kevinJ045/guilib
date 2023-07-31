@@ -526,7 +526,7 @@
 	"function","if","in","new","return","switch","throw","try","typeof","while","with","R921",
 	"db","dump","$"];
 	if (!document.getElementsByClassName) {return;}
-	y = document.getElementsByClassName("jsHigh");
+	y = document.getElementsByClassName("language-javascript");
 	for (j = 0; j < y.length; j++) {
 	z = y[j];
 	ele = "";

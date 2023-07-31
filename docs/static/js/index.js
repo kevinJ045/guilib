@@ -1,5 +1,19 @@
 (function(){
 
+	const classMap = {
+	  pre: 'mngr-code'
+	}
+
+	const bindings = Object.keys(classMap)
+	  .map(key => ({
+	    type: 'output',
+	    regex: new RegExp(`<${key}(.*)>`, 'g'),
+	    replace: `<${key} class="${classMap[key]}" $1>`
+	  }));
+
+	// var converter = new TurndownService();
+
+
 	let isNavigating = false;
 	const navigateTo = url => {
 		// isNavigating = true;
@@ -19,47 +33,41 @@
 		}));
 	};
 
+	// console.log(converter);
+
 	const getPage = page => {
-		return $.ajax({
+		return marked.parse($.ajax({
 			'url': page,
 			'async': false
-		}).responseText;
+		}).responseText.replace(/R(.+)R/, '')) + `<div class="navigation"><a class="prev">Prev</a> <a class="next">Next</a></div>`;
 	}
 
-	function processData(r){
-		let [pre, routes] = r.responseText.split('views/');
-		routes = routes.split('\n').slice(1, 4).map(f => f !== '' ? f.trim() : null).map(f => {
-			let text = $.ajax({url: './static/views/'+f, async: false}).responseText;
-			let route = {};
-			text.replace(/R(.+)R/, (a, b) => {
-				route = JSON.parse(b);
-				route.view = "./static/views/"+f;
-				return "";
-			});
-			return route;
-		}).sort((a, b) => {
-			if(a.name == 'Home'){
-		  	return -1;
-		  }
-			if (a.name < b.name) {
-		    return -1;
-		  }
-		  if (a.name > b.name) {
-		    return 1;
-		  }
-		  return 0;
-		});
-		return routes;
-	}
-
-	const _ROUTES = processData($.ajax({
-		'url': './.dirmap',
-		async: false
+	const _ROUTES = [
+		'home.md|/|Home',
+		'widget.md|/widget|Widget',
+		'text.md|/text|Text',
+		'button.md|/button|Button',
+		'checkbox.md|/checkbox|Checkbox',
+		'radio.md|/radio|Radio',
+		'toggle.md|/toggle|Toggle',
+		'floatingactionbutton.md|/floatingactionbutton|FloatingActionButton',
+		'canvas.md|/canvas|Canvas',
+		'body.md|/body|Body',
+		'card.md|/card|Card',
+		'directedwidget.md|/directedwidget|DirectedWidget',
+		'container.md|/container|Container',
+		'header.md|/header|Header',
+		'toolbar.md|/toolbar|Toolbar',
+		'view.md|/view|View',
+		'page.md|/page|Page'
+	].map((s, index) => ({
+			view: "./static/views/"+s.split('|')[0],
+			path: s.split('|')[1],
+			name: s.split('|')[2],
+			index
 	}));
 
-	console.log(_ROUTES);
-
-	const router = async () => {
+	const getRoute = () => {
 		const routes = _ROUTES;
 		const matches = routes.map(route => {
 			return {
@@ -78,15 +86,20 @@
 			}
 		}
 
-		var route = match.route,
-				view = route.view;
+		return { route: match.route, match };
+	}
+
+	const router = async () => {
+
+		var { route, match } = getRoute(),
+			view = route.view;
 
 		if(typeof view == "function"){
 			var _view = new view(getParams(match));
 			view = _view;
 			view = _view.getHtml().replace(/R(.+)R/, '');
 		} else {
-			view = getPage(route.view).replace(/R(.+)R/, '');
+			view = getPage(route.view);
 		}
 
 		if(route.showdemo != null && route.showdemo == false){
@@ -186,6 +199,15 @@
 	}
 
 	const OnClick = function(){
+		const {route: currentRoute} = getRoute();
+		$('#app').find('.next').click(() => {
+			location.search = 'path='+_ROUTES[currentRoute.index+1].path
+		});
+		$('#app').find('.prev').click(() => {
+			location.search = 'path='+_ROUTES[currentRoute.index-1].path
+		});
+		if(currentRoute.index == 0) $('#app').find('.prev').remove();
+		if(currentRoute.index == _ROUTES.length-1) $('#app').find('.next').remove();
 		$(".nav__link").off('click');
 		$(".nav__link").on('click',function(e){
 			var $ths = $(this),
