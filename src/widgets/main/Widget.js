@@ -139,11 +139,6 @@ function _init(widget, options){
 		element.prop(options.props);
 	}
 
-	if(options.style){
-		if(options.style instanceof Style) element.css(options.style.all);
-		else element.css(options.style);
-	}
-
 	widget.options = options;
 
 	const setterFunctions = [
@@ -152,7 +147,8 @@ function _init(widget, options){
 		'type',
 		'id',
 		'animation',
-		'tooltip'
+		'tooltip',
+		'style'
 	];
 
 	if(options._setters){
@@ -210,6 +206,11 @@ class Widget {
 		_init(this, options);
 	}
 
+	set style(style){
+		if(style instanceof Style) findEl(this.id).css(style.all);
+		else findEl(this.id).css(style);
+	}
+	
 	set padding(value){
 		findEl(this.id).css({ "padding": value });
 	}
