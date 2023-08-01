@@ -141,6 +141,7 @@ let app = createApp({
 												title: "hello",
 												color: 'blue',
 												type: 'outline',
+												tooltip: 'Hello',
 												close: (a) => a.remove()
 											}),
 											new DataTable({

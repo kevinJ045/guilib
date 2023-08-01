@@ -151,7 +151,8 @@ function _init(widget, options){
 		'margin',
 		'type',
 		'id',
-		'animation'
+		'animation',
+		'tooltip'
 	];
 
 	if(options._setters){
@@ -215,6 +216,10 @@ class Widget {
 
 	set margin(value){
 		findEl(this.id).css({ "margin": value });
+	}
+	
+	set tooltip(value){
+		findEl(this.id).addClass('tooltip-init').attr('data-tooltip', value);
 	}
 
 	set type(type){
