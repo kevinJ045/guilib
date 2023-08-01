@@ -18,12 +18,12 @@ const defaultButtonsegment = () => getDefaults({
 	class: 'button-segment'
 });
 
-class Button extends Text {
+class Button extends Link {
 
 	state = new Store({text: "Button"});
 
 	constructor(selectedOptions, otheroptions){
-		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultButton());
+		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultButton(null, selectedOptions.url));
 		super(options);
 		if(options.icon) this.icon = options.icon;
 	}
@@ -50,12 +50,6 @@ class IconButton extends IconLink {
 	}
 }
 
-class LinkButton extends Link {
-	constructor(text, selectedOptions){
-		const options = {...defaultButton('link-button', true), ...selectedOptions};
-		super(text, options);
-	}
-}
 
-export { ButtonSegment, IconButton, LinkButton };
+export { ButtonSegment, IconButton };
 export default Button;
