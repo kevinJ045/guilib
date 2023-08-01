@@ -1,11 +1,9 @@
 import "./style/main.scss";
 
-import $ from "jquery";
-
 import { createApp } from "./components/App.js";
 import Widget from "./widgets/main/Widget.js";
 import Body from "./widgets/containers/Body.js";
-import Button, { ButtonSegment, IconButton, LinkButton } from "./widgets/buttons/Button.js";
+import Button, { ButtonSegment, IconButton } from "./widgets/buttons/Button.js";
 
 import { setThemeMap } from "./theme/base.js";
 import View from "./widgets/containers/View.js";
@@ -43,10 +41,19 @@ import { toast } from "./widgets/popup/toast.js";
 import { findEl } from "./utils/elman.js";
 import Swiper, { SwiperWrapper } from "./widgets/others/Swiper.js";
 import DataTable from "./widgets/list/DataTable.js";
+import LayoutBuilder from "./widgets/layout/LayoutBuilder.js";
+import Style from "./components/Style.js";
+import BreadCrumbs from "./widgets/others/BreadCrumbs.js";
+import MessageBar from "./widgets/menus/Messagebar.js";
+import { createPopover } from "./widgets/popup/popover.js";
+import { createPopup } from "./widgets/popup/popup.js";
+import RangeSlider from "./widgets/entry/RangeSlider.js";
 
 export {
 	createApp,
 	setThemeMap,
+	createPopover,
+	createPopup,
 	toast,
 	findEl as connectToElement
 }
@@ -54,6 +61,7 @@ export {
 export {
 	Badge,
 	Body,
+	BreadCrumbs,
 	Button,
 	ButtonSegment,
 	Card,
@@ -76,18 +84,21 @@ export {
 	IconLink,
 	Icons,
 	Image,
+	LayoutBuilder,
 	Link,
-	LinkButton,
 	List,
 	ListItem,
+	MessageBar,
 	Page,
 	Preloader,
 	Radio,
+	RangeSlider,
 	Row,
 	SearchBar,
 	SelectBox,
 	Sidebar,
 	Span,
+	Style,
 	Swiper,
 	SwiperWrapper,
 	Tab,

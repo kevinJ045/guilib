@@ -21,7 +21,8 @@ const defaultMap = {
 		base: '#1e1e2e',
 		mantle: '#181825',
 		crust: '#11111b'
-	}
+	},
+	themeBase: 'md'
 }
 
 const mapnames = {
@@ -30,22 +31,30 @@ const mapnames = {
 	'crust': '--base-crust'
 };
 
-function setThemeMap(app, map = defaultMap){
+function getCssObject(colors){
 	const css = {};
-	const colors = Object.assign({...defaultMap.colors}, map.colors);
-
-	for(var i in map.colors){
+	for(var i in colors){
 		if(i in mapnames){
 			const name = mapnames[i];
-			const val = map.colors[i]
+			const val = colors[i]
 			css[name] = val;
 			css[name+'-rgb'] = hRGB(val);
 		}
 	}
+	return css;
+}
+
+function setThemeMap(app, selectedMap = defaultMap){
+	const map = Object.assign({...defaultMap}, selectedMap);
+
+	const css = getCssObject(map.colors);
 
 	$(':root').css(css);
-	app.colors = colors;
+	app.colors = map.colors;
 	app.setColorTheme(map.colors.primary);
+	// console.log(app);
+	// if(map.themeBase) app.theme = map.themeBase;
+	// app.setColorTheme(map.colors.primary);
 }
 
 

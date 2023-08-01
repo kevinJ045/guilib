@@ -40,8 +40,6 @@ class ListItem extends Widget {
 	constructor(selectedOptions){
 		const options = {...defaultListItem(), ...selectedOptions};
 
-		console.log(options);
-
 		const { title,
 			subtitle,
 			icon,

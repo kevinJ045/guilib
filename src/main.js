@@ -1,4 +1,4 @@
-import { Body, Button, ButtonSegment, Component, DataTable, IconButton, IconLink, Icons, Link, LinkButton, Page, Sidebar, Swiper, SwiperWrapper, Tab, TabBar, TabsWrapper, Tag, Text, Toolbar, View, Widget, createApp, toast } from "./index.js";
+import { Body, Button, Style, ButtonSegment, Component, DataTable, IconButton, IconLink, Icons, LayoutBuilder, Link, Page, Sidebar, Swiper, SwiperWrapper, Tab, TabBar, TabsWrapper, Tag, Text, Toolbar, View, Widget, createApp, toast, BreadCrumbs, List, ListItem, MessageBar, createPopover, createPopup, RangeSlider } from "./index.js";
 import { findEl } from "./utils/elman.js";
 
 const r = new Widget({class: ''});
@@ -7,10 +7,26 @@ Body.add(r);
 const d = new Sidebar({
 	type: 'panel-init panel-main',
 	children: [
-		new Text('hii'),
+		new List({
+			type: 'menu-list inset',
+			children: [
+				new ListItem({
+					title: 'ha',
+					link: true,
+					icon: Icons.home,
+					type: 'item-selected'
+				}),
+				new ListItem({
+					title: 'hello',
+					link: true,
+					icon: Icons.add
+				})
+			]
+		})
 	]
 });
 r.add(d);
+
 let app = createApp({
 	el: r.raw()[0],
 	routes: [
@@ -22,6 +38,12 @@ let app = createApp({
 					toast('h', true);
 					return new Page({
 						body: $body,
+						ptr: true,
+						// ptrMousewheel: true,
+						toolbar: new MessageBar({
+							button: new Link('Gee'),
+							prefix: new Link('Dee'),
+						}),
 						children: [
 							new TabBar({
 								children: [
@@ -42,21 +64,78 @@ let app = createApp({
 										id: 'nooga',
 										active: true,
 										children: [
+											new BreadCrumbs({
+												children: [
+													new Link('Home'),
+													new Link('Phones', {
+														onClick(){
+															createPopover({
+																target: this,
+																child: new List({
+																	items: [{
+																		title: 'Android',
+																		link: true
+																	},{
+																		title: 'IOS',
+																		link: true
+																	}]
+																})
+															});
+														}
+													}),
+												]
+											}),
+											new Widget({
+												id: 'n',
+												style: new Style('a')
+													.setWidth('100px')
+													.setHeight('100px')
+													.setBackground('red')
+											}),
+											new Widget({
+												class: 'ball',
+												style: new Style('b')
+													.setWidth('20px')
+													.setHeight('20px')
+													.setBackground('red')
+													.setBorderRadius('20px')
+											}),
+											new Widget({
+												class: 'ball',
+												style: new Style('b')
+											}),
 											new ButtonSegment({
 												children: [
 													new Button('hi', {
 														style: {
 															'--f7-button-text-color': 'black'
+														},
+														icon: Icons.add,
+														onClick(){
+															createPopup({
+																swiper: true,
+																push: true,
+																build($body){
+																	return new Page({
+																		body: $body,
+																		children: [
+																			new Text('hi')
+																		]
+																	});
+																}
+															})
 														}
-													}),
-													new LinkButton('Settings', {
-														icon: Icons.settings,
-														url: 'settings'
 													}),
 													new IconButton(Icons.settings, {
 														url: 'settings'
 													}),
 												]
+											}),
+											new RangeSlider(),
+											new RangeSlider({
+												label: true,
+												vertical: true,
+												size: {height: 160}
 											}),
 											new Tag({
 												title: "hello",
@@ -102,6 +181,46 @@ let app = createApp({
 						]
 					})
 				}
+
+				_after(props, { $widget }){
+					setTimeout(() => {
+						$widget.find('#n').animation = {
+							translateX: "100px", 
+							rotate: "180deg", 
+							scale: 1.5,
+							opacity: 0.5, 
+							easing: "easeInOutCirc"
+						}
+						$widget.animate('.ball', {
+							translateX: 270,
+							delay: `stagger(100)`
+						});
+					}, 100);
+				}
+			})()
+		},
+		{
+			path: '/settings',
+			component: new (class H extends Component{
+				
+				_onBuild(props, { $body, size }){
+					return new Page({
+						body: $body,
+						children: [	
+							new LayoutBuilder({
+								queries: {
+									'vw > 400': [
+										new Text('wide')
+									],
+									'vw < 400': [
+										new Text('not wide')
+									]
+								}
+							})
+						]
+					});
+				}
+
 			})()
 		}
 	]

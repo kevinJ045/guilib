@@ -23,14 +23,8 @@ class Button extends Link {
 	state = new Store({text: "Button"});
 
 	constructor(selectedOptions, otheroptions){
-		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultButton(null, selectedOptions.url));
+		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultButton(null, otheroptions.url || selectedOptions.url));
 		super(options);
-		if(options.icon) this.icon = options.icon;
-	}
-
-	set icon(icon){
-		if(icon instanceof Icon) findEl(this.id)
-			.prepend(icon.toString());
 	}
 	
 }

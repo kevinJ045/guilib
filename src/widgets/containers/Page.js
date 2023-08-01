@@ -14,7 +14,24 @@ class Page extends Widget {
 
 		this.body = options.body instanceof Widget ? options.body : Widget.from(options.body);
 
-		initiateSetters(this, ['header', 'toolbar', 'fab'], options);
+		initiateSetters(this, ['header', 'toolbar', 'fab', 'ptr'], options);
+
+		
+	}
+
+	set ptr(ptr){
+		if(ptr){
+			findEl(this.id).addClass('ptr-content').prepend(`
+			<div class="ptr-preloader">
+      	<div class="preloader"></div>
+      	<div class="ptr-arrow"></div>
+    	</div>`).attr({
+				'data-ptr-distance': this.options.ptrDistance || 55,
+				'data-ptr-mousewheel': this.options.ptrMousewheel
+			});
+		} else {
+			findEl(this.id).removeClass('ptr-content').find('.ptr-preloader').remove();
+		}
 	}
 
 	set header(header){

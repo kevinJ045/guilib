@@ -2,6 +2,7 @@ src/
 	components/
 		Animate.js
 		App.js
+		FCSS.js
 		Macy.js
 		Renderer.js
 		Router.js
@@ -16,6 +17,7 @@ src/
 	main.js
 	modules/
 		f7.js
+		voca.js
 	style/
 		components/
 			_import.scss
@@ -28,6 +30,7 @@ src/
 			list.scss
 			mixin.scss
 			popover.scss
+			tabs.scss
 			variables.scss
 		main.scss
 		theme/
@@ -65,6 +68,7 @@ src/
 			Header.js
 			Page.js
 			Row.js
+			Tabs.js
 			Toolbar.js
 			View.js
 		entry/
@@ -74,7 +78,10 @@ src/
 		file/
 		icons/
 			Icon.js
+		layout/
+			LayoutBuilder.js
 		list/
+			DataTable.js
 			GridBuilder.js
 			List.js
 			ListBuilder.js
@@ -83,6 +90,7 @@ src/
 		main/
 			Image.js
 			Link.js
+			Span.js
 			Text.js
 			Widget.js
 		menus/
@@ -92,6 +100,8 @@ src/
 			Badge.js
 			BreadCrumb.js
 			Component.js
+			Swiper.js
 			Tag.js
 		popup/
 			dialog.js
+			toast.js

@@ -19,14 +19,10 @@ class Icon extends Widget {
 	}
 }
 
-for(var i in Icons.data){
-	Icons[i] = new (class IconSpecial extends Icon{
-		constructor(f) { super(f) };
-		to(f){
-			if(f instanceof Widget) f = findEl(f.id);
-			findEl(this.id).clone().appendTo(f);
-		}
-	})(Icons.data[i]);
+for(let i in Icons.data){
+	Icons.__defineGetter__(i, () => {
+		return new Icon(Icons.data[i]);
+	});
 }
 
 export { Icons };

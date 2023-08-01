@@ -1,8 +1,6 @@
 import $ from "jquery";
 import Widget from "../main/Widget.js";
 import getDefaults from "../../utils/options.js";
-import { findEl } from "../../utils/elman.js";
-import Text from "../main/Text.js";
 
 const defaultToolbar = () => getDefaults({
 	element: { name: 'div', html: `<div class="toolbar-inner" />` },

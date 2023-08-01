@@ -32,9 +32,11 @@ class Component extends StateMan {
 			$ref
 		}) => {
 
-			this.setState(objects);
+			if(objects?.props){
+				props = {...props, ...objects.props};
+			}
 
-			this.setState({$app: $f7});
+			this.setState(objects);
 
 			this.state.$app = $f7;
 
@@ -46,6 +48,7 @@ class Component extends StateMan {
 
 			let __MainWidget = "";
 			let $body;
+			let size;
 
 			for(var i in objects){
 				this[i] = $useState(objects[i]);
@@ -54,15 +57,17 @@ class Component extends StateMan {
 
 			$on('pageBeforeIn', () => {
 				$body = Widget.from($el.value[0]);
+				size = { width: $body.width(), height: $body.height() };
 				if(typeof this._initState == "function"){
-					this._initState(props, { $f7, $update, $useState, $ref, $body });
+					this._initState(props, { $f7, $update, $useState, size, $ref, $body });
 				}
 			});
 			
 			$on('pageInit', () => {
 				const element = $el.value[0];
+				size = { width: $(element).width(), height: $(element).height() };
 				if(typeof this._onBuild == "function"){
-					__MainWidget = this._onBuild(props, { $f7, $update, $useState, $ref, $body: Widget.from(element) });
+					__MainWidget = this._onBuild(props, { $f7, $update, $useState, $ref, size, $body: Widget.from(element) });
 					this.__MainWidget = __MainWidget;
 					__MainWidget.to(element);
 				}
@@ -70,9 +75,10 @@ class Component extends StateMan {
 
 			$on('pageAfterIn', () => {
 				const element = $el.value[0];
+				size = { width: $(element).width(), height: $(element).height() };
 				if(typeof this._after == "function"){
 					if(!__MainWidget) return;
-					const widget = this._after(props, { $widget: __MainWidget, $f7, $update, $useState, $ref, $body: Widget.from(element) });
+					const widget = this._after(props, { $widget: __MainWidget, $f7, $update, size, $useState, $ref, $body: Widget.from(element) });
 					if(widget instanceof Widget) runOverWidget(this, widget), widget.to(element);
 				}
 			});

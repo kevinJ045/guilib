@@ -8,6 +8,10 @@ import getDefaults from "../../utils/options.js";
 import { htmlPseudos, filteredChildren, resolveSubchild } from "../../utils/misc.js";
 import Store from "../../data/Store.js";
 import Dialog from "../popup/dialog.js";
+import Style from "../../components/Style.js";
+import { animateWidget, animateWidgets } from "../../components/Animate.js";
+import { $inject$1app } from "../popup/popover.js";
+import { $inject$1app$popup } from "../popup/popup.js";
 
 const defaults = getDefaults({});
 let $1$app = {};
@@ -18,6 +22,11 @@ function initiateSetters(widget, setterFunctions, options){
 			widget[setter == 'id' ? '$id' : setter] = options[setter];
 		}
 	});
+}
+
+function mounted(parent, child){
+	if(typeof child._onMount == "function") child._onMount(parent, $1$app);
+	child.setStore(parent.state);
 }
 
 function _init(widget, options){
@@ -48,7 +57,6 @@ function _init(widget, options){
 	if(widget.__generated && options.reset) element.attr({class: '', style: ''});
 
 	element.addClass(options.class);
-	element.css(options.style);
 
 
 	if(options.position) {
@@ -132,7 +140,8 @@ function _init(widget, options){
 	}
 
 	if(options.style){
-		element.css(options.style);
+		if(options.style instanceof Style) element.css(options.style.all);
+		else element.css(options.style);
 	}
 
 	widget.options = options;
@@ -141,7 +150,8 @@ function _init(widget, options){
 		'padding',
 		'margin',
 		'type',
-		'id'
+		'id',
+		'animation'
 	];
 
 	if(options._setters){
@@ -208,7 +218,6 @@ class Widget {
 	}
 
 	set type(type){
-
 		if(typeof type == 'string'){
 			type = [type];
 		} else if(Array.isArray(type)){
@@ -221,6 +230,9 @@ class Widget {
 		if(typeof this._onTypeChange == "function"){
 			this._onTypeChange(...type);
 		}
+	}
+	setType(type){
+		this.type = type;
 	}
 
 	set(options){
@@ -252,7 +264,7 @@ class Widget {
 	}
 
 	_onMount(parent){
-		this.setStore(parent.state);
+		// this.setStore(parent.state);
 	}
 
 	reMount(){
@@ -269,7 +281,7 @@ class Widget {
 			} else {
 				l.append(findEl(child.id));
 			}
-			if(typeof child._onMount == "function") child._onMount(this, $1$app);
+			mounted(this, child);
 		}
 		return this;
 	}
@@ -287,9 +299,9 @@ class Widget {
 	}
 	
 	addBefore(child, subchild){
-		this.is('prefix', true);
+		child.is('prefix', true);
 		this.add(child, subchild);
-		this.is('prefix', false);
+		child.is('prefix', false);
 		return this;
 	}
 	
@@ -323,6 +335,9 @@ class Widget {
 		h.append(additionEl);
 		if(where == 'before') el.prepend(h);
 		else el.append(h);
+		if(isWidget(elt)){
+			mounted(this, elt);
+		}
 		return this;
 	}
 
@@ -353,11 +368,12 @@ class Widget {
 	}
 
 	find(q, subchild){
-		return filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q), true);
+		return q == '*' ? this.children() : filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q), true);
 	}
 
 	parent(){
 		let parent = findEl(this.id).parent();
+		if(!parent) return Widget.from(document.body);
 		while(!parent[0].GUIWIDGET){
 			parent = parent.parent();
 		}
@@ -570,6 +586,31 @@ class Widget {
     return this.state.getStore();
   }
 
+
+	/*
+		Animations
+	*/
+
+
+	set animation(animation){
+		this.options._animation = animation;
+		animateWidget(this, animation);
+	}
+	setAnimation(animation){
+		this.animation = animation;
+	}
+
+	animate(children, animation){
+		animateWidgets(this.find(children), animation);
+		return this;
+	}
+
+
+
+	/*
+		Static
+	*/
+
 	static from(raw){
 		return $(raw)[0].GUIWIDGET ?  $(raw)[0].GUIWIDGET : new Widget({
 			element: { raw: $(raw)[0] }
@@ -583,6 +624,8 @@ class Widget {
 	static injectApp(app){
 		$1$app = app;
 		Dialog.injectApp(app);
+		$inject$1app(app);
+		$inject$1app$popup(app);
 	}
 }
 
