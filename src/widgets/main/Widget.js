@@ -207,8 +207,13 @@ class Widget {
 	}
 
 	set style(style){
+		findEl(this.id)[0].GUISTYLE = style;
 		if(style instanceof Style) findEl(this.id).css(style.all);
 		else findEl(this.id).css(style);
+	}
+
+	get style(){
+		return findEl(this.id)[0].GUISTYLE;
 	}
 	
 	set padding(value){
