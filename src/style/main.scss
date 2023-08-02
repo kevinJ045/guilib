@@ -1,45 +1,22 @@
-@import "theme/framework7.scss";
-
-
-@import "components/_import.scss";
-
-
+@import './components/button.scss';
+@import './components/tabs.scss';
+@import './components/icons.scss';
+@import './components/tags.scss';
 
 :root{
+    --theme-color: rgb(129, 140, 248);
+    --theme-color-rgb: 129, 140, 248;
 	--base-color: #1e1e2e;
 	--base-mantle: #181825;
 	--base-crust: #11111b;
-}
-.dark {
-  --f7-md-on-primary: var(--base-crust) !important;
-  --f7-md-primary-container: var(--base-crust) !important;
-  --f7-md-on-primary-container: var(--base-crust) !important;
-  --f7-md-secondary: #e7bdb6 !important;
-  --f7-md-on-secondary: var(--base-color) !important;
-  --f7-md-secondary-container: var(--base-color) !important;
-  --f7-md-on-secondary-container: #ffdad4 !important;
-  --f7-md-surface: var(--base-color) !important;
-  --f7-md-on-surface: #ede0dd !important;
-  --f7-md-surface-variant: var(--base-mantle) !important;
-  --f7-md-on-surface-variant: #d8c2be !important;
-  --f7-md-outline: #a08c89 !important;
-  --f7-md-outline-variant: var(--base-mantle) !important;
-  --f7-md-inverse-surface: #ede0dd !important;
-  --f7-md-inverse-on-surface: var(--base-color) !important;
-  --f7-md-inverse-primary: var(--base-color) !important;
-  --f7-md-surface-1: var(--base-crust) !important;
-  --f7-md-surface-2: var(--base-mantle) !important;
-  --f7-md-surface-3: var(--base-color) !important;
-  --f7-md-surface-4: var(--base-mantle) !important;
-  --f7-md-surface-5: var(--base-mantle) !important;
-  --f7-md-surface-variant-rgb: 24, 24, 37 !important;
-  --f7-md-on-surface-variant-rgb: 216, 194, 190 !important;
-  --f7-md-surface-1-rgb: 24, 24, 37 !important;
-  --f7-md-surface-2-rgb: 24, 24, 37 !important;
-  --f7-md-surface-3-rgb: 30, 30, 46 !important;
-  --f7-md-surface-4-rgb: 24, 24, 37 !important;
-  --f7-md-surface-5-rgb: 24, 24, 37 !important;
+    --theme-color-fg: white;
 }
 
+*{
+    box-sizing: border-box;
+	outline: none;
+}
 
-/* s */
+body{
+    font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}

@@ -19,9 +19,15 @@ class Icon extends Widget {
 	}
 }
 
+Icons.after = {};
 for(let i in Icons.data){
 	Icons.__defineGetter__(i, () => {
 		return new Icon(Icons.data[i]);
+	});
+	let f = new IconData({...Icons.data[i]});
+	f.iconClass += " icon-right";
+	Icons.after.__defineGetter__(i, () => {
+		return new Icon(f);
 	});
 }
 

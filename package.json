@@ -16,6 +16,7 @@
     "@babel/plugin-syntax-jsx": "^7.22.5",
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-react": "^7.22.5",
+    "@patternfly/elements": "^2.3.2",
     "@types/jquery": "^3.5.16",
     "@vue/babel-preset-jsx": "^1.4.0",
     "axios": "^1.4.0",
@@ -35,5 +36,8 @@
     "typescript": "^5.1.6",
     "uikit": "^3.16.23",
     "webpack": "^5.88.2"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
   }
 }

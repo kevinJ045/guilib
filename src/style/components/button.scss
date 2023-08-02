@@ -1,67 +1,62 @@
 
+.button{
+	padding: 6px 14px;
+	font-weight: 600;
+	line-height: 25px;
+	text-align: center;
+	cursor: pointer;
+	color: var(--theme-color-fg);
+	background-color: var(--theme-color);
+	border: 0;
+	border-radius: 6px;
 
-.button {
-	--f7-button-bg-color: var(--f7-button-fill-bg-color, var(--f7-theme-color));
-	--f7-button-text-color: var(--f7-button-fill-text-color, #fff);
-	--f7-touch-ripple-color: var(--f7-touch-ripple-white);
-	--f7-button-padding-horizontal: 24px;
-  --f7-button-border-radius: 25px;
-	--f7-button-height: 35px;
-	line-height: 35px;
-	width: auto;
+	.icon{
+		line-height: 25px;
+	}
 }
 
-.button.icon-only{
-	--f7-button-padding-horizontal: 5px;
-	--f7-button-border-radius: 15px;
+.button:hover{
+	opacity: .5;
 }
 
-.button:not(.icon-only):has(.icon){
-	--f7-button-padding-horizontal: 15px;
-	padding-left: 15px;
+.button:has(.icon:not(.icon-right)){
+	.icon{
+		float: left;
+		margin-left: -8px;
+	}
+}
+.button:has(.icon.icon-right){
+	.icon{
+		float: right;
+		margin-right: -8px;
+	}
 }
 
-.button:not(.icon-only) .icon{
-	margin-left: -10px;
+.button-transparent{
+	background-color: transparent;
+	color: inherit;
 }
-
-.toast .button, .button-transparent {
-	--f7-button-bg-color: transparent;
-	--f7-button-text-color: var(--f7-theme-color, #fff);
-}
-
-.button-outline {
-	--f7-button-bg-color: transparent;
-	--f7-button-text-color: var(--f7-theme-color, #fff);
-	--f7-button-outline-border-width: 2px;
-	--f7-button-outline-border-color: var(--f7-theme-color, #fff);
-}
-
 
 .button-segment{
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  --rad: 1rem;
+	display: flex;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	--rad: 1rem;
 }
 
 .button-segment .button{
-  margin: 0.1rem;
-  border-radius: 0.2rem;
+	margin: 0.1rem;
+	border-radius: 0.2rem;
 }
 
 .button-segment .button:first-child{
-  border-radius: var(--rad) 0.2rem 0.2rem var(--rad);
+	border-radius: var(--rad) 0.2rem 0.2rem var(--rad);
 }
 
 .button-segment .button:last-child{
-  border-radius: 0.2rem var(--rad) var(--rad) 0.2rem;
+	border-radius: 0.2rem var(--rad) var(--rad) 0.2rem;
 }
 
-// .button-segment .button.icon-only{
-// 	width: 40px;
-// 	padding: 0;
-// }
 .button-segment .button.icon-only .icon{
 	transform: translate(-2px, 1px);
 }

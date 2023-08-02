@@ -10,7 +10,7 @@ import Link, { IconLink } from "../main/Link.js";
 const defaultButton = (more, link) => getDefaults({
 	element: { name: link ? 'a' : 'button' },
 	class: more ? 'button '+more : 'button',
-	accepts: false,
+	accepts: false
 });
 
 const defaultButtonsegment = () => getDefaults({
@@ -23,7 +23,7 @@ class Button extends Link {
 	state = new Store({text: "Button"});
 
 	constructor(selectedOptions, otheroptions){
-		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultButton(null, otheroptions.url || selectedOptions.url));
+		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultButton(null, otheroptions?.url || selectedOptions.url));
 		super(options);
 	}
 	
