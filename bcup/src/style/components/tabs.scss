@@ -1,0 +1,78 @@
+
+.tabs-bar{
+	width: 100%;
+	background: transparent;
+	display: flex;
+	gap: 10px;
+	flex-wrap: nowrap;
+	overflow: hidden;
+	overflow-x: auto;
+  position: relative;
+	margin: 10px 0;
+}
+
+.tabs-bar::-webkit-scrollbar{
+  display: none !important;
+  width: 0;
+  visibility: hidden !important;
+  height: 0;
+}
+
+.tabs-bar .tab-link-highlight{
+  display: none;
+}
+
+.tabs-bar .tab-link{
+  padding: 7px 15px;
+  width: auto;
+  min-width: 80px;
+  max-width: 180px;
+	min-height: 40px;
+  background: var(--base-crust);
+  border-radius: 10px;
+  margin: 0 2.5px;
+  font-family: Boost;
+  text-transform: none;
+  border: 1px solid gray;
+}
+
+.tabs-bar .tab-link-active{
+  border-color: var(--f7-theme-color);
+}
+
+.tabs-bar .tab-link .icon, .tabs-bar .tab-link .close-tab{
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.tabs-bar .tab-link .icon{
+  left: 5px;
+}
+
+.tabs-bar .tab-link .close-tab{
+  right: 5px;
+}
+
+.tabs-bar .tab-link:has(.close-tab){
+  padding-right: 40px;
+}
+
+.tabs-bar .tab-link:has(.icon){
+  padding-left: 35px;
+}
+
+.tabs-bar .tab-link.no-left-margin{
+  padding-left: 5px;
+}
+
+.tabs-bar .tab-link.icon-only{
+	min-width: 40px; // 40
+  padding: 7px 0px;
+}
+
+.tabs-bar .tab-link.icon-only .icon{
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

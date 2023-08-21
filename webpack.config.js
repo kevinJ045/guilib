@@ -1,5 +1,7 @@
 const path = require('path');
 const sass = require('sass');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 
 module.exports = {
   mode: 'development',
@@ -17,6 +19,11 @@ module.exports = {
     moduleIds: 'named',
     mangleExports: false
   },
+  plugins: [
+      new HtmlWebpackPlugin({
+        template: './public/index.html' // Path to your HTML template
+      })
+  ],
   module: {
     rules: [
       {
@@ -44,24 +51,7 @@ module.exports = {
           "style-loader",
           "css-loader",
         ]
-      },
-      {
-        test: /\.js/,
-        use: ['./preset-f7-jsx.js'],
       }
     ]
-    //   {
-    //     test: /\.js$/,
-    //     exclude: /node_modules/,
-    //     use: {
-    //       loader: 'babel-loader',
-    //       options: {
-    //         presets: [
-    //           ['./preset-f7-jsx.js']
-    //         ]
-    //       }
-    //     }
-    //   }
-    // ],
   }
 }
