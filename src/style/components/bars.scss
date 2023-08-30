@@ -1,0 +1,44 @@
+
+:root {
+	--f7-bars-bg-color: var(--base-mantle);
+	--f7-searchbar-bg-color-rgb: var(--base-mantle-rgb);
+}
+
+.navbar-bg{
+	display: none;
+}
+
+.navbar-bg::after, .searchbar::after, .toolbar::after {
+	display: none;
+}
+
+.navbar, .toolbar{
+	background: var(--f7-bars-bg-color);
+	border-radius: $radius-normal;
+	overflow: hidden;
+	margin: 10px 15px;
+	width: calc(100% - 40px);
+	// height: 50px;
+}
+
+.card {
+	--f7-bars-bg-color: transparent;
+}
+
+
+.navbar .title:has(.searchbar){ 
+	width: 100%
+};
+
+.navbar .searchbar.searchbar-transparent input{
+	background-color: transparent;
+}
+
+:root {
+	--f7-panel-width: 260px;
+	--f7-panel-collapsed-width: var(--f7-panel-width);
+}
+
+.panel-mini{
+	--f7-panel-width: 60px;
+}

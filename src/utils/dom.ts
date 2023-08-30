@@ -1,0 +1,188 @@
+import { HTMLGUIWidget, child } from "../widgets/_ghost/WidgetProps";
+import Widget from "../widgets/main/Widget";
+import { attr, createElement, emptyElement, findEl, setAttributeMap, setClasses, setCss, siblings } from "./elman";
+
+
+const doAll = (all : Dom, cb : Function) => {
+	let response : Array<any> = [];
+	all.forEach((element: any) => {
+		let r = cb(element);
+		if(r) response.push(r);
+	});
+	response = response.filter(item => !(item instanceof Dom));
+	if(response.length){
+		response = response.shift()
+	} else {
+		(response as any) = all;
+	}
+	return Array.isArray(response) ? all : response;
+};
+
+
+class Dom {
+
+	elements: Array<HTMLElement | HTMLGUIWidget> = [];
+
+	constructor(element: HTMLElement | string, classes : null | string = null, attributes : null | string = null){
+		if(element instanceof HTMLElement){
+			this.elements.push(element);
+		} else {
+			let el = document.querySelectorAll(element);
+			el.forEach(el => this.elements.push(el as HTMLElement));
+		}
+
+		if(classes){
+			this.addClass(classes);
+		}
+
+		if(attributes){
+			this.attr(attributes);
+		}
+	}
+
+	at(index: number){
+		return this.elements.at(index)!;
+	}
+	
+	push(child: child){
+		if(child instanceof Widget){
+			this.elements.push(findEl(child.id!));
+		} else {
+			this.elements.push(child as HTMLGUIWidget);
+		}
+		return this;
+	}
+
+	unshift(child: child){
+		if(child instanceof Widget){
+			this.elements.unshift(findEl(child.id!));
+		} else {
+			this.elements.unshift(child as HTMLGUIWidget);
+		}
+		return this;
+	}
+
+	shift(){
+		return this.elements.shift()!;
+	}
+
+	pop(){
+		return this.elements.pop()!;
+	}
+
+	forEach(callback: any){
+		this.elements.forEach(callback);
+		return this;
+	}
+
+	get length(): number {
+		return this.elements.length;
+	}
+
+	addClass(classes: string){
+		return doAll(this, (el: HTMLElement) => setClasses(el, classes, 'add'));
+	}
+
+	removeClass(classes: string){
+		return doAll(this, (el: HTMLElement) => setClasses(el, classes, 'remove'));
+	}
+
+	toggleClass(classes: string){
+		return doAll(this, (el: HTMLElement) => setClasses(el, classes, 'toggle'));
+	}
+
+	hasClass(classes: string){
+		return this.elements.at(0)!.classList.contains(classes);
+	}
+
+	attr(attr: object | string){
+		doAll(this, (el: HTMLElement) => setAttributeMap(el, attr as attr));
+		return typeof attr == "string" ? (this.elements.at(0)!.attributes as Record<string, any>)[attr as string] : this;
+	}
+
+	html(html: string | null): string | null {
+		if(html) this.elements.at(0)!.innerHTML = html;
+		return this.elements.at(0)!.innerHTML;
+	}
+
+	text(text: string | null): string | null {
+		if(text) this.elements.at(0)!.innerText = text;
+		return this.elements.at(0)!.innerText;
+	}
+
+
+	append(element: HTMLElement | Dom){
+		if(element instanceof Dom){
+			element.forEach((element: HTMLElement) => this.at(0).appendChild(element));
+		} else {
+			this.at(0).appendChild(element);
+		}
+		return this;
+	}
+
+	appendTo(element: HTMLElement){
+		return doAll(this, (el: HTMLElement) => element.appendChild(el));
+	}
+
+	prepend(element: HTMLElement) {
+    return this.at(0).insertBefore(element, this.at(0).firstChild);
+	}
+
+	prependTo(element: HTMLElement) {
+		return doAll(this, (el: HTMLElement) => element.insertBefore(el, element.firstChild));
+	}
+
+
+	css(values: string | object, value: string | null){
+		return doAll(this, (el: HTMLElement) => setCss(el, values, value));
+	}
+
+	remove(){
+		return doAll(this, (el: HTMLElement) => el.remove());
+	}
+
+	empty() : Dom {
+		return doAll(this, (el: HTMLElement) => emptyElement(el));
+	}
+
+	children(): Dom {
+		return Dom.from(this.at(0).children);
+	}
+	
+	siblings(): Dom {
+		return Dom.from(siblings(this.at(0)));
+	}
+
+	parent(): Dom | null {
+		return this.at(0).parentNode ? new Dom(this.at(0).parentNode as HTMLElement) : null;
+	}
+
+	closest(selector: string): Dom | null {
+		return new Dom(this.at(0).closest(selector) as HTMLElement);
+	}
+
+	find(selector: string): Dom;
+  find<S extends HTMLElement>(predicate: (value: HTMLElement, index: number, array: HTMLElement[]) => value is S): S | undefined;
+  find(predicate: (value: HTMLElement, index: number, array: HTMLElement[]) => unknown): HTMLElement | undefined;
+
+  find(arg: any): any {
+    if (typeof arg === 'string') {
+      return Dom.from(Array.from(this.at(0).querySelectorAll(arg)));
+    } else if (typeof arg === 'function') {
+      return Array.prototype.find.call(this, arg);
+    }
+    return undefined;
+  }
+
+	static from(elements: HTMLElement[] | HTMLCollection){
+		let e = new Dom((elements as HTMLElement[]).shift() as HTMLElement);
+		Array.from(elements).forEach(el => e.push(el as HTMLElement));
+		return e;
+	}
+
+	static create(element: string, classes: string = "", attr: attr = {}) : Dom {
+		return new Dom(createElement(element, classes, attr));
+	}
+}
+
+export default Dom;

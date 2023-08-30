@@ -1,0 +1,28 @@
+
+
+
+.widget-row,.widget-column, .widget-center {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.widget-row {
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.widget-column {
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+
+.swipe-handler {
+  width: 50px;
+  height: 8px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.6);
+  margin: 10px auto;
+  cursor: pointer;
+}

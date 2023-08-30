@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>RUNLIB test</title>
+
+	<link rel="stylesheet" href="./css/fonts.css">
+</head>
+<body>
+
+
+		<script>
+			window.MonacoEnvironment = {
+				getWorkerUrl: function (moduleId, label) {
+					return './editor.worker.js';
+				}
+			};
+		</script>
+		<script src="./js/main.js"></script>
+</body>
+</html>
