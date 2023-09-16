@@ -1,241 +1,3900 @@
-/*
- * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
-/******/ (() => { // webpackBootstrap
-/******/ 	var __webpack_modules__ = ({
+// src/modules/voca.js
+var _extends = function() {
+  _extends = Object.assign || function(target) {
+    for (var i = 1;i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  return _extends.apply(this, arguments);
+};
+var _slicedToArray = function(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+};
+var _toConsumableArray = function(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+};
+var _arrayWithoutHoles = function(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length);i < arr.length; i++)
+      arr2[i] = arr[i];
+    return arr2;
+  }
+};
+var _arrayWithHoles = function(arr) {
+  if (Array.isArray(arr))
+    return arr;
+};
+var _iterableToArray = function(iter) {
+  if ((Symbol.iterator in Object(iter)) || Object.prototype.toString.call(iter) === "[object Arguments]")
+    return Array.from(iter);
+};
+var _iterableToArrayLimit = function(arr, i) {
+  if (!((Symbol.iterator in Object(arr)) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
+    return;
+  }
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+  try {
+    for (var _i = arr[Symbol.iterator](), _s;!(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+      if (i && _arr.length === i)
+        break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null)
+        _i["return"]();
+    } finally {
+      if (_d)
+        throw _e;
+    }
+  }
+  return _arr;
+};
+var _nonIterableSpread = function() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+};
+var _nonIterableRest = function() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+};
+var isNil = function(value) {
+  return value === undefined || value === null;
+};
+var coerceToBoolean = function(value) {
+  var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  if (isNil(value)) {
+    return defaultValue;
+  }
+  return Boolean(value);
+};
+var isString = function(subject) {
+  return typeof subject === "string";
+};
+var coerceToString = function(value) {
+  var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+  if (isNil(value)) {
+    return defaultValue;
+  }
+  if (isString(value)) {
+    return value;
+  }
+  return String(value);
+};
+var capitalize = function(subject, restToLower) {
+  var subjectString = coerceToString(subject);
+  var restToLowerCaseBoolean = coerceToBoolean(restToLower);
+  if (subjectString === "") {
+    return "";
+  }
+  if (restToLowerCaseBoolean) {
+    subjectString = subjectString.toLowerCase();
+  }
+  return subjectString.substr(0, 1).toUpperCase() + subjectString.substr(1);
+};
+var lowerCase = function(subject) {
+  var subjectString = coerceToString(subject, "");
+  return subjectString.toLowerCase();
+};
+var nilDefault = function(value, defaultValue) {
+  return value == null ? defaultValue : value;
+};
+var toString = function(value) {
+  if (isNil(value)) {
+    return null;
+  }
+  if (isString(value)) {
+    return value;
+  }
+  return String(value);
+};
+var words = function(subject, pattern, flags) {
+  var subjectString = coerceToString(subject);
+  var patternRegExp;
+  if (isNil(pattern)) {
+    patternRegExp = REGEXP_EXTENDED_ASCII.test(subjectString) ? REGEXP_LATIN_WORD : REGEXP_WORD;
+  } else if (pattern instanceof RegExp) {
+    patternRegExp = pattern;
+  } else {
+    var flagsString = toString(nilDefault(flags, ""));
+    patternRegExp = new RegExp(toString(pattern), flagsString);
+  }
+  return nilDefault(subjectString.match(patternRegExp), []);
+};
+var wordToCamel = function(word, index) {
+  return index === 0 ? lowerCase(word) : capitalize(word, true);
+};
+var camelCase = function(subject) {
+  var subjectString = coerceToString(subject);
+  if (subjectString === "") {
+    return "";
+  }
+  return words(subjectString).map(wordToCamel).join("");
+};
+var decapitalize = function(subject) {
+  var subjectString = coerceToString(subject);
+  if (subjectString === "") {
+    return "";
+  }
+  return subjectString.substr(0, 1).toLowerCase() + subjectString.substr(1);
+};
+var kebabCase = function(subject) {
+  var subjectString = coerceToString(subject);
+  if (subjectString === "") {
+    return "";
+  }
+  return words(subjectString).map(lowerCase).join("-");
+};
+var snakeCase = function(subject) {
+  var subjectString = coerceToString(subject);
+  if (subjectString === "") {
+    return "";
+  }
+  return words(subjectString).map(lowerCase).join("_");
+};
+var upperCase = function(subject) {
+  var subjectString = coerceToString(subject);
+  return subjectString.toUpperCase();
+};
+var swapCase = function(subject) {
+  var subjectString = coerceToString(subject);
+  return subjectString.split("").reduce(swapAndConcat, "");
+};
+var swapAndConcat = function(swapped, character) {
+  var lowerCase2 = character.toLowerCase();
+  var upperCase2 = character.toUpperCase();
+  return swapped + (character === lowerCase2 ? upperCase2 : lowerCase2);
+};
+var titleCase = function(subject, noSplit) {
+  var subjectString = coerceToString(subject);
+  var noSplitArray = Array.isArray(noSplit) ? noSplit : [];
+  var wordsRegExp = REGEXP_EXTENDED_ASCII.test(subjectString) ? REGEXP_LATIN_WORD : REGEXP_WORD;
+  return subjectString.replace(wordsRegExp, function(word, index) {
+    var isNoSplit = index > 0 && noSplitArray.indexOf(subjectString[index - 1]) >= 0;
+    return isNoSplit ? word.toLowerCase() : capitalize(word, true);
+  });
+};
+var clipNumber = function(value, downLimit, upLimit) {
+  if (value <= downLimit) {
+    return downLimit;
+  }
+  if (value >= upLimit) {
+    return upLimit;
+  }
+  return value;
+};
+var toInteger = function(value) {
+  if (value === Infinity) {
+    return MAX_SAFE_INTEGER;
+  }
+  if (value === (-Infinity)) {
+    return -MAX_SAFE_INTEGER;
+  }
+  return ~~value;
+};
+var truncate = function(subject, length, end) {
+  var subjectString = coerceToString(subject);
+  var lengthInt = isNil(length) ? subjectString.length : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);
+  var endString = coerceToString(end, "...");
+  if (lengthInt >= subjectString.length) {
+    return subjectString;
+  }
+  return subjectString.substr(0, length - endString.length) + endString;
+};
+var charAt = function(subject, position) {
+  var subjectString = coerceToString(subject);
+  return subjectString.charAt(position);
+};
+var isHighSurrogate = function(codePoint) {
+  return codePoint >= HIGH_SURROGATE_START && codePoint <= HIGH_SURROGATE_END;
+};
+var isLowSurrogate = function(codePoint) {
+  return codePoint >= LOW_SURROGATE_START && codePoint <= LOW_SURROGATE_END;
+};
+var getAstralNumberFromSurrogatePair = function(highSurrogate, lowSurrogate) {
+  return (highSurrogate - HIGH_SURROGATE_START) * 1024 + lowSurrogate - LOW_SURROGATE_START + 65536;
+};
+var coerceToNumber = function(value) {
+  var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  if (isNil(value)) {
+    return defaultValue;
+  }
+  if (typeof value === "number") {
+    return value;
+  }
+  return Number(value);
+};
+var nanDefault = function(value, defaultValue) {
+  return value !== value ? defaultValue : value;
+};
+var codePointAt = function(subject, position) {
+  var subjectString = coerceToString(subject);
+  var subjectStringLength = subjectString.length;
+  var positionNumber = coerceToNumber(position);
+  positionNumber = nanDefault(positionNumber, 0);
+  if (positionNumber < 0 || positionNumber >= subjectStringLength) {
+    return;
+  }
+  var firstCodePoint = subjectString.charCodeAt(positionNumber);
+  var secondCodePoint;
+  if (isHighSurrogate(firstCodePoint) && subjectStringLength > positionNumber + 1) {
+    secondCodePoint = subjectString.charCodeAt(positionNumber + 1);
+    if (isLowSurrogate(secondCodePoint)) {
+      return getAstralNumberFromSurrogatePair(firstCodePoint, secondCodePoint);
+    }
+  }
+  return firstCodePoint;
+};
+var first = function(subject, length) {
+  var subjectString = coerceToString(subject);
+  var lengthInt = isNil(length) ? 1 : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);
+  if (subjectString.length <= lengthInt) {
+    return subjectString;
+  }
+  return subjectString.substr(0, lengthInt);
+};
+var graphemeAt = function(subject, position) {
+  var subjectString = coerceToString(subject);
+  var positionNumber = coerceToNumber(position);
+  var graphemeMatch;
+  var graphemeMatchIndex = 0;
+  positionNumber = nanDefault(positionNumber, 0);
+  while ((graphemeMatch = REGEXP_UNICODE_CHARACTER.exec(subjectString)) !== null) {
+    if (graphemeMatchIndex === positionNumber) {
+      REGEXP_UNICODE_CHARACTER.lastIndex = 0;
+      return graphemeMatch[0];
+    }
+    graphemeMatchIndex++;
+  }
+  return "";
+};
+var last = function(subject, length) {
+  var subjectString = coerceToString(subject);
+  var lengthInt = isNil(length) ? 1 : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);
+  if (subjectString.length <= lengthInt) {
+    return subjectString;
+  }
+  return subjectString.substr(subjectString.length - lengthInt, lengthInt);
+};
+var prune = function(subject, length, end) {
+  var subjectString = coerceToString(subject);
+  var lengthInt = isNil(length) ? subjectString.length : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);
+  var endString = coerceToString(end, "...");
+  if (lengthInt >= subjectString.length) {
+    return subjectString;
+  }
+  var pattern = REGEXP_EXTENDED_ASCII.test(subjectString) ? REGEXP_LATIN_WORD : REGEXP_WORD;
+  var truncatedLength = 0;
+  subjectString.replace(pattern, function(word, offset) {
+    var wordInsertLength = offset + word.length;
+    if (wordInsertLength <= lengthInt - endString.length) {
+      truncatedLength = wordInsertLength;
+    }
+  });
+  return subjectString.substr(0, truncatedLength) + endString;
+};
+var slice = function(subject, start, end) {
+  return coerceToString(subject).slice(start, end);
+};
+var substr = function(subject, start, length) {
+  return coerceToString(subject).substr(start, length);
+};
+var substring = function(subject, start, end) {
+  return coerceToString(subject).substring(start, end);
+};
+var count = function(subject) {
+  return coerceToString(subject).length;
+};
+var countGrapheme = function(subject) {
+  return coerceToString(subject).replace(REGEXP_COMBINING_MARKS, "*").replace(REGEXP_SURROGATE_PAIRS, "*").length;
+};
+var countSubstrings = function(subject, substring2) {
+  var subjectString = coerceToString(subject);
+  var substringString = coerceToString(substring2);
+  var substringLength = substringString.length;
+  var count2 = 0;
+  var matchIndex = 0;
+  if (subjectString === "" || substringString === "") {
+    return count2;
+  }
+  do {
+    matchIndex = subjectString.indexOf(substringString, matchIndex);
+    if (matchIndex !== -1) {
+      count2++;
+      matchIndex += substringLength;
+    }
+  } while (matchIndex !== -1);
+  return count2;
+};
+var countWhere = function(subject, predicate, context) {
+  var subjectString = coerceToString(subject);
+  if (subjectString === "" || typeof predicate !== "function") {
+    return 0;
+  }
+  var predicateWithContext = predicate.bind(context);
+  return reduce.call(subjectString, function(countTruthy, character, index) {
+    return predicateWithContext(character, index, subjectString) ? countTruthy + 1 : countTruthy;
+  }, 0);
+};
+var countWords = function(subject, pattern, flags) {
+  return words(subject, pattern, flags).length;
+};
+var ReplacementIndex = function() {
+  this.index = 0;
+};
+var repeat = function(subject, times) {
+  var subjectString = coerceToString(subject);
+  var timesInt = isNil(times) ? 1 : clipNumber(toInteger(times), 0, MAX_SAFE_INTEGER);
+  var repeatString = "";
+  while (timesInt) {
+    if (timesInt & 1) {
+      repeatString += subjectString;
+    }
+    if (timesInt > 1) {
+      subjectString += subjectString;
+    }
+    timesInt >>= 1;
+  }
+  return repeatString;
+};
+var buildPadding = function(padCharacters, length) {
+  var padStringRepeat = toInteger(length / padCharacters.length);
+  var padStringRest = length % padCharacters.length;
+  return repeat(padCharacters, padStringRepeat + padStringRest).substr(0, length);
+};
+var padLeft = function(subject, length, pad) {
+  var subjectString = coerceToString(subject);
+  var lengthInt = isNil(length) ? 0 : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);
+  var padString = coerceToString(pad, " ");
+  if (lengthInt <= subjectString.length) {
+    return subjectString;
+  }
+  return buildPadding(padString, lengthInt - subjectString.length) + subjectString;
+};
+var padRight = function(subject, length, pad) {
+  var subjectString = coerceToString(subject);
+  var lengthInt = isNil(length) ? 0 : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);
+  var padString = coerceToString(pad, " ");
+  if (lengthInt <= subjectString.length) {
+    return subjectString;
+  }
+  return subjectString + buildPadding(padString, lengthInt - subjectString.length);
+};
+var alignAndPad = function(subject, conversion) {
+  var width = conversion.width;
+  if (isNil(width) || subject.length >= width) {
+    return subject;
+  }
+  var padType = conversion.alignmentSpecifier === LITERAL_MINUS ? padRight : padLeft;
+  return padType(subject, width, conversion.getPaddingCharacter());
+};
+var addSignToFormattedNumber = function(replacementNumber, formattedReplacement, conversion) {
+  if (conversion.signSpecifier === LITERAL_PLUS && replacementNumber >= 0) {
+    formattedReplacement = LITERAL_PLUS + formattedReplacement;
+  }
+  return formattedReplacement;
+};
+var float = function(replacement, conversion) {
+  var replacementNumber = parseFloat(replacement);
+  var formattedReplacement;
+  if (isNaN(replacementNumber)) {
+    replacementNumber = 0;
+  }
+  var precision = coerceToNumber(conversion.precision, 6);
+  switch (conversion.typeSpecifier) {
+    case TYPE_FLOAT:
+      formattedReplacement = replacementNumber.toFixed(precision);
+      break;
+    case TYPE_FLOAT_SCIENTIFIC:
+      formattedReplacement = replacementNumber.toExponential(precision);
+      break;
+    case TYPE_FLOAT_SCIENTIFIC_UPPERCASE:
+      formattedReplacement = replacementNumber.toExponential(precision).toUpperCase();
+      break;
+    case TYPE_FLOAT_SHORT:
+    case TYPE_FLOAT_SHORT_UPPERCASE:
+      formattedReplacement = formatFloatAsShort(replacementNumber, precision, conversion);
+      break;
+  }
+  formattedReplacement = addSignToFormattedNumber(replacementNumber, formattedReplacement, conversion);
+  return coerceToString(formattedReplacement);
+};
+var formatFloatAsShort = function(replacementNumber, precision, conversion) {
+  if (replacementNumber === 0) {
+    return "0";
+  }
+  var nonZeroPrecision = precision === 0 ? 1 : precision;
+  var formattedReplacement = replacementNumber.toPrecision(nonZeroPrecision).replace(REGEXP_TRAILING_ZEROS, "");
+  if (conversion.typeSpecifier === TYPE_FLOAT_SHORT_UPPERCASE) {
+    formattedReplacement = formattedReplacement.toUpperCase();
+  }
+  return formattedReplacement;
+};
+var integerBase = function(replacement, conversion) {
+  var integer = parseInt(replacement);
+  if (isNaN(integer)) {
+    integer = 0;
+  }
+  integer = integer >>> 0;
+  switch (conversion.typeSpecifier) {
+    case TYPE_INTEGER_ASCII_CHARACTER:
+      integer = String.fromCharCode(integer);
+      break;
+    case TYPE_INTEGER_BINARY:
+      integer = integer.toString(RADIX_BINARY);
+      break;
+    case TYPE_INTEGER_OCTAL:
+      integer = integer.toString(RADIX_OCTAL);
+      break;
+    case TYPE_INTEGER_HEXADECIMAL:
+      integer = integer.toString(RADIX_HEXADECIMAL);
+      break;
+    case TYPE_INTEGER_HEXADECIMAL_UPPERCASE:
+      integer = integer.toString(RADIX_HEXADECIMAL).toUpperCase();
+      break;
+  }
+  return coerceToString(integer);
+};
+var integerDecimal = function(replacement, conversion) {
+  var integer = parseInt(replacement);
+  if (isNaN(integer)) {
+    integer = 0;
+  }
+  return addSignToFormattedNumber(integer, toString(integer), conversion);
+};
+var stringFormat = function(replacement, conversion) {
+  var formattedReplacement = replacement;
+  var precision = conversion.precision;
+  if (!isNil(precision) && formattedReplacement.length > precision) {
+    formattedReplacement = truncate(formattedReplacement, precision, "");
+  }
+  return formattedReplacement;
+};
+var compute = function(replacement, conversion) {
+  var formatFunction;
+  switch (conversion.typeSpecifier) {
+    case TYPE_STRING:
+      formatFunction = stringFormat;
+      break;
+    case TYPE_INTEGER_DECIMAL:
+    case TYPE_INTEGER:
+      formatFunction = integerDecimal;
+      break;
+    case TYPE_INTEGER_ASCII_CHARACTER:
+    case TYPE_INTEGER_BINARY:
+    case TYPE_INTEGER_OCTAL:
+    case TYPE_INTEGER_HEXADECIMAL:
+    case TYPE_INTEGER_HEXADECIMAL_UPPERCASE:
+    case TYPE_INTEGER_UNSIGNED_DECIMAL:
+      formatFunction = integerBase;
+      break;
+    case TYPE_FLOAT:
+    case TYPE_FLOAT_SCIENTIFIC:
+    case TYPE_FLOAT_SCIENTIFIC_UPPERCASE:
+    case TYPE_FLOAT_SHORT:
+    case TYPE_FLOAT_SHORT_UPPERCASE:
+      formatFunction = float;
+      break;
+  }
+  var formattedString = formatFunction(replacement, conversion);
+  return alignAndPad(formattedString, conversion);
+};
+var ConversionSpecification = function(properties) {
+  this.percent = properties.percent;
+  this.signSpecifier = properties.signSpecifier;
+  this.paddingSpecifier = properties.paddingSpecifier;
+  this.alignmentSpecifier = properties.alignmentSpecifier;
+  this.width = properties.width;
+  this.precision = properties.precision;
+  this.typeSpecifier = properties.typeSpecifier;
+};
+var validate = function(index, replacementsLength, conversion) {
+  if (isNil(conversion.typeSpecifier)) {
+    throw new Error("sprintf(): Unknown type specifier");
+  }
+  if (index > replacementsLength - 1) {
+    throw new Error("sprintf(): Too few arguments");
+  }
+  if (index < 0) {
+    throw new Error("sprintf(): Argument number must be greater than zero");
+  }
+};
+var match = function(replacementIndex, replacements, conversionSpecification, percent, position, signSpecifier, paddingSpecifier, alignmentSpecifier, widthSpecifier, precisionSpecifier, typeSpecifier) {
+  var conversion = new ConversionSpecification({
+    percent,
+    signSpecifier,
+    paddingSpecifier,
+    alignmentSpecifier,
+    width: coerceToNumber(widthSpecifier, null),
+    precision: coerceToNumber(precisionSpecifier, null),
+    typeSpecifier
+  });
+  if (conversion.isPercentLiteral()) {
+    return conversionSpecification.slice(1);
+  }
+  var actualReplacementIndex = replacementIndex.getIndexByPosition(position);
+  replacementIndex.incrementOnEmptyPosition(position);
+  validate(actualReplacementIndex, replacements.length, conversion);
+  return compute(replacements[actualReplacementIndex], conversion);
+};
+var sprintf = function(format) {
+  var formatString = coerceToString(format);
+  if (formatString === "") {
+    return formatString;
+  }
+  for (var _len = arguments.length, replacements = new Array(_len > 1 ? _len - 1 : 0), _key = 1;_key < _len; _key++) {
+    replacements[_key - 1] = arguments[_key];
+  }
+  var boundReplacementMatch = match.bind(undefined, new ReplacementIndex, replacements);
+  return formatString.replace(REGEXP_CONVERSION_SPECIFICATION, boundReplacementMatch);
+};
+var vprintf = function(format, replacements) {
+  return sprintf.apply(undefined, [format].concat(_toConsumableArray(nilDefault(replacements, []))));
+};
+var replaceSpecialCharacter = function(character) {
+  return escapeCharactersMap[character];
+};
+var escapeHtml = function(subject) {
+  return coerceToString(subject).replace(REGEXP_HTML_SPECIAL_CHARACTERS, replaceSpecialCharacter);
+};
+var escapeRegExp = function(subject) {
+  return coerceToString(subject).replace(REGEXP_SPECIAL_CHARACTERS, "\\$&");
+};
+var reduceUnescapedString = function(string, key) {
+  return string.replace(unescapeCharactersMap[key], key);
+};
+var unescapeHtml = function(subject) {
+  var subjectString = coerceToString(subject);
+  return characters.reduce(reduceUnescapedString, subjectString);
+};
+var indexOf = function(subject, search, fromIndex) {
+  var subjectString = coerceToString(subject);
+  return subjectString.indexOf(search, fromIndex);
+};
+var lastIndexOf = function(subject, search, fromIndex) {
+  var subjectString = coerceToString(subject);
+  return subjectString.lastIndexOf(search, fromIndex);
+};
+var search = function(subject, pattern, fromIndex) {
+  var subjectString = coerceToString(subject);
+  var fromIndexNumber = isNil(fromIndex) ? 0 : clipNumber(toInteger(fromIndex), 0, subjectString.length);
+  var matchIndex = subjectString.substr(fromIndexNumber).search(pattern);
+  if (matchIndex !== -1 && !isNaN(fromIndexNumber)) {
+    matchIndex += fromIndexNumber;
+  }
+  return matchIndex;
+};
+var insert = function(subject, toInsert, position) {
+  var subjectString = coerceToString(subject);
+  var toInsertString = coerceToString(toInsert);
+  var positionNumber = coerceToNumber(position);
+  if (positionNumber < 0 || positionNumber > subjectString.length || toInsertString === "") {
+    return subjectString;
+  }
+  return subjectString.slice(0, positionNumber) + toInsertString + subjectString.slice(positionNumber);
+};
+var getDiacriticsMap = function() {
+  if (diacriticsMap !== null) {
+    return diacriticsMap;
+  }
+  diacriticsMap = {};
+  Object.keys(diacritics).forEach(function(key) {
+    var characters = diacritics[key];
+    for (var index = 0;index < characters.length; index++) {
+      var character = characters[index];
+      diacriticsMap[character] = key;
+    }
+  });
+  return diacriticsMap;
+};
+var getLatinCharacter = function(character) {
+  var characterWithoutDiacritic = getDiacriticsMap()[character];
+  return characterWithoutDiacritic ? characterWithoutDiacritic : character;
+};
+var removeCombiningMarks = function(character, cleanCharacter) {
+  return cleanCharacter;
+};
+var latinise = function(subject) {
+  var subjectString = coerceToString(subject);
+  if (subjectString === "") {
+    return "";
+  }
+  return subjectString.replace(REGEXP_NON_LATIN, getLatinCharacter).replace(REGEXP_COMBINING_MARKS, removeCombiningMarks);
+};
+var pad = function(subject, length, pad2) {
+  var subjectString = coerceToString(subject);
+  var lengthInt = isNil(length) ? 0 : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);
+  var padString = coerceToString(pad2, " ");
+  if (lengthInt <= subjectString.length) {
+    return subjectString;
+  }
+  var paddingLength = lengthInt - subjectString.length;
+  var paddingSideLength = toInteger(paddingLength / 2);
+  var paddingSideRemainingLength = paddingLength % 2;
+  return buildPadding(padString, paddingSideLength) + subjectString + buildPadding(padString, paddingSideLength + paddingSideRemainingLength);
+};
+var replace = function(subject, search2, replace2) {
+  var subjectString = coerceToString(subject);
+  return subjectString.replace(search2, replace2);
+};
+var replaceAll = function(subject, search2, replace2) {
+  var subjectString = coerceToString(subject);
+  if (search2 instanceof RegExp) {
+    if (search2.flags.indexOf("g") === -1) {
+      throw new TypeError("search argument is a non-global regular expression");
+    }
+    return subjectString.replace(search2, replace2);
+  }
+  var searchString = coerceToString(search2);
+  var isFunctionalReplace = typeof replace2 === "function";
+  if (!isFunctionalReplace) {
+    replace2 = coerceToString(replace2);
+  }
+  var searchLength = searchString.length;
+  if (searchLength === 0) {
+    return replaceAll(subject, /(?:)/g, replace2);
+  }
+  var advanceBy = searchLength > 1 ? searchLength : 1;
+  var matchPositions = [];
+  var position = subjectString.indexOf(searchString, 0);
+  while (position !== -1) {
+    matchPositions.push(position);
+    position = subjectString.indexOf(searchString, position + advanceBy);
+  }
+  var endOfLastMatch = 0;
+  var result = "";
+  for (var i = 0;i < matchPositions.length; i++) {
+    var _position = matchPositions[i];
+    var replacement = replace2;
+    if (isFunctionalReplace) {
+      replacement = coerceToString(replace2.call(undefined, searchString, _position, subjectString));
+    }
+    result += subjectString.slice(endOfLastMatch, _position) + replacement;
+    endOfLastMatch = _position + searchLength;
+  }
+  if (endOfLastMatch < subjectString.length) {
+    result += subjectString.slice(endOfLastMatch);
+  }
+  return result;
+};
+var reverse = function(subject) {
+  var subjectString = coerceToString(subject);
+  return subjectString.split("").reverse().join("");
+};
+var reverseGrapheme = function(subject) {
+  var subjectString = coerceToString(subject);
+  subjectString = subjectString.replace(REGEXP_COMBINING_MARKS, function($0, $1, $2) {
+    return reverseGrapheme($2) + $1;
+  }).replace(REGEXP_SURROGATE_PAIRS, "$2$1");
+  var reversedString = "";
+  var index = subjectString.length;
+  while (index--) {
+    reversedString += subjectString.charAt(index);
+  }
+  return reversedString;
+};
+var slugify = function(subject) {
+  var subjectString = coerceToString(subject);
+  if (subjectString === "") {
+    return "";
+  }
+  var cleanSubjectString = latinise(subjectString).replace(REGEXP_NON_LATIN, "-");
+  return kebabCase(cleanSubjectString);
+};
+var splice = function(subject, start, deleteCount, toAdd) {
+  var subjectString = coerceToString(subject);
+  var toAddString = coerceToString(toAdd);
+  var startPosition = coerceToNumber(start);
+  if (startPosition < 0) {
+    startPosition = subjectString.length + startPosition;
+    if (startPosition < 0) {
+      startPosition = 0;
+    }
+  } else if (startPosition > subjectString.length) {
+    startPosition = subjectString.length;
+  }
+  var deleteCountNumber = coerceToNumber(deleteCount, subjectString.length - startPosition);
+  if (deleteCountNumber < 0) {
+    deleteCountNumber = 0;
+  }
+  return subjectString.slice(0, startPosition) + toAddString + subjectString.slice(startPosition + deleteCountNumber);
+};
+var tr = function(subject, from, to) {
+  var subjectString = coerceToString(subject);
+  var keys;
+  var values;
+  if (isString(from) && isString(to)) {
+    keys = from.split("");
+    values = to.split("");
+  } else {
+    var _extractKeysAndValues = extractKeysAndValues(nilDefault(from, {}));
+    var _extractKeysAndValues2 = _slicedToArray(_extractKeysAndValues, 2);
+    keys = _extractKeysAndValues2[0];
+    values = _extractKeysAndValues2[1];
+  }
+  var keysLength = keys.length;
+  if (keysLength === 0) {
+    return subjectString;
+  }
+  var result = "";
+  var valuesLength = values.length;
+  for (var index = 0;index < subjectString.length; index++) {
+    var isMatch = false;
+    var matchValue = undefined;
+    for (var keyIndex = 0;keyIndex < keysLength && keyIndex < valuesLength; keyIndex++) {
+      var key = keys[keyIndex];
+      if (subjectString.substr(index, key.length) === key) {
+        isMatch = true;
+        matchValue = values[keyIndex];
+        index = index + key.length - 1;
+        break;
+      }
+    }
+    result += isMatch ? matchValue : subjectString[index];
+  }
+  return result;
+};
+var extractKeysAndValues = function(object) {
+  var keys = Object.keys(object);
+  var values = keys.sort(sortStringByLength).map(function(key) {
+    return object[key];
+  });
+  return [keys, values];
+};
+var sortStringByLength = function(str1, str2) {
+  if (str1.length === str2.length) {
+    return 0;
+  }
+  return str1.length < str2.length ? 1 : -1;
+};
+var includes = function(subject, search2, position) {
+  var subjectString = coerceToString(subject);
+  var searchString = toString(search2);
+  if (searchString === null) {
+    return false;
+  }
+  if (searchString === "") {
+    return true;
+  }
+  position = isNil(position) ? 0 : clipNumber(toInteger(position), 0, subjectString.length);
+  return subjectString.indexOf(searchString, position) !== -1;
+};
+var trimLeft = function(subject, whitespace) {
+  var subjectString = coerceToString(subject);
+  if (whitespace === "" || subjectString === "") {
+    return subjectString;
+  }
+  var whitespaceString = toString(whitespace);
+  if (isNil(whitespaceString)) {
+    return subjectString.replace(REGEXP_TRIM_LEFT, "");
+  }
+  var matchWhitespace = true;
+  return reduce$1.call(subjectString, function(trimmed, character) {
+    if (matchWhitespace && includes(whitespaceString, character)) {
+      return trimmed;
+    }
+    matchWhitespace = false;
+    return trimmed + character;
+  }, "");
+};
+var trimRight = function(subject, whitespace) {
+  var subjectString = coerceToString(subject);
+  if (whitespace === "" || subjectString === "") {
+    return subjectString;
+  }
+  var whitespaceString = toString(whitespace);
+  if (isNil(whitespaceString)) {
+    return subjectString.replace(REGEXP_TRIM_RIGHT, "");
+  }
+  var matchWhitespace = true;
+  return reduceRight.call(subjectString, function(trimmed, character) {
+    if (matchWhitespace && includes(whitespaceString, character)) {
+      return trimmed;
+    }
+    matchWhitespace = false;
+    return character + trimmed;
+  }, "");
+};
+var trim = function(subject, whitespace) {
+  var subjectString = coerceToString(subject);
+  if (whitespace === "" || subjectString === "") {
+    return subjectString;
+  }
+  var whitespaceString = toString(whitespace);
+  if (isNil(whitespaceString)) {
+    return subjectString.trim();
+  }
+  return trimRight(trimLeft(subjectString, whitespaceString), whitespaceString);
+};
+var wordWrap = function(subject) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var subjectString = coerceToString(subject);
+  var _determineOptions = determineOptions(options), width = _determineOptions.width, newLine = _determineOptions.newLine, indent = _determineOptions.indent, cut = _determineOptions.cut;
+  if (subjectString === "" || width <= 0) {
+    return indent;
+  }
+  var subjectLength = subjectString.length;
+  var substring2 = subjectString.substring.bind(subjectString);
+  var offset = 0;
+  var wrappedLine = "";
+  while (subjectLength - offset > width) {
+    if (subjectString[offset] === " ") {
+      offset++;
+      continue;
+    }
+    var spaceToWrapAt = subjectString.lastIndexOf(" ", width + offset);
+    if (spaceToWrapAt >= offset) {
+      wrappedLine += indent + substring2(offset, spaceToWrapAt) + newLine;
+      offset = spaceToWrapAt + 1;
+    } else {
+      if (cut) {
+        wrappedLine += indent + substring2(offset, width + offset) + newLine;
+        offset += width;
+      } else {
+        spaceToWrapAt = subjectString.indexOf(" ", width + offset);
+        if (spaceToWrapAt >= 0) {
+          wrappedLine += indent + substring2(offset, spaceToWrapAt) + newLine;
+          offset = spaceToWrapAt + 1;
+        } else {
+          wrappedLine += indent + substring2(offset);
+          offset = subjectLength;
+        }
+      }
+    }
+  }
+  if (offset < subjectLength) {
+    wrappedLine += indent + substring2(offset);
+  }
+  return wrappedLine;
+};
+var determineOptions = function(options) {
+  return {
+    width: coerceToNumber(options[OPTION_WIDTH], 75),
+    newLine: coerceToString(options[OPTION_NEW_LINE], "\n"),
+    indent: coerceToString(options[OPTION_INDENT], ""),
+    cut: coerceToBoolean(options[OPTION_CUT], false)
+  };
+};
+var endsWith = function(subject, end, position) {
+  if (isNil(end)) {
+    return false;
+  }
+  var subjectString = coerceToString(subject);
+  var endString = coerceToString(end);
+  if (endString === "") {
+    return true;
+  }
+  position = isNil(position) ? subjectString.length : clipNumber(toInteger(position), 0, subjectString.length);
+  position -= endString.length;
+  var lastIndex = subjectString.indexOf(endString, position);
+  return lastIndex !== -1 && lastIndex === position;
+};
+var isAlpha = function(subject) {
+  var subjectString = coerceToString(subject);
+  return REGEXP_ALPHA.test(subjectString);
+};
+var isAlphaDigit = function(subject) {
+  var subjectString = coerceToString(subject);
+  return REGEXP_ALPHA_DIGIT.test(subjectString);
+};
+var isBlank = function(subject) {
+  var subjectString = coerceToString(subject);
+  return subjectString.trim().length === 0;
+};
+var isDigit = function(subject) {
+  var subjectString = coerceToString(subject);
+  return REGEXP_DIGIT.test(subjectString);
+};
+var isEmpty = function(subject) {
+  var subjectString = coerceToString(subject);
+  return subjectString.length === 0;
+};
+var isLowerCase = function(subject) {
+  var valueString = coerceToString(subject);
+  return isAlpha(valueString) && valueString.toLowerCase() === valueString;
+};
+var isNumeric = function(subject) {
+  var valueNumeric = typeof subject === "object" && !isNil(subject) ? Number(subject) : subject;
+  return (typeof valueNumeric === "number" || typeof valueNumeric === "string") && !isNaN(valueNumeric - parseFloat(valueNumeric));
+};
+var isUpperCase = function(subject) {
+  var subjectString = coerceToString(subject);
+  return isAlpha(subjectString) && subjectString.toUpperCase() === subjectString;
+};
+var matches = function(subject, pattern, flags) {
+  var subjectString = coerceToString(subject);
+  var flagsString = coerceToString(flags);
+  var patternString;
+  if (!(pattern instanceof RegExp)) {
+    patternString = toString(pattern);
+    if (patternString === null) {
+      return false;
+    }
+    pattern = new RegExp(patternString, flagsString);
+  }
+  return pattern.test(subjectString);
+};
+var startsWith = function(subject, start, position) {
+  var subjectString = coerceToString(subject);
+  var startString = toString(start);
+  if (startString === null) {
+    return false;
+  }
+  if (startString === "") {
+    return true;
+  }
+  position = isNil(position) ? 0 : clipNumber(toInteger(position), 0, subjectString.length);
+  return subjectString.substr(position, startString.length) === startString;
+};
+var chars = function(subject) {
+  var subjectString = coerceToString(subject);
+  return subjectString.split("");
+};
+var codePoints = function(subject) {
+  var subjectString = coerceToString(subject);
+  var subjectStringLength = subjectString.length;
+  var codePointArray = [];
+  var index = 0;
+  var codePointNumber;
+  while (index < subjectStringLength) {
+    codePointNumber = codePointAt(subjectString, index);
+    codePointArray.push(codePointNumber);
+    index += codePointNumber > 65535 ? 2 : 1;
+  }
+  return codePointArray;
+};
+var graphemes = function(subject) {
+  var subjectString = coerceToString(subject);
+  return nilDefault(subjectString.match(REGEXP_UNICODE_CHARACTER), []);
+};
+var split = function(subject, separator, limit) {
+  var subjectString = coerceToString(subject);
+  return subjectString.split(separator, limit);
+};
+var trim$1 = function(subject) {
+  var subjectString = coerceToString(subject);
+  if (subjectString === "") {
+    return "";
+  }
+  if (subjectString[0] === BYRE_ORDER_MARK) {
+    return subjectString.substring(1);
+  }
+  return subjectString;
+};
+var hasSubstringAtIndex = function(subject, substring2, index) {
+  var lookBehind = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+  var indexOffset = 0;
+  if (lookBehind) {
+    indexOffset = -substring2.length + 1;
+  }
+  var extractedSubstring = subject.substr(index + indexOffset, substring2.length);
+  return extractedSubstring.toLowerCase() === substring2;
+};
+var parseTagList = function(tags) {
+  var tagsList = [];
+  var match2;
+  while ((match2 = REGEXP_TAG_LIST.exec(tags)) !== null) {
+    tagsList.push(match2[1]);
+  }
+  return tagsList;
+};
+var parseTagName = function(tagContent) {
+  var state = STATE_START_TAG;
+  var tagName = "";
+  var index = 0;
+  while (state !== STATE_DONE) {
+    var char = tagContent[index++].toLowerCase();
+    switch (char) {
+      case "<":
+        break;
+      case ">":
+        state = STATE_DONE;
+        break;
+      default:
+        if (REGEXP_WHITESPACE.test(char)) {
+          if (state === STATE_NON_WHITESPACE) {
+            state = STATE_DONE;
+          }
+        } else {
+          if (state === STATE_START_TAG) {
+            state = STATE_NON_WHITESPACE;
+          }
+          if (char !== "/") {
+            tagName += char;
+          }
+        }
+        break;
+    }
+  }
+  return tagName;
+};
+var trim$2 = function(subject, allowableTags, replacement) {
+  subject = coerceToString(subject);
+  if (subject === "") {
+    return "";
+  }
+  if (!Array.isArray(allowableTags)) {
+    var allowableTagsString = coerceToString(allowableTags);
+    allowableTags = allowableTagsString === "" ? [] : parseTagList(allowableTagsString);
+  }
+  var replacementString = coerceToString(replacement);
+  var length = subject.length;
+  var hasAllowableTags = allowableTags.length > 0;
+  var hasSubstring = hasSubstringAtIndex.bind(null, subject);
+  var state = STATE_OUTPUT;
+  var depth = 0;
+  var output = "";
+  var tagContent = "";
+  var quote = null;
+  for (var index = 0;index < length; index++) {
+    var char = subject[index];
+    var advance = false;
+    switch (char) {
+      case "<":
+        if (quote) {
+          break;
+        }
+        if (hasSubstring("< ", index, false)) {
+          advance = true;
+          break;
+        }
+        if (state === STATE_OUTPUT) {
+          advance = true;
+          state = STATE_HTML;
+          break;
+        }
+        if (state === STATE_HTML) {
+          depth++;
+          break;
+        }
+        advance = true;
+        break;
+      case "!":
+        if (state === STATE_HTML && hasSubstring("<!", index)) {
+          state = STATE_EXCLAMATION;
+          break;
+        }
+        advance = true;
+        break;
+      case "-":
+        if (state === STATE_EXCLAMATION && hasSubstring("!--", index)) {
+          state = STATE_COMMENT;
+          break;
+        }
+        advance = true;
+        break;
+      case '"':
+      case "'":
+        if (state === STATE_HTML) {
+          if (quote === char) {
+            quote = null;
+          } else if (!quote) {
+            quote = char;
+          }
+        }
+        advance = true;
+        break;
+      case "E":
+      case "e":
+        if (state === STATE_EXCLAMATION && hasSubstring("doctype", index)) {
+          state = STATE_HTML;
+          break;
+        }
+        advance = true;
+        break;
+      case ">":
+        if (depth > 0) {
+          depth--;
+          break;
+        }
+        if (quote) {
+          break;
+        }
+        if (state === STATE_HTML) {
+          quote = null;
+          state = STATE_OUTPUT;
+          if (hasAllowableTags) {
+            tagContent += ">";
+            var tagName = parseTagName(tagContent);
+            if (allowableTags.indexOf(tagName.toLowerCase()) !== -1) {
+              output += tagContent;
+            } else {
+              output += replacementString;
+            }
+            tagContent = "";
+          } else {
+            output += replacementString;
+          }
+          break;
+        }
+        if (state === STATE_EXCLAMATION || state === STATE_COMMENT && hasSubstring("-->", index)) {
+          quote = null;
+          state = STATE_OUTPUT;
+          tagContent = "";
+          break;
+        }
+        advance = true;
+        break;
+      default:
+        advance = true;
+    }
+    if (advance) {
+      switch (state) {
+        case STATE_OUTPUT:
+          output += char;
+          break;
+        case STATE_HTML:
+          if (hasAllowableTags) {
+            tagContent += char;
+          }
+          break;
+      }
+    }
+  }
+  return output;
+};
+var getGlobalObject = function() {
+  if (globalObject !== null) {
+    return globalObject;
+  }
+  if (typeof global === "object" && global.Object === Object) {
+    globalObject = global;
+  } else if (typeof self === "object" && self.Object === Object) {
+    globalObject = self;
+  } else {
+    globalObject = new Function("return this")();
+  }
+  return globalObject;
+};
+var noConflict = function() {
+  if (this === globalObject$1.v) {
+    globalObject$1.v = previousV;
+  }
+  return this;
+};
+var ChainWrapper = function(subject, explicitChain) {
+  this._wrappedValue = subject;
+  this._explicitChain = explicitChain;
+};
+var makeFunctionChainable = function(functionInstance) {
+  return function() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0;_key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    var result = functionInstance.apply(undefined, [this._wrappedValue].concat(args));
+    if (this._explicitChain || typeof result === "string") {
+      return new ChainWrapper(result, this._explicitChain);
+    } else {
+      return result;
+    }
+  };
+};
+var chain = function(subject) {
+  return new ChainWrapper(subject, true);
+};
+var Voca = function(subject) {
+  return new ChainWrapper(subject, false);
+};
+var digit = "\\d";
+var whitespace = "\\s\\uFEFF\\xA0";
+var highSurrogate = "\\uD800-\\uDBFF";
+var lowSurrogate = "\\uDC00-\\uDFFF";
+var diacriticalMark = "\\u0300-\\u036F\\u1AB0-\\u1AFF\\u1DC0-\\u1DFF\\u20D0-\\u20FF\\uFE20-\\uFE2F";
+var base = "\\0-\\u02FF\\u0370-\\u1AAF\\u1B00-\\u1DBF\\u1E00-\\u20CF\\u2100-\\uD7FF\\uE000-\\uFE1F\\uFE30-\\uFFFF";
+var REGEXP_COMBINING_MARKS = new RegExp("([" + base + "]|[" + highSurrogate + "][" + lowSurrogate + "]|[" + highSurrogate + "](?![" + lowSurrogate + "])|(?:[^" + highSurrogate + "]|^)[" + lowSurrogate + "])([" + diacriticalMark + "]+)", "g");
+var REGEXP_SURROGATE_PAIRS = new RegExp("([" + highSurrogate + "])([" + lowSurrogate + "])", "g");
+var REGEXP_UNICODE_CHARACTER = new RegExp("((?:[" + base + "]|[" + highSurrogate + "][" + lowSurrogate + "]|[" + highSurrogate + "](?![" + lowSurrogate + "])|(?:[^" + highSurrogate + "]|^)[" + lowSurrogate + "])(?:[" + diacriticalMark + "]+))|([" + highSurrogate + "][" + lowSurrogate + "])|([\\n\\r\\u2028\\u2029])|(.)", "g");
+var REGEXP_WHITESPACE = new RegExp("[" + whitespace + "]");
+var REGEXP_TRIM_LEFT = new RegExp("^[" + whitespace + "]+");
+var REGEXP_TRIM_RIGHT = new RegExp("[" + whitespace + "]+$");
+var REGEXP_DIGIT = new RegExp("^" + digit + "+$");
+var REGEXP_SPECIAL_CHARACTERS = /[-[\]{}()*+!<=:?./\\^$|#,]/g;
+var REGEXP_NON_LATIN = /[^A-Za-z0-9]/g;
+var REGEXP_HTML_SPECIAL_CHARACTERS = /[<>&"'`]/g;
+var REGEXP_CONVERSION_SPECIFICATION = /(%{1,2})(?:(\d+)\$)?(\+)?([ 0]|'.{1})?(-)?(\d+)?(?:\.(\d+))?([bcdiouxXeEfgGs])?/g;
+var REGEXP_TRAILING_ZEROS = /\.?0+$/g;
+var REGEXP_TAG_LIST = /<([A-Za-z0-9]+)>/g;
+var generalPunctuationBlock = "\\u2000-\\u206F";
+var nonCharacter = "\\x00-\\x2F\\x3A-\\x40\\x5B-\\x60\\x7b-\\xBF\\xD7\\xF7";
+var dingbatBlock = "\\u2700-\\u27BF";
+var lowerCaseLetter = "a-z\\xB5\\xDF-\\xF6\\xF8-\\xFF\\u0101\\u0103\\u0105\\u0107\\u0109\\u010B\\u010D\\u010F\\u0111\\u0113\\u0115\\u0117\\u0119\\u011B\\u011D\\u011F\\u0121\\u0123\\u0125\\u0127\\u0129\\u012B\\u012D\\u012F\\u0131\\u0133\\u0135\\u0137\\u0138\\u013A\\u013C\\u013E\\u0140\\u0142\\u0144\\u0146\\u0148\\u0149\\u014B\\u014D\\u014F\\u0151\\u0153\\u0155\\u0157\\u0159\\u015B\\u015D\\u015F\\u0161\\u0163\\u0165\\u0167\\u0169\\u016B\\u016D\\u016F\\u0171\\u0173\\u0175\\u0177\\u017A\\u017C\\u017E-\\u0180\\u0183\\u0185\\u0188\\u018C\\u018D\\u0192\\u0195\\u0199-\\u019B\\u019E\\u01A1\\u01A3\\u01A5\\u01A8\\u01AA\\u01AB\\u01AD\\u01B0\\u01B4\\u01B6\\u01B9\\u01BA\\u01BD-\\u01BF\\u01C6\\u01C9\\u01CC\\u01CE\\u01D0\\u01D2\\u01D4\\u01D6\\u01D8\\u01DA\\u01DC\\u01DD\\u01DF\\u01E1\\u01E3\\u01E5\\u01E7\\u01E9\\u01EB\\u01ED\\u01EF\\u01F0\\u01F3\\u01F5\\u01F9\\u01FB\\u01FD\\u01FF\\u0201\\u0203\\u0205\\u0207\\u0209\\u020B\\u020D\\u020F\\u0211\\u0213\\u0215\\u0217\\u0219\\u021B\\u021D\\u021F\\u0221\\u0223\\u0225\\u0227\\u0229\\u022B\\u022D\\u022F\\u0231\\u0233-\\u0239\\u023C\\u023F\\u0240\\u0242\\u0247\\u0249\\u024B\\u024D\\u024F";
+var upperCaseLetter = "\\x41-\\x5a\\xc0-\\xd6\\xd8-\\xde\\u0100\\u0102\\u0104\\u0106\\u0108\\u010a\\u010c\\u010e\\u0110\\u0112\\u0114\\u0116\\u0118\\u011a\\u011c\\u011e\\u0120\\u0122\\u0124\\u0126\\u0128\\u012a\\u012c\\u012e\\u0130\\u0132\\u0134\\u0136\\u0139\\u013b\\u013d\\u013f\\u0141\\u0143\\u0145\\u0147\\u014a\\u014c\\u014e\\u0150\\u0152\\u0154\\u0156\\u0158\\u015a\\u015c\\u015e\\u0160\\u0162\\u0164\\u0166\\u0168\\u016a\\u016c\\u016e\\u0170\\u0172\\u0174\\u0176\\u0178\\u0179\\u017b\\u017d\\u0181\\u0182\\u0184\\u0186\\u0187\\u0189-\\u018b\\u018e-\\u0191\\u0193\\u0194\\u0196-\\u0198\\u019c\\u019d\\u019f\\u01a0\\u01a2\\u01a4\\u01a6\\u01a7\\u01a9\\u01ac\\u01ae\\u01af\\u01b1-\\u01b3\\u01b5\\u01b7\\u01b8\\u01bc\\u01c4\\u01c5\\u01c7\\u01c8\\u01ca\\u01cb\\u01cd\\u01cf\\u01d1\\u01d3\\u01d5\\u01d7\\u01d9\\u01db\\u01de\\u01e0\\u01e2\\u01e4\\u01e6\\u01e8\\u01ea\\u01ec\\u01ee\\u01f1\\u01f2\\u01f4\\u01f6-\\u01f8\\u01fa\\u01fc\\u01fe\\u0200\\u0202\\u0204\\u0206\\u0208\\u020a\\u020c\\u020e\\u0210\\u0212\\u0214\\u0216\\u0218\\u021a\\u021c\\u021e\\u0220\\u0222\\u0224\\u0226\\u0228\\u022a\\u022c\\u022e\\u0230\\u0232\\u023a\\u023b\\u023d\\u023e\\u0241\\u0243-\\u0246\\u0248\\u024a\\u024c\\u024e";
+var REGEXP_WORD = new RegExp("(?:[" + upperCaseLetter + "][" + diacriticalMark + "]*)?(?:[" + lowerCaseLetter + "][" + diacriticalMark + "]*)+|(?:[" + upperCaseLetter + "][" + diacriticalMark + "]*)+(?![" + lowerCaseLetter + "])|[" + digit + "]+|[" + dingbatBlock + "]|[^" + nonCharacter + generalPunctuationBlock + whitespace + "]+", "g");
+var REGEXP_LATIN_WORD = /[A-Z\xC0-\xD6\xD8-\xDE]?[a-z\xDF-\xF6\xF8-\xFF]+|[A-Z\xC0-\xD6\xD8-\xDE]+(?![a-z\xDF-\xF6\xF8-\xFF])|\d+/g;
+var REGEXP_ALPHA = new RegExp("^(?:[" + lowerCaseLetter + upperCaseLetter + "][" + diacriticalMark + "]*)+$");
+var REGEXP_ALPHA_DIGIT = new RegExp("^((?:[" + lowerCaseLetter + upperCaseLetter + "][" + diacriticalMark + "]*)|[" + digit + "])+$");
+var REGEXP_EXTENDED_ASCII = /^[\x01-\xFF]*$/;
+var MAX_SAFE_INTEGER = 9007199254740991;
+var HIGH_SURROGATE_START = 55296;
+var HIGH_SURROGATE_END = 56319;
+var LOW_SURROGATE_START = 56320;
+var LOW_SURROGATE_END = 57343;
+var reduce = Array.prototype.reduce;
+ReplacementIndex.prototype.increment = function() {
+  this.index++;
+};
+ReplacementIndex.prototype.incrementOnEmptyPosition = function(position) {
+  if (isNil(position)) {
+    this.increment();
+  }
+};
+ReplacementIndex.prototype.getIndexByPosition = function(position) {
+  return isNil(position) ? this.index : position - 1;
+};
+var TYPE_INTEGER = "i";
+var TYPE_INTEGER_BINARY = "b";
+var TYPE_INTEGER_ASCII_CHARACTER = "c";
+var TYPE_INTEGER_DECIMAL = "d";
+var TYPE_INTEGER_OCTAL = "o";
+var TYPE_INTEGER_UNSIGNED_DECIMAL = "u";
+var TYPE_INTEGER_HEXADECIMAL = "x";
+var TYPE_INTEGER_HEXADECIMAL_UPPERCASE = "X";
+var TYPE_FLOAT_SCIENTIFIC = "e";
+var TYPE_FLOAT_SCIENTIFIC_UPPERCASE = "E";
+var TYPE_FLOAT = "f";
+var TYPE_FLOAT_SHORT = "g";
+var TYPE_FLOAT_SHORT_UPPERCASE = "G";
+var TYPE_STRING = "s";
+var LITERAL_SINGLE_QUOTE = "'";
+var LITERAL_PLUS = "+";
+var LITERAL_MINUS = "-";
+var LITERAL_PERCENT_SPECIFIER = "%%";
+var RADIX_BINARY = 2;
+var RADIX_OCTAL = 8;
+var RADIX_HEXADECIMAL = 16;
+ConversionSpecification.prototype.isPercentLiteral = function() {
+  return LITERAL_PERCENT_SPECIFIER === this.percent;
+};
+ConversionSpecification.prototype.getPaddingCharacter = function() {
+  var paddingCharacter = nilDefault(this.paddingSpecifier, " ");
+  if (paddingCharacter.length === 2 && paddingCharacter[0] === LITERAL_SINGLE_QUOTE) {
+    paddingCharacter = paddingCharacter[1];
+  }
+  return paddingCharacter;
+};
+var escapeCharactersMap = {
+  "<": "&lt;",
+  ">": "&gt;",
+  "&": "&amp;",
+  '"': "&quot;",
+  "'": "&#x27;",
+  "`": "&#x60;"
+};
+var unescapeCharactersMap = {
+  "<": /(&lt;)|(&#x0*3c;)|(&#0*60;)/gi,
+  ">": /(&gt;)|(&#x0*3e;)|(&#0*62;)/gi,
+  "&": /(&amp;)|(&#x0*26;)|(&#0*38;)/gi,
+  '"': /(&quot;)|(&#x0*22;)|(&#0*34;)/gi,
+  "'": /(&#x0*27;)|(&#0*39;)/gi,
+  "`": /(&#x0*60;)|(&#0*96;)/gi
+};
+var characters = Object.keys(unescapeCharactersMap);
+var diacritics = {
+  "3": "\u039E\u03BE",
+  "8": "\u0398\u03B8",
+  A: "A\xC0\xC1\xC2\xC3\xC4\xC5\u0100\u0102\u0104\u01CD\u01DE\u01E0\u01FA\u0200\u0202\u0226\u023A\u0386\u0391\u0410",
+  B: "B\u0181\u0182\u0243\u0392\u0411",
+  C: "C\xC7\u0106\u0108\u010A\u010C\u0187\u023B\u0426",
+  D: "D\u010E\u0110\u0189\u018A\u018B\xD0\u0394\u0414",
+  E: "E\xC8\xC9\xCA\xCB\u0112\u0114\u0116\u0118\u011A\u018E\u0190\u0204\u0206\u0228\u0388\u0395\u0415\u042D",
+  F: "F\u0191\u03A6\u0424",
+  G: "G\u011C\u011E\u0120\u0122\u0193\u01E4\u01E6\u01F4\u0393\u0413\u0490",
+  H: "H\u0124\u0126\u021E\u0389\u0397\u0425",
+  I: "I\xCC\xCD\xCE\xCF\u0128\u012A\u012C\u012E\u0130\u0197\u01CF\u0208\u020A\u038A\u0399\u03AA\u0406\u0418",
+  J: "J\u0134\u0248\u0419",
+  K: "K\u0136\u0198\u01E8\u039A\u041A",
+  L: "L\u0139\u013B\u013D\u013F\u0141\u023D\u039B\u041B",
+  M: "M\u019C\u039C\u041C",
+  N: "N\xD1\u0143\u0145\u0147\u019D\u01F8\u0220\u039D\u041D",
+  O: "O\xD2\xD3\xD4\xD5\xD6\xD8\u014C\u014E\u0150\u0186\u019F\u01A0\u01D1\u01EA\u01EC\u01FE\u020C\u020E\u022A\u022C\u022E\u0230\u038C\u039F\u041E",
+  P: "P\u01A4\u03A0\u041F",
+  Q: "Q\u024A",
+  R: "R\u0154\u0156\u0158\u0210\u0212\u024C\u03A1\u0420",
+  S: "S\u015A\u015C\u015E\u0160\u0218\u03A3\u0421",
+  T: "T\u0162\u0164\u0166\u01AC\u01AE\u021A\u023E\u03A4\u0422",
+  U: "U\xD9\xDA\xDB\xDC\u0168\u016A\u016C\u016E\u0170\u0172\u01AF\u01D3\u01D5\u01D7\u01D9\u01DB\u0214\u0216\u0244\u0423\u042A",
+  V: "V\u01B2\u0245\u0412",
+  W: "W\u0174\u038F\u03A9",
+  X: "X\u03A7",
+  Y: "Y\xDD\u0176\u0178\u01B3\u0232\u024E\u038E\u03A5\u03AB\u042B",
+  Z: "Z\u0179\u017B\u017D\u01B5\u0224\u0396\u0417",
+  a: "a\xE0\xE1\xE2\xE3\xE4\xE5\u0101\u0103\u0105\u01CE\u01DF\u01E1\u01FB\u0201\u0203\u0227\u0250\u03AC\u03B1\u0430",
+  b: "b\u0180\u0183\u0253\u03B2\u0431",
+  c: "c\xE7\u0107\u0109\u010B\u010D\u0188\u023C\u0446",
+  d: "d\u010F\u0111\u018C\u0256\u0257\xF0\u03B4\u0434",
+  e: "e\xE8\xE9\xEA\xEB\u0113\u0115\u0117\u0119\u011B\u01DD\u0205\u0207\u0229\u0247\u025B\u03AD\u03B5\u0435\u044D",
+  f: "f\u0192\u03C6\u0444",
+  g: "g\u011D\u011F\u0121\u0123\u01E5\u01E7\u01F5\u0260\u03B3\u0433\u0491",
+  h: "h\u0125\u0127\u021F\u0265\u03AE\u03B7\u0445",
+  i: "i\xEC\xED\xEE\xEF\u0129\u012B\u012D\u012F\u0131\u01D0\u0209\u020B\u0268\u0390\u03AF\u03B9\u03CA\u0438\u0456",
+  j: "j\u0135\u01F0\u0249\u0439",
+  k: "k\u0137\u0199\u01E9\u03BA\u043A",
+  l: "l\u013A\u013C\u013E\u0140\u0142\u017F\u019A\u026B\u03BB\u043B",
+  m: "m\u026F\u0271\u03BC\u043C",
+  n: "n\xF1\u0144\u0146\u0148\u0149\u019E\u01F9\u0272\u03BD\u043D",
+  o: "o\xF2\xF3\xF4\xF5\xF6\xF8\u014D\u014F\u0151\u01A1\u01D2\u01EB\u01ED\u01FF\u020D\u020F\u022B\u022D\u022F\u0231\u0254\u0275\u03BF\u03CC\u043E",
+  p: "p\u01A5\u03C0\u043F",
+  q: "q\u024B",
+  r: "r\u0155\u0157\u0159\u0211\u0213\u024D\u027D\u03C1\u0440",
+  s: "s\xDF\u015B\u015D\u015F\u0161\u0219\u023F\u03C2\u03C3\u0441",
+  t: "t\u0163\u0165\u0167\u01AD\u021B\u0288\u03C4\u0442",
+  u: "u\xF9\xFA\xFB\xFC\u0169\u016B\u016D\u016F\u0171\u0173\u01B0\u01D4\u01D6\u01D8\u01DA\u01DC\u0215\u0217\u0289\u0443\u044A",
+  v: "v\u028B\u028C\u0432",
+  w: "w\u0175\u03C9\u03CE",
+  x: "x\u03C7",
+  y: "y\xFD\xFF\u0177\u01B4\u0233\u024F\u03B0\u03C5\u03CB\u03CD\u044B",
+  z: "z\u017A\u017C\u017E\u01B6\u0225\u0240\u03B6\u0437",
+  OE: "\x8C\u0152",
+  oe: "\x9C\u0153",
+  AE: "\xC6\u01E2\u01FC",
+  ae: "\xE6\u01E3\u01FD",
+  hv: "\u0195",
+  OI: "\u01A2",
+  oi: "\u01A3",
+  DZ: "\u01C4\u01F1",
+  Dz: "\u01C5\u01F2",
+  dz: "\u01C6\u01F3",
+  LJ: "\u01C7",
+  Lj: "\u01C8",
+  lj: "\u01C9",
+  NJ: "\u01CA",
+  Nj: "\u01CB",
+  nj: "\u01CC",
+  OU: "\u0222",
+  ou: "\u0223",
+  TH: "\xDE",
+  th: "\xFE",
+  PS: "\u03A8",
+  ps: "\u03C8",
+  Yo: "\u0401",
+  Ye: "\u0404",
+  Yi: "\u0407",
+  Zh: "\u0416",
+  Ch: "\u0427",
+  Sh: "\u0428\u0429",
+  "": "\u042A\u042C\u044C",
+  Yu: "\u042E",
+  Ya: "\u042F",
+  zh: "\u0436",
+  ch: "\u0447",
+  sh: "\u0448\u0449",
+  yu: "\u044E",
+  ya: "\u044F",
+  yo: "\u0451",
+  ye: "\u0454",
+  yi: "\u0457"
+};
+var diacriticsMap = null;
+var reduce$1 = Array.prototype.reduce;
+var reduceRight = Array.prototype.reduceRight;
+var OPTION_WIDTH = "width";
+var OPTION_NEW_LINE = "newLine";
+var OPTION_INDENT = "indent";
+var OPTION_CUT = "cut";
+var BYRE_ORDER_MARK = "\uFEFF";
+var STATE_START_TAG = 0;
+var STATE_NON_WHITESPACE = 1;
+var STATE_DONE = 2;
+var STATE_OUTPUT = 0;
+var STATE_HTML = 1;
+var STATE_EXCLAMATION = 2;
+var STATE_COMMENT = 3;
+var globalObject = null;
+var globalObject$1 = getGlobalObject();
+var previousV = globalObject$1.v;
+var version = "1.4.0";
+var functions = {
+  camelCase,
+  capitalize,
+  decapitalize,
+  kebabCase,
+  lowerCase,
+  snakeCase,
+  swapCase,
+  titleCase,
+  upperCase,
+  count,
+  countGraphemes: countGrapheme,
+  countSubstrings,
+  countWhere,
+  countWords,
+  escapeHtml,
+  escapeRegExp,
+  unescapeHtml,
+  sprintf,
+  vprintf,
+  indexOf,
+  lastIndexOf,
+  search,
+  charAt,
+  codePointAt,
+  first,
+  graphemeAt,
+  last,
+  prune,
+  slice,
+  substr,
+  substring,
+  truncate,
+  insert,
+  latinise,
+  pad,
+  padLeft,
+  padRight,
+  repeat,
+  replace,
+  replaceAll,
+  reverse,
+  reverseGrapheme,
+  slugify,
+  splice,
+  tr,
+  trim,
+  trimLeft,
+  trimRight,
+  wordWrap,
+  endsWith,
+  includes,
+  isAlpha,
+  isAlphaDigit,
+  isBlank,
+  isDigit,
+  isEmpty,
+  isLowerCase,
+  isNumeric,
+  isString,
+  isUpperCase,
+  matches,
+  startsWith,
+  chars,
+  codePoints,
+  graphemes,
+  split,
+  words,
+  stripBom: trim$1,
+  stripTags: trim$2,
+  noConflict,
+  version
+};
+ChainWrapper.prototype.value = function() {
+  return this._wrappedValue;
+};
+ChainWrapper.prototype.valueOf = function() {
+  return this.value();
+};
+ChainWrapper.prototype.toJSON = function() {
+  return this.value();
+};
+ChainWrapper.prototype.toString = function() {
+  return String(this.value());
+};
+ChainWrapper.prototype.chain = function() {
+  return new ChainWrapper(this._wrappedValue, true);
+};
+ChainWrapper.prototype.thru = function(changer) {
+  if (typeof changer === "function") {
+    return new ChainWrapper(changer(this._wrappedValue), this._explicitChain);
+  }
+  return this;
+};
+ChainWrapper.prototype._explicitChain = true;
+Object.keys(functions).forEach(function(name) {
+  ChainWrapper.prototype[name] = makeFunctionChainable(functions[name]);
+});
+_extends(Voca, functions, {
+  chain
+});
+var voca_default = Voca;
 
-/***/ "./src/data/Store.ts":
-/*!***************************!*\
-  !*** ./src/data/Store.ts ***!
-  \***************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+// src/utils/elman.ts
+var registerElement = function(element, id) {
+  elementList[id] = element;
+};
+var findEl = function(id) {
+  return elementList[id];
+};
+var elementTypes = function(type1, types, id) {
+  if (!typedElements.includes(type1))
+    type1 = null;
+  types.forEach((type) => {
+    let el = findEl(id);
+    if (specificTypes.includes(type)) {
+      type1 = findEl(id).GUIWIDGET.options.class;
+    }
+    let t = (type1 ? type1 + "-" : "") + type;
+    el.classList.toggle(t);
+  });
+};
+var createElement = function(element, classes, attr) {
+  let el = document.createElement(element);
+  if (attr)
+    setAttributeMap(el, attr);
+  if (classes)
+    setClasses(el, classes);
+  return el;
+};
+var setAttributeMap = function(element, attr) {
+  for (var i in attr) {
+    element.setAttribute(i, attr[i].toString());
+  }
+};
+var setClasses = function(element, classes, type = "add") {
+  element.classList[type](classes);
+};
+var setCss = function(element, values, value = null) {
+  if (typeof values === "string") {
+    if (value === null) {
+      return window.getComputedStyle(element).getPropertyValue(values);
+    } else {
+      if (typeof value == "number")
+        value = value + "px";
+      element.style[values] = value;
+    }
+  } else if (typeof values === "object") {
+    for (const prop in values) {
+      let value2 = values[prop];
+      if (typeof value2 == "number")
+        value2 = value2 + "px";
+      element.style[prop.toString()] = value2;
+    }
+  }
+};
+var emptyElement = function(element) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+};
+var siblings = function(element) {
+  return Array.from(element.parentNode?.children || []).filter((child) => child !== element).map((el) => el);
+};
+var elementList = {};
+var specificTypes = "large|transparent|outline".split("|");
+var typedElements = "button|input".split("|");
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar __assign = undefined && undefined.__assign || function () {\n  __assign = Object.assign || function (t) {\n    for (var s, i = 1, n = arguments.length; i < n; i++) {\n      s = arguments[i];\n      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];\n    }\n    return t;\n  };\n  return __assign.apply(this, arguments);\n};\nvar Store = /** @class */function () {\n  function Store(state) {\n    if (state === void 0) {\n      state = {};\n    }\n    this.stores = {\n      state: {}\n    };\n    this.setStore(state);\n  }\n  Store.prototype.set = function (key, value, store) {\n    if (store === void 0) {\n      store = 'state';\n    }\n    if (!this.stores[store]) this.stores[store] = {};\n    this.stores[store][key] = value;\n  };\n  Store.prototype.get = function (key, store) {\n    if (store === void 0) {\n      store = 'state';\n    }\n    return this.stores[store][key];\n  };\n  Store.prototype.getStore = function (store, id) {\n    if (store === void 0) {\n      store = 'state';\n    }\n    var ideed = id ? this.stores[id] || {} : {};\n    var s = __assign({}, this.stores[store]);\n    return s;\n  };\n  Store.prototype.setStore = function (state, store) {\n    if (store === void 0) {\n      store = 'state';\n    }\n    if (state) for (var i in state) {\n      this.set(i, state[i], store);\n    }\n  };\n  return Store;\n}();\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Store);\n\n//# sourceURL=webpack://rayous/./src/data/Store.ts?");
+// src/utils/id.js
+var generateRandomID = function(length = 12) {
+  const characters2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters2.length;
+  let randomID = "";
+  for (let i = 0;i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charactersLength);
+    randomID += characters2.charAt(randomIndex);
+  }
+  return elementList[randomID] ? generateRandomID(length) : randomID;
+};
+var id_default = generateRandomID;
 
-/***/ }),
+// src/utils/options.ts
+function getDefaults(opts) {
+  let defaults = {
+    element: {
+      name: "div",
+      html: null,
+      raw: null,
+      selector: null
+    },
+    class: "widget",
+    style: {},
+    position: {
+      type: "default",
+      centered: false,
+      top: null,
+      left: null,
+      bottom: null,
+      right: null
+    },
+    size: {
+      width: null,
+      height: null
+    },
+    private: false,
+    reset: false,
+    value: null,
+    children: [],
+    accepts: true,
+    events: {},
+    type: []
+  };
+  return {
+    ...defaults,
+    ...opts
+  };
+}
 
-/***/ "./src/utils/dom.ts":
-/*!**************************!*\
-  !*** ./src/utils/dom.ts ***!
-  \**************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+// src/data/Store.ts
+class Store {
+  stores = {
+    state: {}
+  };
+  constructor(state = {}) {
+    this.setStore(state);
+  }
+  set(key, value, store = "state") {
+    if (!this.stores[store])
+      this.stores[store] = {};
+    this.stores[store][key] = value;
+  }
+  get(key, store = "state") {
+    return this.stores[store][key];
+  }
+  getStore(store = "state", id) {
+    let ideed = id ? this.stores[id] || {} : {};
+    let s = { ...this.stores[store] };
+    return s;
+  }
+  setStore(state, store = "state") {
+    if (state)
+      for (var i in state) {
+        this.set(i, state[i], store);
+      }
+  }
+}
+var Store_default = Store;
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _widgets_main_Widget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../widgets/main/Widget */ \"./src/widgets/main/Widget.ts\");\n/* harmony import */ var _elman__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./elman */ \"./src/utils/elman.ts\");\n\n\nvar doAll = function (all, cb) {\n  var response = [];\n  all.forEach(function (element) {\n    var r = cb(element);\n    if (r) response.push(r);\n  });\n  response = response.filter(function (item) {\n    return !(item instanceof Dom);\n  });\n  if (response.length) {\n    response = response.shift();\n  } else {\n    response = all;\n  }\n  return Array.isArray(response) ? all : response;\n};\nvar Dom = /** @class */function () {\n  function Dom(element, classes, attributes) {\n    if (classes === void 0) {\n      classes = null;\n    }\n    if (attributes === void 0) {\n      attributes = null;\n    }\n    var _this = this;\n    this.elements = [];\n    if (element instanceof HTMLElement) {\n      this.elements.push(element);\n    } else {\n      var el = document.querySelectorAll(element);\n      el.forEach(function (el) {\n        return _this.elements.push(el);\n      });\n    }\n    if (classes) {\n      this.addClass(classes);\n    }\n    if (attributes) {\n      this.attr(attributes);\n    }\n  }\n  Dom.prototype.at = function (index) {\n    return this.elements.at(index);\n  };\n  Dom.prototype.push = function (child) {\n    if (child instanceof _widgets_main_Widget__WEBPACK_IMPORTED_MODULE_0__[\"default\"]) {\n      this.elements.push((0,_elman__WEBPACK_IMPORTED_MODULE_1__.findEl)(child.id));\n    } else {\n      this.elements.push(child);\n    }\n    return this;\n  };\n  Dom.prototype.unshift = function (child) {\n    if (child instanceof _widgets_main_Widget__WEBPACK_IMPORTED_MODULE_0__[\"default\"]) {\n      this.elements.unshift((0,_elman__WEBPACK_IMPORTED_MODULE_1__.findEl)(child.id));\n    } else {\n      this.elements.unshift(child);\n    }\n    return this;\n  };\n  Dom.prototype.shift = function () {\n    return this.elements.shift();\n  };\n  Dom.prototype.pop = function () {\n    return this.elements.pop();\n  };\n  Dom.prototype.forEach = function (callback) {\n    this.elements.forEach(callback);\n    return this;\n  };\n  Object.defineProperty(Dom.prototype, \"length\", {\n    get: function () {\n      return this.elements.length;\n    },\n    enumerable: false,\n    configurable: true\n  });\n  Dom.prototype.addClass = function (classes) {\n    return doAll(this, function (el) {\n      return (0,_elman__WEBPACK_IMPORTED_MODULE_1__.setClasses)(el, classes, 'add');\n    });\n  };\n  Dom.prototype.removeClass = function (classes) {\n    return doAll(this, function (el) {\n      return (0,_elman__WEBPACK_IMPORTED_MODULE_1__.setClasses)(el, classes, 'remove');\n    });\n  };\n  Dom.prototype.toggleClass = function (classes) {\n    return doAll(this, function (el) {\n      return (0,_elman__WEBPACK_IMPORTED_MODULE_1__.setClasses)(el, classes, 'toggle');\n    });\n  };\n  Dom.prototype.hasClass = function (classes) {\n    return this.elements.at(0).classList.contains(classes);\n  };\n  Dom.prototype.attr = function (attr) {\n    doAll(this, function (el) {\n      return (0,_elman__WEBPACK_IMPORTED_MODULE_1__.setAttributeMap)(el, attr);\n    });\n    return typeof attr == \"string\" ? this.elements.at(0).attributes[attr] : this;\n  };\n  Dom.prototype.html = function (html) {\n    if (html) this.elements.at(0).innerHTML = html;\n    return this.elements.at(0).innerHTML;\n  };\n  Dom.prototype.text = function (text) {\n    if (text) this.elements.at(0).innerText = text;\n    return this.elements.at(0).innerText;\n  };\n  Dom.prototype.append = function (element) {\n    var _this = this;\n    if (element instanceof Dom) {\n      element.forEach(function (element) {\n        return _this.at(0).appendChild(element);\n      });\n    } else {\n      this.at(0).appendChild(element);\n    }\n    return this;\n  };\n  Dom.prototype.appendTo = function (element) {\n    return doAll(this, function (el) {\n      return element.appendChild(el);\n    });\n  };\n  Dom.prototype.prepend = function (element) {\n    return this.at(0).insertBefore(element, this.at(0).firstChild);\n  };\n  Dom.prototype.prependTo = function (element) {\n    return doAll(this, function (el) {\n      return element.insertBefore(el, element.firstChild);\n    });\n  };\n  Dom.prototype.css = function (values, value) {\n    return doAll(this, function (el) {\n      return (0,_elman__WEBPACK_IMPORTED_MODULE_1__.setCss)(el, values, value);\n    });\n  };\n  Dom.prototype.remove = function () {\n    return doAll(this, function (el) {\n      return el.remove();\n    });\n  };\n  Dom.prototype.empty = function () {\n    return doAll(this, function (el) {\n      return (0,_elman__WEBPACK_IMPORTED_MODULE_1__.emptyElement)(el);\n    });\n  };\n  Dom.prototype.children = function () {\n    return Dom.from(this.at(0).children);\n  };\n  Dom.prototype.siblings = function () {\n    return Dom.from((0,_elman__WEBPACK_IMPORTED_MODULE_1__.siblings)(this.at(0)));\n  };\n  Dom.prototype.parent = function () {\n    return this.at(0).parentNode ? new Dom(this.at(0).parentNode) : null;\n  };\n  Dom.prototype.closest = function (selector) {\n    return new Dom(this.at(0).closest(selector));\n  };\n  Dom.prototype.find = function (arg) {\n    if (typeof arg === 'string') {\n      return Dom.from(Array.from(this.at(0).querySelectorAll(arg)));\n    } else if (typeof arg === 'function') {\n      return Array.prototype.find.call(this, arg);\n    }\n    return undefined;\n  };\n  Dom.from = function (elements) {\n    var e = new Dom(elements.shift());\n    Array.from(elements).forEach(function (el) {\n      return e.push(el);\n    });\n    return e;\n  };\n  Dom.create = function (element, classes, attr) {\n    if (classes === void 0) {\n      classes = \"\";\n    }\n    if (attr === void 0) {\n      attr = {};\n    }\n    return new Dom((0,_elman__WEBPACK_IMPORTED_MODULE_1__.createElement)(element, classes, attr));\n  };\n  return Dom;\n}();\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dom);\n\n//# sourceURL=webpack://rayous/./src/utils/dom.ts?");
+// src/utils/events.js
+var createEventData = function(e, name, widget) {
+  return {
+    prevent: () => e.preventDefault(),
+    stop: () => e.stopPropagation(),
+    key: { code: e.keyCode, name: e.code, output: e.key, ctrl: e.ctrlKey },
+    pos: { x: e.clientX, y: e.clientY },
+    offset: { x: e.offsetX, y: e.offsetY },
+    name,
+    data: e.data || e.originalEvent?.data,
+    dataTransfer: e.originalEvent?.dataTransfer,
+    target: widget || e.target ? Widget_default.from(e.target) : null
+  };
+};
+var getEventName = function(event) {
+  if (event === "tap")
+    return "click";
+  if (event === "hover")
+    return "mouseenter";
+  if (event === "doubleTap")
+    return "dblclick";
+  if (event === "focusIn")
+    return "focus";
+  if (event === "focusOut")
+    return "blur";
+  return event;
+};
+var onHold = function(widget, callback, duration) {
+  const holdEvent = "hold";
+  const eventName = getEventName(holdEvent);
+  const startHoldTimer = (e) => {
+    if (widget.is("disabled"))
+      return;
+    callback.__holdTimer = setTimeout(() => {
+      var data = createEventData(e, holdEvent);
+      callback.call(this, data, {});
+      widget.emit(eventName, createEventData({}, holdEvent));
+      widget.is("held", true);
+    }, duration);
+  };
+  const cancelHoldTimer = () => {
+    setTimeout(() => widget.is("held", false), 10);
+    clearTimeout(callback.__holdTimer);
+  };
+  widget.__events__.push({ event: eventName, callback });
+  findEl(widget.id).on("mousedown", startHoldTimer);
+  findEl(widget.id).on("mouseup", cancelHoldTimer);
+  return widget;
+};
 
-/***/ }),
+// src/utils/dom.ts
+var doAll = (all, cb) => {
+  let response = [];
+  all.forEach((element) => {
+    let r = cb(element);
+    if (r)
+      response.push(r);
+  });
+  response = response.filter((item) => !(item instanceof Dom));
+  if (response.length) {
+    response = response.shift();
+  } else {
+    response = all;
+  }
+  return Array.isArray(response) ? all : response;
+};
 
-/***/ "./src/utils/elman.ts":
-/*!****************************!*\
-  !*** ./src/utils/elman.ts ***!
-  \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+class Dom {
+  elements = [];
+  constructor(element, classes = null, attributes = null) {
+    if (element instanceof HTMLElement) {
+      this.elements.push(element);
+    } else {
+      let el = document.querySelectorAll(element);
+      el.forEach((el2) => this.elements.push(el2));
+    }
+    if (classes) {
+      this.addClass(classes);
+    }
+    if (attributes) {
+      this.attr(attributes);
+    }
+  }
+  at(index) {
+    return this.elements.at(index);
+  }
+  push(child) {
+    if (child instanceof Widget_default) {
+      this.elements.push(findEl(child.id));
+    } else {
+      this.elements.push(child);
+    }
+    return this;
+  }
+  unshift(child) {
+    if (child instanceof Widget_default) {
+      this.elements.unshift(findEl(child.id));
+    } else {
+      this.elements.unshift(child);
+    }
+    return this;
+  }
+  shift() {
+    return this.elements.shift();
+  }
+  pop() {
+    return this.elements.pop();
+  }
+  forEach(callback) {
+    this.elements.forEach(callback);
+    return this;
+  }
+  get length() {
+    return this.elements.length;
+  }
+  addClass(classes) {
+    return doAll(this, (el) => setClasses(el, classes, "add"));
+  }
+  removeClass(classes) {
+    return doAll(this, (el) => setClasses(el, classes, "remove"));
+  }
+  toggleClass(classes) {
+    return doAll(this, (el) => setClasses(el, classes, "toggle"));
+  }
+  hasClass(classes) {
+    return this.elements.at(0).classList.contains(classes);
+  }
+  attr(attr2) {
+    doAll(this, (el) => setAttributeMap(el, attr2));
+    return typeof attr2 == "string" ? this.elements.at(0).attributes[attr2] : this;
+  }
+  html(html) {
+    if (html)
+      this.elements.at(0).innerHTML = html;
+    return this.elements.at(0).innerHTML;
+  }
+  text(text) {
+    if (text)
+      this.elements.at(0).innerText = text;
+    return this.elements.at(0).innerText;
+  }
+  append(element) {
+    if (element instanceof Dom) {
+      element.forEach((element2) => this.at(0).appendChild(element2));
+    } else {
+      this.at(0).appendChild(element);
+    }
+    return this;
+  }
+  appendTo(element) {
+    return doAll(this, (el) => element.appendChild(el));
+  }
+  prepend(element) {
+    return this.at(0).insertBefore(element, this.at(0).firstChild);
+  }
+  prependTo(element) {
+    return doAll(this, (el) => element.insertBefore(el, element.firstChild));
+  }
+  css(values, value) {
+    return doAll(this, (el) => setCss(el, values, value));
+  }
+  remove() {
+    return doAll(this, (el) => el.remove());
+  }
+  empty() {
+    return doAll(this, (el) => emptyElement(el));
+  }
+  children() {
+    return Dom.from(this.at(0).children);
+  }
+  siblings() {
+    return Dom.from(siblings(this.at(0)));
+  }
+  parent() {
+    return this.at(0).parentNode ? new Dom(this.at(0).parentNode) : null;
+  }
+  closest(selector) {
+    return new Dom(this.at(0).closest(selector));
+  }
+  find(arg) {
+    if (typeof arg === "string") {
+      return Dom.from(Array.from(this.at(0).querySelectorAll(arg)));
+    } else if (typeof arg === "function") {
+      return Array.prototype.find.call(this, arg);
+    }
+    return;
+  }
+  on(event, callback) {
+    doAll(this, (el) => {
+      if (!el.domEventListeners)
+        el.domEventListeners = [];
+      el.domEventListeners.push({ event, callback });
+      el.addEventListener(event, callback);
+    });
+    return this;
+  }
+  off(name, callback = null) {
+    doAll(this, (el) => {
+      if (!el.domEventListeners)
+        el.domEventListeners = [];
+      el.domEventListeners.forEach((event) => {
+        if (callback) {
+          if (event.event === name && event.callback == callback)
+            el.removeEventListener(name, callback);
+        } else {
+          if (event.event === name)
+            el.removeEventListener(name, event.callback);
+        }
+      });
+      el.domEventListeners = el.domEventListeners.filter((event) => {
+        if (callback) {
+          return event.event !== name && event.callback !== callback;
+        } else {
+          return event.event !== name;
+        }
+      });
+    });
+    return this;
+  }
+  trigger(event, data) {
+    doAll(this, (el) => {
+      el.dispatchEvent(new Event(event, data));
+    });
+    return this;
+  }
+  static from(elements) {
+    let e = new Dom(elements.shift());
+    Array.from(elements).forEach((el) => e.push(el));
+    return e;
+  }
+  static create(element, classes = "", attr2 = {}) {
+    return new Dom(createElement(element, classes, attr2));
+  }
+}
+var dom_default = Dom;
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   GUIDOMTREE: () => (/* binding */ elementList),\n/* harmony export */   createElement: () => (/* binding */ createElement),\n/* harmony export */   elementTypes: () => (/* binding */ elementTypes),\n/* harmony export */   emptyElement: () => (/* binding */ emptyElement),\n/* harmony export */   findEl: () => (/* binding */ findEl),\n/* harmony export */   registerElement: () => (/* binding */ registerElement),\n/* harmony export */   setAttributeMap: () => (/* binding */ setAttributeMap),\n/* harmony export */   setClasses: () => (/* binding */ setClasses),\n/* harmony export */   setCss: () => (/* binding */ setCss),\n/* harmony export */   siblings: () => (/* binding */ siblings)\n/* harmony export */ });\nvar elementList = {};\nvar specificTypes = 'large|transparent|outline'.split('|');\nvar typedElements = 'button|input'.split('|');\nfunction registerElement(element, id) {\n  elementList[id] = element;\n}\nfunction findEl(id) {\n  return elementList[id];\n}\nfunction elementTypes(type1, types, id) {\n  if (!typedElements.includes(type1)) type1 = null;\n  types.forEach(function (type) {\n    var el = findEl(id);\n    if (specificTypes.includes(type)) {\n      type1 = findEl(id).GUIWIDGET.options.class;\n    }\n    var t = (type1 ? type1 + '-' : '') + type;\n    el.classList.toggle(t);\n  });\n}\nfunction createElement(element, classes, attr) {\n  var el = document.createElement(element);\n  if (attr) setAttributeMap(el, attr);\n  if (classes) setClasses(el, classes);\n  return el;\n}\nfunction setAttributeMap(element, attr) {\n  for (var i in attr) {\n    element.setAttribute(i, attr[i].toString());\n  }\n}\nfunction setClasses(element, classes, type) {\n  if (type === void 0) {\n    type = 'add';\n  }\n  element.classList[type](classes);\n}\nfunction setCss(element, values, value) {\n  if (value === void 0) {\n    value = null;\n  }\n  if (typeof values === 'string') {\n    if (value === null) {\n      return window.getComputedStyle(element).getPropertyValue(values);\n    } else {\n      element.style[values] = value;\n    }\n  } else if (typeof values === 'object') {\n    for (var prop in values) {\n      element.style[prop.toString()] = values[prop];\n    }\n  }\n}\nfunction emptyElement(element) {\n  while (element.firstChild) {\n    element.removeChild(element.firstChild);\n  }\n}\nfunction siblings(element) {\n  var _a;\n  return Array.from(((_a = element.parentNode) === null || _a === void 0 ? void 0 : _a.children) || []).filter(function (child) {\n    return child !== element;\n  }).map(function (el) {\n    return el;\n  });\n}\n\n\n//# sourceURL=webpack://rayous/./src/utils/elman.ts?");
+// src/utils/misc.js
+var filteredChildren = function(children, makeOne, giveNull) {
+  const filtered = children.toArray().filter((element) => element.GUIWIDGET).map((element) => element.GUIWIDGET);
+  const isOne = filtered.length == 1 && makeOne;
+  if (isOne) {
+    filtered[0].toArray = () => WidgetList.from([filtered[0]]);
+  } else {
+    filtered.toArray = () => WidgetList.from([...filtered]);
+  }
+  let toGive = isOne ? filtered[0] : filtered.length ? filtered : giveNull ? null : filtered;
+  if (Array.isArray(toGive)) {
+    return WidgetList.from(toGive);
+  }
+  return toGive;
+};
+var resolveSubchild = function(element, child) {
+  let el = element;
+  if (child && el.find(child).length)
+    el = el.find(child);
+  return el;
+};
+var htmlPseudos = [
+  "::after",
+  "::before",
+  "::first-letter",
+  "::first-line",
+  "::selection",
+  "::placeholder",
+  "::marker",
+  ":hover",
+  ":active",
+  ":focus",
+  ":visited",
+  ":link",
+  ":target",
+  ":first-child",
+  ":last-child",
+  ":nth-child(n)",
+  ":nth-of-type(n)",
+  ":not(selector)",
+  ":checked"
+];
 
-/***/ }),
+// src/widgets/_ghost/WidgetProps.ts
+var registerEvent = function(widget, event, callback) {
+  event = getEventName(event);
+  if (event == "hold") {
+    return onHold(widget, callback, widget.options.holdDuration);
+  }
+  widget.__events__.push({ event, callback });
+  findEl(widget.id).on(event, (e, args) => {
+    if (widget.is("disabled"))
+      return;
+    if (event == "click" && widget.is("held"))
+      return;
+    var data = createEventData(e, event, widget);
+    return callback.call(widget, data, args);
+  });
+};
+var mounted = function(parent, child) {
+  if (typeof child._onMount == "function")
+    child._onMount(parent);
+};
 
-/***/ "./src/utils/options.ts":
-/*!******************************!*\
-  !*** ./src/utils/options.ts ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+class WidgetProps2 {
+  tree = [];
+  _id = null;
+  id = null;
+  accepts = true;
+  private = false;
+  sealed = false;
+  options = {};
+  __generated = false;
+  state = new Store_default;
+  _onBuild;
+  __events__ = [];
+  set style(style) {
+    findEl(this.id).at(0).GUISTYLE = style;
+    if (style instanceof Style_default)
+      findEl(this.id).css(style.all);
+    else
+      findEl(this.id).css(style);
+  }
+  get style() {
+    return findEl(this.id).at(0).GUISTYLE;
+  }
+  set padding(value) {
+    findEl(this.id).css({ padding: value });
+  }
+  set margin(value) {
+    findEl(this.id).css({ margin: value });
+  }
+  set type(type2) {
+    if (typeof type2 == "string") {
+      type2 = [type2];
+    } else if (Array.isArray(type2)) {
+      type2 = type2;
+    } else {
+      throw new Error("Undefined type type");
+    }
+    elementTypes(null, type2, this.id);
+    this.emit("typechange", type2);
+  }
+  setType(type2) {
+    this.type = type2;
+    return this;
+  }
+  addHTMLElement(child, subchild) {
+    let hadGUI = child.GUIWIDGET;
+    const elt = this.add(hadGUI ? child.GUIWIDGET : Widget_default.from(child), subchild);
+    if (!hadGUI)
+      elt.stripElement();
+    return elt;
+  }
+  _onMount(parent) {
+  }
+  addWidget(child, subchild) {
+    if (this.accepts === false)
+      return this;
+    if (this.sealed === true)
+      return this;
+    if (isWidget(child)) {
+      const l = resolveSubchild(findEl(this.id), subchild);
+      if (child.is("prefix")) {
+        l.prepend(findEl(child.id));
+      } else {
+        l.append(findEl(child.id));
+      }
+      mounted(this, child);
+    }
+    return this;
+  }
+  add(child, subchild = null) {
+    if (isWidget(child)) {
+      this.addWidget(child, subchild);
+    } else if (isHTMLElement(child)) {
+      this.addHTMLElement(child, subchild);
+    } else {
+      console.log(child, " was given");
+      throw new Error("Only Widgets or HTMLElements Allowed, The given child was logged.");
+    }
+    return this;
+  }
+  addBefore(child, subchild = null) {
+    child.is("prefix", true);
+    this.add(child, subchild);
+    child.is("prefix", false);
+    return this;
+  }
+  addAll(...children) {
+    let subchild = "";
+    let last2 = children[children.length - 1];
+    if (typeof last2 == "string") {
+      subchild = children.pop();
+    }
+    children.forEach((child) => this.add(child, subchild));
+    return this;
+  }
+  addWrappedElement(elt, elementText, where, subchild = null) {
+    const el = resolveSubchild(findEl(this.id), subchild);
+    let [cssClass, element] = elementText.split(" ");
+    if (!elt) {
+      el.find("." + cssClass).remove();
+      return this;
+    }
+    if (!element)
+      element = "div";
+    let additionEl;
+    if (elt instanceof Widget_default) {
+      additionEl = findEl(elt.id);
+    } else if (elt instanceof HTMLElement) {
+      additionEl = $(elt);
+    } else {
+      throw new Error("Unexpected Element: not HTMLElement nor Widget");
+    }
+    const h = $("<" + element + ' class="' + cssClass + '" />');
+    h.append(additionEl);
+    if (where == "before")
+      el.prepend(h);
+    else
+      el.append(h);
+    if (isWidget(elt)) {
+      mounted(this, elt);
+    }
+    return this;
+  }
+  remove(child = null, subchild = null) {
+    if (this.sealed === true)
+      return this;
+    if (!child)
+      resolveSubchild(findEl(this.id), subchild).remove();
+    else if (child == "*")
+      resolveSubchild(findEl(this.id), subchild).empty();
+    else
+      child.remove();
+    return this;
+  }
+  is(state, is = null) {
+    const stateName = ":" + state;
+    if (is === true || is === false) {
+      if (is === true)
+        findEl(this.id).at(0)[stateName] = true;
+      else
+        delete findEl(this.id).at(0)[stateName];
+      return true;
+    }
+    if (state == "disabled") {
+      return findEl(this.id).hasClass("disabled") && findEl(this.id).is(":disabled");
+    } else {
+      return htmlPseudos.indexOf(stateName) == -1 ? findEl(this.id).at(0)[stateName] : findEl(this.id).is(stateName);
+    }
+  }
+  children(subchild = null) {
+    return filteredChildren(resolveSubchild(findEl(this.id), subchild).children());
+  }
+  find(q, subchild = null) {
+    return q == "*" ? this.children() : filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q), true);
+  }
+  closest(q) {
+    return filteredChildren(findEl(this.id).closest(q), true, true);
+  }
+  parent(container) {
+    let parent = findEl(this.id).parent();
+    if (!parent && !this.private)
+      return Widget_default.from(document.body);
+    if (container)
+      return this.container();
+    if (!parent.at(0))
+      return null;
+    while (!parent.at(0).GUIWIDGET) {
+      parent = parent.parent();
+    }
+    if (!parent.at(0).GUIWIDGET)
+      return Widget_default.from(parent.at(0));
+    return parent.at(0).GUIWIDGET;
+  }
+  container() {
+    let parent = findEl(this.id).parent();
+    return Widget_default.from(parent.at(0));
+  }
+  attr(props) {
+    if (this.sealed === true)
+      return this;
+    if (typeof props == "object")
+      findEl(this.id).attr(props);
+    return typeof props == "string" ? findEl(this.id).attr(props) : this;
+  }
+  prop(props) {
+    if (this.sealed === true)
+      return this;
+    if (typeof props == "object")
+      findEl(this.id).prop(props);
+    return typeof props == "string" ? findEl(this.id).prop(props) : this;
+  }
+  css(props) {
+    if (this.sealed === true)
+      return this;
+    if (typeof props == "object")
+      findEl(this.id).css(props);
+    return typeof props == "string" ? findEl(this.id).css(props) : this;
+  }
+  styleProp(prop) {
+    if (typeof prop !== "string")
+      return this;
+    return findEl(this.id).css(prop);
+  }
+  text(text) {
+    if (this.sealed === true)
+      return this;
+    findEl(this.id).text(text);
+    return findEl(this.id).text() || this;
+  }
+  height(h = null) {
+    if (this.sealed === true)
+      return this;
+    findEl(this.id).height(h);
+    return h ? this : findEl(this.id).height();
+  }
+  width(w = null) {
+    if (this.sealed === true)
+      return this;
+    findEl(this.id).width(w);
+    return w ? this : findEl(this.id).width();
+  }
+  html(text = null) {
+    if (this.sealed === true)
+      return this;
+    findEl(this.id).html(text);
+    return text ? this : findEl(this.id).html();
+  }
+  addClass(classes) {
+    findEl(this.id).addClass(classes);
+    return this;
+  }
+  hasClass(classes) {
+    return findEl(this.id).hasClass(classes);
+  }
+  removeClass(classes) {
+    findEl(this.id).removeClass(classes);
+    return this;
+  }
+  toggleClass(classes) {
+    findEl(this.id).toggleClass(classes);
+    return this;
+  }
+  rect() {
+    return findEl(this.id).at(0).getBoundingClientRect();
+  }
+  focus() {
+    findEl(this.id).focus();
+    return this;
+  }
+  click() {
+    findEl(this.id).click();
+    return this;
+  }
+  toHTMLElement(parent, direction = null) {
+    if (this.sealed === true)
+      return this;
+    return this.toWidget(Widget_default.from(parent), direction);
+  }
+  toWidget(parent, direction = null) {
+    if (this.sealed === true)
+      return this;
+    if (direction == "before")
+      parent.addBefore(this);
+    else
+      parent.add(this);
+    return this;
+  }
+  to(parent, direction = null) {
+    if (isWidget(parent)) {
+      this.toWidget(parent, direction);
+    } else if (isHTMLElement(parent)) {
+      this.toHTMLElement(parent, direction);
+    } else {
+      throw new Error("Only Widgets or HTMLElements Allowed");
+    }
+    return this;
+  }
+  on(event, callback) {
+    if (Array.isArray(event)) {
+      event.forEach((event2) => registerEvent(this, event2, callback));
+    } else {
+      registerEvent(this, event, callback);
+    }
+    return this;
+  }
+  off(event, callback = null) {
+    if (Array.isArray(event)) {
+      event.forEach((event2) => findEl(this.id).off(event2, callback));
+    } else {
+      findEl(this.id).off(event, callback);
+    }
+    return this;
+  }
+  emit(event, data) {
+    findEl(this.id).trigger(event, data);
+    return this;
+  }
+  hide(time) {
+    findEl(this.id).hide(time);
+    return this;
+  }
+  show(time) {
+    findEl(this.id).show(time);
+    return this;
+  }
+  toggle(time) {
+    findEl(this.id).toggle(time);
+    return this;
+  }
+  raw() {
+    if (this.sealed === true)
+      return this;
+    return this.private ? this : findEl(this.id);
+  }
+  toString() {
+    return findEl(this.id).at(0).outerHTML;
+  }
+  stripElement() {
+    return delete findEl(this.id).at(0).GUIWIDGET;
+  }
+  toArray() {
+    return [this];
+  }
+  set $id(id) {
+    this._id = id, findEl(this.id).attr("id", id);
+  }
+}
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ getDefaults),\n/* harmony export */   options: () => (/* binding */ options)\n/* harmony export */ });\nvar __assign = undefined && undefined.__assign || function () {\n  __assign = Object.assign || function (t) {\n    for (var s, i = 1, n = arguments.length; i < n; i++) {\n      s = arguments[i];\n      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];\n    }\n    return t;\n  };\n  return __assign.apply(this, arguments);\n};\nvar options = /** @class */function () {\n  function options() {\n    this.element = {};\n    this.class = \"\";\n    this.style = {};\n    this.position = {};\n    this.size = {};\n    this.attr = {};\n    this.props = {};\n    this.children = [];\n    this.private = false;\n    this.reset = false;\n    this.value = \"\";\n    this.accepts = true;\n    this.events = {};\n    this.type = [];\n    this._setters = [];\n    this.holdDuration = 1000;\n    this.build = function () {};\n    this.onClick = function () {};\n    this.onHold = function () {};\n    this.onContextmenu = function () {};\n    this.onMouseEnter = function () {};\n    this.onMouseMove = function () {};\n    this.onMouseDown = function () {};\n    this.onKeyDown = function () {};\n    this.onKeyUp = function () {};\n    this.onKey = function () {};\n  }\n  return options;\n}();\n;\n\nfunction getDefaults(opts) {\n  var defaults = {\n    element: {\n      name: \"div\",\n      html: null,\n      raw: null,\n      selector: null\n    },\n    class: \"widget\",\n    style: {},\n    position: {\n      type: 'default',\n      centered: false,\n      top: null,\n      left: null,\n      bottom: null,\n      right: null\n    },\n    size: {\n      width: null,\n      height: null\n    },\n    private: false,\n    reset: false,\n    value: null,\n    children: [],\n    accepts: true,\n    events: {},\n    type: []\n  };\n  return __assign(__assign({}, defaults), opts);\n}\n\n//# sourceURL=webpack://rayous/./src/utils/options.ts?");
+class WidgetList extends Array {
+  constructor() {
+    super(...arguments);
+  }
+  static from(array) {
+    return new WidgetList(...array);
+  }
+  add(child, subchild) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.add(child, subchild));
+      }
+    });
+    return responses;
+  }
+  remove(child, subchild) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.remove(child, subchild));
+      }
+    });
+    return responses;
+  }
+  is(state, is) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.is(state, is));
+      }
+    });
+    return responses;
+  }
+  attr(props) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.attr(props));
+      }
+    });
+    return responses;
+  }
+  disable() {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.disable());
+      }
+    });
+    return responses;
+  }
+  enable() {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.enable());
+      }
+    });
+    return responses;
+  }
+  prop(props) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.prop(props));
+      }
+    });
+    return responses;
+  }
+  addClass(classes) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.addClass(classes));
+      }
+    });
+    return responses;
+  }
+  hasClass(classes) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.hasClass(classes));
+      }
+    });
+    return responses;
+  }
+  removeClass(classes) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.removeClass(classes));
+      }
+    });
+    return responses;
+  }
+  toggleClass(classes) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.toggleClass(classes));
+      }
+    });
+    return responses;
+  }
+  text(text) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.text(text));
+      }
+    });
+    return responses;
+  }
+  height(h) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.height(h));
+      }
+    });
+    return responses;
+  }
+  width(w) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.width(w));
+      }
+    });
+    return responses;
+  }
+  on(event, callback) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.on(event, callback));
+      }
+    });
+    return responses;
+  }
+  off(event, callback) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.off(event, callback));
+      }
+    });
+    return responses;
+  }
+  emit(event, data) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.emit(event, data));
+      }
+    });
+    return responses;
+  }
+  hide(time = null) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.hide(time));
+      }
+    });
+    return responses;
+  }
+  show(time = null) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.show(time));
+      }
+    });
+    return responses;
+  }
+  toggle(time = null) {
+    let responses = new WidgetList;
+    this.forEach((widget) => {
+      if (isWidget(widget)) {
+        responses.push(widget.toggle(time));
+      }
+    });
+    return responses;
+  }
+}
+var WidgetProps_default = WidgetProps2;
 
-/***/ }),
+// src/widgets/main/Widget.ts
+var initiateSetters = function(widget2, setterFunctions, options3) {
+  setterFunctions.forEach((setter) => {
+    if (options3[setter]) {
+      widget2[setter] = options3[setter];
+    }
+  });
+};
+var _init = function(widget2, options3) {
+  let elementRaw;
+  if (!widget2.__generated) {
+    if (options3.element.raw || options3.element.selector) {
+      elementRaw = new dom_default(options3.element.raw).at(0);
+    } else {
+      elementRaw = document.createElement(options3.element.name);
+    }
+  }
+  const element = widget2.__generated ? findEl(widget2.id) : new dom_default(elementRaw);
+  if (!widget2.__generated && options3.element.html)
+    element.html(options3.element.html);
+  if (widget2.__generated && options3.reset)
+    element.attr({ class: "", style: "" });
+  element.addClass(options3.class);
+  if (options3.position) {
+    let { type: type3, centered, top, left, right, bottom } = options3.position;
+    element.css({
+      position: isPosition(type3) ? type3 : null
+    });
+    if (centered) {
+      element.css({
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%, -50%)"
+      });
+    } else {
+      element.css({
+        top,
+        left,
+        right,
+        bottom
+      });
+    }
+  }
+  if (options3.size) {
+    const {
+      width,
+      height
+    } = options3.size;
+    element.css({
+      width,
+      height
+    });
+  }
+  if (!widget2.__generated) {
+    Object.defineProperty(widget2, "id", {
+      writable: false,
+      value: id_default()
+    });
+    element.at(0).GUIWIDGET = widget2;
+    registerElement(element, widget2.id);
+  }
+  if (typeof options3.build == "function") {
+    if (!options3.children)
+      options3.children = [];
+    let child2 = options3.build(options3, widget2);
+    if (Array.isArray(child2)) {
+      options3.children.push(child2);
+    } else {
+      options3.children.push(child2);
+    }
+  }
+  if (options3.children && options3.children.length) {
+    options3.children.forEach((element2) => {
+      widget2.add(element2);
+    });
+  }
+  if (options3.private === true) {
+    delete options3.private;
+  }
+  if (options3.accepts === false) {
+    widget2.accepts = false;
+  }
+  for (var i in options3) {
+    if (i.match(/on([A-Z])([a-zA-Z]+)/)) {
+      if (!options3.events)
+        options3.events = {};
+      options3.events[i.replace("on", "").toLowerCase()] = options3[i];
+    }
+  }
+  if (options3.events) {
+    for (var i in options3.events) {
+      widget2.on(i, options3.events[i]);
+    }
+  }
+  if (options3.props) {
+    element.prop(options3.props);
+  }
+  if (options3.attr) {
+    element.attr(options3.attr);
+  }
+  widget2.options = options3;
+  const setterFunctions = [
+    "padding",
+    "margin",
+    "type",
+    "id",
+    "animation",
+    "tooltip",
+    "style"
+  ];
+  if (options3._setters) {
+    setterFunctions.push(...options3._setters);
+  }
+  initiateSetters(widget2, setterFunctions, options3);
+  if (!widget2.__generated)
+    widget2.__generated = true;
+  if (typeof widget2._onBuild == "function") {
+    let w = widget2._onBuild();
+    if (w) {
+      widget2.add(w);
+    }
+  }
+};
+var defaults = getDefaults({});
+class Widget5 extends WidgetProps_default {
+  constructor(options3 = { element: { name: "div" }, class: "widget" }) {
+    super();
+    _init(this, options3);
+  }
+  static from(child2) {
+    return new Widget5({ element: { raw: new dom_default(child2).at(0) } });
+  }
+}
+var Widget_default = Widget5;
 
-/***/ "./src/widgets/_ghost/WidgetProps.ts":
-/*!*******************************************!*\
-  !*** ./src/widgets/_ghost/WidgetProps.ts ***!
-  \*******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+// src/utils/type.js
+var isPosition = function(pos) {
+  return pos == "absolute" || pos == "relative" || pos == "static" || pos == "fixed" || pos == "inherit" || pos == "sticky";
+};
+var isWidget = function(thing) {
+  return thing instanceof Widget_default;
+};
+var isHTMLElement = function(thing) {
+  return thing instanceof HTMLElement;
+};
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   WidgetList: () => (/* binding */ WidgetList),\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _components_Style__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Style */ \"./src/components/Style.js\");\n/* harmony import */ var _data_Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../data/Store */ \"./src/data/Store.ts\");\n/* harmony import */ var _utils_elman__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/elman */ \"./src/utils/elman.ts\");\n/* harmony import */ var _utils_events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/events */ \"./src/utils/events.js\");\n/* harmony import */ var _utils_misc__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/misc */ \"./src/utils/misc.js\");\n/* harmony import */ var _utils_type__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/type */ \"./src/utils/type.js\");\n/* harmony import */ var _main_Widget__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../main/Widget */ \"./src/widgets/main/Widget.ts\");\nvar __extends = undefined && undefined.__extends || function () {\n  var extendStatics = function (d, b) {\n    extendStatics = Object.setPrototypeOf || {\n      __proto__: []\n    } instanceof Array && function (d, b) {\n      d.__proto__ = b;\n    } || function (d, b) {\n      for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];\n    };\n    return extendStatics(d, b);\n  };\n  return function (d, b) {\n    if (typeof b !== \"function\" && b !== null) throw new TypeError(\"Class extends value \" + String(b) + \" is not a constructor or null\");\n    extendStatics(d, b);\n    function __() {\n      this.constructor = d;\n    }\n    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n  };\n}();\nvar __read = undefined && undefined.__read || function (o, n) {\n  var m = typeof Symbol === \"function\" && o[Symbol.iterator];\n  if (!m) return o;\n  var i = m.call(o),\n    r,\n    ar = [],\n    e;\n  try {\n    while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);\n  } catch (error) {\n    e = {\n      error: error\n    };\n  } finally {\n    try {\n      if (r && !r.done && (m = i[\"return\"])) m.call(i);\n    } finally {\n      if (e) throw e.error;\n    }\n  }\n  return ar;\n};\nvar __spreadArray = undefined && undefined.__spreadArray || function (to, from, pack) {\n  if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {\n    if (ar || !(i in from)) {\n      if (!ar) ar = Array.prototype.slice.call(from, 0, i);\n      ar[i] = from[i];\n    }\n  }\n  return to.concat(ar || Array.prototype.slice.call(from));\n};\n\n\n\n\n\n\n\nfunction registerEvent(widget, event, callback) {\n  event = (0,_utils_events__WEBPACK_IMPORTED_MODULE_3__.getEventName)(event);\n  if (event == 'hold') {\n    return (0,_utils_events__WEBPACK_IMPORTED_MODULE_3__.onHold)(widget, callback, widget.options.holdDuration);\n  }\n  widget.__events__.push({\n    event: event,\n    callback: callback\n  });\n  (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(widget.id).on(event, function (e, args) {\n    if (widget.is('disabled')) return;\n    if (event == 'click' && widget.is('held')) return;\n    var data = (0,_utils_events__WEBPACK_IMPORTED_MODULE_3__.createEventData)(e, event, widget);\n    return callback.call(widget, data, args);\n  });\n}\nfunction mounted(parent, child) {\n  if (typeof child._onMount == \"function\") child._onMount(parent);\n}\nvar WidgetProps = /** @class */function () {\n  function WidgetProps() {\n    this.tree = [];\n    this._id = null;\n    this.id = null;\n    this.accepts = true;\n    this.private = false;\n    this.sealed = false;\n    this.options = {};\n    this.__generated = false;\n    this.state = new _data_Store__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\n    this.__events__ = [];\n  }\n  Object.defineProperty(WidgetProps.prototype, \"style\", {\n    get: function () {\n      return (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).at(0).GUISTYLE;\n    },\n    set: function (style) {\n      (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).at(0).GUISTYLE = style;\n      if (style instanceof _components_Style__WEBPACK_IMPORTED_MODULE_0__[\"default\"]) (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).css(style.all);else (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).css(style);\n    },\n    enumerable: false,\n    configurable: true\n  });\n  Object.defineProperty(WidgetProps.prototype, \"padding\", {\n    set: function (value) {\n      (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).css({\n        \"padding\": value\n      });\n    },\n    enumerable: false,\n    configurable: true\n  });\n  Object.defineProperty(WidgetProps.prototype, \"margin\", {\n    set: function (value) {\n      (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).css({\n        \"margin\": value\n      });\n    },\n    enumerable: false,\n    configurable: true\n  });\n  Object.defineProperty(WidgetProps.prototype, \"type\", {\n    set: function (type) {\n      if (typeof type == 'string') {\n        type = [type];\n      } else if (Array.isArray(type)) {\n        type = type;\n      } else {\n        throw new Error('Undefined type type');\n      }\n      (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.elementTypes)(null, type, this.id);\n      this.emit('typechange', type);\n    },\n    enumerable: false,\n    configurable: true\n  });\n  WidgetProps.prototype.setType = function (type) {\n    this.type = type;\n    return this;\n  };\n  WidgetProps.prototype.addHTMLElement = function (child, subchild) {\n    var hadGUI = child.GUIWIDGET;\n    var elt = this.add(hadGUI ? child.GUIWIDGET : _main_Widget__WEBPACK_IMPORTED_MODULE_6__[\"default\"].from(child), subchild);\n    if (!hadGUI) elt.stripElement();\n    return elt;\n  };\n  WidgetProps.prototype._onMount = function (parent) {\n    // this.setStore(parent.state);\n  };\n  WidgetProps.prototype.addWidget = function (child, subchild) {\n    if (this.accepts === false) return this;\n    if (this.sealed === true) return this;\n    if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(child)) {\n      var l = (0,_utils_misc__WEBPACK_IMPORTED_MODULE_4__.resolveSubchild)((0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id), subchild);\n      if (child.is('prefix')) {\n        l.prepend((0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(child.id));\n      } else {\n        l.append((0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(child.id));\n      }\n      mounted(this, child);\n    }\n    return this;\n  };\n  WidgetProps.prototype.add = function (child, subchild) {\n    if (subchild === void 0) {\n      subchild = null;\n    }\n    if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(child)) {\n      this.addWidget(child, subchild);\n    } else if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isHTMLElement)(child)) {\n      this.addHTMLElement(child, subchild);\n    } else {\n      console.log(child, ' was given');\n      throw new Error('Only Widgets or HTMLElements Allowed, The given child was logged.');\n    }\n    return this;\n  };\n  WidgetProps.prototype.addBefore = function (child, subchild) {\n    if (subchild === void 0) {\n      subchild = null;\n    }\n    child.is('prefix', true);\n    this.add(child, subchild);\n    child.is('prefix', false);\n    return this;\n  };\n  WidgetProps.prototype.addAll = function () {\n    var _this = this;\n    var children = [];\n    for (var _i = 0; _i < arguments.length; _i++) {\n      children[_i] = arguments[_i];\n    }\n    var subchild = \"\";\n    var last = children[children.length - 1];\n    if (typeof last == 'string') {\n      subchild = children.pop();\n    }\n    children.forEach(function (child) {\n      return _this.add(child, subchild);\n    });\n    return this;\n  };\n  WidgetProps.prototype.addWrappedElement = function (elt, elementText, where, subchild) {\n    if (subchild === void 0) {\n      subchild = null;\n    }\n    var el = (0,_utils_misc__WEBPACK_IMPORTED_MODULE_4__.resolveSubchild)((0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id), subchild);\n    var _a = __read(elementText.split(' '), 2),\n      cssClass = _a[0],\n      element = _a[1];\n    if (!elt) {\n      el.find('.' + cssClass).remove();\n      return this;\n    }\n    if (!element) element = 'div';\n    var additionEl;\n    if (elt instanceof _main_Widget__WEBPACK_IMPORTED_MODULE_6__[\"default\"]) {\n      additionEl = (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(elt.id);\n    } else if (elt instanceof HTMLElement) {\n      additionEl = $(elt);\n    } else {\n      throw new Error(\"Unexpected Element: not HTMLElement nor Widget\");\n    }\n    var h = $('<' + element + ' class=\"' + cssClass + '\" />');\n    h.append(additionEl);\n    if (where == 'before') el.prepend(h);else el.append(h);\n    if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(elt)) {\n      mounted(this, elt);\n    }\n    return this;\n  };\n  WidgetProps.prototype.remove = function (child, subchild) {\n    if (child === void 0) {\n      child = null;\n    }\n    if (subchild === void 0) {\n      subchild = null;\n    }\n    if (this.sealed === true) return this;\n    if (!child) (0,_utils_misc__WEBPACK_IMPORTED_MODULE_4__.resolveSubchild)((0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id), subchild).remove();else if (child == '*') (0,_utils_misc__WEBPACK_IMPORTED_MODULE_4__.resolveSubchild)((0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id), subchild).empty();else child.remove();\n    return this;\n  };\n  WidgetProps.prototype.is = function (state, is) {\n    if (is === void 0) {\n      is = null;\n    }\n    var stateName = ':' + state;\n    if (is === true || is === false) {\n      if (is === true) (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).at(0)[stateName] = true;else delete (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).at(0)[stateName];\n      return true;\n    }\n    if (state == 'disabled') {\n      return (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).hasClass('disabled') && (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).is(':disabled');\n    } else {\n      return _utils_misc__WEBPACK_IMPORTED_MODULE_4__.htmlPseudos.indexOf(stateName) == -1 ? (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).at(0)[stateName] : (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).is(stateName);\n    }\n  };\n  WidgetProps.prototype.children = function (subchild) {\n    if (subchild === void 0) {\n      subchild = null;\n    }\n    return (0,_utils_misc__WEBPACK_IMPORTED_MODULE_4__.filteredChildren)((0,_utils_misc__WEBPACK_IMPORTED_MODULE_4__.resolveSubchild)((0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id), subchild).children());\n  };\n  WidgetProps.prototype.find = function (q, subchild) {\n    if (subchild === void 0) {\n      subchild = null;\n    }\n    return q == '*' ? this.children() : (0,_utils_misc__WEBPACK_IMPORTED_MODULE_4__.filteredChildren)((0,_utils_misc__WEBPACK_IMPORTED_MODULE_4__.resolveSubchild)((0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id), subchild).find(q), true);\n  };\n  WidgetProps.prototype.closest = function (q) {\n    return (0,_utils_misc__WEBPACK_IMPORTED_MODULE_4__.filteredChildren)((0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).closest(q), true, true);\n  };\n  WidgetProps.prototype.parent = function (container) {\n    var parent = (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).parent();\n    if (!parent && !this.private) return _main_Widget__WEBPACK_IMPORTED_MODULE_6__[\"default\"].from(document.body);\n    if (container) return this.container();\n    if (!parent.at(0)) return null;\n    while (!parent.at(0).GUIWIDGET) {\n      parent = parent.parent();\n    }\n    if (!parent.at(0).GUIWIDGET) return _main_Widget__WEBPACK_IMPORTED_MODULE_6__[\"default\"].from(parent.at(0));\n    return parent.at(0).GUIWIDGET;\n  };\n  WidgetProps.prototype.container = function () {\n    var parent = (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).parent();\n    return _main_Widget__WEBPACK_IMPORTED_MODULE_6__[\"default\"].from(parent.at(0));\n  };\n  WidgetProps.prototype.attr = function (props) {\n    if (this.sealed === true) return this;\n    if (typeof props == \"object\") (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).attr(props);\n    return typeof props == \"string\" ? (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).attr(props) : this;\n  };\n  WidgetProps.prototype.prop = function (props) {\n    if (this.sealed === true) return this;\n    if (typeof props == \"object\") (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).prop(props);\n    return typeof props == \"string\" ? (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).prop(props) : this;\n  };\n  WidgetProps.prototype.css = function (props) {\n    if (this.sealed === true) return this;\n    if (typeof props == \"object\") (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).css(props);\n    return typeof props == \"string\" ? (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).css(props) : this;\n  };\n  WidgetProps.prototype.styleProp = function (prop) {\n    if (typeof prop !== 'string') return this;\n    return (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).css(prop);\n  };\n  WidgetProps.prototype.text = function (text) {\n    if (this.sealed === true) return this;\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).text(text);\n    return (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).text() || this;\n  };\n  WidgetProps.prototype.height = function (h) {\n    if (h === void 0) {\n      h = null;\n    }\n    if (this.sealed === true) return this;\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).height(h);\n    return h ? this : (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).height();\n  };\n  WidgetProps.prototype.width = function (w) {\n    if (w === void 0) {\n      w = null;\n    }\n    if (this.sealed === true) return this;\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).width(w);\n    return w ? this : (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).width();\n  };\n  WidgetProps.prototype.html = function (text) {\n    if (text === void 0) {\n      text = null;\n    }\n    if (this.sealed === true) return this;\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).html(text);\n    return text ? this : (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).html();\n  };\n  WidgetProps.prototype.addClass = function (classes) {\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).addClass(classes);\n    return this;\n  };\n  WidgetProps.prototype.hasClass = function (classes) {\n    return (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).hasClass(classes);\n  };\n  WidgetProps.prototype.removeClass = function (classes) {\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).removeClass(classes);\n    return this;\n  };\n  WidgetProps.prototype.toggleClass = function (classes) {\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).toggleClass(classes);\n    return this;\n  };\n  WidgetProps.prototype.rect = function () {\n    return (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).at(0).getBoundingClientRect();\n  };\n  WidgetProps.prototype.focus = function () {\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).focus();\n    return this;\n  };\n  WidgetProps.prototype.click = function () {\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).click();\n    return this;\n  };\n  WidgetProps.prototype.toHTMLElement = function (parent, direction) {\n    if (direction === void 0) {\n      direction = null;\n    }\n    if (this.sealed === true) return this;\n    return this.toWidget(_main_Widget__WEBPACK_IMPORTED_MODULE_6__[\"default\"].from(parent), direction);\n  };\n  WidgetProps.prototype.toWidget = function (parent, direction) {\n    if (direction === void 0) {\n      direction = null;\n    }\n    if (this.sealed === true) return this;\n    // if(parent.options.shareState) this.setState(parent.state);\n    if (direction == 'before') parent.addBefore(this);else parent.add(this);\n    return this;\n  };\n  WidgetProps.prototype.to = function (parent, direction) {\n    if (direction === void 0) {\n      direction = null;\n    }\n    if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(parent)) {\n      this.toWidget(parent, direction);\n    } else if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isHTMLElement)(parent)) {\n      this.toHTMLElement(parent, direction);\n    } else {\n      throw new Error('Only Widgets or HTMLElements Allowed');\n    }\n    return this;\n  };\n  WidgetProps.prototype.on = function (event, callback) {\n    var _this = this;\n    if (Array.isArray(event)) {\n      event.forEach(function (event) {\n        return registerEvent(_this, event, callback);\n      });\n    } else {\n      registerEvent(this, event, callback);\n    }\n    return this;\n  };\n  WidgetProps.prototype.off = function (event, callback) {\n    var _this = this;\n    if (callback === void 0) {\n      callback = null;\n    }\n    if (Array.isArray(event)) {\n      event.forEach(function (event) {\n        return (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(_this.id).off(event, callback);\n      });\n    } else {\n      (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).off(event, callback);\n    }\n    return this;\n  };\n  WidgetProps.prototype.emit = function (event, data) {\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).trigger(event, data);\n    return this;\n  };\n  WidgetProps.prototype.hide = function (time) {\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).hide(time);\n    return this;\n  };\n  WidgetProps.prototype.show = function (time) {\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).show(time);\n    return this;\n  };\n  WidgetProps.prototype.toggle = function (time) {\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).toggle(time);\n    return this;\n  };\n  WidgetProps.prototype.raw = function () {\n    if (this.sealed === true) return this;\n    return this.private ? this : (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id);\n  };\n  WidgetProps.prototype.toString = function () {\n    return (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).at(0).outerHTML;\n  };\n  WidgetProps.prototype.stripElement = function () {\n    return delete (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).at(0).GUIWIDGET;\n  };\n  WidgetProps.prototype.toArray = function () {\n    return [this];\n  };\n  Object.defineProperty(WidgetProps.prototype, \"$id\", {\n    set: function (id) {\n      this._id = id, (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(this.id).attr('id', id);\n    },\n    enumerable: false,\n    configurable: true\n  });\n  ;\n  return WidgetProps;\n}();\nvar WidgetList = /** @class */function (_super) {\n  __extends(WidgetList, _super);\n  function WidgetList() {\n    return _super !== null && _super.apply(this, arguments) || this;\n  }\n  WidgetList.from = function (array) {\n    return new (WidgetList.bind.apply(WidgetList, __spreadArray([void 0], __read(array), false)))();\n  };\n  WidgetList.prototype.add = function (child, subchild) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.add(child, subchild));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.remove = function (child, subchild) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.remove(child, subchild));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.is = function (state, is) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.is(state, is));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.attr = function (props) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.attr(props));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.disable = function () {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.disable());\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.enable = function () {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.enable());\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.prop = function (props) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.prop(props));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.addClass = function (classes) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.addClass(classes));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.hasClass = function (classes) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.hasClass(classes));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.removeClass = function (classes) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.removeClass(classes));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.toggleClass = function (classes) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.toggleClass(classes));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.text = function (text) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.text(text));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.height = function (h) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.height(h));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.width = function (w) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.width(w));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.on = function (event, callback) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.on(event, callback));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.off = function (event, callback) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.off(event, callback));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.emit = function (event, data) {\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.emit(event, data));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.hide = function (time) {\n    if (time === void 0) {\n      time = null;\n    }\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.hide(time));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.show = function (time) {\n    if (time === void 0) {\n      time = null;\n    }\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.show(time));\n      }\n    });\n    return responses;\n  };\n  WidgetList.prototype.toggle = function (time) {\n    if (time === void 0) {\n      time = null;\n    }\n    var responses = new WidgetList();\n    this.forEach(function (widget) {\n      if ((0,_utils_type__WEBPACK_IMPORTED_MODULE_5__.isWidget)(widget)) {\n        responses.push(widget.toggle(time));\n      }\n    });\n    return responses;\n  };\n  return WidgetList;\n}(Array);\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WidgetProps);\n\n//# sourceURL=webpack://rayous/./src/widgets/_ghost/WidgetProps.ts?");
+// src/components/Style.js
+var trimRules = function(rules) {
+  for (var i in rules) {
+    if (i.startsWith("var_")) {
+      rules[i.replace("var_", "--")] = rules[i];
+      delete rules[i];
+    } else if (allowedCssProperties.indexOf(voca_default.kebabCase(i)) < 0 && allowedCssProperties.indexOf(i) < 0)
+      delete rules[i];
+  }
+  return rules;
+};
+var colorProp = function(prop) {
+  if (typeof prop == "number") {
+    if (prop.toString(16).match(/[0-9a-f]{6}|[0-9a-f]{3}|[0-9a-f]{5}/))
+      prop = "#" + (prop.toString(16).length == 5 ? "0" + prop.toString(16) : prop.toString(16));
+  }
+  return prop;
+};
+var variableProp = function(prop) {
+  if (typeof prop == "string") {
+    if (prop.toLocaleLowerCase() in variables)
+      prop = variables[prop];
+  }
+  return prop;
+};
+var cssProperty = function(prop, fixArray = true) {
+  prop = colorProp(prop);
+  prop = variableProp(prop);
+  if (Array.isArray(prop)) {
+    prop = prop.map((f) => typeof f == "number" && fixArray ? f + "px" : cssProperty(f)).join(" ");
+  }
+  return prop;
+};
+var setCss2 = function(name, map) {
+  if (!css[name])
+    css[name] = {};
+  for (var i in map) {
+    css[name][i] = cssProperty(map[i]);
+  }
+};
+var getCss = function(name, prop) {
+  if (!css[name])
+    css[name] = {};
+  if (!prop)
+    return css[name];
+  return css[name][prop];
+};
+var allowedCssProperties = "width|height|gap|margin|margin-top|margin-right|margin-bottom|margin-left|padding|padding-top|padding-right|padding-bottom|padding-left|border|border-top|border-right|border-bottom|border-left|border-width|border-top-width|border-right-width|border-bottom-width|border-left-width|border-style|border-top-style|border-right-style|border-bottom-style|border-left-style|border-color|border-top-color|border-right-color|border-bottom-color|border-left-color|border-radius|border-top-left-radius|border-top-right-radius|border-bottom-left-radius|border-bottom-right-radius|box-shadow|overflow|overflow-x|overflow-y|visibility|display|position|top|right|bottom|left|float|clear|flex|flex-direction|flex-wrap|justify-content|align-items|align-content|flex-grow|flex-shrink|flex-basis|order|font-family|font-size|font-weight|font-style|text-align|text-transform|text-decoration|line-height|letter-spacing|white-space|background|background-color|background-image|background-repeat|background-position|background-size|color|cursor|z-index|opacity|content|transition|animation|transform|user-select".split("|");
+var allowedCssVariables = {
+  themeColor: "--f7-theme-color"
+};
+for (i in allowedCssVariables) {
+  allowedCssProperties.push(voca_default.kebabCase(i));
+}
+var i;
+window.voca = voca_default;
+var css = {};
+var variables = {
+  theme_color: "var(--f7-theme-color)",
+  theme_base: "var(--base-color)",
+  theme_crust: "var(--base-crust)",
+  theme_mantle: "var(--base-mantle)",
+  color_red: "var(--f7-color-red)",
+  color_blue: "var(--f7-color-blue)",
+  color_green: "var(--f7-color-green)",
+  color_secondary: "var(--f7-color-secondary)"
+};
 
-/***/ }),
+class Style2 {
+  name = "";
+  constructor(name, map) {
+    if (typeof name == "object" && !map) {
+      map = name;
+      name = null;
+    }
+    if (!name)
+      name = "style-" + Object.keys(css).length;
+    this.name = name;
+    if (map) {
+      this.set(map);
+    }
+  }
+  addProperty(prop, value) {
+    let p = trimRules({ [prop]: value });
+    if (p[prop])
+      this.css[prop] = value;
+  }
+  get all() {
+    return getCss(this.name);
+  }
+  set all(all) {
+    for (var i in all) {
+      this[i] = all[i];
+    }
+  }
+  set(all) {
+    all = trimRules(all);
+    this.all = all;
+  }
+  set width(value) {
+    setCss2(this.name, {
+      width: value
+    });
+  }
+  get width() {
+    return getCss(this.name, "width");
+  }
+  setWidth(value) {
+    this.width = value;
+    return this;
+  }
+  set height(value) {
+    setCss2(this.name, {
+      height: value
+    });
+  }
+  get height() {
+    return getCss(this.name, "height");
+  }
+  setHeight(value) {
+    this.height = value;
+    return this;
+  }
+  set margin(value) {
+    setCss2(this.name, {
+      margin: value
+    });
+  }
+  get margin() {
+    return getCss(this.name, "margin");
+  }
+  setMargin(value) {
+    this.margin = value;
+    return this;
+  }
+  set marginTop(value) {
+    setCss2(this.name, {
+      marginTop: value
+    });
+  }
+  get marginTop() {
+    return getCss(this.name, "marginTop");
+  }
+  setMarginTop(value) {
+    this.marginTop = value;
+    return this;
+  }
+  set marginRight(value) {
+    setCss2(this.name, {
+      marginRight: value
+    });
+  }
+  get marginRight() {
+    return getCss(this.name, "marginRight");
+  }
+  setMarginRight(value) {
+    this.marginRight = value;
+    return this;
+  }
+  set marginBottom(value) {
+    setCss2(this.name, {
+      marginBottom: value
+    });
+  }
+  get marginBottom() {
+    return getCss(this.name, "marginBottom");
+  }
+  setMarginBottom(value) {
+    this.marginBottom = value;
+    return this;
+  }
+  set marginLeft(value) {
+    setCss2(this.name, {
+      marginLeft: value
+    });
+  }
+  get marginLeft() {
+    return getCss(this.name, "marginLeft");
+  }
+  setMarginLeft(value) {
+    this.marginLeft = value;
+    return this;
+  }
+  set padding(value) {
+    setCss2(this.name, {
+      padding: value
+    });
+  }
+  get padding() {
+    return getCss(this.name, "padding");
+  }
+  setPadding(value) {
+    this.padding = value;
+    return this;
+  }
+  set paddingTop(value) {
+    setCss2(this.name, {
+      paddingTop: value
+    });
+  }
+  get paddingTop() {
+    return getCss(this.name, "paddingTop");
+  }
+  setPaddingTop(value) {
+    this.paddingTop = value;
+    return this;
+  }
+  set paddingRight(value) {
+    setCss2(this.name, {
+      paddingRight: value
+    });
+  }
+  get paddingRight() {
+    return getCss(this.name, "paddingRight");
+  }
+  setPaddingRight(value) {
+    this.paddingRight = value;
+    return this;
+  }
+  set paddingBottom(value) {
+    setCss2(this.name, {
+      paddingBottom: value
+    });
+  }
+  get paddingBottom() {
+    return getCss(this.name, "paddingBottom");
+  }
+  setPaddingBottom(value) {
+    this.paddingBottom = value;
+    return this;
+  }
+  set paddingLeft(value) {
+    setCss2(this.name, {
+      paddingLeft: value
+    });
+  }
+  get paddingLeft() {
+    return getCss(this.name, "paddingLeft");
+  }
+  setPaddingLeft(value) {
+    this.paddingLeft = value;
+    return this;
+  }
+  set border(value) {
+    setCss2(this.name, {
+      border: value
+    });
+  }
+  get border() {
+    return getCss(this.name, "border");
+  }
+  setBorder(value) {
+    this.border = value;
+    return this;
+  }
+  set borderTop(value) {
+    setCss2(this.name, {
+      borderTop: value
+    });
+  }
+  get borderTop() {
+    return getCss(this.name, "borderTop");
+  }
+  setBorderTop(value) {
+    this.borderTop = value;
+    return this;
+  }
+  set borderRight(value) {
+    setCss2(this.name, {
+      borderRight: value
+    });
+  }
+  get borderRight() {
+    return getCss(this.name, "borderRight");
+  }
+  setBorderRight(value) {
+    this.borderRight = value;
+    return this;
+  }
+  set borderBottom(value) {
+    setCss2(this.name, {
+      borderBottom: value
+    });
+  }
+  get borderBottom() {
+    return getCss(this.name, "borderBottom");
+  }
+  setBorderBottom(value) {
+    this.borderBottom = value;
+    return this;
+  }
+  set borderLeft(value) {
+    setCss2(this.name, {
+      borderLeft: value
+    });
+  }
+  get borderLeft() {
+    return getCss(this.name, "borderLeft");
+  }
+  setBorderLeft(value) {
+    this.borderLeft = value;
+    return this;
+  }
+  set borderWidth(value) {
+    setCss2(this.name, {
+      borderWidth: value
+    });
+  }
+  get borderWidth() {
+    return getCss(this.name, "borderWidth");
+  }
+  setBorderWidth(value) {
+    this.borderWidth = value;
+    return this;
+  }
+  set borderTopWidth(value) {
+    setCss2(this.name, {
+      borderTopWidth: value
+    });
+  }
+  get borderTopWidth() {
+    return getCss(this.name, "borderTopWidth");
+  }
+  setBorderTopWidth(value) {
+    this.borderTopWidth = value;
+    return this;
+  }
+  set borderRightWidth(value) {
+    setCss2(this.name, {
+      borderRightWidth: value
+    });
+  }
+  get borderRightWidth() {
+    return getCss(this.name, "borderRightWidth");
+  }
+  setBorderRightWidth(value) {
+    this.borderRightWidth = value;
+    return this;
+  }
+  set borderBottomWidth(value) {
+    setCss2(this.name, {
+      borderBottomWidth: value
+    });
+  }
+  get borderBottomWidth() {
+    return getCss(this.name, "borderBottomWidth");
+  }
+  setBorderBottomWidth(value) {
+    this.borderBottomWidth = value;
+    return this;
+  }
+  set borderLeftWidth(value) {
+    setCss2(this.name, {
+      borderLeftWidth: value
+    });
+  }
+  get borderLeftWidth() {
+    return getCss(this.name, "borderLeftWidth");
+  }
+  setBorderLeftWidth(value) {
+    this.borderLeftWidth = value;
+    return this;
+  }
+  set borderStyle(value) {
+    setCss2(this.name, {
+      borderStyle: value
+    });
+  }
+  get borderStyle() {
+    return getCss(this.name, "borderStyle");
+  }
+  setBorderStyle(value) {
+    this.borderStyle = value;
+    return this;
+  }
+  set borderTopStyle(value) {
+    setCss2(this.name, {
+      borderTopStyle: value
+    });
+  }
+  get borderTopStyle() {
+    return getCss(this.name, "borderTopStyle");
+  }
+  setBorderTopStyle(value) {
+    this.borderTopStyle = value;
+    return this;
+  }
+  set borderRightStyle(value) {
+    setCss2(this.name, {
+      borderRightStyle: value
+    });
+  }
+  get borderRightStyle() {
+    return getCss(this.name, "borderRightStyle");
+  }
+  setBorderRightStyle(value) {
+    this.borderRightStyle = value;
+    return this;
+  }
+  set borderBottomStyle(value) {
+    setCss2(this.name, {
+      borderBottomStyle: value
+    });
+  }
+  get borderBottomStyle() {
+    return getCss(this.name, "borderBottomStyle");
+  }
+  setBorderBottomStyle(value) {
+    this.borderBottomStyle = value;
+    return this;
+  }
+  set borderLeftStyle(value) {
+    setCss2(this.name, {
+      borderLeftStyle: value
+    });
+  }
+  get borderLeftStyle() {
+    return getCss(this.name, "borderLeftStyle");
+  }
+  setBorderLeftStyle(value) {
+    this.borderLeftStyle = value;
+    return this;
+  }
+  set borderColor(value) {
+    setCss2(this.name, {
+      borderColor: value
+    });
+  }
+  get borderColor() {
+    return getCss(this.name, "borderColor");
+  }
+  setBorderColor(value) {
+    this.borderColor = value;
+    return this;
+  }
+  set borderTopColor(value) {
+    setCss2(this.name, {
+      borderTopColor: value
+    });
+  }
+  get borderTopColor() {
+    return getCss(this.name, "borderTopColor");
+  }
+  setBorderTopColor(value) {
+    this.borderTopColor = value;
+    return this;
+  }
+  set borderRightColor(value) {
+    setCss2(this.name, {
+      borderRightColor: value
+    });
+  }
+  get borderRightColor() {
+    return getCss(this.name, "borderRightColor");
+  }
+  setBorderRightColor(value) {
+    this.borderRightColor = value;
+    return this;
+  }
+  set borderBottomColor(value) {
+    setCss2(this.name, {
+      borderBottomColor: value
+    });
+  }
+  get borderBottomColor() {
+    return getCss(this.name, "borderBottomColor");
+  }
+  setBorderBottomColor(value) {
+    this.borderBottomColor = value;
+    return this;
+  }
+  set borderLeftColor(value) {
+    setCss2(this.name, {
+      borderLeftColor: value
+    });
+  }
+  get borderLeftColor() {
+    return getCss(this.name, "borderLeftColor");
+  }
+  setBorderLeftColor(value) {
+    this.borderLeftColor = value;
+    return this;
+  }
+  set borderRadius(value) {
+    setCss2(this.name, {
+      borderRadius: value
+    });
+  }
+  get borderRadius() {
+    return getCss(this.name, "borderRadius");
+  }
+  setBorderRadius(value) {
+    this.borderRadius = value;
+    return this;
+  }
+  set borderTopLeftRadius(value) {
+    setCss2(this.name, {
+      borderTopLeftRadius: value
+    });
+  }
+  get borderTopLeftRadius() {
+    return getCss(this.name, "borderTopLeftRadius");
+  }
+  setBorderTopLeftRadius(value) {
+    this.borderTopLeftRadius = value;
+    return this;
+  }
+  set borderTopRightRadius(value) {
+    setCss2(this.name, {
+      borderTopRightRadius: value
+    });
+  }
+  get borderTopRightRadius() {
+    return getCss(this.name, "borderTopRightRadius");
+  }
+  setBorderTopRightRadius(value) {
+    this.borderTopRightRadius = value;
+    return this;
+  }
+  set borderBottomLeftRadius(value) {
+    setCss2(this.name, {
+      borderBottomLeftRadius: value
+    });
+  }
+  get borderBottomLeftRadius() {
+    return getCss(this.name, "borderBottomLeftRadius");
+  }
+  setBorderBottomLeftRadius(value) {
+    this.borderBottomLeftRadius = value;
+    return this;
+  }
+  set borderBottomRightRadius(value) {
+    setCss2(this.name, {
+      borderBottomRightRadius: value
+    });
+  }
+  get borderBottomRightRadius() {
+    return getCss(this.name, "borderBottomRightRadius");
+  }
+  setBorderBottomRightRadius(value) {
+    this.borderBottomRightRadius = value;
+    return this;
+  }
+  set boxShadow(value) {
+    setCss2(this.name, {
+      boxShadow: value
+    });
+  }
+  get boxShadow() {
+    return getCss(this.name, "boxShadow");
+  }
+  setBoxShadow(value) {
+    this.boxShadow = value;
+    return this;
+  }
+  set overflow(value) {
+    setCss2(this.name, {
+      overflow: value
+    });
+  }
+  get overflow() {
+    return getCss(this.name, "overflow");
+  }
+  setOverflow(value) {
+    this.overflow = value;
+    return this;
+  }
+  set overflowX(value) {
+    setCss2(this.name, {
+      overflowX: value
+    });
+  }
+  get overflowX() {
+    return getCss(this.name, "overflowX");
+  }
+  setOverflowX(value) {
+    this.overflowX = value;
+    return this;
+  }
+  set overflowY(value) {
+    setCss2(this.name, {
+      overflowY: value
+    });
+  }
+  get overflowY() {
+    return getCss(this.name, "overflowY");
+  }
+  setOverflowY(value) {
+    this.overflowY = value;
+    return this;
+  }
+  set visibility(value) {
+    setCss2(this.name, {
+      visibility: value
+    });
+  }
+  get visibility() {
+    return getCss(this.name, "visibility");
+  }
+  setVisibility(value) {
+    this.visibility = value;
+    return this;
+  }
+  set display(value) {
+    setCss2(this.name, {
+      display: value
+    });
+  }
+  get display() {
+    return getCss(this.name, "display");
+  }
+  setDisplay(value) {
+    this.display = value;
+    return this;
+  }
+  set position(value) {
+    setCss2(this.name, {
+      position: value
+    });
+  }
+  get position() {
+    return getCss(this.name, "position");
+  }
+  setPosition(value) {
+    this.position = value;
+    return this;
+  }
+  set top(value) {
+    setCss2(this.name, {
+      top: value
+    });
+  }
+  get top() {
+    return getCss(this.name, "top");
+  }
+  setTop(value) {
+    this.top = value;
+    return this;
+  }
+  set right(value) {
+    setCss2(this.name, {
+      right: value
+    });
+  }
+  get right() {
+    return getCss(this.name, "right");
+  }
+  setRight(value) {
+    this.right = value;
+    return this;
+  }
+  set bottom(value) {
+    setCss2(this.name, {
+      bottom: value
+    });
+  }
+  get bottom() {
+    return getCss(this.name, "bottom");
+  }
+  setBottom(value) {
+    this.bottom = value;
+    return this;
+  }
+  set left(value) {
+    setCss2(this.name, {
+      left: value
+    });
+  }
+  get left() {
+    return getCss(this.name, "left");
+  }
+  setLeft(value) {
+    this.left = value;
+    return this;
+  }
+  set float(value) {
+    setCss2(this.name, {
+      float: value
+    });
+  }
+  get float() {
+    return getCss(this.name, "float");
+  }
+  setFloat(value) {
+    this.float = value;
+    return this;
+  }
+  set clear(value) {
+    setCss2(this.name, {
+      clear: value
+    });
+  }
+  get clear() {
+    return getCss(this.name, "clear");
+  }
+  setClear(value) {
+    this.clear = value;
+    return this;
+  }
+  set flex(value) {
+    setCss2(this.name, {
+      flex: value
+    });
+  }
+  get flex() {
+    return getCss(this.name, "flex");
+  }
+  setFlex(value) {
+    this.flex = value;
+    return this;
+  }
+  set flexDirection(value) {
+    setCss2(this.name, {
+      flexDirection: value
+    });
+  }
+  get flexDirection() {
+    return getCss(this.name, "flexDirection");
+  }
+  setFlexDirection(value) {
+    this.flexDirection = value;
+    return this;
+  }
+  set flexWrap(value) {
+    setCss2(this.name, {
+      flexWrap: value
+    });
+  }
+  get flexWrap() {
+    return getCss(this.name, "flexWrap");
+  }
+  setFlexWrap(value) {
+    this.flexWrap = value;
+    return this;
+  }
+  set justifyContent(value) {
+    setCss2(this.name, {
+      justifyContent: value
+    });
+  }
+  get justifyContent() {
+    return getCss(this.name, "justifyContent");
+  }
+  setJustifyContent(value) {
+    this.justifyContent = value;
+    return this;
+  }
+  set alignItems(value) {
+    setCss2(this.name, {
+      alignItems: value
+    });
+  }
+  get alignItems() {
+    return getCss(this.name, "alignItems");
+  }
+  setAlignItems(value) {
+    this.alignItems = value;
+    return this;
+  }
+  set alignContent(value) {
+    setCss2(this.name, {
+      alignContent: value
+    });
+  }
+  get alignContent() {
+    return getCss(this.name, "alignContent");
+  }
+  setAlignContent(value) {
+    this.alignContent = value;
+    return this;
+  }
+  set flexGrow(value) {
+    setCss2(this.name, {
+      flexGrow: value
+    });
+  }
+  get flexGrow() {
+    return getCss(this.name, "flexGrow");
+  }
+  setFlexGrow(value) {
+    this.flexGrow = value;
+    return this;
+  }
+  set flexShrink(value) {
+    setCss2(this.name, {
+      flexShrink: value
+    });
+  }
+  get flexShrink() {
+    return getCss(this.name, "flexShrink");
+  }
+  setFlexShrink(value) {
+    this.flexShrink = value;
+    return this;
+  }
+  set flexBasis(value) {
+    setCss2(this.name, {
+      flexBasis: value
+    });
+  }
+  get flexBasis() {
+    return getCss(this.name, "flexBasis");
+  }
+  setFlexBasis(value) {
+    this.flexBasis = value;
+    return this;
+  }
+  set order(value) {
+    setCss2(this.name, {
+      order: value
+    });
+  }
+  get order() {
+    return getCss(this.name, "order");
+  }
+  setOrder(value) {
+    this.order = value;
+    return this;
+  }
+  set fontFamily(value) {
+    setCss2(this.name, {
+      fontFamily: value
+    });
+  }
+  get fontFamily() {
+    return getCss(this.name, "fontFamily");
+  }
+  setFontFamily(value) {
+    this.fontFamily = value;
+    return this;
+  }
+  set fontSize(value) {
+    setCss2(this.name, {
+      fontSize: value
+    });
+  }
+  get fontSize() {
+    return getCss(this.name, "fontSize");
+  }
+  setFontSize(value) {
+    this.fontSize = value;
+    return this;
+  }
+  set fontWeight(value) {
+    setCss2(this.name, {
+      fontWeight: value
+    });
+  }
+  get fontWeight() {
+    return getCss(this.name, "fontWeight");
+  }
+  setFontWeight(value) {
+    this.fontWeight = value;
+    return this;
+  }
+  set fontStyle(value) {
+    setCss2(this.name, {
+      fontStyle: value
+    });
+  }
+  get fontStyle() {
+    return getCss(this.name, "fontStyle");
+  }
+  setFontStyle(value) {
+    this.fontStyle = value;
+    return this;
+  }
+  set textAlign(value) {
+    setCss2(this.name, {
+      textAlign: value
+    });
+  }
+  get textAlign() {
+    return getCss(this.name, "textAlign");
+  }
+  setTextAlign(value) {
+    this.textAlign = value;
+    return this;
+  }
+  set textTransform(value) {
+    setCss2(this.name, {
+      textTransform: value
+    });
+  }
+  get textTransform() {
+    return getCss(this.name, "textTransform");
+  }
+  setTextTransform(value) {
+    this.textTransform = value;
+    return this;
+  }
+  set textDecoration(value) {
+    setCss2(this.name, {
+      textDecoration: value
+    });
+  }
+  get textDecoration() {
+    return getCss(this.name, "textDecoration");
+  }
+  setTextDecoration(value) {
+    this.textDecoration = value;
+    return this;
+  }
+  set lineHeight(value) {
+    setCss2(this.name, {
+      lineHeight: value
+    });
+  }
+  get lineHeight() {
+    return getCss(this.name, "lineHeight");
+  }
+  setLineHeight(value) {
+    this.lineHeight = value;
+    return this;
+  }
+  set letterSpacing(value) {
+    setCss2(this.name, {
+      letterSpacing: value
+    });
+  }
+  get letterSpacing() {
+    return getCss(this.name, "letterSpacing");
+  }
+  setLetterSpacing(value) {
+    this.letterSpacing = value;
+    return this;
+  }
+  set whiteSpace(value) {
+    setCss2(this.name, {
+      whiteSpace: value
+    });
+  }
+  get whiteSpace() {
+    return getCss(this.name, "whiteSpace");
+  }
+  setWhiteSpace(value) {
+    this.whiteSpace = value;
+    return this;
+  }
+  set background(value) {
+    setCss2(this.name, {
+      background: value
+    });
+  }
+  get background() {
+    return getCss(this.name, "background");
+  }
+  setBackground(value) {
+    this.background = value;
+    return this;
+  }
+  set backgroundColor(value) {
+    setCss2(this.name, {
+      backgroundColor: value
+    });
+  }
+  get backgroundColor() {
+    return getCss(this.name, "backgroundColor");
+  }
+  setBackgroundColor(value) {
+    this.backgroundColor = value;
+    return this;
+  }
+  set backgroundImage(value) {
+    setCss2(this.name, {
+      backgroundImage: value
+    });
+  }
+  get backgroundImage() {
+    return getCss(this.name, "backgroundImage");
+  }
+  setBackgroundImage(value) {
+    this.backgroundImage = value;
+    return this;
+  }
+  set backgroundRepeat(value) {
+    setCss2(this.name, {
+      backgroundRepeat: value
+    });
+  }
+  get backgroundRepeat() {
+    return getCss(this.name, "backgroundRepeat");
+  }
+  setBackgroundRepeat(value) {
+    this.backgroundRepeat = value;
+    return this;
+  }
+  set backgroundPosition(value) {
+    setCss2(this.name, {
+      backgroundPosition: value
+    });
+  }
+  get backgroundPosition() {
+    return getCss(this.name, "backgroundPosition");
+  }
+  setBackgroundPosition(value) {
+    this.backgroundPosition = value;
+    return this;
+  }
+  set backgroundSize(value) {
+    setCss2(this.name, {
+      backgroundSize: value
+    });
+  }
+  get backgroundSize() {
+    return getCss(this.name, "backgroundSize");
+  }
+  setBackgroundSize(value) {
+    this.backgroundSize = value;
+    return this;
+  }
+  set color(value) {
+    setCss2(this.name, {
+      color: value
+    });
+  }
+  get color() {
+    return getCss(this.name, "color");
+  }
+  setColor(value) {
+    this.color = value;
+    return this;
+  }
+  set cursor(value) {
+    setCss2(this.name, {
+      cursor: value
+    });
+  }
+  get cursor() {
+    return getCss(this.name, "cursor");
+  }
+  setCursor(value) {
+    this.cursor = value;
+    return this;
+  }
+  set zIndex(value) {
+    setCss2(this.name, {
+      zIndex: value
+    });
+  }
+  get zIndex() {
+    return getCss(this.name, "zIndex");
+  }
+  setZIndex(value) {
+    this.zIndex = value;
+    return this;
+  }
+  set opacity(value) {
+    setCss2(this.name, {
+      opacity: value
+    });
+  }
+  get opacity() {
+    return getCss(this.name, "opacity");
+  }
+  setOpacity(value) {
+    this.opacity = value;
+    return this;
+  }
+  set content(value) {
+    setCss2(this.name, {
+      content: value
+    });
+  }
+  get content() {
+    return getCss(this.name, "content");
+  }
+  setContent(value) {
+    this.content = value;
+    return this;
+  }
+  set transition(value) {
+    setCss2(this.name, {
+      transition: value
+    });
+  }
+  get transition() {
+    return getCss(this.name, "transition");
+  }
+  setTransition(value) {
+    this.transition = value;
+    return this;
+  }
+  set animation(value) {
+    setCss2(this.name, {
+      animation: value
+    });
+  }
+  get animation() {
+    return getCss(this.name, "animation");
+  }
+  setAnimation(value) {
+    this.animation = value;
+    return this;
+  }
+  set transform(value) {
+    setCss2(this.name, {
+      transform: value
+    });
+  }
+  get transform() {
+    return getCss(this.name, "transform");
+  }
+  setTransform(value) {
+    this.transform = value;
+    return this;
+  }
+  set userSelect(value) {
+    setCss2(this.name, {
+      userSelect: value
+    });
+  }
+  get userSelect() {
+    return getCss(this.name, "userSelect");
+  }
+  setUserSelect(value) {
+    this.userSelect = value;
+    return this;
+  }
+  set themeColor(value) {
+    setCss2(this.name, {
+      "--f7-theme-color": value
+    });
+  }
+  get themeColor() {
+    return getCss(this.name, "themeColor");
+  }
+  setThemeColor(value) {
+    this.themeColor = value;
+    return this;
+  }
+  static trimRules(rules) {
+    return trimRules(rules);
+  }
+  static register(name, props) {
+    const s = new Style2(name);
+    s.set(props);
+    return s;
+  }
+  static fromElement(element, name) {
+    const styles = getComputedStyle(element);
+    const csss = {};
+    for (const property of styles) {
+      const value = styles.getPropertyValue(property);
+      csss[property] = value;
+    }
+    return Style2.register(name, csss);
+  }
+  static fromWidget(widget2, name) {
+    return Style2.fromElement(findEl(widget2.id)[0], name);
+  }
+  static from(target, name) {
+    if (isHTMLElement(target)) {
+      return Style2.fromElement(target, name);
+    } else if (isWidget(target)) {
+      return Style2.fromWidget(target, name);
+    } else {
+      throw new Error("Only HTMLElements and Widgets are allowed for style copying.");
+    }
+  }
+  static copy(target, name) {
+    let all = { ...getCss(target) };
+    return Style2.register(name, all);
+  }
+  static INHERIT = "inherit";
+  static AUTO = "auto";
+  static FULL = "100%";
+  static FULLWIDTH = "100vw";
+  static FULLHEIGHT = "100dvh";
+  static WRAP = "wrap";
+  static NONE = "none";
+  static BLOCK = "block";
+  static FLEX = "flex";
+  static GRID = "grid";
+  static NOWRAP = "nowrap";
+  static INITIAL = "initial";
+  static UNSET = "unset";
+  static CLIP = "clip";
+  static HIDDEN = "hidden";
+  static VISIBLE = "visible";
+  static UNIT = "16px";
+  static HALFUNIT = "8px";
+  static ONEANDHALFUNIT = "24px";
+  static TWOUNITS = "32px";
+  static THREEUNITS = "48px";
+  static FOURUNITS = "64px";
+  static FIVEUNITS = "80px";
+  static BULKUNIT = "100px";
+  static GRADIENT = {
+    LEFT: "to left",
+    RIGHT: "to right",
+    TOP: "to top",
+    BOTTOM: "to bottom"
+  };
+  static calc(...string) {
+    return "calc(" + string.join(" ") + ")";
+  }
+  static var(string) {
+    return "var(--" + voca_default.kebabCase(string) + ")";
+  }
+  static double(string) {
+    return cssProperty([string, string]);
+  }
+  static linearGradient(...colors) {
+    return `linear-gradient(${colors.map((color) => cssProperty(color)).join(",")})`;
+  }
+  static radialGradient(...colors) {
+    return `radial-gradient(${colors.map((color) => cssProperty(color)).join(",")})`;
+  }
+  static deg(int) {
+    return int + "deg";
+  }
+  static em(int) {
+    return int + "em";
+  }
+  static rem(int) {
+    return int + "rem";
+  }
+  static px(int) {
+    return int + "px";
+  }
+  static p(int) {
+    return int + "%";
+  }
+}
+var Style_default = Style2;
 
-/***/ "./src/widgets/main/Widget.ts":
-/*!************************************!*\
-  !*** ./src/widgets/main/Widget.ts ***!
-  \************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+// src/widgets/main/Text.ts
+var defaultText = () => getDefaults({
+  element: { name: "div" },
+  class: "text-wrapper",
+  accepts: false
+});
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _utils_type_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/type.js */ \"./src/utils/type.js\");\n/* harmony import */ var _utils_id_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/id.js */ \"./src/utils/id.js\");\n/* harmony import */ var _utils_elman__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/elman */ \"./src/utils/elman.ts\");\n/* harmony import */ var _utils_options__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/options */ \"./src/utils/options.ts\");\n/* harmony import */ var _ghost_WidgetProps__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_ghost/WidgetProps */ \"./src/widgets/_ghost/WidgetProps.ts\");\n/* harmony import */ var _utils_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/dom */ \"./src/utils/dom.ts\");\nvar __extends = undefined && undefined.__extends || function () {\n  var extendStatics = function (d, b) {\n    extendStatics = Object.setPrototypeOf || {\n      __proto__: []\n    } instanceof Array && function (d, b) {\n      d.__proto__ = b;\n    } || function (d, b) {\n      for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];\n    };\n    return extendStatics(d, b);\n  };\n  return function (d, b) {\n    if (typeof b !== \"function\" && b !== null) throw new TypeError(\"Class extends value \" + String(b) + \" is not a constructor or null\");\n    extendStatics(d, b);\n    function __() {\n      this.constructor = d;\n    }\n    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n  };\n}();\nvar __read = undefined && undefined.__read || function (o, n) {\n  var m = typeof Symbol === \"function\" && o[Symbol.iterator];\n  if (!m) return o;\n  var i = m.call(o),\n    r,\n    ar = [],\n    e;\n  try {\n    while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);\n  } catch (error) {\n    e = {\n      error: error\n    };\n  } finally {\n    try {\n      if (r && !r.done && (m = i[\"return\"])) m.call(i);\n    } finally {\n      if (e) throw e.error;\n    }\n  }\n  return ar;\n};\nvar __spreadArray = undefined && undefined.__spreadArray || function (to, from, pack) {\n  if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {\n    if (ar || !(i in from)) {\n      if (!ar) ar = Array.prototype.slice.call(from, 0, i);\n      ar[i] = from[i];\n    }\n  }\n  return to.concat(ar || Array.prototype.slice.call(from));\n};\n\n\n\n\n\n\nvar defaults = (0,_utils_options__WEBPACK_IMPORTED_MODULE_3__[\"default\"])({});\nvar $1$app = {};\nfunction initiateSetters(widget, setterFunctions, options) {\n  setterFunctions.forEach(function (setter) {\n    if (options[setter]) {\n      widget[setter] = options[setter];\n    }\n  });\n}\nfunction _init(widget, options) {\n  var elementRaw;\n  if (!widget.__generated) {\n    if (options.element.raw || options.element.selector) {\n      elementRaw = new _utils_dom__WEBPACK_IMPORTED_MODULE_5__[\"default\"](options.element.raw).at(0);\n    } else {\n      elementRaw = document.createElement(options.element.name);\n    }\n  }\n  var element = widget.__generated ? (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.findEl)(widget.id) : new _utils_dom__WEBPACK_IMPORTED_MODULE_5__[\"default\"](elementRaw);\n  if (!widget.__generated && options.element.html) element.html(options.element.html);\n  if (widget.__generated && options.reset) element.attr({\n    class: '',\n    style: ''\n  });\n  element.addClass(options.class);\n  if (options.position) {\n    var _a = options.position,\n      type = _a.type,\n      centered = _a.centered,\n      top_1 = _a.top,\n      left = _a.left,\n      right = _a.right,\n      bottom = _a.bottom;\n    element.css({\n      position: (0,_utils_type_js__WEBPACK_IMPORTED_MODULE_0__.isPosition)(type) ? type : null\n    });\n    if (centered) {\n      element.css({\n        left: '50%',\n        top: '50%',\n        transform: 'translate(-50%, -50%)'\n      });\n    } else {\n      element.css({\n        top: top_1,\n        left: left,\n        right: right,\n        bottom: bottom\n      });\n    }\n  }\n  if (options.size) {\n    var _b = options.size,\n      width = _b.width,\n      height = _b.height;\n    element.css({\n      width: width,\n      height: height\n    });\n  }\n  if (!widget.__generated) {\n    Object.defineProperty(widget, 'id', {\n      writable: false,\n      value: (0,_utils_id_js__WEBPACK_IMPORTED_MODULE_1__[\"default\"])()\n    });\n    element.at(0).GUIWIDGET = widget;\n    (0,_utils_elman__WEBPACK_IMPORTED_MODULE_2__.registerElement)(element, widget.id);\n  }\n  if (typeof options.build == \"function\") {\n    if (!options.children) options.children = [];\n    var child = options.build(options, widget);\n    if (Array.isArray(child)) {\n      options.children.push(child);\n    } else {\n      options.children.push(child);\n    }\n  }\n  if (options.children && options.children.length) {\n    options.children.forEach(function (element) {\n      widget.add(element);\n    });\n  }\n  if (options.private === true) {\n    // widget.seal();\n    delete options.private;\n  }\n  if (options.accepts === false) {\n    widget.accepts = false;\n  }\n  for (var i in options) {\n    if (i.match(/on([A-Z])([a-zA-Z]+)/)) {\n      if (!options.events) options.events = {};\n      options.events[i.replace('on', '').toLowerCase()] = options[i];\n      // delete options[i];\n    }\n  }\n\n  if (options.events) {\n    for (var i in options.events) {\n      widget.on(i, options.events[i]);\n    }\n  }\n  if (options.props) {\n    element.prop(options.props);\n  }\n  if (options.attr) {\n    element.attr(options.attr);\n  }\n  widget.options = options;\n  var setterFunctions = ['padding', 'margin', 'type', 'id', 'animation', 'tooltip', 'style'];\n  if (options._setters) {\n    setterFunctions.push.apply(setterFunctions, __spreadArray([], __read(options._setters), false));\n  }\n  initiateSetters(widget, setterFunctions, options);\n  if (!widget.__generated) widget.__generated = true;\n  if (typeof widget._onBuild == \"function\") {\n    var w = widget._onBuild();\n    if (w) {\n      widget.add(w);\n    }\n  }\n}\nvar Widget = /** @class */function (_super) {\n  __extends(Widget, _super);\n  function Widget(options) {\n    if (options === void 0) {\n      options = {\n        element: {\n          name: 'div'\n        },\n        class: 'widget'\n      };\n    }\n    var _this = _super.call(this) || this;\n    _init(_this, options);\n    return _this;\n  }\n  Widget.from = function (child) {\n    return new Widget({\n      element: {\n        raw: new _utils_dom__WEBPACK_IMPORTED_MODULE_5__[\"default\"](child).at(0)\n      }\n    });\n  };\n  return Widget;\n}(_ghost_WidgetProps__WEBPACK_IMPORTED_MODULE_4__[\"default\"]);\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Widget);\n\n//# sourceURL=webpack://rayous/./src/widgets/main/Widget.ts?");
+class Text extends Widget_default {
+  constructor(selectedOptions, otheroptions) {
+    const options5 = Text.resolveOptions(selectedOptions, otheroptions, defaultText());
+    super(options5);
+    if (options5.text)
+      this.text(options5.text);
+  }
+  static resolveOptions(selectedOptions, otheroptions, defaults2) {
+    if (typeof selectedOptions == "string") {
+      selectedOptions = { text: selectedOptions };
+    }
+    if (otheroptions) {
+      selectedOptions = { ...otheroptions, ...selectedOptions };
+    }
+    return { ...defaults2, ...selectedOptions };
+  }
+}
+var Text_default = Text;
 
-/***/ }),
-
-/***/ "./src/components/Style.js":
-/*!*********************************!*\
-  !*** ./src/components/Style.js ***!
-  \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _modules_voca_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/voca.js */ \"./src/modules/voca.js\");\n/* harmony import */ var _modules_voca_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_modules_voca_js__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _utils_elman__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/elman */ \"./src/utils/elman.ts\");\n/* harmony import */ var _utils_type_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/type.js */ \"./src/utils/type.js\");\n\n\n\n\nfunction parseFCSS(props){\n\treturn trimRules(props);\n}\n\nconst allowedCssProperties = 'width|height|gap|margin|margin-top|margin-right|margin-bottom|margin-left|padding|padding-top|padding-right|padding-bottom|padding-left|border|border-top|border-right|border-bottom|border-left|border-width|border-top-width|border-right-width|border-bottom-width|border-left-width|border-style|border-top-style|border-right-style|border-bottom-style|border-left-style|border-color|border-top-color|border-right-color|border-bottom-color|border-left-color|border-radius|border-top-left-radius|border-top-right-radius|border-bottom-left-radius|border-bottom-right-radius|box-shadow|overflow|overflow-x|overflow-y|visibility|display|position|top|right|bottom|left|float|clear|flex|flex-direction|flex-wrap|justify-content|align-items|align-content|flex-grow|flex-shrink|flex-basis|order|font-family|font-size|font-weight|font-style|text-align|text-transform|text-decoration|line-height|letter-spacing|white-space|background|background-color|background-image|background-repeat|background-position|background-size|color|cursor|z-index|opacity|content|transition|animation|transform|user-select'.split('|');\nconst allowedCssVariables = {\n\t'themeColor': '--f7-theme-color'\n};\nfor(var i in allowedCssVariables){\n\tallowedCssProperties.push(_modules_voca_js__WEBPACK_IMPORTED_MODULE_0___default().kebabCase(i));\n}\nwindow.voca = (_modules_voca_js__WEBPACK_IMPORTED_MODULE_0___default())\nfunction trimRules (rules) {\n\tfor(var i in rules){\n\t\tif(i.startsWith('var_')) { rules[i.replace('var_', '--')] = rules[i]; delete rules[i] }\n\t\telse if(allowedCssProperties.indexOf(_modules_voca_js__WEBPACK_IMPORTED_MODULE_0___default().kebabCase(i)) < 0 && allowedCssProperties.indexOf(i) < 0) delete rules[i];\n\t}\n\treturn rules;\n}\n\t\n// let l = \"\";\n// allowedCssProperties.forEach(item => {\n// \tlet name = voca.camelCase(item);\n// \tl += (`\n// \t\tset ${name}(value){\n// \t\t\tsetCss(this.name, {\n// \t\t\t\t${name in allowedCssVariables ? `\"${allowedCssVariables[name]}\"` : name}: value\n// \t\t\t});\n// \t\t}\n// \t\tget ${name}(){\n// \t\t\treturn getCss(this.name, '${name}');\n// \t\t}\n// \t\t${voca.camelCase('set-'+name)}(value){\n// \t\t\tthis.${name} = value;\n// \t\t\treturn this;\n// \t\t}\n// \t`);\n// });\n// console.log(l);\n\nconst css = {};\nconst variables = {\n\ttheme_color: 'var(--f7-theme-color)',\n\ttheme_base: 'var(--base-color)',\n\ttheme_crust: 'var(--base-crust)',\n\ttheme_mantle: 'var(--base-mantle)',\n\tcolor_red: 'var(--f7-color-red)',\n\tcolor_blue: 'var(--f7-color-blue)',\n\tcolor_green: 'var(--f7-color-green)',\n\tcolor_secondary: 'var(--f7-color-secondary)',\n}\n\nfunction colorProp(prop){\n\tif(typeof prop == 'number'){\n\t\tif(prop.toString(16).match(/[0-9a-f]{6}|[0-9a-f]{3}|[0-9a-f]{5}/)) prop = '#'+(prop.toString(16).length == 5 ? '0'+prop.toString(16) : prop.toString(16));\n\t}\n\treturn prop;\n}\n\nfunction variableProp(prop){\n\tif(typeof prop == 'string'){\n\t\tif(prop.toLocaleLowerCase() in variables) prop = variables[prop];\n\t}\n\treturn prop;\n}\n\nfunction cssProperty(prop, fixArray = true){\n\tprop = colorProp(prop);\n\tprop = variableProp(prop);\n\t\n\tif(Array.isArray(prop)){\n\t\tprop = prop.map(f => (typeof f == 'number' && fixArray) ? f+'px' : cssProperty(f)).join(' ');\n\t}\n\treturn prop;\n}\n\nfunction setCss(name, map){\n\tif(!css[name]) css[name] = {};\n\tfor(var i in map){\n\t\tcss[name][i] = cssProperty(map[i]);\n\t}\n}\n\nfunction getCss(name, prop){\n\tif(!css[name]) css[name] = {};\n\tif(!prop) return css[name];\n\treturn css[name][prop];\n}\n\nclass Style {\n\n\tname = \"\";\n\n\tconstructor(name, map){\n\t\tif(typeof name == 'object' && !map){\n\t\t\tmap = name;\n\t\t\tname = null;\n\t\t}\n\t\tif(!name) name = 'style-'+Object.keys(css).length;\n\t\tthis.name = name;\n\t\tif(map){\n\t\t\tthis.set(map);\n\t\t}\n\t}\n\n\taddProperty(prop, value){\n\t\tlet p = trimRules({[prop]: value});\n\t\tif(p[prop]) this.css[prop] = value;\n\t}\n\n\tget all(){\n\t\treturn getCss(this.name);\n\t}\n\tset all(all){\n\t\tfor(var i in all){\n\t\t\tthis[i] = all[i];\n\t\t}\n\t}\n\tset(all){\n\t\tall = trimRules(all);\n\t\tthis.all = all;\n\t}\n\n\t\n\tset width(value){\n\t\tsetCss(this.name, {\n\t\t\twidth: value\n\t\t});\n\t}\n\tget width(){\n\t\treturn getCss(this.name, 'width');\n\t}\n\tsetWidth(value){\n\t\tthis.width = value;\n\t\treturn this;\n\t}\n\n\tset height(value){\n\t\tsetCss(this.name, {\n\t\t\theight: value\n\t\t});\n\t}\n\tget height(){\n\t\treturn getCss(this.name, 'height');\n\t}\n\tsetHeight(value){\n\t\tthis.height = value;\n\t\treturn this;\n\t}\n\n\tset margin(value){\n\t\tsetCss(this.name, {\n\t\t\tmargin: value\n\t\t});\n\t}\n\tget margin(){\n\t\treturn getCss(this.name, 'margin');\n\t}\n\tsetMargin(value){\n\t\tthis.margin = value;\n\t\treturn this;\n\t}\n\n\tset marginTop(value){\n\t\tsetCss(this.name, {\n\t\t\tmarginTop: value\n\t\t});\n\t}\n\tget marginTop(){\n\t\treturn getCss(this.name, 'marginTop');\n\t}\n\tsetMarginTop(value){\n\t\tthis.marginTop = value;\n\t\treturn this;\n\t}\n\n\tset marginRight(value){\n\t\tsetCss(this.name, {\n\t\t\tmarginRight: value\n\t\t});\n\t}\n\tget marginRight(){\n\t\treturn getCss(this.name, 'marginRight');\n\t}\n\tsetMarginRight(value){\n\t\tthis.marginRight = value;\n\t\treturn this;\n\t}\n\n\tset marginBottom(value){\n\t\tsetCss(this.name, {\n\t\t\tmarginBottom: value\n\t\t});\n\t}\n\tget marginBottom(){\n\t\treturn getCss(this.name, 'marginBottom');\n\t}\n\tsetMarginBottom(value){\n\t\tthis.marginBottom = value;\n\t\treturn this;\n\t}\n\n\tset marginLeft(value){\n\t\tsetCss(this.name, {\n\t\t\tmarginLeft: value\n\t\t});\n\t}\n\tget marginLeft(){\n\t\treturn getCss(this.name, 'marginLeft');\n\t}\n\tsetMarginLeft(value){\n\t\tthis.marginLeft = value;\n\t\treturn this;\n\t}\n\n\tset padding(value){\n\t\tsetCss(this.name, {\n\t\t\tpadding: value\n\t\t});\n\t}\n\tget padding(){\n\t\treturn getCss(this.name, 'padding');\n\t}\n\tsetPadding(value){\n\t\tthis.padding = value;\n\t\treturn this;\n\t}\n\n\tset paddingTop(value){\n\t\tsetCss(this.name, {\n\t\t\tpaddingTop: value\n\t\t});\n\t}\n\tget paddingTop(){\n\t\treturn getCss(this.name, 'paddingTop');\n\t}\n\tsetPaddingTop(value){\n\t\tthis.paddingTop = value;\n\t\treturn this;\n\t}\n\n\tset paddingRight(value){\n\t\tsetCss(this.name, {\n\t\t\tpaddingRight: value\n\t\t});\n\t}\n\tget paddingRight(){\n\t\treturn getCss(this.name, 'paddingRight');\n\t}\n\tsetPaddingRight(value){\n\t\tthis.paddingRight = value;\n\t\treturn this;\n\t}\n\n\tset paddingBottom(value){\n\t\tsetCss(this.name, {\n\t\t\tpaddingBottom: value\n\t\t});\n\t}\n\tget paddingBottom(){\n\t\treturn getCss(this.name, 'paddingBottom');\n\t}\n\tsetPaddingBottom(value){\n\t\tthis.paddingBottom = value;\n\t\treturn this;\n\t}\n\n\tset paddingLeft(value){\n\t\tsetCss(this.name, {\n\t\t\tpaddingLeft: value\n\t\t});\n\t}\n\tget paddingLeft(){\n\t\treturn getCss(this.name, 'paddingLeft');\n\t}\n\tsetPaddingLeft(value){\n\t\tthis.paddingLeft = value;\n\t\treturn this;\n\t}\n\n\tset border(value){\n\t\tsetCss(this.name, {\n\t\t\tborder: value\n\t\t});\n\t}\n\tget border(){\n\t\treturn getCss(this.name, 'border');\n\t}\n\tsetBorder(value){\n\t\tthis.border = value;\n\t\treturn this;\n\t}\n\n\tset borderTop(value){\n\t\tsetCss(this.name, {\n\t\t\tborderTop: value\n\t\t});\n\t}\n\tget borderTop(){\n\t\treturn getCss(this.name, 'borderTop');\n\t}\n\tsetBorderTop(value){\n\t\tthis.borderTop = value;\n\t\treturn this;\n\t}\n\n\tset borderRight(value){\n\t\tsetCss(this.name, {\n\t\t\tborderRight: value\n\t\t});\n\t}\n\tget borderRight(){\n\t\treturn getCss(this.name, 'borderRight');\n\t}\n\tsetBorderRight(value){\n\t\tthis.borderRight = value;\n\t\treturn this;\n\t}\n\n\tset borderBottom(value){\n\t\tsetCss(this.name, {\n\t\t\tborderBottom: value\n\t\t});\n\t}\n\tget borderBottom(){\n\t\treturn getCss(this.name, 'borderBottom');\n\t}\n\tsetBorderBottom(value){\n\t\tthis.borderBottom = value;\n\t\treturn this;\n\t}\n\n\tset borderLeft(value){\n\t\tsetCss(this.name, {\n\t\t\tborderLeft: value\n\t\t});\n\t}\n\tget borderLeft(){\n\t\treturn getCss(this.name, 'borderLeft');\n\t}\n\tsetBorderLeft(value){\n\t\tthis.borderLeft = value;\n\t\treturn this;\n\t}\n\n\tset borderWidth(value){\n\t\tsetCss(this.name, {\n\t\t\tborderWidth: value\n\t\t});\n\t}\n\tget borderWidth(){\n\t\treturn getCss(this.name, 'borderWidth');\n\t}\n\tsetBorderWidth(value){\n\t\tthis.borderWidth = value;\n\t\treturn this;\n\t}\n\n\tset borderTopWidth(value){\n\t\tsetCss(this.name, {\n\t\t\tborderTopWidth: value\n\t\t});\n\t}\n\tget borderTopWidth(){\n\t\treturn getCss(this.name, 'borderTopWidth');\n\t}\n\tsetBorderTopWidth(value){\n\t\tthis.borderTopWidth = value;\n\t\treturn this;\n\t}\n\n\tset borderRightWidth(value){\n\t\tsetCss(this.name, {\n\t\t\tborderRightWidth: value\n\t\t});\n\t}\n\tget borderRightWidth(){\n\t\treturn getCss(this.name, 'borderRightWidth');\n\t}\n\tsetBorderRightWidth(value){\n\t\tthis.borderRightWidth = value;\n\t\treturn this;\n\t}\n\n\tset borderBottomWidth(value){\n\t\tsetCss(this.name, {\n\t\t\tborderBottomWidth: value\n\t\t});\n\t}\n\tget borderBottomWidth(){\n\t\treturn getCss(this.name, 'borderBottomWidth');\n\t}\n\tsetBorderBottomWidth(value){\n\t\tthis.borderBottomWidth = value;\n\t\treturn this;\n\t}\n\n\tset borderLeftWidth(value){\n\t\tsetCss(this.name, {\n\t\t\tborderLeftWidth: value\n\t\t});\n\t}\n\tget borderLeftWidth(){\n\t\treturn getCss(this.name, 'borderLeftWidth');\n\t}\n\tsetBorderLeftWidth(value){\n\t\tthis.borderLeftWidth = value;\n\t\treturn this;\n\t}\n\n\tset borderStyle(value){\n\t\tsetCss(this.name, {\n\t\t\tborderStyle: value\n\t\t});\n\t}\n\tget borderStyle(){\n\t\treturn getCss(this.name, 'borderStyle');\n\t}\n\tsetBorderStyle(value){\n\t\tthis.borderStyle = value;\n\t\treturn this;\n\t}\n\n\tset borderTopStyle(value){\n\t\tsetCss(this.name, {\n\t\t\tborderTopStyle: value\n\t\t});\n\t}\n\tget borderTopStyle(){\n\t\treturn getCss(this.name, 'borderTopStyle');\n\t}\n\tsetBorderTopStyle(value){\n\t\tthis.borderTopStyle = value;\n\t\treturn this;\n\t}\n\n\tset borderRightStyle(value){\n\t\tsetCss(this.name, {\n\t\t\tborderRightStyle: value\n\t\t});\n\t}\n\tget borderRightStyle(){\n\t\treturn getCss(this.name, 'borderRightStyle');\n\t}\n\tsetBorderRightStyle(value){\n\t\tthis.borderRightStyle = value;\n\t\treturn this;\n\t}\n\n\tset borderBottomStyle(value){\n\t\tsetCss(this.name, {\n\t\t\tborderBottomStyle: value\n\t\t});\n\t}\n\tget borderBottomStyle(){\n\t\treturn getCss(this.name, 'borderBottomStyle');\n\t}\n\tsetBorderBottomStyle(value){\n\t\tthis.borderBottomStyle = value;\n\t\treturn this;\n\t}\n\n\tset borderLeftStyle(value){\n\t\tsetCss(this.name, {\n\t\t\tborderLeftStyle: value\n\t\t});\n\t}\n\tget borderLeftStyle(){\n\t\treturn getCss(this.name, 'borderLeftStyle');\n\t}\n\tsetBorderLeftStyle(value){\n\t\tthis.borderLeftStyle = value;\n\t\treturn this;\n\t}\n\n\tset borderColor(value){\n\t\tsetCss(this.name, {\n\t\t\tborderColor: value\n\t\t});\n\t}\n\tget borderColor(){\n\t\treturn getCss(this.name, 'borderColor');\n\t}\n\tsetBorderColor(value){\n\t\tthis.borderColor = value;\n\t\treturn this;\n\t}\n\n\tset borderTopColor(value){\n\t\tsetCss(this.name, {\n\t\t\tborderTopColor: value\n\t\t});\n\t}\n\tget borderTopColor(){\n\t\treturn getCss(this.name, 'borderTopColor');\n\t}\n\tsetBorderTopColor(value){\n\t\tthis.borderTopColor = value;\n\t\treturn this;\n\t}\n\n\tset borderRightColor(value){\n\t\tsetCss(this.name, {\n\t\t\tborderRightColor: value\n\t\t});\n\t}\n\tget borderRightColor(){\n\t\treturn getCss(this.name, 'borderRightColor');\n\t}\n\tsetBorderRightColor(value){\n\t\tthis.borderRightColor = value;\n\t\treturn this;\n\t}\n\n\tset borderBottomColor(value){\n\t\tsetCss(this.name, {\n\t\t\tborderBottomColor: value\n\t\t});\n\t}\n\tget borderBottomColor(){\n\t\treturn getCss(this.name, 'borderBottomColor');\n\t}\n\tsetBorderBottomColor(value){\n\t\tthis.borderBottomColor = value;\n\t\treturn this;\n\t}\n\n\tset borderLeftColor(value){\n\t\tsetCss(this.name, {\n\t\t\tborderLeftColor: value\n\t\t});\n\t}\n\tget borderLeftColor(){\n\t\treturn getCss(this.name, 'borderLeftColor');\n\t}\n\tsetBorderLeftColor(value){\n\t\tthis.borderLeftColor = value;\n\t\treturn this;\n\t}\n\n\tset borderRadius(value){\n\t\tsetCss(this.name, {\n\t\t\tborderRadius: value\n\t\t});\n\t}\n\tget borderRadius(){\n\t\treturn getCss(this.name, 'borderRadius');\n\t}\n\tsetBorderRadius(value){\n\t\tthis.borderRadius = value;\n\t\treturn this;\n\t}\n\n\tset borderTopLeftRadius(value){\n\t\tsetCss(this.name, {\n\t\t\tborderTopLeftRadius: value\n\t\t});\n\t}\n\tget borderTopLeftRadius(){\n\t\treturn getCss(this.name, 'borderTopLeftRadius');\n\t}\n\tsetBorderTopLeftRadius(value){\n\t\tthis.borderTopLeftRadius = value;\n\t\treturn this;\n\t}\n\n\tset borderTopRightRadius(value){\n\t\tsetCss(this.name, {\n\t\t\tborderTopRightRadius: value\n\t\t});\n\t}\n\tget borderTopRightRadius(){\n\t\treturn getCss(this.name, 'borderTopRightRadius');\n\t}\n\tsetBorderTopRightRadius(value){\n\t\tthis.borderTopRightRadius = value;\n\t\treturn this;\n\t}\n\n\tset borderBottomLeftRadius(value){\n\t\tsetCss(this.name, {\n\t\t\tborderBottomLeftRadius: value\n\t\t});\n\t}\n\tget borderBottomLeftRadius(){\n\t\treturn getCss(this.name, 'borderBottomLeftRadius');\n\t}\n\tsetBorderBottomLeftRadius(value){\n\t\tthis.borderBottomLeftRadius = value;\n\t\treturn this;\n\t}\n\n\tset borderBottomRightRadius(value){\n\t\tsetCss(this.name, {\n\t\t\tborderBottomRightRadius: value\n\t\t});\n\t}\n\tget borderBottomRightRadius(){\n\t\treturn getCss(this.name, 'borderBottomRightRadius');\n\t}\n\tsetBorderBottomRightRadius(value){\n\t\tthis.borderBottomRightRadius = value;\n\t\treturn this;\n\t}\n\n\tset boxShadow(value){\n\t\tsetCss(this.name, {\n\t\t\tboxShadow: value\n\t\t});\n\t}\n\tget boxShadow(){\n\t\treturn getCss(this.name, 'boxShadow');\n\t}\n\tsetBoxShadow(value){\n\t\tthis.boxShadow = value;\n\t\treturn this;\n\t}\n\n\tset overflow(value){\n\t\tsetCss(this.name, {\n\t\t\toverflow: value\n\t\t});\n\t}\n\tget overflow(){\n\t\treturn getCss(this.name, 'overflow');\n\t}\n\tsetOverflow(value){\n\t\tthis.overflow = value;\n\t\treturn this;\n\t}\n\n\tset overflowX(value){\n\t\tsetCss(this.name, {\n\t\t\toverflowX: value\n\t\t});\n\t}\n\tget overflowX(){\n\t\treturn getCss(this.name, 'overflowX');\n\t}\n\tsetOverflowX(value){\n\t\tthis.overflowX = value;\n\t\treturn this;\n\t}\n\n\tset overflowY(value){\n\t\tsetCss(this.name, {\n\t\t\toverflowY: value\n\t\t});\n\t}\n\tget overflowY(){\n\t\treturn getCss(this.name, 'overflowY');\n\t}\n\tsetOverflowY(value){\n\t\tthis.overflowY = value;\n\t\treturn this;\n\t}\n\n\tset visibility(value){\n\t\tsetCss(this.name, {\n\t\t\tvisibility: value\n\t\t});\n\t}\n\tget visibility(){\n\t\treturn getCss(this.name, 'visibility');\n\t}\n\tsetVisibility(value){\n\t\tthis.visibility = value;\n\t\treturn this;\n\t}\n\n\tset display(value){\n\t\tsetCss(this.name, {\n\t\t\tdisplay: value\n\t\t});\n\t}\n\tget display(){\n\t\treturn getCss(this.name, 'display');\n\t}\n\tsetDisplay(value){\n\t\tthis.display = value;\n\t\treturn this;\n\t}\n\n\tset position(value){\n\t\tsetCss(this.name, {\n\t\t\tposition: value\n\t\t});\n\t}\n\tget position(){\n\t\treturn getCss(this.name, 'position');\n\t}\n\tsetPosition(value){\n\t\tthis.position = value;\n\t\treturn this;\n\t}\n\n\tset top(value){\n\t\tsetCss(this.name, {\n\t\t\ttop: value\n\t\t});\n\t}\n\tget top(){\n\t\treturn getCss(this.name, 'top');\n\t}\n\tsetTop(value){\n\t\tthis.top = value;\n\t\treturn this;\n\t}\n\n\tset right(value){\n\t\tsetCss(this.name, {\n\t\t\tright: value\n\t\t});\n\t}\n\tget right(){\n\t\treturn getCss(this.name, 'right');\n\t}\n\tsetRight(value){\n\t\tthis.right = value;\n\t\treturn this;\n\t}\n\n\tset bottom(value){\n\t\tsetCss(this.name, {\n\t\t\tbottom: value\n\t\t});\n\t}\n\tget bottom(){\n\t\treturn getCss(this.name, 'bottom');\n\t}\n\tsetBottom(value){\n\t\tthis.bottom = value;\n\t\treturn this;\n\t}\n\n\tset left(value){\n\t\tsetCss(this.name, {\n\t\t\tleft: value\n\t\t});\n\t}\n\tget left(){\n\t\treturn getCss(this.name, 'left');\n\t}\n\tsetLeft(value){\n\t\tthis.left = value;\n\t\treturn this;\n\t}\n\n\tset float(value){\n\t\tsetCss(this.name, {\n\t\t\tfloat: value\n\t\t});\n\t}\n\tget float(){\n\t\treturn getCss(this.name, 'float');\n\t}\n\tsetFloat(value){\n\t\tthis.float = value;\n\t\treturn this;\n\t}\n\n\tset clear(value){\n\t\tsetCss(this.name, {\n\t\t\tclear: value\n\t\t});\n\t}\n\tget clear(){\n\t\treturn getCss(this.name, 'clear');\n\t}\n\tsetClear(value){\n\t\tthis.clear = value;\n\t\treturn this;\n\t}\n\n\tset flex(value){\n\t\tsetCss(this.name, {\n\t\t\tflex: value\n\t\t});\n\t}\n\tget flex(){\n\t\treturn getCss(this.name, 'flex');\n\t}\n\tsetFlex(value){\n\t\tthis.flex = value;\n\t\treturn this;\n\t}\n\n\tset flexDirection(value){\n\t\tsetCss(this.name, {\n\t\t\tflexDirection: value\n\t\t});\n\t}\n\tget flexDirection(){\n\t\treturn getCss(this.name, 'flexDirection');\n\t}\n\tsetFlexDirection(value){\n\t\tthis.flexDirection = value;\n\t\treturn this;\n\t}\n\n\tset flexWrap(value){\n\t\tsetCss(this.name, {\n\t\t\tflexWrap: value\n\t\t});\n\t}\n\tget flexWrap(){\n\t\treturn getCss(this.name, 'flexWrap');\n\t}\n\tsetFlexWrap(value){\n\t\tthis.flexWrap = value;\n\t\treturn this;\n\t}\n\n\tset justifyContent(value){\n\t\tsetCss(this.name, {\n\t\t\tjustifyContent: value\n\t\t});\n\t}\n\tget justifyContent(){\n\t\treturn getCss(this.name, 'justifyContent');\n\t}\n\tsetJustifyContent(value){\n\t\tthis.justifyContent = value;\n\t\treturn this;\n\t}\n\n\tset alignItems(value){\n\t\tsetCss(this.name, {\n\t\t\talignItems: value\n\t\t});\n\t}\n\tget alignItems(){\n\t\treturn getCss(this.name, 'alignItems');\n\t}\n\tsetAlignItems(value){\n\t\tthis.alignItems = value;\n\t\treturn this;\n\t}\n\n\tset alignContent(value){\n\t\tsetCss(this.name, {\n\t\t\talignContent: value\n\t\t});\n\t}\n\tget alignContent(){\n\t\treturn getCss(this.name, 'alignContent');\n\t}\n\tsetAlignContent(value){\n\t\tthis.alignContent = value;\n\t\treturn this;\n\t}\n\n\tset flexGrow(value){\n\t\tsetCss(this.name, {\n\t\t\tflexGrow: value\n\t\t});\n\t}\n\tget flexGrow(){\n\t\treturn getCss(this.name, 'flexGrow');\n\t}\n\tsetFlexGrow(value){\n\t\tthis.flexGrow = value;\n\t\treturn this;\n\t}\n\n\tset flexShrink(value){\n\t\tsetCss(this.name, {\n\t\t\tflexShrink: value\n\t\t});\n\t}\n\tget flexShrink(){\n\t\treturn getCss(this.name, 'flexShrink');\n\t}\n\tsetFlexShrink(value){\n\t\tthis.flexShrink = value;\n\t\treturn this;\n\t}\n\n\tset flexBasis(value){\n\t\tsetCss(this.name, {\n\t\t\tflexBasis: value\n\t\t});\n\t}\n\tget flexBasis(){\n\t\treturn getCss(this.name, 'flexBasis');\n\t}\n\tsetFlexBasis(value){\n\t\tthis.flexBasis = value;\n\t\treturn this;\n\t}\n\n\tset order(value){\n\t\tsetCss(this.name, {\n\t\t\torder: value\n\t\t});\n\t}\n\tget order(){\n\t\treturn getCss(this.name, 'order');\n\t}\n\tsetOrder(value){\n\t\tthis.order = value;\n\t\treturn this;\n\t}\n\n\tset fontFamily(value){\n\t\tsetCss(this.name, {\n\t\t\tfontFamily: value\n\t\t});\n\t}\n\tget fontFamily(){\n\t\treturn getCss(this.name, 'fontFamily');\n\t}\n\tsetFontFamily(value){\n\t\tthis.fontFamily = value;\n\t\treturn this;\n\t}\n\n\tset fontSize(value){\n\t\tsetCss(this.name, {\n\t\t\tfontSize: value\n\t\t});\n\t}\n\tget fontSize(){\n\t\treturn getCss(this.name, 'fontSize');\n\t}\n\tsetFontSize(value){\n\t\tthis.fontSize = value;\n\t\treturn this;\n\t}\n\n\tset fontWeight(value){\n\t\tsetCss(this.name, {\n\t\t\tfontWeight: value\n\t\t});\n\t}\n\tget fontWeight(){\n\t\treturn getCss(this.name, 'fontWeight');\n\t}\n\tsetFontWeight(value){\n\t\tthis.fontWeight = value;\n\t\treturn this;\n\t}\n\n\tset fontStyle(value){\n\t\tsetCss(this.name, {\n\t\t\tfontStyle: value\n\t\t});\n\t}\n\tget fontStyle(){\n\t\treturn getCss(this.name, 'fontStyle');\n\t}\n\tsetFontStyle(value){\n\t\tthis.fontStyle = value;\n\t\treturn this;\n\t}\n\n\tset textAlign(value){\n\t\tsetCss(this.name, {\n\t\t\ttextAlign: value\n\t\t});\n\t}\n\tget textAlign(){\n\t\treturn getCss(this.name, 'textAlign');\n\t}\n\tsetTextAlign(value){\n\t\tthis.textAlign = value;\n\t\treturn this;\n\t}\n\n\tset textTransform(value){\n\t\tsetCss(this.name, {\n\t\t\ttextTransform: value\n\t\t});\n\t}\n\tget textTransform(){\n\t\treturn getCss(this.name, 'textTransform');\n\t}\n\tsetTextTransform(value){\n\t\tthis.textTransform = value;\n\t\treturn this;\n\t}\n\n\tset textDecoration(value){\n\t\tsetCss(this.name, {\n\t\t\ttextDecoration: value\n\t\t});\n\t}\n\tget textDecoration(){\n\t\treturn getCss(this.name, 'textDecoration');\n\t}\n\tsetTextDecoration(value){\n\t\tthis.textDecoration = value;\n\t\treturn this;\n\t}\n\n\tset lineHeight(value){\n\t\tsetCss(this.name, {\n\t\t\tlineHeight: value\n\t\t});\n\t}\n\tget lineHeight(){\n\t\treturn getCss(this.name, 'lineHeight');\n\t}\n\tsetLineHeight(value){\n\t\tthis.lineHeight = value;\n\t\treturn this;\n\t}\n\n\tset letterSpacing(value){\n\t\tsetCss(this.name, {\n\t\t\tletterSpacing: value\n\t\t});\n\t}\n\tget letterSpacing(){\n\t\treturn getCss(this.name, 'letterSpacing');\n\t}\n\tsetLetterSpacing(value){\n\t\tthis.letterSpacing = value;\n\t\treturn this;\n\t}\n\n\tset whiteSpace(value){\n\t\tsetCss(this.name, {\n\t\t\twhiteSpace: value\n\t\t});\n\t}\n\tget whiteSpace(){\n\t\treturn getCss(this.name, 'whiteSpace');\n\t}\n\tsetWhiteSpace(value){\n\t\tthis.whiteSpace = value;\n\t\treturn this;\n\t}\n\n\tset background(value){\n\t\tsetCss(this.name, {\n\t\t\tbackground: value\n\t\t});\n\t}\n\tget background(){\n\t\treturn getCss(this.name, 'background');\n\t}\n\tsetBackground(value){\n\t\tthis.background = value;\n\t\treturn this;\n\t}\n\n\tset backgroundColor(value){\n\t\tsetCss(this.name, {\n\t\t\tbackgroundColor: value\n\t\t});\n\t}\n\tget backgroundColor(){\n\t\treturn getCss(this.name, 'backgroundColor');\n\t}\n\tsetBackgroundColor(value){\n\t\tthis.backgroundColor = value;\n\t\treturn this;\n\t}\n\n\tset backgroundImage(value){\n\t\tsetCss(this.name, {\n\t\t\tbackgroundImage: value\n\t\t});\n\t}\n\tget backgroundImage(){\n\t\treturn getCss(this.name, 'backgroundImage');\n\t}\n\tsetBackgroundImage(value){\n\t\tthis.backgroundImage = value;\n\t\treturn this;\n\t}\n\n\tset backgroundRepeat(value){\n\t\tsetCss(this.name, {\n\t\t\tbackgroundRepeat: value\n\t\t});\n\t}\n\tget backgroundRepeat(){\n\t\treturn getCss(this.name, 'backgroundRepeat');\n\t}\n\tsetBackgroundRepeat(value){\n\t\tthis.backgroundRepeat = value;\n\t\treturn this;\n\t}\n\n\tset backgroundPosition(value){\n\t\tsetCss(this.name, {\n\t\t\tbackgroundPosition: value\n\t\t});\n\t}\n\tget backgroundPosition(){\n\t\treturn getCss(this.name, 'backgroundPosition');\n\t}\n\tsetBackgroundPosition(value){\n\t\tthis.backgroundPosition = value;\n\t\treturn this;\n\t}\n\n\tset backgroundSize(value){\n\t\tsetCss(this.name, {\n\t\t\tbackgroundSize: value\n\t\t});\n\t}\n\tget backgroundSize(){\n\t\treturn getCss(this.name, 'backgroundSize');\n\t}\n\tsetBackgroundSize(value){\n\t\tthis.backgroundSize = value;\n\t\treturn this;\n\t}\n\n\tset color(value){\n\t\tsetCss(this.name, {\n\t\t\tcolor: value\n\t\t});\n\t}\n\tget color(){\n\t\treturn getCss(this.name, 'color');\n\t}\n\tsetColor(value){\n\t\tthis.color = value;\n\t\treturn this;\n\t}\n\n\tset cursor(value){\n\t\tsetCss(this.name, {\n\t\t\tcursor: value\n\t\t});\n\t}\n\tget cursor(){\n\t\treturn getCss(this.name, 'cursor');\n\t}\n\tsetCursor(value){\n\t\tthis.cursor = value;\n\t\treturn this;\n\t}\n\n\tset zIndex(value){\n\t\tsetCss(this.name, {\n\t\t\tzIndex: value\n\t\t});\n\t}\n\tget zIndex(){\n\t\treturn getCss(this.name, 'zIndex');\n\t}\n\tsetZIndex(value){\n\t\tthis.zIndex = value;\n\t\treturn this;\n\t}\n\n\tset opacity(value){\n\t\tsetCss(this.name, {\n\t\t\topacity: value\n\t\t});\n\t}\n\tget opacity(){\n\t\treturn getCss(this.name, 'opacity');\n\t}\n\tsetOpacity(value){\n\t\tthis.opacity = value;\n\t\treturn this;\n\t}\n\n\tset content(value){\n\t\tsetCss(this.name, {\n\t\t\tcontent: value\n\t\t});\n\t}\n\tget content(){\n\t\treturn getCss(this.name, 'content');\n\t}\n\tsetContent(value){\n\t\tthis.content = value;\n\t\treturn this;\n\t}\n\n\tset transition(value){\n\t\tsetCss(this.name, {\n\t\t\ttransition: value\n\t\t});\n\t}\n\tget transition(){\n\t\treturn getCss(this.name, 'transition');\n\t}\n\tsetTransition(value){\n\t\tthis.transition = value;\n\t\treturn this;\n\t}\n\n\tset animation(value){\n\t\tsetCss(this.name, {\n\t\t\tanimation: value\n\t\t});\n\t}\n\tget animation(){\n\t\treturn getCss(this.name, 'animation');\n\t}\n\tsetAnimation(value){\n\t\tthis.animation = value;\n\t\treturn this;\n\t}\n\n\tset transform(value){\n\t\tsetCss(this.name, {\n\t\t\ttransform: value\n\t\t});\n\t}\n\tget transform(){\n\t\treturn getCss(this.name, 'transform');\n\t}\n\tsetTransform(value){\n\t\tthis.transform = value;\n\t\treturn this;\n\t}\n\n\tset userSelect(value){\n\t\tsetCss(this.name, {\n\t\t\tuserSelect: value\n\t\t});\n\t}\n\tget userSelect(){\n\t\treturn getCss(this.name, 'userSelect');\n\t}\n\tsetUserSelect(value){\n\t\tthis.userSelect = value;\n\t\treturn this;\n\t}\n\n\tset themeColor(value){\n\t\tsetCss(this.name, {\n\t\t\t\"--f7-theme-color\": value\n\t\t});\n\t}\n\tget themeColor(){\n\t\treturn getCss(this.name, 'themeColor');\n\t}\n\tsetThemeColor(value){\n\t\tthis.themeColor = value;\n\t\treturn this;\n\t}\n\n\t\n\n\tstatic trimRules(rules){\n\t\treturn trimRules(rules);\n\t}\n\n\tstatic register(name, props){\n\t\tconst s = new Style(name);\n\t\ts.set(props);\n\t\treturn s;\n\t}\n\n\tstatic fromElement(element, name){\n\t\tconst styles = getComputedStyle(element);\n    const csss = {};\n    for (const property of styles) {\n      const value = styles.getPropertyValue(property);\n      csss[property] = value;\n    }\n\t\treturn Style.register(name, csss);\n\t}\n\n\tstatic fromWidget(widget, name){\n\t\treturn Style.fromElement((0,_utils_elman__WEBPACK_IMPORTED_MODULE_1__.findEl)(widget.id)[0], name);\n\t}\n\n\tstatic from(target, name){\n\t\tif((0,_utils_type_js__WEBPACK_IMPORTED_MODULE_2__.isHTMLElement)(target)){\n\t\t\treturn Style.fromElement(target, name);\n\t\t} else if((0,_utils_type_js__WEBPACK_IMPORTED_MODULE_2__.isWidget)(target)) {\n\t\t\treturn Style.fromWidget(target, name);\n\t\t} else {\n\t\t\tthrow new Error('Only HTMLElements and Widgets are allowed for style copying.');\n\t\t}\n\t}\n\n\tstatic copy(target, name){\n\t\tlet all = { ...(getCss(target)) };\n\t\treturn Style.register(name, all);\n\t}\n\n\tstatic INHERIT = 'inherit';\n\tstatic AUTO = 'auto';\n\tstatic FULL = '100%';\n\tstatic FULLWIDTH = '100vw';\n\tstatic FULLHEIGHT = '100dvh';\n\tstatic WRAP = 'wrap';\n\tstatic NONE = 'none';\n\tstatic BLOCK = 'block';\n\tstatic FLEX = 'flex';\n\tstatic GRID = 'grid';\n\tstatic NOWRAP = 'nowrap';\n\tstatic INITIAL = 'initial';\n\tstatic UNSET = 'unset';\n\tstatic CLIP = 'clip';\n\tstatic HIDDEN = 'hidden';\n\tstatic VISIBLE = 'visible';\n\n\tstatic UNIT = '16px';\n\tstatic HALFUNIT = '8px';\n\tstatic ONEANDHALFUNIT = '24px';\n\tstatic TWOUNITS = '32px';\n\tstatic THREEUNITS = '48px';\n\tstatic FOURUNITS = '64px';\n\tstatic FIVEUNITS = '80px';\n\tstatic BULKUNIT = '100px';\n\tstatic GRADIENT = {\n\t\tLEFT: 'to left',\n\t\tRIGHT: 'to right',\n\t\tTOP: 'to top',\n\t\tBOTTOM: 'to bottom',\n\t}\n\n\tstatic calc(...string){ return 'calc('+string.join(' ')+')' };\n\tstatic var(string){ return 'var(--'+_modules_voca_js__WEBPACK_IMPORTED_MODULE_0___default().kebabCase(string)+')' };\n\tstatic double(string){ return cssProperty([string, string]) };\n\n\tstatic linearGradient(...colors){ return `linear-gradient(${colors.map(color => cssProperty(color)).join(',')})` };\n\tstatic radialGradient(...colors){ return `radial-gradient(${colors.map(color => cssProperty(color)).join(',')})` };\n\n\tstatic deg(int){ return int+'deg' };\n\tstatic em(int){ return int+'em' };\n\tstatic rem(int){ return int+'rem' };\n\tstatic px(int){ return int+'px' };\n\tstatic p(int){ return int+'%' };\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Style);\n\n//# sourceURL=webpack://rayous/./src/components/Style.js?");
-
-/***/ }),
-
-/***/ "./src/main.js":
-/*!*********************!*\
-  !*** ./src/main.js ***!
-  \*********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _utils_elman__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/elman */ \"./src/utils/elman.ts\");\n/* harmony import */ var _widgets_main_Widget_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./widgets/main/Widget.ts */ \"./src/widgets/main/Widget.ts\");\n\n\n\nlet body = _widgets_main_Widget_ts__WEBPACK_IMPORTED_MODULE_1__[\"default\"].from(document.body);\n\nlet wid = new _widgets_main_Widget_ts__WEBPACK_IMPORTED_MODULE_1__[\"default\"]({\n\telement: {\n\t\tname: 'a'\n\t},\n\tattr: {\n\t\thref: '/home/'\n\t}\n});\n\nwid.text('text');\nwid.style = {\n\tcolor: 'red'\n}\n\nwid.to(body);\n\n//# sourceURL=webpack://rayous/./src/main.js?");
-
-/***/ }),
-
-/***/ "./src/modules/voca.js":
-/*!*****************************!*\
-  !*** ./src/modules/voca.js ***!
-  \*****************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-eval("/*!\n * Voca string library 1.4.1\n * https://vocajs.pages.dev\n *\n * Copyright Dmitri Pavlutin and other contributors\n * Released under the MIT license\n */\n\n(function(global, factory) {\n   true\n    ? (module.exports = factory())\n    : 0;\n})(this, function() {\n  'use strict';\n\n  function _extends() {\n    _extends =\n      Object.assign ||\n      function(target) {\n        for (var i = 1; i < arguments.length; i++) {\n          var source = arguments[i];\n\n          for (var key in source) {\n            if (Object.prototype.hasOwnProperty.call(source, key)) {\n              target[key] = source[key];\n            }\n          }\n        }\n\n        return target;\n      };\n\n    return _extends.apply(this, arguments);\n  }\n\n  function _slicedToArray(arr, i) {\n    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();\n  }\n\n  function _toConsumableArray(arr) {\n    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();\n  }\n\n  function _arrayWithoutHoles(arr) {\n    if (Array.isArray(arr)) {\n      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];\n\n      return arr2;\n    }\n  }\n\n  function _arrayWithHoles(arr) {\n    if (Array.isArray(arr)) return arr;\n  }\n\n  function _iterableToArray(iter) {\n    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === '[object Arguments]')\n      return Array.from(iter);\n  }\n\n  function _iterableToArrayLimit(arr, i) {\n    if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === '[object Arguments]')) {\n      return;\n    }\n\n    var _arr = [];\n    var _n = true;\n    var _d = false;\n    var _e = undefined;\n\n    try {\n      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {\n        _arr.push(_s.value);\n\n        if (i && _arr.length === i) break;\n      }\n    } catch (err) {\n      _d = true;\n      _e = err;\n    } finally {\n      try {\n        if (!_n && _i['return'] != null) _i['return']();\n      } finally {\n        if (_d) throw _e;\n      }\n    }\n\n    return _arr;\n  }\n\n  function _nonIterableSpread() {\n    throw new TypeError('Invalid attempt to spread non-iterable instance');\n  }\n\n  function _nonIterableRest() {\n    throw new TypeError('Invalid attempt to destructure non-iterable instance');\n  }\n\n  /**\n   * Checks if `value` is `null` or `undefined`\n   *\n   * @ignore\n   * @function isNil\n   * @param {*} value The object to check\n   * @return {boolean} Returns `true` is `value` is `undefined` or `null`, `false` otherwise\n   */\n  function isNil(value) {\n    return value === undefined || value === null;\n  }\n\n  /**\n   * Converts the `value` to a boolean. If `value` is `undefined` or `null`, returns `defaultValue`.\n   *\n   * @ignore\n   * @function toBoolean\n   * @param {*} value The value to convert.\n   * @param {boolean} [defaultValue=false] The default value.\n   * @return {boolean} Returns the coercion to boolean.\n   */\n\n  function coerceToBoolean(value) {\n    var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;\n\n    if (isNil(value)) {\n      return defaultValue;\n    }\n\n    return Boolean(value);\n  }\n\n  /**\n   * Checks whether `subject` is a string primitive type.\n   *\n   * @function isString\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} subject The value to verify.\n   * @return {boolean} Returns `true` if `subject` is string primitive type or `false` otherwise.\n   * @example\n   * v.isString('vacation');\n   * // => true\n   *\n   * v.isString(560);\n   * // => false\n   */\n  function isString(subject) {\n    return typeof subject === 'string';\n  }\n\n  /**\n   * Get the string representation of the `value`.\n   * Converts the `value` to string.\n   * If `value` is `null` or `undefined`, return `defaultValue`.\n   *\n   * @ignore\n   * @function toString\n   * @param {*} value             The value to convert.\n   * @param {*} [defaultValue=''] The default value to return.\n   * @return {string|null}        Returns the string representation of `value`. Returns `defaultValue` if `value` is\n   *                              `null` or `undefined`.\n   */\n\n  function coerceToString(value) {\n    var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';\n\n    if (isNil(value)) {\n      return defaultValue;\n    }\n\n    if (isString(value)) {\n      return value;\n    }\n\n    return String(value);\n  }\n\n  /**\n   * Converts the first character of `subject` to upper case. If `restToLower` is `true`, convert the rest of\n   * `subject` to lower case.\n   *\n   * @function capitalize\n   * @static\n   * @since 1.0.0\n   * @memberOf Case\n   * @param  {string}  [subject='']        The string to capitalize.\n   * @param  {boolean} [restToLower=false] Convert the rest of `subject` to lower case.\n   * @return {string}                      Returns the capitalized string.\n   * @example\n   * v.capitalize('apple');\n   * // => 'Apple'\n   *\n   * v.capitalize('aPPle', true);\n   * // => 'Apple'\n   */\n\n  function capitalize(subject, restToLower) {\n    var subjectString = coerceToString(subject);\n    var restToLowerCaseBoolean = coerceToBoolean(restToLower);\n\n    if (subjectString === '') {\n      return '';\n    }\n\n    if (restToLowerCaseBoolean) {\n      subjectString = subjectString.toLowerCase();\n    }\n\n    return subjectString.substr(0, 1).toUpperCase() + subjectString.substr(1);\n  }\n\n  /**\n   * Converts the `subject` to lower case.\n   *\n   * @function lowerCase\n   * @static\n   * @since 1.0.0\n   * @memberOf Case\n   * @param  {string} [subject=''] The string to convert to lower case.\n   * @return {string}              Returns the lower case string.\n   * @example\n   * v.lowerCase('Green');\n   * // => 'green'\n   *\n   * v.lowerCase('BLUE');\n   * // => 'blue'\n   */\n\n  function lowerCase(subject) {\n    var subjectString = coerceToString(subject, '');\n    return subjectString.toLowerCase();\n  }\n\n  /**\n   * A regular expression string matching digits\n   *\n   * @type {string}\n   * @ignore\n   */\n  var digit = '\\\\d';\n  /**\n   * A regular expression string matching whitespace\n   *\n   * @type {string}\n   * @ignore\n   */\n\n  var whitespace = '\\\\s\\\\uFEFF\\\\xA0';\n  /**\n   * A regular expression string matching high surrogate\n   *\n   * @type {string}\n   * @ignore\n   */\n\n  var highSurrogate = '\\\\uD800-\\\\uDBFF';\n  /**\n   * A regular expression string matching low surrogate\n   *\n   * @type {string}\n   * @ignore\n   */\n\n  var lowSurrogate = '\\\\uDC00-\\\\uDFFF';\n  /**\n   * A regular expression string matching diacritical mark\n   *\n   * @type {string}\n   * @ignore\n   */\n\n  var diacriticalMark = '\\\\u0300-\\\\u036F\\\\u1AB0-\\\\u1AFF\\\\u1DC0-\\\\u1DFF\\\\u20D0-\\\\u20FF\\\\uFE20-\\\\uFE2F';\n  /**\n   * A regular expression to match the base character for a combining mark\n   *\n   * @type {string}\n   * @ignore\n   */\n\n  var base = '\\\\0-\\\\u02FF\\\\u0370-\\\\u1AAF\\\\u1B00-\\\\u1DBF\\\\u1E00-\\\\u20CF\\\\u2100-\\\\uD7FF\\\\uE000-\\\\uFE1F\\\\uFE30-\\\\uFFFF';\n  /**\n   * Regular expression to match combining marks\n   *\n   * @see http://unicode.org/faq/char_combmark.html\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_COMBINING_MARKS = new RegExp(\n    '([' +\n      base +\n      ']|[' +\n      highSurrogate +\n      '][' +\n      lowSurrogate +\n      ']|[' +\n      highSurrogate +\n      '](?![' +\n      lowSurrogate +\n      '])|(?:[^' +\n      highSurrogate +\n      ']|^)[' +\n      lowSurrogate +\n      '])([' +\n      diacriticalMark +\n      ']+)',\n    'g'\n  );\n  /**\n   * Regular expression to match surrogate pairs\n   *\n   * @see http://www.unicode.org/faq/utf_bom.html#utf16-2\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_SURROGATE_PAIRS = new RegExp('([' + highSurrogate + '])([' + lowSurrogate + '])', 'g');\n  /**\n   * Regular expression to match a unicode character\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_UNICODE_CHARACTER = new RegExp(\n    '((?:[' +\n      base +\n      ']|[' +\n      highSurrogate +\n      '][' +\n      lowSurrogate +\n      ']|[' +\n      highSurrogate +\n      '](?![' +\n      lowSurrogate +\n      '])|(?:[^' +\n      highSurrogate +\n      ']|^)[' +\n      lowSurrogate +\n      '])(?:[' +\n      diacriticalMark +\n      ']+))|\\\n([' +\n      highSurrogate +\n      '][' +\n      lowSurrogate +\n      '])|\\\n([\\\\n\\\\r\\\\u2028\\\\u2029])|\\\n(.)',\n    'g'\n  );\n  /**\n   * Regular expression to match whitespaces\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_WHITESPACE = new RegExp('[' + whitespace + ']');\n  /**\n   * Regular expression to match whitespaces from the left side\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_TRIM_LEFT = new RegExp('^[' + whitespace + ']+');\n  /**\n   * Regular expression to match whitespaces from the right side\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_TRIM_RIGHT = new RegExp('[' + whitespace + ']+$');\n  /**\n   * Regular expression to match digit characters\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_DIGIT = new RegExp('^' + digit + '+$');\n  /**\n   * Regular expression to match regular expression special characters\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_SPECIAL_CHARACTERS = /[-[\\]{}()*+!<=:?./\\\\^$|#,]/g;\n  /**\n   * Regular expression to match not latin characters\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_NON_LATIN = /[^A-Za-z0-9]/g;\n  /**\n   * Regular expression to match HTML special characters.\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_HTML_SPECIAL_CHARACTERS = /[<>&\"'`]/g;\n  /**\n   * Regular expression to match sprintf format string\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_CONVERSION_SPECIFICATION = /(%{1,2})(?:(\\d+)\\$)?(\\+)?([ 0]|'.{1})?(-)?(\\d+)?(?:\\.(\\d+))?([bcdiouxXeEfgGs])?/g;\n  /**\n   * Regular expression to match trailing zeros in a number\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_TRAILING_ZEROS = /\\.?0+$/g;\n  /**\n   * Regular expression to match a list of tags.\n   *\n   * @see https://html.spec.whatwg.org/multipage/syntax.html#syntax-tag-name\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_TAG_LIST = /<([A-Za-z0-9]+)>/g;\n\n  /**\n   * A regular expression to match the General Punctuation Unicode block\n   *\n   * @type {string}\n   * @ignore\n   */\n\n  var generalPunctuationBlock = '\\\\u2000-\\\\u206F';\n  /**\n   * A regular expression to match non characters from from Basic Latin and Latin-1 Supplement Unicode blocks\n   *\n   * @type {string}\n   * @ignore\n   */\n\n  var nonCharacter = '\\\\x00-\\\\x2F\\\\x3A-\\\\x40\\\\x5B-\\\\x60\\\\x7b-\\\\xBF\\\\xD7\\\\xF7';\n  /**\n   * A regular expression to match the dingbat Unicode block\n   *\n   * @type {string}\n   * @ignore\n   */\n\n  var dingbatBlock = '\\\\u2700-\\\\u27BF';\n  /**\n   * A regular expression string that matches lower case letters: LATIN\n   *\n   * @type {string}\n   * @ignore\n   */\n\n  var lowerCaseLetter =\n    'a-z\\\\xB5\\\\xDF-\\\\xF6\\\\xF8-\\\\xFF\\\\u0101\\\\u0103\\\\u0105\\\\u0107\\\\u0109\\\\u010B\\\\u010D\\\\u010F\\\\u0111\\\\u0113\\\\u0115\\\\u0117\\\\u0119\\\\u011B\\\\u011D\\\\u011F\\\\u0121\\\\u0123\\\\u0125\\\\u0127\\\\u0129\\\\u012B\\\\u012D\\\\u012F\\\\u0131\\\\u0133\\\\u0135\\\\u0137\\\\u0138\\\\u013A\\\\u013C\\\\u013E\\\\u0140\\\\u0142\\\\u0144\\\\u0146\\\\u0148\\\\u0149\\\\u014B\\\\u014D\\\\u014F\\\\u0151\\\\u0153\\\\u0155\\\\u0157\\\\u0159\\\\u015B\\\\u015D\\\\u015F\\\\u0161\\\\u0163\\\\u0165\\\\u0167\\\\u0169\\\\u016B\\\\u016D\\\\u016F\\\\u0171\\\\u0173\\\\u0175\\\\u0177\\\\u017A\\\\u017C\\\\u017E-\\\\u0180\\\\u0183\\\\u0185\\\\u0188\\\\u018C\\\\u018D\\\\u0192\\\\u0195\\\\u0199-\\\\u019B\\\\u019E\\\\u01A1\\\\u01A3\\\\u01A5\\\\u01A8\\\\u01AA\\\\u01AB\\\\u01AD\\\\u01B0\\\\u01B4\\\\u01B6\\\\u01B9\\\\u01BA\\\\u01BD-\\\\u01BF\\\\u01C6\\\\u01C9\\\\u01CC\\\\u01CE\\\\u01D0\\\\u01D2\\\\u01D4\\\\u01D6\\\\u01D8\\\\u01DA\\\\u01DC\\\\u01DD\\\\u01DF\\\\u01E1\\\\u01E3\\\\u01E5\\\\u01E7\\\\u01E9\\\\u01EB\\\\u01ED\\\\u01EF\\\\u01F0\\\\u01F3\\\\u01F5\\\\u01F9\\\\u01FB\\\\u01FD\\\\u01FF\\\\u0201\\\\u0203\\\\u0205\\\\u0207\\\\u0209\\\\u020B\\\\u020D\\\\u020F\\\\u0211\\\\u0213\\\\u0215\\\\u0217\\\\u0219\\\\u021B\\\\u021D\\\\u021F\\\\u0221\\\\u0223\\\\u0225\\\\u0227\\\\u0229\\\\u022B\\\\u022D\\\\u022F\\\\u0231\\\\u0233-\\\\u0239\\\\u023C\\\\u023F\\\\u0240\\\\u0242\\\\u0247\\\\u0249\\\\u024B\\\\u024D\\\\u024F';\n  /**\n   * A regular expression string that matches upper case letters: LATIN\n   *\n   * @type {string}\n   * @ignore\n   */\n\n  var upperCaseLetter =\n    '\\\\x41-\\\\x5a\\\\xc0-\\\\xd6\\\\xd8-\\\\xde\\\\u0100\\\\u0102\\\\u0104\\\\u0106\\\\u0108\\\\u010a\\\\u010c\\\\u010e\\\\u0110\\\\u0112\\\\u0114\\\\u0116\\\\u0118\\\\u011a\\\\u011c\\\\u011e\\\\u0120\\\\u0122\\\\u0124\\\\u0126\\\\u0128\\\\u012a\\\\u012c\\\\u012e\\\\u0130\\\\u0132\\\\u0134\\\\u0136\\\\u0139\\\\u013b\\\\u013d\\\\u013f\\\\u0141\\\\u0143\\\\u0145\\\\u0147\\\\u014a\\\\u014c\\\\u014e\\\\u0150\\\\u0152\\\\u0154\\\\u0156\\\\u0158\\\\u015a\\\\u015c\\\\u015e\\\\u0160\\\\u0162\\\\u0164\\\\u0166\\\\u0168\\\\u016a\\\\u016c\\\\u016e\\\\u0170\\\\u0172\\\\u0174\\\\u0176\\\\u0178\\\\u0179\\\\u017b\\\\u017d\\\\u0181\\\\u0182\\\\u0184\\\\u0186\\\\u0187\\\\u0189-\\\\u018b\\\\u018e-\\\\u0191\\\\u0193\\\\u0194\\\\u0196-\\\\u0198\\\\u019c\\\\u019d\\\\u019f\\\\u01a0\\\\u01a2\\\\u01a4\\\\u01a6\\\\u01a7\\\\u01a9\\\\u01ac\\\\u01ae\\\\u01af\\\\u01b1-\\\\u01b3\\\\u01b5\\\\u01b7\\\\u01b8\\\\u01bc\\\\u01c4\\\\u01c5\\\\u01c7\\\\u01c8\\\\u01ca\\\\u01cb\\\\u01cd\\\\u01cf\\\\u01d1\\\\u01d3\\\\u01d5\\\\u01d7\\\\u01d9\\\\u01db\\\\u01de\\\\u01e0\\\\u01e2\\\\u01e4\\\\u01e6\\\\u01e8\\\\u01ea\\\\u01ec\\\\u01ee\\\\u01f1\\\\u01f2\\\\u01f4\\\\u01f6-\\\\u01f8\\\\u01fa\\\\u01fc\\\\u01fe\\\\u0200\\\\u0202\\\\u0204\\\\u0206\\\\u0208\\\\u020a\\\\u020c\\\\u020e\\\\u0210\\\\u0212\\\\u0214\\\\u0216\\\\u0218\\\\u021a\\\\u021c\\\\u021e\\\\u0220\\\\u0222\\\\u0224\\\\u0226\\\\u0228\\\\u022a\\\\u022c\\\\u022e\\\\u0230\\\\u0232\\\\u023a\\\\u023b\\\\u023d\\\\u023e\\\\u0241\\\\u0243-\\\\u0246\\\\u0248\\\\u024a\\\\u024c\\\\u024e';\n  /**\n   * Regular expression to match Unicode words\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_WORD = new RegExp(\n    '(?:[' +\n      upperCaseLetter +\n      '][' +\n      diacriticalMark +\n      ']*)?(?:[' +\n      lowerCaseLetter +\n      '][' +\n      diacriticalMark +\n      ']*)+|\\\n(?:[' +\n      upperCaseLetter +\n      '][' +\n      diacriticalMark +\n      ']*)+(?![' +\n      lowerCaseLetter +\n      '])|\\\n[' +\n      digit +\n      ']+|\\\n[' +\n      dingbatBlock +\n      ']|\\\n[^' +\n      nonCharacter +\n      generalPunctuationBlock +\n      whitespace +\n      ']+',\n    'g'\n  );\n  /**\n   * Regular expression to match words from Basic Latin and Latin-1 Supplement blocks\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_LATIN_WORD = /[A-Z\\xC0-\\xD6\\xD8-\\xDE]?[a-z\\xDF-\\xF6\\xF8-\\xFF]+|[A-Z\\xC0-\\xD6\\xD8-\\xDE]+(?![a-z\\xDF-\\xF6\\xF8-\\xFF])|\\d+/g;\n  /**\n   * Regular expression to match alpha characters\n   *\n   * @see http://stackoverflow.com/a/22075070/1894471\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_ALPHA = new RegExp('^(?:[' + lowerCaseLetter + upperCaseLetter + '][' + diacriticalMark + ']*)+$');\n  /**\n   * Regular expression to match alpha and digit characters\n   *\n   * @see http://stackoverflow.com/a/22075070/1894471\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_ALPHA_DIGIT = new RegExp(\n    '^((?:[' + lowerCaseLetter + upperCaseLetter + '][' + diacriticalMark + ']*)|[' + digit + '])+$'\n  );\n  /**\n   * Regular expression to match Extended ASCII characters, i.e. the first 255\n   *\n   * @type {RegExp}\n   * @ignore\n   */\n\n  var REGEXP_EXTENDED_ASCII = /^[\\x01-\\xFF]*$/;\n\n  /**\n   * Verifies if `value` is `undefined` or `null` and returns `defaultValue`. In other case returns `value`.\n   *\n   * @ignore\n   * @function nilDefault\n   * @param {*} value The value to verify.\n   * @param {*} defaultValue The default value.\n   * @return {*} Returns `defaultValue` if `value` is `undefined` or `null`, otherwise `defaultValue`.\n   */\n  function nilDefault(value, defaultValue) {\n    return value == null ? defaultValue : value;\n  }\n\n  /**\n   * Get the string representation of the `value`.\n   * Converts the `value` to string.\n   *\n   * @ignore\n   * @function toString\n   * @param {*} value             The value to convert.\n   * @return {string|null}        Returns the string representation of `value`.\n   */\n\n  function toString(value) {\n    if (isNil(value)) {\n      return null;\n    }\n\n    if (isString(value)) {\n      return value;\n    }\n\n    return String(value);\n  }\n\n  /**\n   * Splits `subject` into an array of words.\n   *\n   * @function words\n   * @static\n   * @since 1.0.0\n   * @memberOf Split\n   * @param {string} [subject=''] The string to split into words.\n   * @param {string|RegExp} [pattern] The pattern to watch words. If `pattern` is not RegExp, it is transformed to `new RegExp(pattern, flags)`.\n   * @param {string} [flags=''] The regular expression flags. Applies when `pattern` is string type.\n   * @return {Array} Returns the array of words.\n   * @example\n   * v.words('gravity can cross dimensions');\n   * // => ['gravity', 'can', 'cross', 'dimensions']\n   *\n   * v.words('GravityCanCrossDimensions');\n   * // => ['Gravity', 'Can', 'Cross', 'Dimensions']\n   *\n   * v.words('Gravity - can cross dimensions!');\n   * // => ['Gravity', 'can', 'cross', 'dimensions']\n   *\n   * v.words('Earth gravity', /[^\\s]+/g);\n   * // => ['Earth', 'gravity']\n   */\n\n  function words(subject, pattern, flags) {\n    var subjectString = coerceToString(subject);\n    var patternRegExp;\n\n    if (isNil(pattern)) {\n      patternRegExp = REGEXP_EXTENDED_ASCII.test(subjectString) ? REGEXP_LATIN_WORD : REGEXP_WORD;\n    } else if (pattern instanceof RegExp) {\n      patternRegExp = pattern;\n    } else {\n      var flagsString = toString(nilDefault(flags, ''));\n      patternRegExp = new RegExp(toString(pattern), flagsString);\n    }\n\n    return nilDefault(subjectString.match(patternRegExp), []);\n  }\n\n  /**\n   * Transforms the `word` into camel case chunk.\n   *\n   * @param  {string} word  The word string\n   * @param  {number} index The index of the word in phrase.\n   * @return {string}       The transformed word.\n   * @ignore\n   */\n\n  function wordToCamel(word, index) {\n    return index === 0 ? lowerCase(word) : capitalize(word, true);\n  }\n  /**\n   * Converts the `subject` to <a href=\"https://en.wikipedia.org/wiki/CamelCase\">camel case</a>.\n   *\n   * @function camelCase\n   * @static\n   * @since 1.0.0\n   * @memberOf Case\n   * @param  {string} [subject=''] The string to convert to camel case.\n   * @return {string}              The camel case string.\n   * @example\n   * v.camelCase('bird flight');\n   * // => 'birdFlight'\n   *\n   * v.camelCase('BirdFlight');\n   * // => 'birdFlight'\n   *\n   * v.camelCase('-BIRD-FLIGHT-');\n   * // => 'birdFlight'\n   */\n\n  function camelCase(subject) {\n    var subjectString = coerceToString(subject);\n\n    if (subjectString === '') {\n      return '';\n    }\n\n    return words(subjectString)\n      .map(wordToCamel)\n      .join('');\n  }\n\n  /**\n   * Converts the first character of `subject` to lower case.\n   *\n   * @function decapitalize\n   * @static\n   * @since 1.0.0\n   * @memberOf Case\n   * @param  {string} [subject=''] The string to decapitalize.\n   * @return {string}              Returns the decapitalized string.\n   * @example\n   * v.decapitalize('Sun');\n   * // => 'sun'\n   *\n   * v.decapitalize('moon');\n   * // => 'moon'\n   */\n\n  function decapitalize(subject) {\n    var subjectString = coerceToString(subject);\n\n    if (subjectString === '') {\n      return '';\n    }\n\n    return subjectString.substr(0, 1).toLowerCase() + subjectString.substr(1);\n  }\n\n  /**\n   * Converts the `subject` to <a href=\"https://en.wikipedia.org/wiki/Letter_case#cite_ref-13\">kebab case</a>,\n   * also called <i>spinal case</i> or <i>lisp case</i>.\n   *\n   * @function kebabCase\n   * @static\n   * @since 1.0.0\n   * @memberOf Case\n   * @param  {string} [subject=''] The string to convert to kebab case.\n   * @return {string}              Returns the kebab case string.\n   * @example\n   * v.kebabCase('goodbye blue sky');\n   * // => 'goodbye-blue-sky'\n   *\n   * v.kebabCase('GoodbyeBlueSky');\n   * // => 'goodbye-blue-sky'\n   *\n   * v.kebabCase('-Goodbye-Blue-Sky-');\n   * // => 'goodbye-blue-sky'\n   */\n\n  function kebabCase(subject) {\n    var subjectString = coerceToString(subject);\n\n    if (subjectString === '') {\n      return '';\n    }\n\n    return words(subjectString)\n      .map(lowerCase)\n      .join('-');\n  }\n\n  /**\n   * Converts the `subject` to <a href=\"https://en.wikipedia.org/wiki/Snake_case\">snake case</a>.\n   *\n   * @function snakeCase\n   * @static\n   * @since 1.0.0\n   * @memberOf Case\n   * @param  {string} [subject=''] The string to convert to snake case.\n   * @return {string}              Returns the snake case string.\n   * @example\n   * v.snakeCase('learning to fly');\n   * // => 'learning_to_fly'\n   *\n   * v.snakeCase('LearningToFly');\n   * // => 'learning_to_fly'\n   *\n   * v.snakeCase('-Learning-To-Fly-');\n   * // => 'learning_to_fly'\n   */\n\n  function snakeCase(subject) {\n    var subjectString = coerceToString(subject);\n\n    if (subjectString === '') {\n      return '';\n    }\n\n    return words(subjectString)\n      .map(lowerCase)\n      .join('_');\n  }\n\n  /**\n   * Converts the `subject` to upper case.\n   *\n   * @function upperCase\n   * @static\n   * @since 1.0.0\n   * @memberOf Case\n   * @param  {string} [subject=''] The string to convert to upper case.\n   * @return {string}              Returns the upper case string.\n   * @example\n   * v.upperCase('school');\n   * // => 'SCHOOL'\n   */\n\n  function upperCase(subject) {\n    var subjectString = coerceToString(subject);\n    return subjectString.toUpperCase();\n  }\n\n  /**\n   * Converts the uppercase alpha characters of `subject` to lowercase and lowercase\n   * characters to uppercase.\n   *\n   * @function swapCase\n   * @static\n   * @since 1.3.0\n   * @memberOf Case\n   * @param  {string} [subject=''] The string to swap the case.\n   * @return {string}              Returns the converted string.\n   * @example\n   * v.swapCase('League of Shadows');\n   * // => 'lEAGUE OF sHADOWS'\n   *\n   * v.swapCase('2 Bees');\n   * // => '2 bEES'\n   */\n\n  function swapCase(subject) {\n    var subjectString = coerceToString(subject);\n    return subjectString.split('').reduce(swapAndConcat, '');\n  }\n\n  function swapAndConcat(swapped, character) {\n    var lowerCase = character.toLowerCase();\n    var upperCase = character.toUpperCase();\n    return swapped + (character === lowerCase ? upperCase : lowerCase);\n  }\n\n  /**\n   * Converts the subject to title case.\n   *\n   * @function titleCase\n   * @static\n   * @since 1.4.0\n   * @memberOf Case\n   * @param  {string} [subject=''] The string to convert to title case.\n   * @param  {Array}  [noSplit]    Do not split words at the specified characters.\n   * @return {string}              Returns the title case string.\n   * @example\n   * v.titleCase('learning to fly');\n   * // => 'Learning To Fly'\n   *\n   * v.titleCase('jean-luc is good-looking', ['-']);\n   * // => 'Jean-luc Is Good-looking'\n   */\n\n  function titleCase(subject, noSplit) {\n    var subjectString = coerceToString(subject);\n    var noSplitArray = Array.isArray(noSplit) ? noSplit : [];\n    var wordsRegExp = REGEXP_EXTENDED_ASCII.test(subjectString) ? REGEXP_LATIN_WORD : REGEXP_WORD;\n    return subjectString.replace(wordsRegExp, function(word, index) {\n      var isNoSplit = index > 0 && noSplitArray.indexOf(subjectString[index - 1]) >= 0;\n      return isNoSplit ? word.toLowerCase() : capitalize(word, true);\n    });\n  }\n\n  /**\n   * Clip the number to interval `downLimit` to `upLimit`.\n   *\n   * @ignore\n   * @function clipNumber\n   * @param {number} value The number to clip\n   * @param {number} downLimit The down limit\n   * @param {number} upLimit The upper limit\n   * @return {number} The clipped number\n   */\n  function clipNumber(value, downLimit, upLimit) {\n    if (value <= downLimit) {\n      return downLimit;\n    }\n\n    if (value >= upLimit) {\n      return upLimit;\n    }\n\n    return value;\n  }\n\n  /**\n   * Max save integer value\n   *\n   * @ignore\n   * @type {number}\n   */\n  var MAX_SAFE_INTEGER = 0x1fffffffffffff;\n\n  /**\n   * Transforms `value` to an integer.\n   *\n   * @ignore\n   * @function toInteger\n   * @param {number} value The number to transform.\n   * @returns {number} Returns the transformed integer.\n   */\n\n  function toInteger(value) {\n    if (value === Infinity) {\n      return MAX_SAFE_INTEGER;\n    }\n\n    if (value === -Infinity) {\n      return -MAX_SAFE_INTEGER;\n    }\n\n    return ~~value;\n  }\n\n  /**\n   * Truncates `subject` to a new `length`.\n   *\n   * @function truncate\n   * @static\n   * @since 1.0.0\n   * @memberOf Chop\n   * @param  {string} [subject=''] The string to truncate.\n   * @param  {int}    length       The length to truncate the string.\n   * @param  {string} [end='...']  The string to be added at the end.\n   * @return {string}              Returns the truncated string.\n   * @example\n   * v.truncate('Once upon a time', 7);\n   * // => 'Once...'\n   *\n   * v.truncate('Good day, Little Red Riding Hood', 14, ' (...)');\n   * // => 'Good day (...)'\n   *\n   * v.truncate('Once upon', 10);\n   * // => 'Once upon'\n   */\n\n  function truncate(subject, length, end) {\n    var subjectString = coerceToString(subject);\n    var lengthInt = isNil(length) ? subjectString.length : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);\n    var endString = coerceToString(end, '...');\n\n    if (lengthInt >= subjectString.length) {\n      return subjectString;\n    }\n\n    return subjectString.substr(0, length - endString.length) + endString;\n  }\n\n  /**\n   * Access a character from `subject` at specified `position`.\n   *\n   * @function charAt\n   * @static\n   * @since 1.0.0\n   * @memberOf Chop\n   * @param  {string} [subject=''] The string to extract from.\n   * @param  {numbers} position The position to get the character.\n   * @return {string} Returns the character at specified position.\n   * @example\n   * v.charAt('helicopter', 0);\n   * // => 'h'\n   *\n   * v.charAt('helicopter', 1);\n   * // => 'e'\n   */\n\n  function charAt(subject, position) {\n    var subjectString = coerceToString(subject);\n    return subjectString.charAt(position);\n  }\n\n  var HIGH_SURROGATE_START = 0xd800;\n  var HIGH_SURROGATE_END = 0xdbff;\n  var LOW_SURROGATE_START = 0xdc00;\n  var LOW_SURROGATE_END = 0xdfff;\n  /**\n   * Checks if `codePoint` is a high-surrogate number from range 0xD800 to 0xDBFF.\n   *\n   * @ignore\n   * @param {number} codePoint The code point number to be verified\n   * @return {boolean} Returns a boolean whether `codePoint` is a high-surrogate number.\n   */\n\n  function isHighSurrogate(codePoint) {\n    return codePoint >= HIGH_SURROGATE_START && codePoint <= HIGH_SURROGATE_END;\n  }\n  /**\n   * Checks if `codePoint` is a low-surrogate number from range 0xDC00 to 0xDFFF.\n   *\n   * @ignore\n   * @param {number} codePoint The code point number to be verified\n   * @return {boolean} Returns a boolean whether `codePoint` is a low-surrogate number.\n   */\n\n  function isLowSurrogate(codePoint) {\n    return codePoint >= LOW_SURROGATE_START && codePoint <= LOW_SURROGATE_END;\n  }\n  /**\n   * Get the astral code point number based on surrogate pair numbers.\n   *\n   * @ignore\n   * @param {number} highSurrogate The high-surrogate code point number.\n   * @param {number} lowSurrogate The low-surrogate code point number.\n   * @return {number} Returns the astral symbol number.\n   */\n\n  function getAstralNumberFromSurrogatePair(highSurrogate, lowSurrogate) {\n    return (highSurrogate - HIGH_SURROGATE_START) * 0x400 + lowSurrogate - LOW_SURROGATE_START + 0x10000;\n  }\n\n  /**\n   * Get the number representation of the `value`.\n   * Converts the `value` to number.\n   * If `value` is `null` or `undefined`, return `defaultValue`.\n   *\n   * @ignore\n   * @function toString\n   * @param {*} value             The value to convert.\n   * @param {*} [defaultValue=''] The default value to return.\n   * @return {number|null}        Returns the number representation of `value`. Returns `defaultValue` if `value` is\n   *                              `null` or `undefined`.\n   */\n\n  function coerceToNumber(value) {\n    var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;\n\n    if (isNil(value)) {\n      return defaultValue;\n    }\n\n    if (typeof value === 'number') {\n      return value;\n    }\n\n    return Number(value);\n  }\n\n  /**\n   * If `value` is `NaN`, return `defaultValue`. In other case returns `value`.\n   *\n   * @ignore\n   * @function nanDefault\n   * @param {*} value The value to verify.\n   * @param {*} defaultValue The default value.\n   * @return {*} Returns `defaultValue` if `value` is `NaN`, otherwise `defaultValue`.\n   */\n  function nanDefault(value, defaultValue) {\n    return value !== value ? defaultValue : value;\n  }\n\n  /**\n   * Get the Unicode code point value of the character at `position`. <br/>\n   * If a valid UTF-16 <a href=\"https://rainsoft.io/what-every-javascript-developer-should-know-about-unicode/#24surrogatepairs\">\n   * surrogate pair</a> starts at `position`, the\n   * <a href=\"https://rainsoft.io/what-every-javascript-developer-should-know-about-unicode/#astralplanes\">astral code point</a>\n   * value at `position` is returned.\n   *\n   * @function codePointAt\n   * @static\n   * @since 1.0.0\n   * @memberOf Chop\n   * @param  {string} [subject=''] The string to extract from.\n   * @param  {number} position The position to get the code point number.\n   * @return {number} Returns a non-negative number less than or equal to `0x10FFFF`.\n   * @example\n   * v.codePointAt('rain', 1);\n   * // => 97, or 0x0061\n   *\n   * v.codePointAt('\\uD83D\\uDE00 is smile', 0); // or '😀 is smile'\n   * // => 128512, or 0x1F600\n   */\n\n  function codePointAt(subject, position) {\n    var subjectString = coerceToString(subject);\n    var subjectStringLength = subjectString.length;\n    var positionNumber = coerceToNumber(position);\n    positionNumber = nanDefault(positionNumber, 0);\n\n    if (positionNumber < 0 || positionNumber >= subjectStringLength) {\n      return undefined;\n    }\n\n    var firstCodePoint = subjectString.charCodeAt(positionNumber);\n    var secondCodePoint;\n\n    if (isHighSurrogate(firstCodePoint) && subjectStringLength > positionNumber + 1) {\n      secondCodePoint = subjectString.charCodeAt(positionNumber + 1);\n\n      if (isLowSurrogate(secondCodePoint)) {\n        return getAstralNumberFromSurrogatePair(firstCodePoint, secondCodePoint);\n      }\n    }\n\n    return firstCodePoint;\n  }\n\n  /**\n   * Extracts the first `length` characters from `subject`.\n   *\n   * @function first\n   * @static\n   * @since 1.0.0\n   * @memberOf Chop\n   * @param  {string} [subject=''] The string to extract from.\n   * @param  {int}    [length=1]   The number of characters to extract.\n   * @return {string}              Returns the first characters string.\n   * @example\n   * v.first('helicopter');\n   * // => 'h'\n   *\n   * v.first('vehicle', 2);\n   * // => 've'\n   *\n   * v.first('car', 5);\n   * // => 'car'\n   */\n\n  function first(subject, length) {\n    var subjectString = coerceToString(subject);\n    var lengthInt = isNil(length) ? 1 : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);\n\n    if (subjectString.length <= lengthInt) {\n      return subjectString;\n    }\n\n    return subjectString.substr(0, lengthInt);\n  }\n\n  /**\n   * Get a grapheme from `subject` at specified `position` taking care of\n   * <a href=\"https://rainsoft.io/what-every-javascript-developer-should-know-about-unicode/#24surrogatepairs\">surrogate pairs</a> and\n   * <a href=\"https://rainsoft.io/what-every-javascript-developer-should-know-about-unicode/#25combiningmarks\">combining marks</a>.\n   *\n   * @function graphemeAt\n   * @static\n   * @since 1.0.0\n   * @memberOf Chop\n   * @param  {string} [subject=''] The string to extract from.\n   * @param  {number} position The position to get the grapheme.\n   * @return {string} Returns the grapheme at specified position.\n   * @example\n   * v.graphemeAt('\\uD835\\uDC00\\uD835\\uDC01', 0); // or '𝐀𝐁'\n   * // => 'A'\n   *\n   * v.graphemeAt('cafe\\u0301', 3); // or 'café'\n   * // => 'é'\n   */\n\n  function graphemeAt(subject, position) {\n    var subjectString = coerceToString(subject);\n    var positionNumber = coerceToNumber(position);\n    var graphemeMatch;\n    var graphemeMatchIndex = 0;\n    positionNumber = nanDefault(positionNumber, 0);\n\n    while ((graphemeMatch = REGEXP_UNICODE_CHARACTER.exec(subjectString)) !== null) {\n      if (graphemeMatchIndex === positionNumber) {\n        REGEXP_UNICODE_CHARACTER.lastIndex = 0;\n        return graphemeMatch[0];\n      }\n\n      graphemeMatchIndex++;\n    }\n\n    return '';\n  }\n\n  /**\n   * Extracts the last `length` characters from `subject`.\n   *\n   * @function last\n   * @static\n   * @since 1.0.0\n   * @memberOf Chop\n   * @param  {string} [subject=''] The string to extract from.\n   * @param  {int}    [length=1]   The number of characters to extract.\n   * @return {string}              Returns the last characters string.\n   * @example\n   * v.last('helicopter');\n   * // => 'r'\n   *\n   * v.last('vehicle', 2);\n   * // => 'le'\n   *\n   * v.last('car', 5);\n   * // => 'car'\n   */\n\n  function last(subject, length) {\n    var subjectString = coerceToString(subject);\n    var lengthInt = isNil(length) ? 1 : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);\n\n    if (subjectString.length <= lengthInt) {\n      return subjectString;\n    }\n\n    return subjectString.substr(subjectString.length - lengthInt, lengthInt);\n  }\n\n  /**\n   * Truncates `subject` to a new `length` and does not break the words. Guarantees that the truncated string is no longer\n   * than `length`.\n   *\n   * @static\n   * @function prune\n   * @since 1.0.0\n   * @memberOf Chop\n   * @param  {string} [subject=''] The string to prune.\n   * @param  {int}    length       The length to prune the string.\n   * @param  {string} [end='...']  The string to be added at the end.\n   * @return {string}              Returns the pruned string.\n   * @example\n   * v.prune('Once upon a time', 7);\n   * // => 'Once...'\n   *\n   * v.prune('Good day, Little Red Riding Hood', 16, ' (more)');\n   * // => 'Good day (more)'\n   *\n   * v.prune('Once upon', 10);\n   * // => 'Once upon'\n   */\n\n  function prune(subject, length, end) {\n    var subjectString = coerceToString(subject);\n    var lengthInt = isNil(length) ? subjectString.length : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);\n    var endString = coerceToString(end, '...');\n\n    if (lengthInt >= subjectString.length) {\n      return subjectString;\n    }\n\n    var pattern = REGEXP_EXTENDED_ASCII.test(subjectString) ? REGEXP_LATIN_WORD : REGEXP_WORD;\n    var truncatedLength = 0;\n    subjectString.replace(pattern, function(word, offset) {\n      var wordInsertLength = offset + word.length;\n\n      if (wordInsertLength <= lengthInt - endString.length) {\n        truncatedLength = wordInsertLength;\n      }\n    });\n    return subjectString.substr(0, truncatedLength) + endString;\n  }\n\n  /**\n   * Extracts from `subject` a string from `start` position up to `end` position. The character at `end` position is not\n   * included.\n   *\n   * @function slice\n   * @static\n   * @since 1.0.0\n   * @memberOf Chop\n   * @param  {string} [subject='']         The string to extract from.\n   * @param  {number} start                The position to start extraction. If negative use `subject.length + start`.\n   * @param  {number} [end=subject.length] The position to end extraction. If negative use `subject.length + end`.\n   * @return {string}                      Returns the extracted string.\n   * @note Uses native `String.prototype.slice()`\n   * @example\n   * v.slice('miami', 1);\n   * // => 'iami'\n   *\n   * v.slice('florida', -4);\n   * // => 'rida'\n   *\n   * v.slice('florida', 1, 4);\n   * // => \"lor\"\n   */\n\n  function slice(subject, start, end) {\n    return coerceToString(subject).slice(start, end);\n  }\n\n  /**\n   * Extracts from `subject` a string from `start` position a number of `length` characters.\n   *\n   * @function substr\n   * @static\n   * @since 1.0.0\n   * @memberOf Chop\n   * @param  {string} [subject='']                 The string to extract from.\n   * @param  {number} start                        The position to start extraction.\n   * @param  {number} [length=subject.endOfString] The number of characters to extract. If omitted, extract to the end of `subject`.\n   * @return {string}                              Returns the extracted string.\n   * @note Uses native `String.prototype.substr()`\n   * @example\n   * v.substr('infinite loop', 9);\n   * // => 'loop'\n   *\n   * v.substr('dreams', 2, 2);\n   * // => 'ea'\n   */\n\n  function substr(subject, start, length) {\n    return coerceToString(subject).substr(start, length);\n  }\n\n  /**\n   * Extracts from `subject` a string from `start` position up to `end` position. The character at `end` position is not\n   * included.\n   *\n   * @function substring\n   * @static\n   * @since 1.0.0\n   * @memberOf Chop\n   * @param  {string} [subject='']         The string to extract from.\n   * @param  {number} start                The position to start extraction.\n   * @param  {number} [end=subject.length] The position to end extraction.\n   * @return {string}                      Returns the extracted string.\n   * @note Uses native `String.prototype.substring()`\n   * @example\n   * v.substring('beach', 1);\n   * // => 'each'\n   *\n   * v.substring('ocean', 1, 3);\n   * // => 'ea'\n   */\n\n  function substring(subject, start, end) {\n    return coerceToString(subject).substring(start, end);\n  }\n\n  /**\n   * Counts the characters in `subject`.<br/>\n   *\n   * @function count\n   * @static\n   * @since 1.0.0\n   * @memberOf Count\n   * @param  {string} [subject=''] The string to count characters.\n   * @return {number}              Returns the number of characters in `subject`.\n   * @example\n   * v.count('rain');\n   * // => 4\n   */\n\n  function count(subject) {\n    return coerceToString(subject).length;\n  }\n\n  /**\n   * Counts the graphemes in `subject` taking care of\n   * <a href=\"https://rainsoft.io/what-every-javascript-developer-should-know-about-unicode/#24surrogatepairs\">surrogate pairs</a> and\n   * <a href=\"https://rainsoft.io/what-every-javascript-developer-should-know-about-unicode/#25combiningmarks\">combining marks</a>.\n   *\n   * @function  countGraphemes\n   * @static\n   * @since 1.0.0\n   * @memberOf Count\n   * @param  {string} [subject=''] The string to count graphemes.\n   * @return {number}              Returns the number of graphemes in `subject`.\n   * @example\n   * v.countGraphemes('cafe\\u0301'); // or 'café'\n   * // => 4\n   *\n   * v.countGraphemes('\\uD835\\uDC00\\uD835\\uDC01'); // or '𝐀𝐁'\n   * // => 2\n   *\n   * v.countGraphemes('rain');\n   * // => 4\n   */\n\n  function countGrapheme(subject) {\n    return coerceToString(subject)\n      .replace(REGEXP_COMBINING_MARKS, '*')\n      .replace(REGEXP_SURROGATE_PAIRS, '*').length;\n  }\n\n  /**\n   * Counts the number of `substring` appearances in `subject`.\n   *\n   * @function countSubstrings\n   * @static\n   * @since 1.0.0\n   * @memberOf Count\n   * @param  {string} [subject=''] The string where to count.\n   * @param  {string} substring    The substring to be counted.\n   * @return {number}              Returns the number of `substring` appearances.\n   * @example\n   * v.countSubstrings('bad boys, bad boys whatcha gonna do?', 'boys');\n   * // => 2\n   *\n   * v.countSubstrings('every dog has its day', 'cat');\n   * // => 0\n   */\n\n  function countSubstrings(subject, substring) {\n    var subjectString = coerceToString(subject);\n    var substringString = coerceToString(substring);\n    var substringLength = substringString.length;\n    var count = 0;\n    var matchIndex = 0;\n\n    if (subjectString === '' || substringString === '') {\n      return count;\n    }\n\n    do {\n      matchIndex = subjectString.indexOf(substringString, matchIndex);\n\n      if (matchIndex !== -1) {\n        count++;\n        matchIndex += substringLength;\n      }\n    } while (matchIndex !== -1);\n\n    return count;\n  }\n\n  var reduce = Array.prototype.reduce;\n  /**\n   * Counts the characters in `subject` for which `predicate` returns truthy.\n   *\n   * @function  countWhere\n   * @static\n   * @since 1.0.0\n   * @memberOf Count\n   * @param  {string}   [subject=''] The string to count characters.\n   * @param  {Function} predicate    The predicate function invoked on each character with parameters `(character, index, string)`.\n   * @param  {Object}   [context]    The context to invoke the `predicate`.\n   * @return {number}                Returns the number of characters for which `predicate` returns truthy.\n   * @example\n   * v.countWhere('hola!', v.isAlpha);\n   * // => 4\n   *\n   * v.countWhere('2022', function(character, index, str) {\n   *   return character === '2';\n   * });\n   * // => 3\n   */\n\n  function countWhere(subject, predicate, context) {\n    var subjectString = coerceToString(subject);\n\n    if (subjectString === '' || typeof predicate !== 'function') {\n      return 0;\n    }\n\n    var predicateWithContext = predicate.bind(context);\n    return reduce.call(\n      subjectString,\n      function(countTruthy, character, index) {\n        return predicateWithContext(character, index, subjectString) ? countTruthy + 1 : countTruthy;\n      },\n      0\n    );\n  }\n\n  /**\n   * Counts the number of words in `subject`.\n   *\n   * @function countWords\n   * @static\n   * @since 1.0.0\n   * @memberOf Count\n   * @param {string} [subject=''] The string to split into words.\n   * @param {string|RegExp} [pattern] The pattern to watch words. If `pattern` is not RegExp, it is transformed to `new RegExp(pattern, flags)`.\n   * @param {string} [flags=''] The regular expression flags. Applies when `pattern` is string type.\n   * @return {number} Returns the number of words.\n   * @example\n   * v.countWords('gravity can cross dimensions');\n   * // => 4\n   *\n   * v.countWords('GravityCanCrossDimensions');\n   * // => 4\n   *\n   * v.countWords('Gravity - can cross dimensions!');\n   * // => 4\n   *\n   * v.words('Earth gravity', /[^\\s]+/g);\n   * // => 2\n   */\n\n  function countWords(subject, pattern, flags) {\n    return words(subject, pattern, flags).length;\n  }\n\n  /**\n   * The current index.\n   *\n   * @ignore\n   * @name ReplacementIndex#index\n   * @type {number}\n   * @return {ReplacementIndex} ReplacementIndex instance.\n   */\n\n  function ReplacementIndex() {\n    this.index = 0;\n  }\n  /**\n   * Increment the current index.\n   *\n   * @ignore\n   * @return {undefined}\n   */\n\n  ReplacementIndex.prototype.increment = function() {\n    this.index++;\n  };\n  /**\n   * Increment the current index by position.\n   *\n   * @ignore\n   * @param {number} [position] The replacement position.\n   * @return {undefined}\n   */\n\n  ReplacementIndex.prototype.incrementOnEmptyPosition = function(position) {\n    if (isNil(position)) {\n      this.increment();\n    }\n  };\n  /**\n   * Get the replacement index by position.\n   *\n   * @ignore\n   * @param {number} [position] The replacement position.\n   * @return {number} The replacement index.\n   */\n\n  ReplacementIndex.prototype.getIndexByPosition = function(position) {\n    return isNil(position) ? this.index : position - 1;\n  };\n\n  // Type specifiers\n  var TYPE_INTEGER = 'i';\n  var TYPE_INTEGER_BINARY = 'b';\n  var TYPE_INTEGER_ASCII_CHARACTER = 'c';\n  var TYPE_INTEGER_DECIMAL = 'd';\n  var TYPE_INTEGER_OCTAL = 'o';\n  var TYPE_INTEGER_UNSIGNED_DECIMAL = 'u';\n  var TYPE_INTEGER_HEXADECIMAL = 'x';\n  var TYPE_INTEGER_HEXADECIMAL_UPPERCASE = 'X';\n  var TYPE_FLOAT_SCIENTIFIC = 'e';\n  var TYPE_FLOAT_SCIENTIFIC_UPPERCASE = 'E';\n  var TYPE_FLOAT = 'f';\n  var TYPE_FLOAT_SHORT = 'g';\n  var TYPE_FLOAT_SHORT_UPPERCASE = 'G';\n  var TYPE_STRING = 's'; // Simple literals\n  var LITERAL_SINGLE_QUOTE = \"'\";\n  var LITERAL_PLUS = '+';\n  var LITERAL_MINUS = '-';\n  var LITERAL_PERCENT_SPECIFIER = '%%'; // Radix constants to format numbers\n\n  var RADIX_BINARY = 2;\n  var RADIX_OCTAL = 8;\n  var RADIX_HEXADECIMAL = 16;\n\n  /**\n   * Repeats the `subject` number of `times`.\n   *\n   * @function repeat\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to repeat.\n   * @param {number} [times=1] The number of times to repeat.\n   * @return {string} Returns the repeated string.\n   * @example\n   * v.repeat('w', 3);\n   * // => 'www'\n   *\n   * v.repeat('world', 0);\n   * // => ''\n   */\n\n  function repeat(subject, times) {\n    var subjectString = coerceToString(subject);\n    var timesInt = isNil(times) ? 1 : clipNumber(toInteger(times), 0, MAX_SAFE_INTEGER);\n    var repeatString = '';\n\n    while (timesInt) {\n      if (timesInt & 1) {\n        repeatString += subjectString;\n      }\n\n      if (timesInt > 1) {\n        subjectString += subjectString;\n      }\n\n      timesInt >>= 1;\n    }\n\n    return repeatString;\n  }\n\n  /**\n   * Creates the padding string.\n   *\n   * @ignore\n   * @param {string} padCharacters The characters to create padding string.\n   * @param {number} length The padding string length.\n   * @return {string} The padding string.\n   */\n\n  function buildPadding(padCharacters, length) {\n    var padStringRepeat = toInteger(length / padCharacters.length);\n    var padStringRest = length % padCharacters.length;\n    return repeat(padCharacters, padStringRepeat + padStringRest).substr(0, length);\n  }\n\n  /**\n   * Pads `subject` from left to a new `length`.\n   *\n   * @function padLeft\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to pad.\n   * @param {int} [length=0] The length to left pad the string. No changes are made if `length` is less than `subject.length`.\n   * @param {string} [pad=' '] The string to be used for padding.\n   * @return {string} Returns the left padded string.\n   * @example\n   * v.padLeft('dog', 5);\n   * // => '  dog'\n   *\n   * v.padLeft('bird', 6, '-');\n   * // => '--bird'\n   *\n   * v.padLeft('cat', 6, '-=');\n   * // => '-=-cat'\n   */\n\n  function padLeft(subject, length, pad) {\n    var subjectString = coerceToString(subject);\n    var lengthInt = isNil(length) ? 0 : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);\n    var padString = coerceToString(pad, ' ');\n\n    if (lengthInt <= subjectString.length) {\n      return subjectString;\n    }\n\n    return buildPadding(padString, lengthInt - subjectString.length) + subjectString;\n  }\n\n  /**\n   * Pads `subject` from right to a new `length`.\n   *\n   * @function padRight\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to pad.\n   * @param {int} [length=0] The length to right pad the string. No changes are made if `length` is less than `subject.length`.\n   * @param {string} [pad=' '] The string to be used for padding.\n   * @return {string} Returns the right padded string.\n   * @example\n   * v.padRight('dog', 5);\n   * // => 'dog  '\n   *\n   * v.padRight('bird', 6, '-');\n   * // => 'bird--'\n   *\n   * v.padRight('cat', 6, '-=');\n   * // => 'cat-=-'\n   */\n\n  function padRight(subject, length, pad) {\n    var subjectString = coerceToString(subject);\n    var lengthInt = isNil(length) ? 0 : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);\n    var padString = coerceToString(pad, ' ');\n\n    if (lengthInt <= subjectString.length) {\n      return subjectString;\n    }\n\n    return subjectString + buildPadding(padString, lengthInt - subjectString.length);\n  }\n\n  /**\n   * Aligns and pads `subject` string.\n   *\n   * @ignore\n   * @param {string} subject The subject string.\n   * @param {ConversionSpecification} conversion The conversion specification object.\n   * @return {string} Returns the aligned and padded string.\n   */\n\n  function alignAndPad(subject, conversion) {\n    var width = conversion.width;\n\n    if (isNil(width) || subject.length >= width) {\n      return subject;\n    }\n\n    var padType = conversion.alignmentSpecifier === LITERAL_MINUS ? padRight : padLeft;\n    return padType(subject, width, conversion.getPaddingCharacter());\n  }\n\n  /**\n   * Add sign to the formatted number.\n   *\n   * @ignore\n   * @name addSignToFormattedNumber\n   * @param  {number} replacementNumber The number to be replaced.\n   * @param  {string} formattedReplacement The formatted version of number.\n   * @param  {ConversionSpecification} conversion The conversion specification object.\n   * @return {string} Returns the formatted number string with a sign.\n   */\n\n  function addSignToFormattedNumber(replacementNumber, formattedReplacement, conversion) {\n    if (conversion.signSpecifier === LITERAL_PLUS && replacementNumber >= 0) {\n      formattedReplacement = LITERAL_PLUS + formattedReplacement;\n    }\n\n    return formattedReplacement;\n  }\n\n  /**\n   * Formats a float type according to specifiers.\n   *\n   * @ignore\n   * @param  {string} replacement The string to be formatted.\n   * @param  {ConversionSpecification} conversion The conversion specification object.\n   * @return {string} Returns the formatted string.\n   */\n\n  function float(replacement, conversion) {\n    var replacementNumber = parseFloat(replacement);\n    var formattedReplacement;\n\n    if (isNaN(replacementNumber)) {\n      replacementNumber = 0;\n    }\n\n    var precision = coerceToNumber(conversion.precision, 6);\n\n    switch (conversion.typeSpecifier) {\n      case TYPE_FLOAT:\n        formattedReplacement = replacementNumber.toFixed(precision);\n        break;\n\n      case TYPE_FLOAT_SCIENTIFIC:\n        formattedReplacement = replacementNumber.toExponential(precision);\n        break;\n\n      case TYPE_FLOAT_SCIENTIFIC_UPPERCASE:\n        formattedReplacement = replacementNumber.toExponential(precision).toUpperCase();\n        break;\n\n      case TYPE_FLOAT_SHORT:\n      case TYPE_FLOAT_SHORT_UPPERCASE:\n        formattedReplacement = formatFloatAsShort(replacementNumber, precision, conversion);\n        break;\n    }\n\n    formattedReplacement = addSignToFormattedNumber(replacementNumber, formattedReplacement, conversion);\n    return coerceToString(formattedReplacement);\n  }\n  /**\n   * Formats the short float.\n   *\n   * @ignore\n   * @param  {number} replacementNumber The number to format.\n   * @param  {number} precision The precision to format the float.\n   * @param  {ConversionSpecification} conversion The conversion specification object.\n   * @return {string}  Returns the formatted short float.\n   */\n\n  function formatFloatAsShort(replacementNumber, precision, conversion) {\n    if (replacementNumber === 0) {\n      return '0';\n    }\n\n    var nonZeroPrecision = precision === 0 ? 1 : precision;\n    var formattedReplacement = replacementNumber.toPrecision(nonZeroPrecision).replace(REGEXP_TRAILING_ZEROS, '');\n\n    if (conversion.typeSpecifier === TYPE_FLOAT_SHORT_UPPERCASE) {\n      formattedReplacement = formattedReplacement.toUpperCase();\n    }\n\n    return formattedReplacement;\n  }\n\n  /**\n   * Formats an integer type according to specifiers.\n   *\n   * @ignore\n   * @param  {string} replacement The string to be formatted.\n   * @param  {ConversionSpecification} conversion The conversion specification object.\n   * @return {string} Returns the formatted string.\n   */\n\n  function integerBase(replacement, conversion) {\n    var integer = parseInt(replacement);\n\n    if (isNaN(integer)) {\n      integer = 0;\n    }\n\n    integer = integer >>> 0;\n\n    switch (conversion.typeSpecifier) {\n      case TYPE_INTEGER_ASCII_CHARACTER:\n        integer = String.fromCharCode(integer);\n        break;\n\n      case TYPE_INTEGER_BINARY:\n        integer = integer.toString(RADIX_BINARY);\n        break;\n\n      case TYPE_INTEGER_OCTAL:\n        integer = integer.toString(RADIX_OCTAL);\n        break;\n\n      case TYPE_INTEGER_HEXADECIMAL:\n        integer = integer.toString(RADIX_HEXADECIMAL);\n        break;\n\n      case TYPE_INTEGER_HEXADECIMAL_UPPERCASE:\n        integer = integer.toString(RADIX_HEXADECIMAL).toUpperCase();\n        break;\n    }\n\n    return coerceToString(integer);\n  }\n\n  /**\n   * Formats a decimal integer type according to specifiers.\n   *\n   * @ignore\n   * @param  {string} replacement The string to be formatted.\n   * @param  {ConversionSpecification} conversion The conversion specification object.\n   * @return {string} Returns the formatted string.\n   */\n\n  function integerDecimal(replacement, conversion) {\n    var integer = parseInt(replacement);\n\n    if (isNaN(integer)) {\n      integer = 0;\n    }\n\n    return addSignToFormattedNumber(integer, toString(integer), conversion);\n  }\n\n  /**\n   * Formats a string type according to specifiers.\n   *\n   * @ignore\n   * @param {string} replacement The string to be formatted.\n   * @param {ConversionSpecification} conversion The conversion specification object.\n   * @return {string} Returns the formatted string.\n   */\n\n  function stringFormat(replacement, conversion) {\n    var formattedReplacement = replacement;\n    var precision = conversion.precision;\n\n    if (!isNil(precision) && formattedReplacement.length > precision) {\n      formattedReplacement = truncate(formattedReplacement, precision, '');\n    }\n\n    return formattedReplacement;\n  }\n\n  /**\n   * Returns the computed string based on format specifiers.\n   *\n   * @ignore\n   * @name computeReplacement\n   * @param {string} replacement The replacement value.\n   * @param {ConversionSpecification} conversion The conversion specification object.\n   * @return {string} Returns the computed string.\n   */\n\n  function compute(replacement, conversion) {\n    var formatFunction;\n\n    switch (conversion.typeSpecifier) {\n      case TYPE_STRING:\n        formatFunction = stringFormat;\n        break;\n\n      case TYPE_INTEGER_DECIMAL:\n      case TYPE_INTEGER:\n        formatFunction = integerDecimal;\n        break;\n\n      case TYPE_INTEGER_ASCII_CHARACTER:\n      case TYPE_INTEGER_BINARY:\n      case TYPE_INTEGER_OCTAL:\n      case TYPE_INTEGER_HEXADECIMAL:\n      case TYPE_INTEGER_HEXADECIMAL_UPPERCASE:\n      case TYPE_INTEGER_UNSIGNED_DECIMAL:\n        formatFunction = integerBase;\n        break;\n\n      case TYPE_FLOAT:\n      case TYPE_FLOAT_SCIENTIFIC:\n      case TYPE_FLOAT_SCIENTIFIC_UPPERCASE:\n      case TYPE_FLOAT_SHORT:\n      case TYPE_FLOAT_SHORT_UPPERCASE:\n        formatFunction = float;\n        break;\n    }\n\n    var formattedString = formatFunction(replacement, conversion);\n    return alignAndPad(formattedString, conversion);\n  }\n\n  /**\n   * Construct the new conversion specification object.\n   *\n   * @ignore\n   * @param {Object} properties An object with properties to initialize.\n   * @return {ConversionSpecification} ConversionSpecification instance.\n   */\n\n  function ConversionSpecification(properties) {\n    /**\n     * The percent characters from conversion specification.\n     *\n     * @ignore\n     * @name ConversionSpecification#percent\n     * @type {string}\n     */\n    this.percent = properties.percent;\n    /**\n     *  The sign specifier to force a sign to be used on a number.\n     *\n     * @ignore\n     * @name ConversionSpecification#signSpecifier\n     * @type {string}\n     */\n\n    this.signSpecifier = properties.signSpecifier;\n    /**\n     * The padding specifier that says what padding character will be used.\n     *\n     * @ignore\n     * @name ConversionSpecification#paddingSpecifier\n     * @type {string}\n     */\n\n    this.paddingSpecifier = properties.paddingSpecifier;\n    /**\n     * The alignment specifier that says if the result should be left-justified or right-justified.\n     *\n     * @ignore\n     * @name ConversionSpecification#alignmentSpecifier\n     * @type {string}\n     */\n\n    this.alignmentSpecifier = properties.alignmentSpecifier;\n    /**\n     * The width specifier how many characters this conversion should result in.\n     *\n     * @ignore\n     * @name ConversionSpecification#width\n     * @type {number}\n     */\n\n    this.width = properties.width;\n    /**\n     * The precision specifier says how many decimal digits should be displayed for floating-point numbers.\n     *\n     * @ignore\n     * @name ConversionSpecification#precision\n     * @type {number}\n     */\n\n    this.precision = properties.precision;\n    /**\n     * The type specifier says what type the argument data should be treated as.\n     *\n     * @ignore\n     * @name ConversionSpecification#typeSpecifier\n     * @type {string}\n     */\n\n    this.typeSpecifier = properties.typeSpecifier;\n  }\n  /**\n   * Check if the conversion specification is a percent literal \"%%\".\n   *\n   * @ignore\n   * @return {boolean} Returns true if the conversion is a percent literal, false otherwise.\n   */\n\n  ConversionSpecification.prototype.isPercentLiteral = function() {\n    return LITERAL_PERCENT_SPECIFIER === this.percent;\n  };\n  /**\n   * Get the padding character from padding specifier.\n   *\n   * @ignore\n   * @returns {string} Returns the padding character.\n   */\n\n  ConversionSpecification.prototype.getPaddingCharacter = function() {\n    var paddingCharacter = nilDefault(this.paddingSpecifier, ' ');\n\n    if (paddingCharacter.length === 2 && paddingCharacter[0] === LITERAL_SINGLE_QUOTE) {\n      paddingCharacter = paddingCharacter[1];\n    }\n\n    return paddingCharacter;\n  };\n\n  /**\n   * Validates the specifier type and replacement position.\n   *\n   * @ignore\n   * @throws {Error} Throws an exception on insufficient arguments or unknown specifier.\n   * @param  {number} index The index of the matched specifier.\n   * @param  {number} replacementsLength The number of replacements.\n   * @param  {ConversionSpecification} conversion The conversion specification object.\n   * @return {undefined}\n   */\n\n  function validate(index, replacementsLength, conversion) {\n    if (isNil(conversion.typeSpecifier)) {\n      throw new Error('sprintf(): Unknown type specifier');\n    }\n\n    if (index > replacementsLength - 1) {\n      throw new Error('sprintf(): Too few arguments');\n    }\n\n    if (index < 0) {\n      throw new Error('sprintf(): Argument number must be greater than zero');\n    }\n  }\n\n  /**\n   * Return the replacement for regular expression match of the conversion specification.\n   *\n   * @ignore\n   * @name matchReplacement\n   * @param {ReplacementIndex} replacementIndex The replacement index object.\n   * @param {string[]} replacements The array of replacements.\n   * @param {string} conversionSpecification The conversion specification.\n   * @param {string} percent The percent characters from conversion specification.\n   * @param {string} position The position to insert the replacement.\n   * @param {string} signSpecifier The sign specifier to force a sign to be used on a number.\n   * @param {string} paddingSpecifier The padding specifier that says what padding character will be used.\n   * @param {string} alignmentSpecifier The alignment specifier that says if the result should be left-justified or right-justified.\n   * @param {string} widthSpecifier The width specifier how many characters this conversion should result in.\n   * @param {string} precisionSpecifier The precision specifier says how many decimal digits should be displayed for floating-point numbers.\n   * @param {string} typeSpecifier The type specifier says what type the argument data should be treated as.\n   * @return {string} Returns the computed replacement.\n   */\n\n  function match(\n    replacementIndex,\n    replacements,\n    conversionSpecification,\n    percent,\n    position,\n    signSpecifier,\n    paddingSpecifier,\n    alignmentSpecifier,\n    widthSpecifier,\n    precisionSpecifier,\n    typeSpecifier\n  ) {\n    var conversion = new ConversionSpecification({\n      percent: percent,\n      signSpecifier: signSpecifier,\n      paddingSpecifier: paddingSpecifier,\n      alignmentSpecifier: alignmentSpecifier,\n      width: coerceToNumber(widthSpecifier, null),\n      precision: coerceToNumber(precisionSpecifier, null),\n      typeSpecifier: typeSpecifier,\n    });\n\n    if (conversion.isPercentLiteral()) {\n      return conversionSpecification.slice(1);\n    }\n\n    var actualReplacementIndex = replacementIndex.getIndexByPosition(position);\n    replacementIndex.incrementOnEmptyPosition(position);\n    validate(actualReplacementIndex, replacements.length, conversion);\n    return compute(replacements[actualReplacementIndex], conversion);\n  }\n\n  /**\n   * Produces a string according to `format`.\n   *\n   * <div id=\"sprintf-format\" class=\"smaller\">\n   * `format` string is composed of zero or more directives: ordinary characters (not <code>%</code>), which are  copied  unchanged\n   * to  the  output string and <i>conversion specifications</i>, each of which results in fetching zero or more subsequent\n   * arguments. <br/> <br/>\n   *\n   * Each <b>conversion specification</b> is introduced by the character <code>%</code>, and ends with a <b>conversion\n   * specifier</b>. In between there may be (in this order) zero or more <b>flags</b>, an optional <b>minimum field width</b>\n   * and an optional <b>precision</b>.<br/>\n   * The syntax is: <b>ConversionSpecification</b> = <b>\"%\"</b> { <b>Flags</b> }\n   * [ <b>MinimumFieldWidth</b> ] [ <b>Precision</b> ] <b>ConversionSpecifier</b>, where curly braces { } denote repetition\n   * and square brackets [ ] optionality. <br/><br/>\n   *\n   * By default, the arguments are used in the given order.<br/>\n   * For argument numbering and swapping, `%m$` (where `m` is a number indicating the argument order)\n   * is used instead of `%` to specify explicitly which argument is taken. For instance `%1$s` fetches the 1st argument,\n   * `%2$s` the 2nd and so on, no matter what position  the conversion specification has in `format`.\n   * <br/><br/>\n   *\n   * <b>The flags</b><br/>\n   * The character <code>%</code> is followed by zero or more of the following flags:<br/>\n   * <table class=\"light-params\">\n   *   <tr>\n   *     <td><code>+</code></td>\n   *     <td>\n   *       A  sign (<code>+</code> or <code>-</code>) should always be placed before a number produced by a\n   *       signed conversion. By default a sign is used only for negative numbers.\n   *     </td>\n   *   </tr>\n   *   <tr>\n   *     <td><code>0</code></td>\n   *     <td>The value should be zero padded.</td>\n   *   </tr>\n   *   <tr>\n   *     <td><code>&blank;</code></td>\n   *     <td>(a space) The value should be space padded.</td>\n   *   </tr>\n   *   <tr>\n   *    <td><code>'</code></td>\n   *    <td>Indicates alternate padding character, specified by prefixing it with a single quote <code>'</code>.</td>\n   *   </tr>\n   *   <tr>\n   *     <td><code>-</code></td>\n   *     <td>The converted value is to be left adjusted on the field boundary (the default is right justification).</td>\n   *   </tr>\n   * </table>\n   *\n   * <b>The minimum field width</b><br/>\n   * An  optional decimal digit string (with nonzero first digit) specifying a minimum field width.  If the converted\n   * value has fewer characters than the field width, it will be padded with spaces on the left (or right, if the\n   * left-adjustment flag has been given).<br/><br/>\n   *\n   * <b>The precision</b><br/>\n   * An optional precision, in the form of a period `.` followed by an optional decimal digit string.<br/>\n   * This gives the number of digits to appear after the radix character for `e`, `E`, `f` and `F` conversions, the\n   * maximum number of significant digits for `g` and `G` conversions or the maximum number of characters to be printed\n   * from a string for `s` conversion.<br/><br/>\n   *\n   * <b>The conversion specifier</b><br/>\n   * A specifier that mentions what type the argument should be treated as:\n   *\n   * <table class=\"light-params\">\n   *   <tr>\n   *     <td>`s`</td>\n   *     <td>The string argument is treated as and presented as a string.</td>\n   *   </tr>\n   *   <tr>\n   *     <td>`d` `i`</td>\n   *     <td>The integer argument is converted to signed decimal notation.</td>\n   *   </tr>\n   *   <tr>\n   *     <td>`b`</td>\n   *     <td>The unsigned integer argument is converted to unsigned binary.</td>\n   *   </tr>\n   *   <tr>\n   *     <td>`c`</td>\n   *     <td>The unsigned integer argument is converted to an ASCII character with that number.</td>\n   *   </tr>\n   *   <tr>\n   *     <td>`o`</td>\n   *     <td>The unsigned integer argument is converted to unsigned octal.</td>\n   *   </tr>\n   *   <tr>\n   *     <td>`u`</td>\n   *     <td>The unsigned integer argument is converted to unsigned decimal.</td>\n   *   </tr>\n   *   <tr>\n   *     <td>`x` `X`</td>\n   *     <td>The unsigned integer argument is converted to unsigned hexadecimal. The letters `abcdef` are used for `x`\n   *     conversions; the letters `ABCDEF` are used for `X` conversions.</td>\n   *   </tr>\n   *   <tr>\n   *     <td>`f`</td>\n   *     <td>\n   *      The float argument is rounded and converted to decimal notation in the style `[-]ddd.ddd`, where the number of\n   *      digits after the decimal-point character is equal to the precision specification. If the precision is missing,\n   *      it is taken as 6; if the precision is explicitly zero, no decimal-point character appears.\n   *      If a decimal point appears, at least one digit appears before it.\n   *     </td>\n   *   </tr>\n   *   <tr>\n   *     <td>`e` `E`</td>\n   *     <td>\n   *       The float argument is rounded and converted in the style `[-]d.ddde±dd`, where there is one digit\n   *       before the decimal-point character and the number of digits after it is equal to the precision. If\n   *       the precision is missing, it is taken as `6`; if the precision is zero, no decimal-point character\n   *       appears. An `E` conversion uses the letter `E` (rather than `e`) to introduce the exponent.\n   *     </td>\n   *   </tr>\n   *   <tr>\n   *     <td>`g` `G`</td>\n   *     <td>\n   *       The float argument is converted in style `f` or `e` (or `F` or `E` for `G` conversions). The precision specifies\n   *       the number of significant digits. If the precision is missing, `6` digits are given; if the\n   *       precision is zero, it is treated as `1`. Style `e` is used if the exponent from its conversion is less\n   *       than `-6` or greater than or equal to the precision. Trailing zeros are removed from the fractional\n   *       part of the result; a decimal point appears only if it is followed by at least one digit.\n   *     </td>\n   *   </tr>\n   *   <tr>\n   *     <td>`%`</td>\n   *     <td>A literal `%` is written. No argument is converted. The complete conversion specification is `%%`.</td>\n   *   </tr>\n   *\n   * </table>\n   * </div>\n   *\n   * @function sprintf\n   * @static\n   * @since 1.0.0\n   * @memberOf Format\n   * @param  {string} [format=''] The format string.\n   * @param  {...*}               replacements The replacements to produce the string.\n   * @return {string}             Returns the produced string.\n   * @example\n   * v.sprintf('%s, %s!', 'Hello', 'World');\n   * // => 'Hello World!'\n   *\n   * v.sprintf('%s costs $%d', 'coffee', 2);\n   * // => 'coffee costs $2'\n   *\n   * v.sprintf('%1$s %2$s %1$s %2$s, watcha gonna %3$s', 'bad', 'boys', 'do')\n   * // => 'bad boys bad boys, watcha gonna do'\n   *\n   * v.sprintf('% 6s', 'bird');\n   * // => '  bird'\n   *\n   * v.sprintf('% -6s', 'crab');\n   * // => 'crab  '\n   *\n   * v.sprintf(\"%'*5s\", 'cat');\n   * // => '**cat'\n   *\n   * v.sprintf(\"%'*-6s\", 'duck');\n   * // => 'duck**'\n   *\n   * v.sprintf('%d %i %+d', 15, -2, 25);\n   * // => '15 -2 +25'\n   *\n   * v.sprintf(\"%06d\", 15);\n   * // => '000015'\n   *\n   * v.sprintf('0b%b 0o%o 0x%X', 12, 9, 155);\n   * // => '0b1100 0o11 0x9B'\n   *\n   * v.sprintf('%.2f', 10.469);\n   * // => '10.47'\n   *\n   * v.sprintf('%.2e %g', 100.5, 0.455);\n   * // => '1.01e+2 0.455'\n   *\n   */\n\n  function sprintf(format) {\n    var formatString = coerceToString(format);\n\n    if (formatString === '') {\n      return formatString;\n    }\n\n    for (\n      var _len = arguments.length, replacements = new Array(_len > 1 ? _len - 1 : 0), _key = 1;\n      _key < _len;\n      _key++\n    ) {\n      replacements[_key - 1] = arguments[_key];\n    }\n\n    var boundReplacementMatch = match.bind(undefined, new ReplacementIndex(), replacements);\n    return formatString.replace(REGEXP_CONVERSION_SPECIFICATION, boundReplacementMatch);\n  }\n\n  /**\n   * Produces a string according to `format`. Works exactly like <a href=\"#sprintf\"><code>sprintf()</code></a>,\n   * with the only difference that accepts the formatting arguments in an array `values`.<br/>\n   * See <a href=\"#sprintf-format\">here</a> `format` string specifications.\n   *\n   * @function vprintf\n   * @static\n   * @since 1.0.0\n   * @memberOf Format\n   * @param  {string} format='']  The format string.\n   * @param  {Array} replacements The array of replacements to produce the string.\n   * @return {string}             Returns the produced string.\n   * @example\n   * v.vprintf('%s', ['Welcome'])\n   * // => 'Welcome'\n   *\n   * v.vprintf('%s has %d apples', ['Alexandra', 3]);\n   * // => 'Alexandra has 3 apples'\n   */\n\n  function vprintf(format, replacements) {\n    return sprintf.apply(void 0, [format].concat(_toConsumableArray(nilDefault(replacements, []))));\n  }\n\n  var escapeCharactersMap = {\n    '<': '&lt;',\n    '>': '&gt;',\n    '&': '&amp;',\n    '\"': '&quot;',\n    \"'\": '&#x27;',\n    '`': '&#x60;',\n  };\n  /**\n   * Return the escaped version of `character`.\n   *\n   * @ignore\n   * @param  {string} character The character to be escape.\n   * @return {string}           The escaped version of character.\n   */\n\n  function replaceSpecialCharacter(character) {\n    return escapeCharactersMap[character];\n  }\n  /**\n   * Escapes HTML special characters  <code>< > & ' \" `</code> in <code>subject</code>.\n   *\n   * @function escapeHtml\n   * @static\n   * @since 1.0.0\n   * @memberOf Escape\n   * @param {string} [subject=''] The string to escape.\n   * @return {string} Returns the escaped string.\n   * @example\n   * v.escapeHtml('<p>wonderful world</p>');\n   * // => '&lt;p&gt;wonderful world&lt;/p&gt;'\n   */\n\n  function escapeHtml(subject) {\n    return coerceToString(subject).replace(REGEXP_HTML_SPECIAL_CHARACTERS, replaceSpecialCharacter);\n  }\n\n  /**\n   * Escapes the regular expression special characters `- [ ] / { } ( ) * + ? . \\ ^ $ |` in `subject`.\n   *\n   * @function escapeRegExp\n   * @static\n   * @since 1.0.0\n   * @memberOf Escape\n   * @param {string} [subject=''] The string to escape.\n   * @return {string} Returns the escaped string.\n   * @example\n   * v.escapeRegExp('(hours)[minutes]{seconds}');\n   * // => '\\(hours\\)\\[minutes\\]\\{seconds\\}'\n   */\n\n  function escapeRegExp(subject) {\n    return coerceToString(subject).replace(REGEXP_SPECIAL_CHARACTERS, '\\\\$&');\n  }\n\n  var unescapeCharactersMap = {\n    '<': /(&lt;)|(&#x0*3c;)|(&#0*60;)/gi,\n    '>': /(&gt;)|(&#x0*3e;)|(&#0*62;)/gi,\n    '&': /(&amp;)|(&#x0*26;)|(&#0*38;)/gi,\n    '\"': /(&quot;)|(&#x0*22;)|(&#0*34;)/gi,\n    \"'\": /(&#x0*27;)|(&#0*39;)/gi,\n    '`': /(&#x0*60;)|(&#0*96;)/gi,\n  };\n  var characters = Object.keys(unescapeCharactersMap);\n  /**\n   * Replaces the HTML entities with corresponding characters.\n   *\n   * @ignore\n   * @param  {string} string The accumulator string.\n   * @param  {string} key    The character.\n   * @return {string}        The string with replaced HTML entity\n   */\n\n  function reduceUnescapedString(string, key) {\n    return string.replace(unescapeCharactersMap[key], key);\n  }\n  /**\n   * Unescapes HTML special characters from <code>&amp;lt; &amp;gt; &amp;amp; &amp;quot; &amp;#x27; &amp;#x60;</code>\n   * to corresponding <code>< > & ' \" `</code> in <code>subject</code>.\n   *\n   * @function unescapeHtml\n   * @static\n   * @since 1.0.0\n   * @memberOf Escape\n   * @param  {string} [subject=''] The string to unescape.\n   * @return {string}              Returns the unescaped string.\n   * @example\n   * v.unescapeHtml('&lt;p&gt;wonderful world&lt;/p&gt;');\n   * // => '<p>wonderful world</p>'\n   */\n\n  function unescapeHtml(subject) {\n    var subjectString = coerceToString(subject);\n    return characters.reduce(reduceUnescapedString, subjectString);\n  }\n\n  /**\n   * Returns the first occurrence index of `search` in `subject`.\n   *\n   * @function indexOf\n   * @static\n   * @since 1.0.0\n   * @memberOf Index\n   * @param {string} [subject=''] The string where to search.\n   * @param {string} search The string to search.\n   * @param {number} [fromIndex=0] The index to start searching.\n   * @return {number} Returns the first occurrence index or `-1` if not found.\n   * @example\n   * v.indexOf('morning', 'n');\n   * // => 3\n   *\n   * v.indexOf('evening', 'o');\n   * // => -1\n   */\n\n  function indexOf(subject, search, fromIndex) {\n    var subjectString = coerceToString(subject);\n    return subjectString.indexOf(search, fromIndex);\n  }\n\n  /**\n   * Returns the last occurrence index of `search` in `subject`.\n   *\n   * @function lastIndexOf\n   * @static\n   * @since 1.0.0\n   * @memberOf Index\n   * @param {string} [subject=''] The string where to search.\n   * @param {string} search The string to search.\n   * @param {number} [fromIndex=subject.length - 1] The index to start searching backward in the string.\n   * @return {number} Returns the last occurrence index or `-1` if not found.\n   * @example\n   * v.lastIndexOf('morning', 'n');\n   * // => 5\n   *\n   * v.lastIndexOf('evening', 'o');\n   * // => -1\n   */\n\n  function lastIndexOf(subject, search, fromIndex) {\n    var subjectString = coerceToString(subject);\n    return subjectString.lastIndexOf(search, fromIndex);\n  }\n\n  /**\n   * Returns the first index of a `pattern` match in `subject`.\n   *\n   * @function search\n   * @static\n   * @since 1.0.0\n   * @memberOf Index\n   * @param {string} [subject=''] The string where to search.\n   * @param {string|RegExp} pattern The pattern to match. If `pattern` is not RegExp, it is transformed to `new RegExp(pattern)`.\n   * @param {number} [fromIndex=0] The index to start searching.\n   * @return {number} Returns the first match index or `-1` if not found.\n   * @example\n   * v.search('morning', /rn/);\n   * // => 2\n   *\n   * v.search('evening', '/\\d/');\n   * // => -1\n   */\n\n  function search(subject, pattern, fromIndex) {\n    var subjectString = coerceToString(subject);\n    var fromIndexNumber = isNil(fromIndex) ? 0 : clipNumber(toInteger(fromIndex), 0, subjectString.length);\n    var matchIndex = subjectString.substr(fromIndexNumber).search(pattern);\n\n    if (matchIndex !== -1 && !isNaN(fromIndexNumber)) {\n      matchIndex += fromIndexNumber;\n    }\n\n    return matchIndex;\n  }\n\n  /**\n   * Inserts into `subject` a string `toInsert` at specified `position`.\n   *\n   * @function insert\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string where to insert.\n   * @param {string} [toInsert=''] The string to be inserted.\n   * @param {number} [position=0] The position to insert.\n   * @return {string} Returns the string after insertion.\n   * @example\n   * v.insert('ct', 'a', 1);\n   * // => 'cat'\n   *\n   * v.insert('sunny', ' day', 5);\n   * // => 'sunny day'\n   */\n\n  function insert(subject, toInsert, position) {\n    var subjectString = coerceToString(subject);\n    var toInsertString = coerceToString(toInsert);\n    var positionNumber = coerceToNumber(position);\n\n    if (positionNumber < 0 || positionNumber > subjectString.length || toInsertString === '') {\n      return subjectString;\n    }\n\n    return subjectString.slice(0, positionNumber) + toInsertString + subjectString.slice(positionNumber);\n  }\n\n  /**\n   * Generated diacritics map. See bellow the base code.\n   * @ignore\n   * @type Object\n   */\n  var diacritics = {\n    '3': '\\u039e\\u03be',\n    '8': '\\u0398\\u03b8',\n    A:\n      '\\x41\\xc0\\xc1\\xc2\\xc3\\xc4\\xc5\\u0100\\u0102\\u0104\\u01cd\\u01de\\u01e0\\u01fa\\u0200\\u0202\\u0226\\u023a\\u0386\\u0391\\u0410',\n    B: '\\x42\\u0181\\u0182\\u0243\\u0392\\u0411',\n    C: '\\x43\\xc7\\u0106\\u0108\\u010a\\u010c\\u0187\\u023b\\u0426',\n    D: '\\x44\\u010e\\u0110\\u0189\\u018a\\u018b\\xd0\\u0394\\u0414',\n    E: '\\x45\\xc8\\xc9\\xca\\xcb\\u0112\\u0114\\u0116\\u0118\\u011a\\u018e\\u0190\\u0204\\u0206\\u0228\\u0388\\u0395\\u0415\\u042d',\n    F: '\\x46\\u0191\\u03a6\\u0424',\n    G: '\\x47\\u011c\\u011e\\u0120\\u0122\\u0193\\u01e4\\u01e6\\u01f4\\u0393\\u0413\\u0490',\n    H: '\\x48\\u0124\\u0126\\u021e\\u0389\\u0397\\u0425',\n    I: '\\x49\\xcc\\xcd\\xce\\xcf\\u0128\\u012a\\u012c\\u012e\\u0130\\u0197\\u01cf\\u0208\\u020a\\u038a\\u0399\\u03aa\\u0406\\u0418',\n    J: '\\x4a\\u0134\\u0248\\u0419',\n    K: '\\x4b\\u0136\\u0198\\u01e8\\u039a\\u041a',\n    L: '\\x4c\\u0139\\u013b\\u013d\\u013f\\u0141\\u023d\\u039b\\u041b',\n    M: '\\x4d\\u019c\\u039c\\u041c',\n    N: '\\x4e\\xd1\\u0143\\u0145\\u0147\\u019d\\u01f8\\u0220\\u039d\\u041d',\n    O:\n      '\\x4f\\xd2\\xd3\\xd4\\xd5\\xd6\\xd8\\u014c\\u014e\\u0150\\u0186\\u019f\\u01a0\\u01d1\\u01ea\\u01ec\\u01fe\\u020c\\u020e\\u022a\\u022c\\u022e\\u0230\\u038c\\u039f\\u041e',\n    P: '\\x50\\u01a4\\u03a0\\u041f',\n    Q: '\\x51\\u024a',\n    R: '\\x52\\u0154\\u0156\\u0158\\u0210\\u0212\\u024c\\u03a1\\u0420',\n    S: '\\x53\\u015a\\u015c\\u015e\\u0160\\u0218\\u03a3\\u0421',\n    T: '\\x54\\u0162\\u0164\\u0166\\u01ac\\u01ae\\u021a\\u023e\\u03a4\\u0422',\n    U:\n      '\\x55\\xd9\\xda\\xdb\\xdc\\u0168\\u016a\\u016c\\u016e\\u0170\\u0172\\u01af\\u01d3\\u01d5\\u01d7\\u01d9\\u01db\\u0214\\u0216\\u0244\\u0423\\u042a',\n    V: '\\x56\\u01b2\\u0245\\u0412',\n    W: '\\x57\\u0174\\u038f\\u03a9',\n    X: '\\x58\\u03a7',\n    Y: '\\x59\\xdd\\u0176\\u0178\\u01b3\\u0232\\u024e\\u038e\\u03a5\\u03ab\\u042b',\n    Z: '\\x5a\\u0179\\u017b\\u017d\\u01b5\\u0224\\u0396\\u0417',\n    a:\n      '\\x61\\xe0\\xe1\\xe2\\xe3\\xe4\\xe5\\u0101\\u0103\\u0105\\u01ce\\u01df\\u01e1\\u01fb\\u0201\\u0203\\u0227\\u0250\\u03ac\\u03b1\\u0430',\n    b: '\\x62\\u0180\\u0183\\u0253\\u03b2\\u0431',\n    c: '\\x63\\xe7\\u0107\\u0109\\u010b\\u010d\\u0188\\u023c\\u0446',\n    d: '\\x64\\u010f\\u0111\\u018c\\u0256\\u0257\\xf0\\u03b4\\u0434',\n    e: '\\x65\\xe8\\xe9\\xea\\xeb\\u0113\\u0115\\u0117\\u0119\\u011b\\u01dd\\u0205\\u0207\\u0229\\u0247\\u025b\\u03ad\\u03b5\\u0435\\u044d',\n    f: '\\x66\\u0192\\u03c6\\u0444',\n    g: '\\x67\\u011d\\u011f\\u0121\\u0123\\u01e5\\u01e7\\u01f5\\u0260\\u03b3\\u0433\\u0491',\n    h: '\\x68\\u0125\\u0127\\u021f\\u0265\\u03ae\\u03b7\\u0445',\n    i: '\\x69\\xec\\xed\\xee\\xef\\u0129\\u012b\\u012d\\u012f\\u0131\\u01d0\\u0209\\u020b\\u0268\\u0390\\u03af\\u03b9\\u03ca\\u0438\\u0456',\n    j: '\\x6a\\u0135\\u01f0\\u0249\\u0439',\n    k: '\\x6b\\u0137\\u0199\\u01e9\\u03ba\\u043a',\n    l: '\\x6c\\u013a\\u013c\\u013e\\u0140\\u0142\\u017f\\u019a\\u026b\\u03bb\\u043b',\n    m: '\\x6d\\u026f\\u0271\\u03bc\\u043c',\n    n: '\\x6e\\xf1\\u0144\\u0146\\u0148\\u0149\\u019e\\u01f9\\u0272\\u03bd\\u043d',\n    o:\n      '\\x6f\\xf2\\xf3\\xf4\\xf5\\xf6\\xf8\\u014d\\u014f\\u0151\\u01a1\\u01d2\\u01eb\\u01ed\\u01ff\\u020d\\u020f\\u022b\\u022d\\u022f\\u0231\\u0254\\u0275\\u03bf\\u03cc\\u043e',\n    p: '\\x70\\u01a5\\u03c0\\u043f',\n    q: '\\x71\\u024b',\n    r: '\\x72\\u0155\\u0157\\u0159\\u0211\\u0213\\u024d\\u027d\\u03c1\\u0440',\n    s: '\\x73\\xdf\\u015b\\u015d\\u015f\\u0161\\u0219\\u023f\\u03c2\\u03c3\\u0441',\n    t: '\\x74\\u0163\\u0165\\u0167\\u01ad\\u021b\\u0288\\u03c4\\u0442',\n    u:\n      '\\x75\\xf9\\xfa\\xfb\\xfc\\u0169\\u016b\\u016d\\u016f\\u0171\\u0173\\u01b0\\u01d4\\u01d6\\u01d8\\u01da\\u01dc\\u0215\\u0217\\u0289\\u0443\\u044a',\n    v: '\\x76\\u028b\\u028c\\u0432',\n    w: '\\x77\\u0175\\u03c9\\u03ce',\n    x: '\\x78\\u03c7',\n    y: '\\x79\\xfd\\xff\\u0177\\u01b4\\u0233\\u024f\\u03b0\\u03c5\\u03cb\\u03cd\\u044b',\n    z: '\\x7a\\u017a\\u017c\\u017e\\u01b6\\u0225\\u0240\\u03b6\\u0437',\n    OE: '\\x8c\\u0152',\n    oe: '\\x9c\\u0153',\n    AE: '\\xc6\\u01e2\\u01fc',\n    ae: '\\xe6\\u01e3\\u01fd',\n    hv: '\\u0195',\n    OI: '\\u01a2',\n    oi: '\\u01a3',\n    DZ: '\\u01c4\\u01f1',\n    Dz: '\\u01c5\\u01f2',\n    dz: '\\u01c6\\u01f3',\n    LJ: '\\u01c7',\n    Lj: '\\u01c8',\n    lj: '\\u01c9',\n    NJ: '\\u01ca',\n    Nj: '\\u01cb',\n    nj: '\\u01cc',\n    OU: '\\u0222',\n    ou: '\\u0223',\n    TH: '\\xde',\n    th: '\\xfe',\n    PS: '\\u03a8',\n    ps: '\\u03c8',\n    Yo: '\\u0401',\n    Ye: '\\u0404',\n    Yi: '\\u0407',\n    Zh: '\\u0416',\n    Ch: '\\u0427',\n    Sh: '\\u0428\\u0429',\n    '': '\\u042a\\u042c\\u044c',\n    Yu: '\\u042e',\n    Ya: '\\u042f',\n    zh: '\\u0436',\n    ch: '\\u0447',\n    sh: '\\u0448\\u0449',\n    yu: '\\u044e',\n    ya: '\\u044f',\n    yo: '\\u0451',\n    ye: '\\u0454',\n    yi: '\\u0457',\n  };\n  var diacriticsMap = null;\n  /**\n   * Creates a map of the diacritics.\n   *\n   * @ignore\n   * @returns {Object} Returns the diacritics map.\n   */\n\n  function getDiacriticsMap() {\n    if (diacriticsMap !== null) {\n      return diacriticsMap;\n    }\n\n    diacriticsMap = {};\n    Object.keys(diacritics).forEach(function(key) {\n      var characters = diacritics[key];\n\n      for (var index = 0; index < characters.length; index++) {\n        var character = characters[index];\n        diacriticsMap[character] = key;\n      }\n    });\n    return diacriticsMap;\n  }\n  /**\n   * Get the latin character from character with diacritics.\n   *\n   * @ignore\n   * @param   {string} character The character with diacritics.\n   * @returns {string}           Returns the character without diacritics.\n   */\n\n  function getLatinCharacter(character) {\n    var characterWithoutDiacritic = getDiacriticsMap()[character];\n    return characterWithoutDiacritic ? characterWithoutDiacritic : character;\n  }\n\n  /**\n   * Returns the `cleanCharacter` from combining marks regular expression match.\n   *\n   * @ignore\n   * @param {string} character The character with combining marks\n   * @param {string} cleanCharacter The character without combining marks.\n   * @return {string} The character without combining marks.\n   */\n\n  function removeCombiningMarks(character, cleanCharacter) {\n    return cleanCharacter;\n  }\n  /**\n   * Latinises the `subject` by removing diacritic characters.\n   *\n   * @function latinise\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to latinise.\n   * @return {string} Returns the latinised string.\n   * @example\n   * v.latinise('cafe\\u0301'); // or 'café'\n   * // => 'cafe'\n   *\n   * v.latinise('août décembre');\n   * // => 'aout decembre'\n   *\n   * v.latinise('как прекрасен этот мир');\n   * // => 'kak prekrasen etot mir'\n   */\n\n  function latinise(subject) {\n    var subjectString = coerceToString(subject);\n\n    if (subjectString === '') {\n      return '';\n    }\n\n    return subjectString\n      .replace(REGEXP_NON_LATIN, getLatinCharacter)\n      .replace(REGEXP_COMBINING_MARKS, removeCombiningMarks);\n  }\n\n  /**\n   * Pads `subject` to a new `length`.\n   *\n   * @function pad\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to pad.\n   * @param {int} [length=0] The length to pad the string. No changes are made if `length` is less than `subject.length`.\n   * @param {string} [pad=' '] The string to be used for padding.\n   * @return {string} Returns the padded string.\n   * @example\n   * v.pad('dog', 5);\n   * // => ' dog '\n   *\n   * v.pad('bird', 6, '-');\n   * // => '-bird-'\n   *\n   * v.pad('cat', 6, '-=');\n   * // => '-cat-='\n   */\n\n  function pad(subject, length, pad) {\n    var subjectString = coerceToString(subject);\n    var lengthInt = isNil(length) ? 0 : clipNumber(toInteger(length), 0, MAX_SAFE_INTEGER);\n    var padString = coerceToString(pad, ' ');\n\n    if (lengthInt <= subjectString.length) {\n      return subjectString;\n    }\n\n    var paddingLength = lengthInt - subjectString.length;\n    var paddingSideLength = toInteger(paddingLength / 2);\n    var paddingSideRemainingLength = paddingLength % 2;\n    return (\n      buildPadding(padString, paddingSideLength) +\n      subjectString +\n      buildPadding(padString, paddingSideLength + paddingSideRemainingLength)\n    );\n  }\n\n  /**\n   * Replaces the matches of `search` with `replace`. <br/>\n   *\n   * @function replace\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to verify.\n   * @param {string|RegExp} search The search pattern to replace. If `search` is a string,\n   * a simple string match is evaluated and only the first occurrence replaced.\n   * @param {string|Function} replace The string or function which invocation result replaces `search` match.\n   * @return {string} Returns the replacement result.\n   * @example\n   * v.replace('swan', 'wa', 'u');\n   * // => 'sun'\n   *\n   * v.replace('domestic duck', /domestic\\s/, '');\n   * // => 'duck'\n   *\n   * v.replace('nice duck', /(nice)(duck)/, function(match, nice, duck) {\n   *   return 'the ' + duck + ' is ' + nice;\n   * });\n   * // => 'the duck is nice'\n   */\n\n  function replace(subject, search, replace) {\n    var subjectString = coerceToString(subject);\n    return subjectString.replace(search, replace);\n  }\n\n  /**\n   * Replaces all occurrences of `search` with `replace`. <br/>\n   *\n   * @function replaceAll\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to verify.\n   * @param {string|RegExp} search The search pattern to replace. If `search` is a string, a simple string match is evaluated.\n   * All matches are replaced.\n   * @param {string|Function} replace The string or function which invocation result replaces all `search` matches.\n   * @return {string} Returns the replacement result.\n   * @example\n   * v.replaceAll('good morning', 'o', '*');\n   * // => 'g**d m*rning'\n   * v.replaceAll('evening', /n/g, 's');\n   * // => 'evesisg'\n   *\n   */\n\n  function replaceAll(subject, search, replace) {\n    var subjectString = coerceToString(subject);\n\n    if (search instanceof RegExp) {\n      if (search.flags.indexOf('g') === -1) {\n        throw new TypeError('search argument is a non-global regular expression');\n      }\n\n      return subjectString.replace(search, replace);\n    }\n\n    var searchString = coerceToString(search);\n    var isFunctionalReplace = typeof replace === 'function';\n\n    if (!isFunctionalReplace) {\n      replace = coerceToString(replace);\n    }\n\n    var searchLength = searchString.length;\n\n    if (searchLength === 0) {\n      return replaceAll(subject, /(?:)/g, replace);\n    }\n\n    var advanceBy = searchLength > 1 ? searchLength : 1;\n    var matchPositions = [];\n    var position = subjectString.indexOf(searchString, 0);\n\n    while (position !== -1) {\n      matchPositions.push(position);\n      position = subjectString.indexOf(searchString, position + advanceBy);\n    }\n\n    var endOfLastMatch = 0;\n    var result = '';\n\n    for (var i = 0; i < matchPositions.length; i++) {\n      var _position = matchPositions[i];\n      var replacement = replace;\n\n      if (isFunctionalReplace) {\n        replacement = coerceToString(replace.call(undefined, searchString, _position, subjectString));\n      }\n\n      result += subjectString.slice(endOfLastMatch, _position) + replacement;\n      endOfLastMatch = _position + searchLength;\n    }\n\n    if (endOfLastMatch < subjectString.length) {\n      result += subjectString.slice(endOfLastMatch);\n    }\n\n    return result;\n  }\n\n  /**\n   * Reverses the `subject`.\n   *\n   * @function reverse\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to reverse.\n   * @return {string} Returns the reversed string.\n   * @example\n   * v.reverse('winter');\n   * // => 'retniw'\n   */\n\n  function reverse(subject) {\n    var subjectString = coerceToString(subject);\n    return subjectString\n      .split('')\n      .reverse()\n      .join('');\n  }\n\n  /**\n   * Reverses the `subject` taking care of\n   * <a href=\"https://rainsoft.io/what-every-javascript-developer-should-know-about-unicode/#24surrogatepairs\">surrogate pairs</a> and\n   * <a href=\"https://rainsoft.io/what-every-javascript-developer-should-know-about-unicode/#25combiningmarks\">combining marks</a>.\n   *\n   * @function reverseGrapheme\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to reverse.\n   * @return {string} Returns the reversed string.\n   * @example\n   * v.reverseGrapheme('summer');\n   * // => 'remmus'\n   *\n   * v.reverseGrapheme('𝌆 bar mañana mañana');\n   * // => 'anañam anañam rab 𝌆'\n   */\n\n  function reverseGrapheme(subject) {\n    var subjectString = coerceToString(subject);\n    /**\n     * @see https://github.com/mathiasbynens/esrever\n     */\n\n    subjectString = subjectString\n      .replace(REGEXP_COMBINING_MARKS, function($0, $1, $2) {\n        return reverseGrapheme($2) + $1;\n      })\n      .replace(REGEXP_SURROGATE_PAIRS, '$2$1');\n    var reversedString = '';\n    var index = subjectString.length;\n\n    while (index--) {\n      reversedString += subjectString.charAt(index);\n    }\n\n    return reversedString;\n  }\n\n  /**\n   * Slugifies the `subject`. Cleans the `subject` by replacing diacritics with corresponding latin characters.\n   *\n   * @function slugify\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to slugify.\n   * @return {string} Returns the slugified string.\n   * @example\n   * v.slugify('Italian cappuccino drink');\n   * // => 'italian-cappuccino-drink'\n   *\n   * v.slugify('caffé latté');\n   * // => 'caffe-latte'\n   *\n   * v.slugify('хорошая погода');\n   * // => 'horoshaya-pogoda'\n   */\n\n  function slugify(subject) {\n    var subjectString = coerceToString(subject);\n\n    if (subjectString === '') {\n      return '';\n    }\n\n    var cleanSubjectString = latinise(subjectString).replace(REGEXP_NON_LATIN, '-');\n    return kebabCase(cleanSubjectString);\n  }\n\n  /**\n   * Changes `subject` by deleting `deleteCount` of characters starting at position `start`. Places a new string\n   * `toAdd` instead of deleted characters.\n   *\n   * @function splice\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string where to insert.\n   * @param {string} start The position to start changing the string. For a negative position will start from the end of\n   * the string.\n   * @param {number} [deleteCount=subject.length-start] The number of characters to delete from string.\n   * @param {string} [toAdd=''] The string to be added instead of deleted characters.\n   * @return {string} Returns the modified string.\n   * @example\n   * v.splice('new year', 0, 4);\n   * // => 'year'\n   *\n   * v.splice('new year', 0, 3, 'happy');\n   * // => 'happy year'\n   *\n   * v.splice('new year', -4, 4, 'day');\n   * // => 'new day'\n   */\n\n  function splice(subject, start, deleteCount, toAdd) {\n    var subjectString = coerceToString(subject);\n    var toAddString = coerceToString(toAdd);\n    var startPosition = coerceToNumber(start);\n\n    if (startPosition < 0) {\n      startPosition = subjectString.length + startPosition;\n\n      if (startPosition < 0) {\n        startPosition = 0;\n      }\n    } else if (startPosition > subjectString.length) {\n      startPosition = subjectString.length;\n    }\n\n    var deleteCountNumber = coerceToNumber(deleteCount, subjectString.length - startPosition);\n\n    if (deleteCountNumber < 0) {\n      deleteCountNumber = 0;\n    }\n\n    return subjectString.slice(0, startPosition) + toAddString + subjectString.slice(startPosition + deleteCountNumber);\n  }\n\n  /**\n   * Translates characters or replaces substrings in `subject`.\n   *\n   * @function tr\n   * @static\n   * @since 1.3.0\n   * @memberOf Manipulate\n   * @param  {string} [subject=''] The string to translate.\n   * @param  {string|Object} from The string of characters to translate from. Or an object, then the object keys are replaced with corresponding values (longest keys are tried first).\n   * @param  {string} to The string of characters to translate to. Ignored when `from` is an object.\n   * @return {string} Returns the translated string.\n   * @example\n   * v.tr('hello', 'el', 'ip');\n   * // => 'hippo'\n   *\n   * v.tr('légèreté', 'éè', 'ee');\n   * // => 'legerete'\n   *\n   * v.tr('Yes. The fire rises.', {\n   *   'Yes': 'Awesome',\n   *   'fire': 'flame'\n   * })\n   * // => 'Awesome. The flame rises.'\n   *\n   * v.tr(':where is the birthplace of :what', {\n   *   ':where': 'Africa',\n   *   ':what': 'Humanity'\n   * });\n   * // => 'Africa is the birthplace of Humanity'\n   *\n   */\n\n  function tr(subject, from, to) {\n    var subjectString = coerceToString(subject);\n    var keys;\n    var values;\n\n    if (isString(from) && isString(to)) {\n      keys = from.split('');\n      values = to.split('');\n    } else {\n      var _extractKeysAndValues = extractKeysAndValues(nilDefault(from, {}));\n\n      var _extractKeysAndValues2 = _slicedToArray(_extractKeysAndValues, 2);\n\n      keys = _extractKeysAndValues2[0];\n      values = _extractKeysAndValues2[1];\n    }\n\n    var keysLength = keys.length;\n\n    if (keysLength === 0) {\n      return subjectString;\n    }\n\n    var result = '';\n    var valuesLength = values.length;\n\n    for (var index = 0; index < subjectString.length; index++) {\n      var isMatch = false;\n      var matchValue = void 0;\n\n      for (var keyIndex = 0; keyIndex < keysLength && keyIndex < valuesLength; keyIndex++) {\n        var key = keys[keyIndex];\n\n        if (subjectString.substr(index, key.length) === key) {\n          isMatch = true;\n          matchValue = values[keyIndex];\n          index = index + key.length - 1;\n          break;\n        }\n      }\n\n      result += isMatch ? matchValue : subjectString[index];\n    }\n\n    return result;\n  }\n\n  function extractKeysAndValues(object) {\n    var keys = Object.keys(object);\n    var values = keys.sort(sortStringByLength).map(function(key) {\n      return object[key];\n    });\n    return [keys, values];\n  }\n\n  function sortStringByLength(str1, str2) {\n    if (str1.length === str2.length) {\n      return 0;\n    }\n\n    return str1.length < str2.length ? 1 : -1;\n  }\n\n  /**\n   * Checks whether `subject` includes `search` starting from `position`.\n   *\n   * @function includes\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string where to search.\n   * @param {string} search The string to search.\n   * @param {number} [position=0] The position to start searching.\n   * @return {boolean} Returns `true` if `subject` includes `search` or `false` otherwise.\n   * @example\n   * v.includes('starship', 'star');\n   * // => true\n   *\n   * v.includes('galaxy', 'g', 1);\n   * // => false\n   */\n\n  function includes(subject, search, position) {\n    var subjectString = coerceToString(subject);\n    var searchString = toString(search);\n\n    if (searchString === null) {\n      return false;\n    }\n\n    if (searchString === '') {\n      return true;\n    }\n\n    position = isNil(position) ? 0 : clipNumber(toInteger(position), 0, subjectString.length);\n    return subjectString.indexOf(searchString, position) !== -1;\n  }\n\n  var reduce$1 = Array.prototype.reduce;\n  /**\n   * Removes whitespaces from the left side of the `subject`.\n   *\n   * @function trimLeft\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to trim.\n   * @param {string} [whitespace=whitespace] The whitespace characters to trim. List all characters that you want to be stripped.\n   * @return {string} Returns the trimmed string.\n   * @example\n   * v.trimLeft('  Starship Troopers');\n   * // => 'Starship Troopers'\n   *\n   * v.trimLeft('***Mobile Infantry', '*');\n   * // => 'Mobile Infantry'\n   */\n\n  function trimLeft(subject, whitespace) {\n    var subjectString = coerceToString(subject);\n\n    if (whitespace === '' || subjectString === '') {\n      return subjectString;\n    }\n\n    var whitespaceString = toString(whitespace);\n\n    if (isNil(whitespaceString)) {\n      return subjectString.replace(REGEXP_TRIM_LEFT, '');\n    }\n\n    var matchWhitespace = true;\n    return reduce$1.call(\n      subjectString,\n      function(trimmed, character) {\n        if (matchWhitespace && includes(whitespaceString, character)) {\n          return trimmed;\n        }\n\n        matchWhitespace = false;\n        return trimmed + character;\n      },\n      ''\n    );\n  }\n\n  var reduceRight = Array.prototype.reduceRight;\n  /**\n   * Removes whitespaces from the right side of the `subject`.\n   *\n   * @function trimRight\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to trim.\n   * @param {string} [whitespace=whitespace] The whitespace characters to trim. List all characters that you want to be stripped.\n   * @return {string} Returns the trimmed string.\n   * @example\n   * v.trimRight('the fire rises   ');\n   * // => 'the fire rises'\n   *\n   * v.trimRight('do you feel in charge?!!!', '!');\n   * // => 'do you feel in charge?'\n   */\n\n  function trimRight(subject, whitespace) {\n    var subjectString = coerceToString(subject);\n\n    if (whitespace === '' || subjectString === '') {\n      return subjectString;\n    }\n\n    var whitespaceString = toString(whitespace);\n\n    if (isNil(whitespaceString)) {\n      return subjectString.replace(REGEXP_TRIM_RIGHT, '');\n    }\n\n    var matchWhitespace = true;\n    return reduceRight.call(\n      subjectString,\n      function(trimmed, character) {\n        if (matchWhitespace && includes(whitespaceString, character)) {\n          return trimmed;\n        }\n\n        matchWhitespace = false;\n        return character + trimmed;\n      },\n      ''\n    );\n  }\n\n  /**\n   * Removes whitespaces from left and right sides of the `subject`.\n   *\n   * @function trim\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param {string} [subject=''] The string to trim.\n   * @param {string} [whitespace=whitespace] The whitespace characters to trim. List all characters that you want to be stripped.\n   * @return {string} Returns the trimmed string.\n   * @example\n   * v.trim(' Mother nature ');\n   * // => 'Mother nature'\n   *\n   * v.trim('--Earth--', '-');\n   * // => 'Earth'\n   */\n\n  function trim(subject, whitespace) {\n    var subjectString = coerceToString(subject);\n\n    if (whitespace === '' || subjectString === '') {\n      return subjectString;\n    }\n\n    var whitespaceString = toString(whitespace);\n\n    if (isNil(whitespaceString)) {\n      return subjectString.trim();\n    }\n\n    return trimRight(trimLeft(subjectString, whitespaceString), whitespaceString);\n  }\n\n  var OPTION_WIDTH = 'width';\n  var OPTION_NEW_LINE = 'newLine';\n  var OPTION_INDENT = 'indent';\n  var OPTION_CUT = 'cut';\n  /**\n   * Wraps `subject` to a given number of characters using a string break character.\n   *\n   * @function wordWrap\n   * @static\n   * @since 1.0.0\n   * @memberOf Manipulate\n   * @param  {string} [subject=''] The string to wrap.\n   * @param  {Object} [options={}] The wrap options.\n   * @param  {number} [options.width=75] The number of characters at which to wrap.\n   * @param  {string} [options.newLine='\\n'] The string to add at the end of line.\n   * @param  {string} [options.indent='']  The string to intend the line.\n   * @param  {boolean} [options.cut=false] When `false` (default) does not split the word even if word length is bigger than `width`. <br/>\n   *                                       When `true` breaks the word that has length bigger than `width`.\n   *\n   * @return {string} Returns wrapped string.\n   * @example\n   * v.wordWrap('Hello world', {\n   *   width: 5\n   * });\n   * // => 'Hello\\nworld'\n   *\n   * v.wordWrap('Hello world', {\n   *   width: 5,\n   *   newLine: '<br/>',\n   *   indent: '__'\n   * });\n   * // => '__Hello<br/>__world'\n   *\n   * v.wordWrap('Wonderful world', {\n   *   width: 5,\n   *   cut: true\n   * });\n   * // => 'Wonde\\nrful\\nworld'\n   *\n   */\n\n  function wordWrap(subject) {\n    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};\n    var subjectString = coerceToString(subject);\n\n    var _determineOptions = determineOptions(options),\n      width = _determineOptions.width,\n      newLine = _determineOptions.newLine,\n      indent = _determineOptions.indent,\n      cut = _determineOptions.cut;\n\n    if (subjectString === '' || width <= 0) {\n      return indent;\n    }\n\n    var subjectLength = subjectString.length;\n    var substring = subjectString.substring.bind(subjectString);\n    var offset = 0;\n    var wrappedLine = '';\n\n    while (subjectLength - offset > width) {\n      if (subjectString[offset] === ' ') {\n        offset++;\n        continue;\n      }\n\n      var spaceToWrapAt = subjectString.lastIndexOf(' ', width + offset);\n\n      if (spaceToWrapAt >= offset) {\n        wrappedLine += indent + substring(offset, spaceToWrapAt) + newLine;\n        offset = spaceToWrapAt + 1;\n      } else {\n        if (cut) {\n          wrappedLine += indent + substring(offset, width + offset) + newLine;\n          offset += width;\n        } else {\n          spaceToWrapAt = subjectString.indexOf(' ', width + offset);\n\n          if (spaceToWrapAt >= 0) {\n            wrappedLine += indent + substring(offset, spaceToWrapAt) + newLine;\n            offset = spaceToWrapAt + 1;\n          } else {\n            wrappedLine += indent + substring(offset);\n            offset = subjectLength;\n          }\n        }\n      }\n    }\n\n    if (offset < subjectLength) {\n      wrappedLine += indent + substring(offset);\n    }\n\n    return wrappedLine;\n  }\n  /**\n   * Determine the word wrap options. The missing values are filled with defaults.\n   *\n   * @param  {Object} options  The options object.\n   * @return {Object}          The word wrap options, with default settings if necessary.\n   * @ignore\n   */\n\n  function determineOptions(options) {\n    return {\n      width: coerceToNumber(options[OPTION_WIDTH], 75),\n      newLine: coerceToString(options[OPTION_NEW_LINE], '\\n'),\n      indent: coerceToString(options[OPTION_INDENT], ''),\n      cut: coerceToBoolean(options[OPTION_CUT], false),\n    };\n  }\n\n  /**\n   * Checks whether `subject` ends with `end`.\n   *\n   * @function endsWith\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @param {string} end The ending string.\n   * @param {number} [position=subject.length] Search within `subject` as if the string were only `position` long.\n   * @return {boolean} Returns `true` if `subject` ends with `end` or `false` otherwise.\n   * @example\n   * v.endsWith('red alert', 'alert');\n   * // => true\n   *\n   * v.endsWith('metro south', 'metro');\n   * // => false\n   *\n   * v.endsWith('Murphy', 'ph', 5);\n   * // => true\n   */\n\n  function endsWith(subject, end, position) {\n    if (isNil(end)) {\n      return false;\n    }\n\n    var subjectString = coerceToString(subject);\n    var endString = coerceToString(end);\n\n    if (endString === '') {\n      return true;\n    }\n\n    position = isNil(position) ? subjectString.length : clipNumber(toInteger(position), 0, subjectString.length);\n    position -= endString.length;\n    var lastIndex = subjectString.indexOf(endString, position);\n    return lastIndex !== -1 && lastIndex === position;\n  }\n\n  /**\n   * Checks whether `subject` contains only alpha characters.\n   *\n   * @function isAlpha\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @return {boolean} Returns `true` if `subject` contains only alpha characters or `false` otherwise.\n   * @example\n   * v.isAlpha('bart');\n   * // => true\n   *\n   * v.isAlpha('lisa!');\n   * // => false\n   *\n   * v.isAlpha('lisa and bart');\n   * // => false\n   */\n\n  function isAlpha(subject) {\n    var subjectString = coerceToString(subject);\n    return REGEXP_ALPHA.test(subjectString);\n  }\n\n  /**\n   * Checks whether `subject` contains only alpha and digit characters.\n   *\n   * @function isAlphaDigit\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @return {boolean} Returns `true` if `subject` contains only alpha and digit characters or `false` otherwise.\n   * @example\n   * v.isAlphaDigit('year2020');\n   * // => true\n   *\n   * v.isAlphaDigit('1448');\n   * // => true\n   *\n   * v.isAlphaDigit('40-20');\n   * // => false\n   */\n\n  function isAlphaDigit(subject) {\n    var subjectString = coerceToString(subject);\n    return REGEXP_ALPHA_DIGIT.test(subjectString);\n  }\n\n  /**\n   * Checks whether `subject` is empty or contains only whitespaces.\n   *\n   * @function isBlank\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @return {boolean} Returns `true` if `subject` is empty or contains only whitespaces or `false` otherwise.\n   * @example\n   * v.isBlank('');\n   * // => true\n   *\n   * v.isBlank('  ');\n   * // => true\n   *\n   * v.isBlank('World');\n   * // => false\n   */\n\n  function isBlank(subject) {\n    var subjectString = coerceToString(subject);\n    return subjectString.trim().length === 0;\n  }\n\n  /**\n   * Checks whether `subject` contains only digit characters.\n   *\n   * @function isDigit\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @return {boolean} Returns `true` if `subject` contains only digit characters or `false` otherwise.\n   * @example\n   * v.isDigit('35');\n   * // => true\n   *\n   * v.isDigit('1.5');\n   * // => false\n   *\n   * v.isDigit('ten');\n   * // => false\n   */\n\n  function isDigit(subject) {\n    var subjectString = coerceToString(subject);\n    return REGEXP_DIGIT.test(subjectString);\n  }\n\n  /**\n   * Checks whether `subject` is empty.\n   *\n   * @function isEmpty\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @return {boolean} Returns `true` if `subject` is empty or `false` otherwise\n   * @example\n   * v.isEmpty('');\n   * // => true\n   *\n   * v.isEmpty('  ');\n   * // => false\n   *\n   * v.isEmpty('sun');\n   * // => false\n   */\n\n  function isEmpty(subject) {\n    var subjectString = coerceToString(subject);\n    return subjectString.length === 0;\n  }\n\n  /**\n   * Checks whether `subject` has only lower case characters.\n   *\n   * @function isLowerCase\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @return {boolean} Returns `true` if `subject` is lower case or `false` otherwise.\n   * @example\n   * v.isLowerCase('motorcycle');\n   * // => true\n   *\n   * v.isLowerCase('John');\n   * // => false\n   *\n   * v.isLowerCase('T1000');\n   * // => false\n   */\n\n  function isLowerCase(subject) {\n    var valueString = coerceToString(subject);\n    return isAlpha(valueString) && valueString.toLowerCase() === valueString;\n  }\n\n  /**\n   * Checks whether `subject` is numeric.\n   *\n   * @function isNumeric\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @return {boolean} Returns `true` if `subject` is numeric or `false` otherwise.\n   * @example\n   * v.isNumeric('350');\n   * // => true\n   *\n   * v.isNumeric('-20.5');\n   * // => true\n   *\n   * v.isNumeric('1.5E+2');\n   * // => true\n   *\n   * v.isNumeric('five');\n   * // => false\n   */\n\n  function isNumeric(subject) {\n    var valueNumeric = typeof subject === 'object' && !isNil(subject) ? Number(subject) : subject;\n    return (\n      (typeof valueNumeric === 'number' || typeof valueNumeric === 'string') &&\n      !isNaN(valueNumeric - parseFloat(valueNumeric))\n    );\n  }\n\n  /**\n   * Checks whether `subject` contains only upper case characters.\n   *\n   * @function isUpperCase\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @return {boolean} Returns `true` if `subject` is upper case or `false` otherwise.\n   * @example\n   * v.isUpperCase('ACDC');\n   * // => true\n   *\n   * v.isUpperCase('Morning');\n   * // => false\n   */\n\n  function isUpperCase(subject) {\n    var subjectString = coerceToString(subject);\n    return isAlpha(subjectString) && subjectString.toUpperCase() === subjectString;\n  }\n\n  /**\n   * Checks whether `subject` matches the regular expression `pattern`.\n   *\n   * @function matches\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @param {RegExp|string} pattern The pattern to match. If `pattern` is not RegExp, it is transformed to `new RegExp(pattern, flags)`.\n   * @param {string} [flags=''] The regular expression flags. Applies when `pattern` is string type.\n   * @return {boolean} Returns `true` if `subject` matches `pattern` or `false` otherwise.\n   * @example\n   * v.matches('pluto', /plu.{2}/);\n   * // => true\n   *\n   * v.matches('sun', 'S', 'i');\n   * // => true\n   *\n   * v.matches('apollo 11', '\\\\d{3}');\n   * // => false\n   */\n\n  function matches(subject, pattern, flags) {\n    var subjectString = coerceToString(subject);\n    var flagsString = coerceToString(flags);\n    var patternString;\n\n    if (!(pattern instanceof RegExp)) {\n      patternString = toString(pattern);\n\n      if (patternString === null) {\n        return false;\n      }\n\n      pattern = new RegExp(patternString, flagsString);\n    }\n\n    return pattern.test(subjectString);\n  }\n\n  /**\n   * Checks whether `subject` starts with `start`.\n   *\n   * @function startsWith\n   * @static\n   * @since 1.0.0\n   * @memberOf Query\n   * @param {string} [subject=''] The string to verify.\n   * @param {string} start The starting string.\n   * @param {number} [position=0] The position to start searching.\n   * @return {boolean} Returns `true` if `subject` starts with `start` or `false` otherwise.\n   * @example\n   * v.startsWith('say hello to my little friend', 'say hello');\n   * // => true\n   *\n   * v.startsWith('tony', 'on', 1);\n   * // => true\n   *\n   * v.startsWith('the world is yours', 'world');\n   * // => false\n   */\n\n  function startsWith(subject, start, position) {\n    var subjectString = coerceToString(subject);\n    var startString = toString(start);\n\n    if (startString === null) {\n      return false;\n    }\n\n    if (startString === '') {\n      return true;\n    }\n\n    position = isNil(position) ? 0 : clipNumber(toInteger(position), 0, subjectString.length);\n    return subjectString.substr(position, startString.length) === startString;\n  }\n\n  /**\n   * Splits `subject` into an array of characters.\n   *\n   * @function chars\n   * @static\n   * @since 1.0.0\n   * @memberOf Split\n   * @param {string} [subject=''] The string to split into characters.\n   * @return {Array} Returns the array of characters.\n   * @example\n   * v.chars('cloud');\n   * // => ['c', 'l', 'o', 'u', 'd']\n   */\n\n  function chars(subject) {\n    var subjectString = coerceToString(subject);\n    return subjectString.split('');\n  }\n\n  /**\n   * Returns an array of Unicode code point values from characters of `subject`.\n   *\n   * @function codePoints\n   * @static\n   * @since 1.0.0\n   * @memberOf Split\n   * @param  {string} [subject=''] The string to extract from.\n   * @return {Array} Returns an array of non-negative numbers less than or equal to `0x10FFFF`.\n   * @example\n   * v.codePoints('rain');\n   * // => [114, 97, 105, 110], or\n   * //    [0x72, 0x61, 0x69, 0x6E]\n   *\n   * v.codePoints('\\uD83D\\uDE00 smile'); // or '😀 smile'\n   * // => [128512, 32, 115, 109, 105, 108, 101], or\n   * //    [0x1F600, 0x20, 0x73, 0x6D, 0x69, 0x6C, 0x65]\n   */\n\n  function codePoints(subject) {\n    var subjectString = coerceToString(subject);\n    var subjectStringLength = subjectString.length;\n    var codePointArray = [];\n    var index = 0;\n    var codePointNumber;\n\n    while (index < subjectStringLength) {\n      codePointNumber = codePointAt(subjectString, index);\n      codePointArray.push(codePointNumber);\n      index += codePointNumber > 0xffff ? 2 : 1;\n    }\n\n    return codePointArray;\n  }\n\n  /**\n   * Splits `subject` into an array of graphemes taking care of\n   * <a href=\"https://rainsoft.io/what-every-javascript-developer-should-know-about-unicode/#24surrogatepairs\">surrogate pairs</a> and\n   * <a href=\"https://rainsoft.io/what-every-javascript-developer-should-know-about-unicode/#25combiningmarks\">combining marks</a>.\n   *\n   * @function graphemes\n   * @static\n   * @since 1.0.0\n   * @memberOf Split\n   * @param {string} [subject=''] The string to split into characters.\n   * @return {Array} Returns the array of graphemes.\n   * @example\n   * v.graphemes('\\uD835\\uDC00\\uD835\\uDC01'); // or '𝐀𝐁'\n   * // => ['\\uD835\\uDC00', '\\uD835\\uDC01'], or\n   * //    ['𝐀', '𝐁']\n   *\n   * v.graphemes('cafe\\u0301'); // or 'café'\n   * // => ['c', 'a', 'f', 'e\\u0301'], or\n   * //    ['c', 'a', 'f', 'é']\n   */\n\n  function graphemes(subject) {\n    var subjectString = coerceToString(subject);\n    return nilDefault(subjectString.match(REGEXP_UNICODE_CHARACTER), []);\n  }\n\n  /**\n   * Splits `subject` into an array of chunks by `separator`.\n   *\n   * @function split\n   * @static\n   * @since 1.0.0\n   * @memberOf Split\n   * @param {string} [subject=''] The string to split into characters.\n   * @param {string|RegExp} [separator] The pattern to match the separator.\n   * @param {number} [limit] Limit the number of chunks to be found.\n   * @return {Array} Returns the array of chunks.\n   * @example\n   * v.split('rage against the dying of the light', ' ');\n   * // => ['rage', 'against', 'the', 'dying', 'of', 'the', 'light']\n   *\n   * v.split('the dying of the light', /\\s/, 3);\n   * // => ['the', 'dying', 'of']\n   */\n\n  function split(subject, separator, limit) {\n    var subjectString = coerceToString(subject);\n    return subjectString.split(separator, limit);\n  }\n\n  var BYRE_ORDER_MARK = '\\uFEFF';\n  /**\n   * Strips the byte order mark (BOM) from the beginning of `subject`.\n   *\n   * @function stripBom\n   * @static\n   * @since 1.2.0\n   * @memberOf Strip\n   * @param {string} [subject=''] The string to strip from.\n   * @return {string} Returns the stripped string.\n   * @example\n   *\n   * v.stripBom('\\uFEFFsummertime sadness');\n   * // => 'summertime sadness'\n   *\n   * v.stripBom('summertime happiness');\n   * // => 'summertime happiness'\n   *\n   */\n\n  function trim$1(subject) {\n    var subjectString = coerceToString(subject);\n\n    if (subjectString === '') {\n      return '';\n    }\n\n    if (subjectString[0] === BYRE_ORDER_MARK) {\n      return subjectString.substring(1);\n    }\n\n    return subjectString;\n  }\n\n  /**\n   * Checks whether `subject` contains substring at specific `index`.\n   *\n   * @ignore\n   * @param {string} subject The subject to search in.\n   * @param {string} substring The substring to search/\n   * @param {number} index The index to search substring.\n   * @param {boolean} lookBehind Whether to look behind (true) or ahead (false).\n   * @return {boolean} Returns a boolean whether the substring exists.\n   */\n  function hasSubstringAtIndex(subject, substring, index) {\n    var lookBehind = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;\n    var indexOffset = 0;\n\n    if (lookBehind) {\n      indexOffset = -substring.length + 1;\n    }\n\n    var extractedSubstring = subject.substr(index + indexOffset, substring.length);\n    return extractedSubstring.toLowerCase() === substring;\n  }\n\n  /**\n   * Parses the tags from the string '<tag1><tag2>...<tagN>'.\n   *\n   * @ignore\n   * @param {string} tags The string that contains the tags.\n   * @return {string[]} Returns the array of tag names.\n   */\n\n  function parseTagList(tags) {\n    var tagsList = [];\n    var match;\n\n    while ((match = REGEXP_TAG_LIST.exec(tags)) !== null) {\n      tagsList.push(match[1]);\n    }\n\n    return tagsList;\n  }\n\n  var STATE_START_TAG = 0;\n  var STATE_NON_WHITESPACE = 1;\n  var STATE_DONE = 2;\n  /**\n   * Parses the tag name from html content.\n   *\n   * @ignore\n   * @param {string} tagContent The tag content.\n   * @return {string} Returns the tag name.\n   */\n\n  function parseTagName(tagContent) {\n    var state = STATE_START_TAG;\n    var tagName = '';\n    var index = 0;\n\n    while (state !== STATE_DONE) {\n      var char = tagContent[index++].toLowerCase();\n\n      switch (char) {\n        case '<':\n          break;\n\n        case '>':\n          state = STATE_DONE;\n          break;\n\n        default:\n          if (REGEXP_WHITESPACE.test(char)) {\n            if (state === STATE_NON_WHITESPACE) {\n              state = STATE_DONE;\n            }\n          } else {\n            if (state === STATE_START_TAG) {\n              state = STATE_NON_WHITESPACE;\n            }\n\n            if (char !== '/') {\n              tagName += char;\n            }\n          }\n\n          break;\n      }\n    }\n\n    return tagName;\n  }\n\n  var STATE_OUTPUT = 0;\n  var STATE_HTML = 1;\n  var STATE_EXCLAMATION = 2;\n  var STATE_COMMENT = 3;\n  /**\n   * Strips HTML tags from `subject`.\n   *\n   * @function stripTags\n   * @static\n   * @since 1.1.0\n   * @memberOf Strip\n   * @param {string} [subject=''] The string to strip from.\n   * @param {string|Array} [allowableTags] The string `'<tag1><tag2>'` or array `['tag1', 'tag2']` of tags that should not be stripped.\n   * @param {string} [replacement=''] The string to replace the stripped tag.\n   * @return {string} Returns the stripped string.\n   * @example\n   *\n   * v.stripTags('<span><a href=\"#\">Summer</a> is nice</span>');\n   * // => 'Summer is nice'\n   *\n   * v.stripTags('<span><i>Winter</i> is <b>cold</b></span>', ['b', 'i']);\n   * // => '<i>Winter</i> is <b>cold</b>'\n   *\n   * v.stripTags('Sun<br/>set', '', '-');\n   * // => 'Sun-set'\n   */\n\n  function trim$2(subject, allowableTags, replacement) {\n    subject = coerceToString(subject);\n\n    if (subject === '') {\n      return '';\n    }\n\n    if (!Array.isArray(allowableTags)) {\n      var allowableTagsString = coerceToString(allowableTags);\n      allowableTags = allowableTagsString === '' ? [] : parseTagList(allowableTagsString);\n    }\n\n    var replacementString = coerceToString(replacement);\n    var length = subject.length;\n    var hasAllowableTags = allowableTags.length > 0;\n    var hasSubstring = hasSubstringAtIndex.bind(null, subject);\n    var state = STATE_OUTPUT;\n    var depth = 0;\n    var output = '';\n    var tagContent = '';\n    var quote = null;\n\n    for (var index = 0; index < length; index++) {\n      var char = subject[index];\n      var advance = false;\n\n      switch (char) {\n        case '<':\n          if (quote) {\n            break;\n          }\n\n          if (hasSubstring('< ', index, false)) {\n            advance = true;\n            break;\n          }\n\n          if (state === STATE_OUTPUT) {\n            advance = true;\n            state = STATE_HTML;\n            break;\n          }\n\n          if (state === STATE_HTML) {\n            depth++;\n            break;\n          }\n\n          advance = true;\n          break;\n\n        case '!':\n          if (state === STATE_HTML && hasSubstring('<!', index)) {\n            state = STATE_EXCLAMATION;\n            break;\n          }\n\n          advance = true;\n          break;\n\n        case '-':\n          if (state === STATE_EXCLAMATION && hasSubstring('!--', index)) {\n            state = STATE_COMMENT;\n            break;\n          }\n\n          advance = true;\n          break;\n\n        case '\"':\n        case \"'\":\n          if (state === STATE_HTML) {\n            if (quote === char) {\n              quote = null;\n            } else if (!quote) {\n              quote = char;\n            }\n          }\n\n          advance = true;\n          break;\n\n        case 'E':\n        case 'e':\n          if (state === STATE_EXCLAMATION && hasSubstring('doctype', index)) {\n            state = STATE_HTML;\n            break;\n          }\n\n          advance = true;\n          break;\n\n        case '>':\n          if (depth > 0) {\n            depth--;\n            break;\n          }\n\n          if (quote) {\n            break;\n          }\n\n          if (state === STATE_HTML) {\n            quote = null;\n            state = STATE_OUTPUT;\n\n            if (hasAllowableTags) {\n              tagContent += '>';\n              var tagName = parseTagName(tagContent);\n\n              if (allowableTags.indexOf(tagName.toLowerCase()) !== -1) {\n                output += tagContent;\n              } else {\n                output += replacementString;\n              }\n\n              tagContent = '';\n            } else {\n              output += replacementString;\n            }\n\n            break;\n          }\n\n          if (state === STATE_EXCLAMATION || (state === STATE_COMMENT && hasSubstring('-->', index))) {\n            quote = null;\n            state = STATE_OUTPUT;\n            tagContent = '';\n            break;\n          }\n\n          advance = true;\n          break;\n\n        default:\n          advance = true;\n      }\n\n      if (advance) {\n        switch (state) {\n          case STATE_OUTPUT:\n            output += char;\n            break;\n\n          case STATE_HTML:\n            if (hasAllowableTags) {\n              tagContent += char;\n            }\n\n            break;\n        }\n      }\n    }\n\n    return output;\n  }\n\n  var globalObject = null;\n\n  function getGlobalObject() {\n    if (globalObject !== null) {\n      return globalObject;\n    }\n    /* istanbul ignore next */\n    // It's hard to mock the global variables. This code surely works fine. I hope :)\n\n    if (typeof __webpack_require__.g === 'object' && __webpack_require__.g.Object === Object) {\n      // NodeJS global object\n      globalObject = __webpack_require__.g;\n    } else if (typeof self === 'object' && self.Object === Object) {\n      // self property from Window object\n      globalObject = self;\n    } else {\n      // Other cases. Function constructor always has the context as global object\n      globalObject = new Function('return this')();\n    }\n\n    return globalObject;\n  }\n\n  var globalObject$1 = getGlobalObject();\n  var previousV = globalObject$1.v;\n  /**\n   * Restores `v` variable to previous value and returns Voca library instance.\n   *\n   * @function noConflict\n   * @static\n   * @since 1.0.0\n   * @memberOf Util\n   * @return {Object} Returns Voca library instance.\n   * @example\n   * var voca = v.noConflict();\n   * voca.isAlpha('Hello');\n   * // => true\n   */\n\n  function noConflict() {\n    if (this === globalObject$1.v) {\n      globalObject$1.v = previousV;\n    }\n\n    return this;\n  }\n\n  /**\n   * A property that contains the library <a href=\"http://semver.org/\">semantic version number</a>.\n   * @name version\n   * @static\n   * @since 1.0.0\n   * @memberOf Util\n   * @type string\n   * @example\n   * v.version\n   * // => '1.4.0'\n   */\n  var version = '1.4.0';\n\n  /* eslint sort-imports: \"off\" */\n  var functions = {\n    camelCase: camelCase,\n    capitalize: capitalize,\n    decapitalize: decapitalize,\n    kebabCase: kebabCase,\n    lowerCase: lowerCase,\n    snakeCase: snakeCase,\n    swapCase: swapCase,\n    titleCase: titleCase,\n    upperCase: upperCase,\n    count: count,\n    countGraphemes: countGrapheme,\n    countSubstrings: countSubstrings,\n    countWhere: countWhere,\n    countWords: countWords,\n    escapeHtml: escapeHtml,\n    escapeRegExp: escapeRegExp,\n    unescapeHtml: unescapeHtml,\n    sprintf: sprintf,\n    vprintf: vprintf,\n    indexOf: indexOf,\n    lastIndexOf: lastIndexOf,\n    search: search,\n    charAt: charAt,\n    codePointAt: codePointAt,\n    first: first,\n    graphemeAt: graphemeAt,\n    last: last,\n    prune: prune,\n    slice: slice,\n    substr: substr,\n    substring: substring,\n    truncate: truncate,\n    insert: insert,\n    latinise: latinise,\n    pad: pad,\n    padLeft: padLeft,\n    padRight: padRight,\n    repeat: repeat,\n    replace: replace,\n    replaceAll: replaceAll,\n    reverse: reverse,\n    reverseGrapheme: reverseGrapheme,\n    slugify: slugify,\n    splice: splice,\n    tr: tr,\n    trim: trim,\n    trimLeft: trimLeft,\n    trimRight: trimRight,\n    wordWrap: wordWrap,\n    endsWith: endsWith,\n    includes: includes,\n    isAlpha: isAlpha,\n    isAlphaDigit: isAlphaDigit,\n    isBlank: isBlank,\n    isDigit: isDigit,\n    isEmpty: isEmpty,\n    isLowerCase: isLowerCase,\n    isNumeric: isNumeric,\n    isString: isString,\n    isUpperCase: isUpperCase,\n    matches: matches,\n    startsWith: startsWith,\n    chars: chars,\n    codePoints: codePoints,\n    graphemes: graphemes,\n    split: split,\n    words: words,\n    stripBom: trim$1,\n    stripTags: trim$2,\n    noConflict: noConflict,\n    version: version,\n  };\n\n  /**\n   * The chain wrapper constructor.\n   *\n   * @ignore\n   * @param  {string}       subject               The string to be wrapped.\n   * @param  {boolean}      [explicitChain=false] A boolean that indicates if the chain sequence is explicit or implicit.\n   * @return {ChainWrapper}                       Returns a new instance of `ChainWrapper`\n   * @constructor\n   */\n\n  function ChainWrapper(subject, explicitChain) {\n    this._wrappedValue = subject;\n    this._explicitChain = explicitChain;\n  }\n  /**\n   * Unwraps the chain sequence wrapped value.\n   *\n   * @memberof Chain\n   * @since 1.0.0\n   * @function __proto__value\n   * @return {*} Returns the unwrapped value.\n   * @example\n   * v\n   *  .chain('Hello world')\n   *  .replace('Hello', 'Hi')\n   *  .lowerCase()\n   *  .slugify()\n   *  .value()\n   * // => 'hi-world'\n   *\n   * v(' Space travel ')\n   *  .trim()\n   *  .truncate(8)\n   *  .value()\n   * // => 'Space...'\n   */\n\n  ChainWrapper.prototype.value = function() {\n    return this._wrappedValue;\n  };\n  /**\n   * Override the default object valueOf().\n   *\n   * @ignore\n   * @return {*} Returns the wrapped value.\n   */\n\n  ChainWrapper.prototype.valueOf = function() {\n    return this.value();\n  };\n  /**\n   * Returns the wrapped value to be used in JSON.stringify().\n   *\n   * @ignore\n   * @return {*} Returns the wrapped value.\n   */\n\n  ChainWrapper.prototype.toJSON = function() {\n    return this.value();\n  };\n  /**\n   * Returns the string representation of the wrapped value.\n   *\n   * @ignore\n   * @return {string} Returns the string representation.\n   */\n\n  ChainWrapper.prototype.toString = function() {\n    return String(this.value());\n  };\n  /**\n   * Creates a new chain object that enables <i>explicit</i> chain sequences.\n   * Use `v.prototype.value()` to unwrap the result. <br/>\n   * Does not modify the wrapped value.\n   *\n   * @memberof Chain\n   * @since 1.0.0\n   * @function __proto__chain\n   * @return {Object} Returns the wrapper in <i>explicit</i> mode.\n   * @example\n   * v('Back to School')\n   *  .chain()\n   *  .lowerCase()\n   *  .words()\n   *  .value()\n   * // => ['back', 'to', 'school']\n   *\n   * v(\" Back to School \")\n   *  .chain()\n   *  .trim()\n   *  .truncate(7)\n   *  .value()\n   * // => 'Back...'\n   */\n\n  ChainWrapper.prototype.chain = function() {\n    return new ChainWrapper(this._wrappedValue, true);\n  };\n  /**\n   * Modifies the wrapped value with the invocation result of `changer` function. The current wrapped value is the\n   * argument of `changer` invocation.\n   *\n   * @memberof Chain\n   * @since 1.0.0\n   * @function __proto__thru\n   * @param  {Function} changer The function to invoke.\n   * @return {Object}           Returns the new wrapper that wraps the invocation result of `changer`.\n   * @example\n   * v\n   *  .chain('sun is shining')\n   *  .words()\n   *  .thru(function(words) {\n   *    return words[0];\n   *  })\n   *  .value()\n   * // => 'sun'\n   *\n   */\n\n  ChainWrapper.prototype.thru = function(changer) {\n    if (typeof changer === 'function') {\n      return new ChainWrapper(changer(this._wrappedValue), this._explicitChain);\n    }\n\n    return this;\n  };\n  /**\n   * A boolean that indicates if the chain sequence is explicit or implicit.\n   * @ignore\n   * @type {boolean}\n   * @private\n   */\n\n  ChainWrapper.prototype._explicitChain = true;\n  /**\n   * Make a voca function chainable.\n   *\n   * @ignore\n   * @param  {Function} functionInstance The function to make chainable\n   * @return {Function}                  Returns the chainable function\n   */\n\n  function makeFunctionChainable(functionInstance) {\n    return function() {\n      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {\n        args[_key] = arguments[_key];\n      }\n\n      var result = functionInstance.apply(void 0, [this._wrappedValue].concat(args));\n\n      if (this._explicitChain || typeof result === 'string') {\n        return new ChainWrapper(result, this._explicitChain);\n      } else {\n        return result;\n      }\n    };\n  }\n\n  Object.keys(functions).forEach(function(name) {\n    ChainWrapper.prototype[name] = makeFunctionChainable(functions[name]);\n  });\n\n  /**\n   * Creates a chain object that wraps `subject`, enabling <i>explicit</i> chain sequences. <br/>\n   * Use `v.prototype.value()` to unwrap the result.\n   *\n   * @memberOf Chain\n   * @since 1.0.0\n   * @function chain\n   * @param  {string} subject The string to wrap.\n   * @return {Object}         Returns the new wrapper object.\n   * @example\n   * v\n   *  .chain('Back to School')\n   *  .lowerCase()\n   *  .words()\n   *  .value()\n   * // => ['back', 'to', 'school']\n   */\n\n  function chain(subject) {\n    return new ChainWrapper(subject, true);\n  }\n\n  /**\n   * Creates a chain object that wraps `subject`, enabling <i>implicit</i> chain sequences.<br/>\n   * A function that returns `number`, `boolean` or `array` type <i>terminates</i> the chain sequence and returns the unwrapped value.\n   * Otherwise use `v.prototype.value()` to unwrap the result.\n   *\n   * @memberOf Chain\n   * @since 1.0.0\n   * @function v\n   * @param {string} subject The string to wrap.\n   * @return {Object}  Returns the new wrapper object.\n   * @example\n   * v('Back to School')\n   *  .lowerCase()\n   *  .words()\n   * // => ['back', 'to', 'school']\n   *\n   * v(\" Back to School \")\n   *  .trim()\n   *  .truncate(7)\n   *  .value()\n   * // => 'Back...'\n   */\n\n  function Voca(subject) {\n    return new ChainWrapper(subject, false);\n  }\n\n  _extends(Voca, functions, {\n    chain: chain,\n  });\n\n  return Voca;\n});\n\n//# sourceURL=webpack://rayous/./src/modules/voca.js?");
-
-/***/ }),
-
-/***/ "./src/utils/events.js":
-/*!*****************************!*\
-  !*** ./src/utils/events.js ***!
-  \*****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   createEventData: () => (/* binding */ createEventData),\n/* harmony export */   getEventName: () => (/* binding */ getEventName),\n/* harmony export */   onHold: () => (/* binding */ onHold)\n/* harmony export */ });\n/* harmony import */ var _widgets_main_Widget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../widgets/main/Widget */ \"./src/widgets/main/Widget.ts\");\n/* harmony import */ var _elman__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./elman */ \"./src/utils/elman.ts\");\n\n\n\n\nfunction createEventData(e, name, widget){\n\treturn { \n\t\tprevent: () => e.preventDefault(), \n\t\tstop: () => e.stopPropagation(), \n\t\tkey: { code: e.keyCode, name: e.code, output: e.key, ctrl: e.ctrlKey}, \n\t\tpos: {x: e.clientX, y: e.clientY}, \n\t\toffset: {x: e.offsetX, y: e.offsetY}, \n\t\tname,\n\t\tdata: e.data || e.originalEvent?.data,\n\t\tdataTransfer: e.originalEvent?.dataTransfer,\n\t\ttarget: widget || e.target ? _widgets_main_Widget__WEBPACK_IMPORTED_MODULE_0__[\"default\"].from(e.target) : null\n\t};\n}\n\nfunction getEventName(event) {\n  if (event === \"tap\") return \"click\";\n  if (event === \"hover\") return \"mouseenter\";\n  if (event === \"doubleTap\") return \"dblclick\";\n  if (event === \"focusIn\") return \"focus\";\n  if (event === \"focusOut\") return \"blur\";\n  return event;\n}\n\nfunction onHold(widget, callback, duration) {\n\tconst holdEvent = \"hold\";\n\tconst eventName = getEventName(holdEvent);\n\n\tconst startHoldTimer = (e) => {\n\t\tif(widget.is('disabled')) return;\n\t\tcallback.__holdTimer = setTimeout(() => {\n\t\t\tvar data = createEventData(e, holdEvent);\n\t\t\tcallback.call(this, data, {});\n\t\t\twidget.emit(eventName, createEventData({}, holdEvent));\n\t\t\twidget.is('held', true);\n\t\t}, duration);\n\t};\n\n\tconst cancelHoldTimer = () => {\n\t\tsetTimeout(() => widget.is('held', false), 10)\n\t\tclearTimeout(callback.__holdTimer);\n\t};\n\n\twidget.__events__.push({ event: eventName, callback });\n\t(0,_elman__WEBPACK_IMPORTED_MODULE_1__.findEl)(widget.id).on(\"mousedown\", startHoldTimer);\n\t(0,_elman__WEBPACK_IMPORTED_MODULE_1__.findEl)(widget.id).on(\"mouseup\", cancelHoldTimer);\n\n\treturn widget;\n}\n\n\n\n//# sourceURL=webpack://rayous/./src/utils/events.js?");
-
-/***/ }),
-
-/***/ "./src/utils/id.js":
-/*!*************************!*\
-  !*** ./src/utils/id.js ***!
-  \*************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _elman__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./elman */ \"./src/utils/elman.ts\");\n\n\nfunction generateRandomID(length = 12){\n\tconst characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\n  const charactersLength = characters.length;\n  let randomID = '';\n\n  for (let i = 0; i < length; i++) {\n    const randomIndex = Math.floor(Math.random() * charactersLength);\n    randomID += characters.charAt(randomIndex);\n  }\n\n  return _elman__WEBPACK_IMPORTED_MODULE_0__.GUIDOMTREE[randomID] ? generateRandomID(length) : randomID;\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateRandomID);\n\n//# sourceURL=webpack://rayous/./src/utils/id.js?");
-
-/***/ }),
-
-/***/ "./src/utils/misc.js":
-/*!***************************!*\
-  !*** ./src/utils/misc.js ***!
-  \***************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   filteredChildren: () => (/* binding */ filteredChildren),\n/* harmony export */   htmlPseudos: () => (/* binding */ htmlPseudos),\n/* harmony export */   resolveSubchild: () => (/* binding */ resolveSubchild)\n/* harmony export */ });\n/* harmony import */ var _widgets_ghost_WidgetProps__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../widgets/_ghost/WidgetProps */ \"./src/widgets/_ghost/WidgetProps.ts\");\n/* harmony import */ var _widgets_main_Widget__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../widgets/main/Widget */ \"./src/widgets/main/Widget.ts\");\n/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dom */ \"./src/utils/dom.ts\");\n\n\n\n\nconst htmlPseudos = [\n  '::after',\n  '::before',\n  '::first-letter',\n  '::first-line',\n  '::selection',\n  '::placeholder',\n  '::marker',\n  ':hover',\n  ':active',\n  ':focus',\n  ':visited',\n  ':link',\n  ':target',\n  ':first-child',\n  ':last-child',\n  ':nth-child(n)',\n  ':nth-of-type(n)',\n  ':not(selector)',\n  ':checked',\n];\n\nfunction filteredChildren(children, makeOne, giveNull){\n  const filtered = children.toArray()\n    .filter((element) => element.GUIWIDGET)\n    .map((element) => element.GUIWIDGET);\n  const isOne = filtered.length == 1 && makeOne;\n  if(isOne){\n    filtered[0].toArray = () => _widgets_ghost_WidgetProps__WEBPACK_IMPORTED_MODULE_0__.WidgetList.from([filtered[0]]);\n  } else {\n    filtered.toArray = () => _widgets_ghost_WidgetProps__WEBPACK_IMPORTED_MODULE_0__.WidgetList.from([...filtered]);\n  }\n  let toGive = isOne ? filtered[0] : (filtered.length ? filtered : (giveNull ? null : filtered));\n  if(Array.isArray(toGive)){\n    return _widgets_ghost_WidgetProps__WEBPACK_IMPORTED_MODULE_0__.WidgetList.from(toGive);\n  }\n\treturn toGive;\n}\n\nfunction resolveSubchild(element, child){\n  let el = element;\n  if(child && el.find(child).length) el = el.find(child);\n  return el;\n}\n\n\n\n//# sourceURL=webpack://rayous/./src/utils/misc.js?");
-
-/***/ }),
-
-/***/ "./src/utils/type.js":
-/*!***************************!*\
-  !*** ./src/utils/type.js ***!
-  \***************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   isHTMLElement: () => (/* binding */ isHTMLElement),\n/* harmony export */   isPosition: () => (/* binding */ isPosition),\n/* harmony export */   isWidget: () => (/* binding */ isWidget)\n/* harmony export */ });\n/* harmony import */ var _widgets_main_Widget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../widgets/main/Widget */ \"./src/widgets/main/Widget.ts\");\n\n\nfunction isPosition(pos){\n\treturn pos == \"absolute\" \n\t\t|| pos == \"relative\" \n\t\t|| pos == \"static\"\n\t\t|| pos == \"fixed\"\n\t\t|| pos == \"inherit\"\n\t\t|| pos == \"sticky\";\n}\n\nfunction isWidget(thing){\n\treturn thing instanceof _widgets_main_Widget__WEBPACK_IMPORTED_MODULE_0__[\"default\"];\n}\n\nfunction isHTMLElement(thing){\n\treturn thing instanceof HTMLElement;\n}\n\n\n\n//# sourceURL=webpack://rayous/./src/utils/type.js?");
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/main.js");
-/******/ 	
-/******/ })()
-;
+// src/main.js
+var body = Widget_default.from(document.body);
+var wid = new Widget_default({
+  element: {
+    name: "a"
+  },
+  attr: {
+    href: "/home/"
+  }
+});
+wid.text("Text");
+wid.style = new Style_default({
+  color: "red",
+  fontSize: Style_default.px(22)
+});
+body.add(new Text_default("Hi", {
+  style: {
+    color: "blue"
+  }
+}));
+wid.to(body);

@@ -48,16 +48,19 @@ function setClasses(element: HTMLElement, classes: string, type : 'add'|'remove'
 		(classes);
 }
 
-function setCss(element: HTMLElement, values: string | Record<string, any>, value: string | null = null) {
+function setCss(element: HTMLElement, values: string | Record<string, any>, value: string | number | null = null) {
 	if (typeof values === 'string') {
 		if (value === null) {
 			return window.getComputedStyle(element).getPropertyValue(values);
 		} else {
+			if(typeof value == 'number') value = value + 'px';
 			(element.style as Record<string, any>)[values as string] = value;
 		}
 	} else if (typeof values === 'object') {
 		for (const prop in values) {
-			(element.style as Record<string, any>) [prop.toString()] = values[prop];
+			let value = values[prop];
+			if(typeof value == 'number') value = value + 'px';
+			(element.style as Record<string, any>) [prop.toString()] = value;
 		}
 	}
 }

@@ -1,4 +1,6 @@
+import Style from "./components/Style";
 import { findEl } from "./utils/elman";
+import Text from "./widgets/main/Text";
 import Widget from "./widgets/main/Widget.ts";
 
 let body = Widget.from(document.body);
@@ -12,9 +14,16 @@ let wid = new Widget({
 	}
 });
 
-wid.text('text');
-wid.style = {
-	color: 'red'
-}
+wid.text('Text');
+wid.style = new Style({
+	color: 'red',
+	fontSize: Style.px(22)
+})
+
+body.add(new Text('Hi', {
+	style: {
+		color: 'blue'
+	}
+}));
 
 wid.to(body);

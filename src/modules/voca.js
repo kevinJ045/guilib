@@ -1,18 +1,4 @@
-/*!
- * Voca string library 1.4.1
- * https://vocajs.pages.dev
- *
- * Copyright Dmitri Pavlutin and other contributors
- * Released under the MIT license
- */
 
-(function(global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined'
-    ? (module.exports = factory())
-    : typeof define === 'function' && define.amd
-    ? define(factory)
-    : ((global = global || self), (global.v = factory()));
-})(this, function() {
   'use strict';
 
   function _extends() {
@@ -4401,5 +4387,4 @@
     chain: chain,
   });
 
-  return Voca;
-});
+  export default Voca;

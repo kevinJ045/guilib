@@ -2,6 +2,9 @@ import { HTMLGUIWidget, child } from "../widgets/_ghost/WidgetProps";
 import Widget from "../widgets/main/Widget";
 import { attr, createElement, emptyElement, findEl, setAttributeMap, setClasses, setCss, siblings } from "./elman";
 
+interface HTMLElementWithEvents extends HTMLElement {
+  domEventListeners?: any;
+}
 
 const doAll = (all : Dom, cb : Function) => {
 	let response : Array<any> = [];
@@ -173,6 +176,43 @@ class Dom {
     }
     return undefined;
   }
+
+	on(event: string, callback: Function){
+		doAll(this, (el: HTMLElementWithEvents) => {
+			if(!el.domEventListeners) el.domEventListeners = [];
+			el.domEventListeners.push({ event, callback });
+			el.addEventListener(event, callback as EventListenerOrEventListenerObject);
+		});
+		return this;
+	}
+
+	off(name: string, callback: Function | null = null){
+		doAll(this, (el: HTMLElementWithEvents) => {
+			if(!el.domEventListeners) el.domEventListeners = [];
+			el.domEventListeners.forEach((event: Record<string, any>) => {
+				if(callback){
+					if(event.event === name && event.callback == callback) el.removeEventListener(name, callback as EventListenerOrEventListenerObject);
+				} else {
+					if(event.event === name)  el.removeEventListener(name, event.callback);
+				}
+			});
+			el.domEventListeners = el.domEventListeners.filter((event : Record<string, any>) => {
+				if(callback){
+					return event.event !== name && event.callback !== callback;
+				}	else {
+					return event.event !== name;
+				}			
+			});
+		});
+		return this;
+	}
+
+	trigger(event: string, data: any){
+		doAll(this, (el: HTMLElement) => {
+			el.dispatchEvent(new Event(event, data));
+		});
+		return this;
+	}
 
 	static from(elements: HTMLElement[] | HTMLCollection){
 		let e = new Dom((elements as HTMLElement[]).shift() as HTMLElement);
