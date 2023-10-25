@@ -1,7 +1,8 @@
 import { Component, Text, Widget } from "../src";
+import "../styles/main.scss";
 
 export default class extends Component {
-	build(props: {}, { route: {} }) {
-		return new Widget({ children: [new Text("Hi")] });
+	build({ route: {} }) {
+		return new Widget({ children: [new Text("/ folder")] });
 	}
 }

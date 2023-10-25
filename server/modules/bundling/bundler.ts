@@ -9,7 +9,7 @@ function makeImportFile(route: route, ...filepath: string[]){
 	const script = `${filepath.map((filepath, index) => 
 		`import page${index} from "../${filepath.replace(/\.ts$/, '')}";\n`).join('\n')}
 
-		${filepath.map((filepath, index) => `let made${index} = new page${index}().build({}, { route: {path: "${route.path}"}, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'} });`).join('\n')}
+		${filepath.map((filepath, index) => `let made${index} = new page${index}().build({ route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'} });`).join('\n')}
 
 		${filepath.map((file, index) => `${index+1 == filepath.length ? `made${index}.to(document.body)` : ``}`).join('\n')}
 	`;

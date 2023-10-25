@@ -1,3 +1,4 @@
+import { bunSassLoader } from "./bun.loader.sass";
 
 export async function bundleBun(options = {}){
 	let scriptText: string = "";
@@ -6,6 +7,7 @@ export async function bundleBun(options = {}){
 		entrypoints: ['./tmp/file.ts'],
 		// external: ['*'],
 		root: ".",
+		plugins: [bunSassLoader],
 		...options
 	});
 
@@ -13,6 +15,7 @@ export async function bundleBun(options = {}){
 		console.error("Build failed");
 		for (const message of bundled.logs) {
 			// Bun will pretty print the message object
+			scriptText += `var message = \`${message}\`;document.body.innerHTML = (message);throw new Error(message)`;
 			console.error(message);
 		}
 	}
