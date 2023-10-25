@@ -15,7 +15,7 @@ async function serve(req: Request) {
 		const built = await builder.build(req);
 
 		if (built.status == 404) return error(404);
-		else return built.response;
+		else return built;
 	}
 }
 

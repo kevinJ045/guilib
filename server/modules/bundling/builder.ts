@@ -23,8 +23,9 @@ export default class Builder {
 				status: req.method.toUpperCase() in requests ? 200 : 400,
 			};
 		} else {
-			return { response: await bundle(route), status: 200 };
+			return new Response(await bundle(route), {
+				headers: { "Content-Type": "text/html" },
+			});
 		}
 	}
 }
-
