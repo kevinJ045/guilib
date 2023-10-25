@@ -1,12 +1,30 @@
-import express from "express";
-import http from 'http';
-import Serving from "./modules/serving/server";
+import Routes, { route } from "./modules/routing/routes";
+import Builder from "./modules/bundling/builder";
+import { error, Router } from "itty-router";
 
-var app = express();
-var server = http.createServer(app);
+async function serve(req: Request) {
+	let route = routes.findPath(new URL(req.url).pathname);
+	console.log(new URL(req.url).pathname);
+	console.log(route);
+	if (!route) {
+		return error(404);
+	} else {
+		if (route?.type == "page") routes.findLayouts(route as route);
 
+		let builder = new Builder(route as route);
+		const built = await builder.build(req);
 
-Serving.init(app);
+		if (built.status == 404) return error(404);
+		else return built.response;
+	}
+}
 
+const routes = new Routes();
 
-server.listen(3000, () => console.log('localhost:3000'));
+const router = Router();
+router.all("*", (req: Request) => serve(req));
+// @ts-ignore
+Bun.serve({
+	port: 3000,
+	fetch: (request: Request) => router.handle(request).catch(error),
+});
