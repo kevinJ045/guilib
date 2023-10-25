@@ -7,7 +7,7 @@ export default class Component {
 		components.push(this);
 	}
 	
-	build(props: any, args: any){
+	build(props: any){
 
 	}
 }
