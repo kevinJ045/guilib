@@ -1,4 +1,4 @@
 await Bun.build({
-  entrypoints: ['./src/main.js'],
-  outdir: './public/js',
+  entrypoints: ['./app/home/page.ts'],
+  outdir: './public/jjs',
 });
