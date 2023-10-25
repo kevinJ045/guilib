@@ -18,7 +18,7 @@ type event = { event: string, callback: Function };
 function registerEvent(widget: WidgetProps, event: string, callback: Function){
 	event = getEventName(event);
 	if(event == 'hold'){
-		return onHold(widget, callback, widget.options.holdDuration);
+		return onHold(widget, callback, widget.options.holdDuration as number);
 	}
 	widget.__events__.push({ event, callback });
 	findEl(widget.id!).on(event, (e: Event, args: []) => {
@@ -100,9 +100,9 @@ class WidgetProps {
 		if(isWidget(child)){
 			const l = resolveSubchild(findEl(this.id!), subchild);
 			if((child as Widget).is('prefix')){
-				l.prepend(findEl(child.id!));
+				(l as any).prepend(findEl(child.id!));
 			} else {
-				l.append(findEl(child.id!));
+				(l as any).append(findEl(child.id!));
 			}
 			mounted(this, child as widget);
 		}
@@ -156,8 +156,8 @@ class WidgetProps {
 		}
 		const h = $('<'+element+' class="'+cssClass+'" />');
 		h.append(additionEl);
-		if(where == 'before') el.prepend(h);
-		else el.append(h);
+		if(where == 'before') (el as any).prepend(h);
+		else (el as any).append(h);
 		if(isWidget(elt)){
 			mounted(this, elt as Widget);
 		}
@@ -167,7 +167,7 @@ class WidgetProps {
 	remove(child: child | string | null = null, subchild: string | null = null){
 		if(this.sealed === true) return this;
 		if(!child) resolveSubchild(findEl(this.id!), subchild).remove(); 
-		else if (child == '*') resolveSubchild(findEl(this.id!), subchild).empty();
+		else if (child == '*') findEl(resolveSubchild(findEl(this.id!), subchild).id!).empty();
 		else (child as widget)!.remove();
 		return this;
 	}
@@ -186,11 +186,11 @@ class WidgetProps {
 		}
 	}
 
-	children(subchild: string | null = null){
+	children(subchild: string | null = null): Widget[] {
 		return filteredChildren(resolveSubchild(findEl(this.id!), subchild).children());
 	}
 
-	find(q: string, subchild: string | null = null){
+	find(q: string, subchild: string | null = null): Widget {
 		return q == '*' ? this.children() : filteredChildren(resolveSubchild(findEl(this.id!), subchild).find(q), true);
 	}
 

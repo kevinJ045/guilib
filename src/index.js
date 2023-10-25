@@ -1,8 +1,8 @@
 // import "./style/main.scss";
 
-import Widget from "./widgets/main/Widget.js";
-import Component from "./widgets/main/Component.js";
-import Text from "./widgets/main/Text.js";
+import Widget from "./widgets/main/Widget.ts";
+import Component from "./widgets/main/Component.ts";
+import Text from "./widgets/main/Text.ts";
 
 
 export {

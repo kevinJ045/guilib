@@ -1,6 +1,6 @@
 import $ from "jquery";
-import { isPosition } from "../../utils/type.js";
-import generateRandomID from "../../utils/id.js";
+import { isPosition } from "../../utils/type";
+import generateRandomID from "../../utils/id";
 import { findEl, registerElement } from "../../utils/elman";
 import getDefaults, { options } from "../../utils/options";
 import WidgetProps, { child, widget, widgetF } from "../_ghost/WidgetProps";
@@ -41,7 +41,7 @@ function _init(widget: widgetF, options: options){
 	if(options.position) {
 		let { type, centered, top, left, right, bottom } = options.position;
 		element.css({
-			position: isPosition(type) ? type : null
+			position: isPosition(type as string) ? type : null
 		});
 		if(centered){
 			element.css({
@@ -161,7 +161,7 @@ class Widget extends WidgetProps {
 
 	constructor(options: options = { element: { name: 'div' }, class: 'widget' }){
 		super();
-		_init(this, options);
+		_init(this, {...getDefaults({}), ...(options as Record<string, any>)});
 	}
 
 	static from(child: HTMLElement | string){

@@ -5,6 +5,7 @@ const fs = require('fs').promises;
 const sass = require('sass');
 
 export async function WebpackBuild(filename: string, config: any) {
+
   return new Promise((resolve, reject) => {
 		try {
 			const webpackConfig = {
@@ -13,15 +14,24 @@ export async function WebpackBuild(filename: string, config: any) {
 					filename: 'bundle.js',
 					path: '/',
 				},
+				resolve: {
+					modules: [path.resolve('./app/'), path.resolve('./node_modules')],
+					extensions: ['.ts', '.js'],
+				},
+				target: 'web',
 				module: {
 					rules: [
+						{
+							test: /\.js?$/,
+							exclude: /node_modules|server|public/,
+						},
 						{
 							test: /\.ts?$/,
 							use: [
 								'babel-loader',
 								'ts-loader'
 							],
-							exclude: /node_modules/,
+							exclude: /node_modules|server/,
 						},
 						{
 							test: /\.s[ac]ss$/i,
@@ -35,13 +45,15 @@ export async function WebpackBuild(filename: string, config: any) {
 									},
 								},
 							],
+							exclude: /node_modules|server/,
 						},
 						{
 							test: /\.css$/i,
 							use: [
 								"style-loader",
 								"css-loader",
-							]
+							],
+							exclude: /node_modules|server/,
 						}
 					]
 				},

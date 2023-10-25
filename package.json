@@ -38,6 +38,8 @@
     "lodash": "^4.17.21",
     "memory-fs": "^0.5.0",
     "monaco-editor": "^0.41.0",
+    "rollup": "^4.1.4",
+    "rollup-plugin-typescript2": "^0.36.0",
     "sass": "^1.64.1",
     "sass-loader": "^13.3.2",
     "schema-utils": "^4.2.0",

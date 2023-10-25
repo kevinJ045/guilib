@@ -1,6 +1,6 @@
 import $ from "jquery";
-import Widget from "./Widget.js";
-import getDefaults, { options } from "../../utils/options.js";
+import Widget from "./Widget";
+import getDefaults, { options } from "../../utils/options";
 import Store from "../../data/Store.js";
 
 class textOptions extends options {

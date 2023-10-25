@@ -4387,4 +4387,7 @@
     chain: chain,
   });
 
-  export default Voca;
+  export default {
+    ...functions,
+    voca: Voca
+  };

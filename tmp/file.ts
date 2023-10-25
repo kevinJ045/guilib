@@ -1,13 +1,3 @@
-import page0 from "../app/home/page.ts";
-import page1 from "../app/layout.ts";
-import { components } from "../src/widgets/main/Component";
+import page0 from "../app/home/page";
 
-console.log(components);
-
-// components.forEach(component => {
-
-// 	if(component.type == "layout"){
-
-// 	}
-
-// });;
+let make = new page0().build({}, { route: {} });make.to(document.body)
