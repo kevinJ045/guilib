@@ -1,4 +1,3 @@
-import $ from "jquery";
 import Widget from "../main/Widget";
 import getDefaults from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";

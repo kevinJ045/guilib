@@ -150,12 +150,13 @@ class WidgetProps {
 		if(elt instanceof Widget){
 			additionEl = findEl(elt.id!);
 		} else if(elt instanceof HTMLElement){
-			additionEl = $(elt);
+			additionEl = new Dom(elt);
 		} else {
 			throw new Error("Unexpected Element: not HTMLElement nor Widget")
 		}
-		const h = $('<'+element+' class="'+cssClass+'" />');
-		h.append(additionEl);
+		const h = document.createElement(element);
+		h.className = cssClass;
+		h.append(additionEl.at(0));
 		if(where == 'before') (el as any).prepend(h);
 		else (el as any).append(h);
 		if(isWidget(elt)){

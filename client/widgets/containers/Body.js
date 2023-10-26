@@ -1,4 +1,4 @@
-import $ from "jquery";
+;
 import Widget, { AssemblyWidget } from "../main/Widget.js";
 import getDefaults from "../../utils/options.js";
 

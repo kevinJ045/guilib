@@ -11,7 +11,14 @@ if(subcommand[0]){
 		fs.mkdirSync('./app');
 		fs.mkdirSync('./static');
 		fs.mkdirSync('./styles');
-		fs.writeFileSync('./app/page.ts', `// add basic component here`);
+		fs.writeFileSync('./app/page.ts', `import { Component, Text, Widget } from "rayous";
+
+export default class extends Component {
+	build({ route: {} }) {
+		return new Widget({ children: [new Text("/ folder")] });
+	}
+}`);
+		fs.writeFileSync('./rayous.json', '{}');
 	}
 } else {
 	console.log('Project location: '+process.cwd());

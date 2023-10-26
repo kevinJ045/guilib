@@ -1,7 +1,10 @@
+import Controller from "../../data/Controller";
 import { findEl } from "../../utils/elman";
 import Widget from "../main/Widget.js";
-import { EntryController } from "./Form.js";
 
+export class EntryController extends Controller {
+	constructor(val){super(val)}
+};
 
 class InputWrapper extends Widget{
 	constructor(selectedOptions){
@@ -25,11 +28,11 @@ class InputWrapper extends Widget{
 	}
 
 	set inputType(type){
-		findEl(this.id).attr('type', type);
+		findEl(this.id).attr({'type': type});
 	}
 	
 	set title(text){
-		findEl(this.id).attr('placeholder', text.toString());
+		findEl(this.id).attr({'placeholder': text.toString()});
 	}
 }
 

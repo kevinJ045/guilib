@@ -1,4 +1,3 @@
-import $ from "jquery";
 import Widget from "../main/Widget.js";
 import getDefaults from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";
@@ -58,33 +57,6 @@ class ListItem extends Widget {
 		findEl(this.id).attr('href', link);
 	}
 
-	media(icon){
-		if(icon === 'rm' || icon == null) {findEl(this.el).find('.item-media').remove();return this};
-		if(!icon instanceof Icon) throw new Error("Only icons allowed");
-		if(findEl(this.id).find('.item-media')){
-			findEl(this.id).find('.item-media').remove();
-		}
-		let ic = $(`<div class="item-media"></div>`);
-		ic.append(findEl(icon.id));
-		if(!ic.children().length){
-			ic.append(icon.toString());
-		}
-		findEl(this.id).prepend(ic);
-		return this;
-	}
-	subtitle(text){
-		if(text == null) {
-			findEl(this.id).find(this.mainParentClass).find('.item-after').remove();
-			return this;
-		}
-		if(findEl(this.elementsPlace).find('.item-after')){
-			findEl(this.elementsPlace).find('.item-after').remove();
-		}
-		findEl(this.el).find(this.mainParentClass).append(`<div class="item-after">
-            ${text}
-        </div>`);
-    return this;
-	}
 
 }
 

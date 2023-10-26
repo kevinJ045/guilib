@@ -14,6 +14,7 @@ class options {
 	private?: boolean | null = false;
 	reset?: boolean | null = false;
 	value?: string | null = "";
+	icon?: string | null = "";
 	accepts?: boolean | null = true;
 	events?: Record<string, Function> | null = {};
 	type?: string[] | null = [];
@@ -57,6 +58,7 @@ export default function getDefaults(opts: options){
 		private: false,
 		reset: false,
 		value: null,
+		icon: null,
 		children: [],
 		accepts: true,
 		events: {},

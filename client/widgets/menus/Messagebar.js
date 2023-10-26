@@ -8,7 +8,7 @@
 <a href="#" class="link">Send</a>
 </div> */
 
-import $ from "jquery";
+;
 import Widget from "../main/Widget.js";
 import getDefaults from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";

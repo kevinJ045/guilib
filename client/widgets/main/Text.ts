@@ -1,4 +1,3 @@
-import $ from "jquery";
 import Widget from "./Widget";
 import getDefaults, { options } from "../../utils/options";
 import Store from "../../data/Store.js";

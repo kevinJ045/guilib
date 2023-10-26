@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "exports": {
-    ".": "./client",
+    ".": "./client/index.js",
     "./server": "./server"
   },
   "files": [
@@ -30,6 +30,7 @@
   "keywords": [],
   "license": "ISC",
   "type": "module",
+  "typings": "./types/index.d.ts",
   "dependencies": {
     "@types/express": "^4.17.20",
     "@types/jquery": "^3.5.16",

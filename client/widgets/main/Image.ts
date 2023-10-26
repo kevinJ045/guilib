@@ -1,4 +1,3 @@
-import $ from "jquery";
 import Widget from "./Widget.js";
 import getDefaults from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";
@@ -12,7 +11,7 @@ const defaultImage = () =>
   });
 
 class Image extends Widget {
-  constructor(selectedOptions, otheroptions) {
+  constructor(selectedOptions: string | Record<string, any>, otheroptions: Record<string, any> | null = null) {
     const options = Image.resolveOptions(
       selectedOptions,
       otheroptions,
@@ -21,7 +20,7 @@ class Image extends Widget {
     super(options);
   }
 
-  static resolveOptions(selectedOptions, otheroptions, defaults) {
+  static resolveOptions(selectedOptions: object | string, otheroptions: object | null, defaults: object) {
     if (typeof selectedOptions == "string") {
       selectedOptions = { src: selectedOptions };
     }
@@ -31,9 +30,8 @@ class Image extends Widget {
     return { ...defaults, ...selectedOptions };
   }
 
-  set src(src) {
-    if (this.sealed === true) return this;
-    findEl(this.id).attr("src", src);
+  set src(src: string) {
+    if (this.sealed !== true) findEl(this.id!).attr("src", src);
   }
 }
 

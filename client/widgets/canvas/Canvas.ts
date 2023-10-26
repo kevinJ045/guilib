@@ -4,12 +4,12 @@ import { findEl } from "../../utils/elman.js";
 
 class Canvas extends Widget {
 
-	constructor(selectedOptions){
+	constructor(selectedOptions: Record<string, any>){
 		super({...(getDefaults({element: {name: 'canvas'}, class: 'canas'})), ...selectedOptions});
 	}
 
-	getContext(dimensions){
-		return findEl(this.id)[0].getContext(dimensions);
+	getContext(dimensions: string){
+		return findEl(this.id!)[0].getContext(dimensions);
 	}
 
 }

@@ -1,4 +1,4 @@
-import $ from "jquery";
+;
 import { findEl } from "../../utils/elman.js";
 import { isHTMLElement, isWidget } from "../../utils/type.js";
 import Widget from "../main/Widget.js";

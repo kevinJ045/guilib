@@ -1,4 +1,3 @@
-import $ from "jquery";
 import { hRGB } from "../utils/color.js";
 
 const defaultMap = {

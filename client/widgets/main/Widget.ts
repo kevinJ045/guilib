@@ -1,4 +1,3 @@
-import $ from "jquery";
 import { isPosition } from "../../utils/type";
 import generateRandomID from "../../utils/id";
 import { findEl, registerElement } from "../../utils/elman";
