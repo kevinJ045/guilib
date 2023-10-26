@@ -34,6 +34,7 @@ const { sockets, connectServer } = middleWare(router);
 
 router.all("*", (req: Request) => serve(req));
 
+console.log('localhost:3000');
 // @ts-ignore
 const server = Bun.serve({
 	port: 3000,
