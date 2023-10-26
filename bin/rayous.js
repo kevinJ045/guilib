@@ -1,11 +1,17 @@
 
 import { spawn } from "node:child_process";
 import path from "node:path";
+import fs from "node:fs";
 
 let subcommand = process.argv.slice(2, process.argv.length);
 
 if(subcommand[0]){
-	
+	if(subcommand[0] == 'create'){
+		fs.mkdirSync('./app');
+		fs.mkdirSync('./static');
+		fs.mkdirSync('./styles');
+		fs.writeFileSync('./app/page.ts', `// add basic component here`);
+	}
 } else {
 	console.log('Project location: '+process.cwd());
 
@@ -18,11 +24,11 @@ if(subcommand[0]){
 	const child = spawn("bun", ["--watch", "run", serverScriptPath]);
 
   child.stdout.on("data", (data) => {
-    console.log(data);
+    console.log(data.toString());
   });
 
   child.on("error", (error) => {
-    console.error(error);
+    console.error(error.toString());
   });
 
   child.on("close", (code) => {
