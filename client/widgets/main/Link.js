@@ -18,10 +18,10 @@ function link(el, url){
 		let [, name, ui] = url.match(/ui\.([a-zA-Z]+):(.+)/);
 		el
 			.addClass(name+'-link')
-			.attr('data-'+name, ui);
+			.attr({['data-'+name]: ui});
 	} else {
 		el
-			.attr('href', url);
+			.attr({'href': url});
 	}
 }
 
@@ -47,15 +47,4 @@ class Link extends Text {
 	
 }
 
-class IconLink extends Widget {
-	constructor(icon, selectedOptions = {}){
-		const options = {...defaultLink('icon-only'), ...{children: [icon]}, ...selectedOptions};
-		super(options);
-	}
-	set url(url){
-		link(findEl(this.id), url);
-	}
-}
-
-export { IconLink };
 export default Link;

@@ -1,6 +1,6 @@
 import voca from "../modules/voca.js";
-import { findEl } from "../utils/elman";
-import { isHTMLElement, isWidget } from "../utils/type";
+import { findEl } from "../utils/elman.js";
+import { isHTMLElement, isWidget } from "../utils/type.js";
 import Widget from "../widgets/main/Widget.js";
 
 type props = Record<string, any>;

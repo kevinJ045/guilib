@@ -12,9 +12,13 @@ const defaults = getDefaults({});
 let $1$app = {};
 
 function initiateSetters(widget: widgetF, setterFunctions: string[], options: options){
-	setterFunctions.forEach((setter) => {
+	setterFunctions.forEach((setterFull) => {
+		let setter = setterFull, name = setterFull;
+		if(setterFull.match(':')){
+			[setter, name] = setterFull.split(':');
+		}
 		if((options as Record<string, any>)[setter]){
-			(widget as Record<string, any>)[setter] = (options as Record<string, any>)[setter];
+			(widget as Record<string, any>)[name] = (options as Record<string, any>)[setter];
 		}
 	});
 }
@@ -133,7 +137,7 @@ function _init(widget: widgetF, options: options){
 		'padding',
 		'margin',
 		'type',
-		'id',
+		'id:$id',
 		'animation',
 		'tooltip',
 		'style'

@@ -1,4 +1,4 @@
-import { Component, Text, Widget } from "../../src";
+import { Component, Text, Widget } from "../../client";
 
 
 

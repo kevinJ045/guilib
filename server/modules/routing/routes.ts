@@ -5,7 +5,8 @@ import { fileTypes } from '../../constant/files';
 type pathmap = {
 	regex: RegExp,
 	path: string,
-	keys: string[]
+	keys: string[],
+  dynamic: boolean
 }
 
 export interface route {
@@ -39,12 +40,12 @@ function pathToRegex(path: string): { regex: RegExp; keys: string[] } {
   // Convert route path to a regular expression.
   const regex = new RegExp(
     '^' +
-      path
+      (path
         .replace(/\\/g, '\\/')
         .replace(/:(\w+)/g, (_, key) => {
           keys.push(key);
           return '(.+)';
-        }) +
+        }) || '\\/') +
       '$'
   );
 
@@ -86,7 +87,7 @@ export default class Routes {
       } else {
         const fixedPath = fixFilePath(filePath);
 				let pathRegex = pathToRegex(fixedPath);
-				if(fileTypes.includes(file)) this.paths.set(fixedPath, { regex: pathRegex.regex, keys: pathRegex.keys, path: filePath});
+				if(fileTypes.includes(file)) this.paths.set(fixedPath, { regex: pathRegex.regex, keys: pathRegex.keys, dynamic: pathRegex.keys.length > 0, path: filePath});
       }
     });
   }
@@ -128,4 +129,11 @@ export default class Routes {
 		route.layouts = layouts;
 		return layouts;
 	}
+
+  findFile(pathname: string){
+    if (fs.existsSync(path.join('./static', pathname))) {
+      return path.join('./static', pathname);
+    }
+    return null;
+  }
 }

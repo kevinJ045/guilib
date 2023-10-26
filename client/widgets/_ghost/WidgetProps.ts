@@ -1,5 +1,6 @@
 import Style from "../../components/Style";
 import Store from "../../data/Store";
+import Dom from "../../utils/dom";
 import { attr, elementTypes, findEl } from "../../utils/elman";
 import { createEventData, getEventName, onHold } from "../../utils/events";
 import { filteredChildren, htmlPseudos, resolveSubchild } from "../../utils/misc";
@@ -43,7 +44,6 @@ class WidgetProps {
 	sealed = false;
 	options: options = {};
 	__generated : boolean = false;
-	state = new Store();
 	_onBuild?: Function;
 
 	__events__: event[] = [];
@@ -376,7 +376,9 @@ class WidgetProps {
 		return [this];
 	}
 
-	set $id(id: string) { this._id = id, findEl(this.id!).attr('id', id); };
+
+
+	set $id(id: string) { this._id = id, findEl(this.id!).attr({'id': id}); };
 }
 
 

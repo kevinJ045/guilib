@@ -12,7 +12,7 @@ function registerElement(element: object, id: String){
 	elementList[id as string] = element;
 }
 
-function findEl(id: string){
+function findEl(id: string) {
 	return elementList[id as string];
 }
 

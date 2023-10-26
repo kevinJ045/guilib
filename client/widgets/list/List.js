@@ -7,15 +7,13 @@ import StateMan from "../../utils/stateman.js";
 import ListBuilder from "./ListBuilder.js";
 
 const defaultList = () => getDefaults({
-	element: { name: 'div', html: `<ul></ul>` },
-	class: 'list',
+	element: { name: 'ul' },
 	itemsStateName: '$items_list',
 	template: (item) => new ListItem(item),
 });
 
 const defaultListItem = () => getDefaults({
 	element: { name: 'li' },
-	class: 'item-content',
 	title: "",
 	subtitle: "",
 	icon: null,
@@ -52,32 +50,7 @@ class ListItem extends Widget {
 
 		super(options);
 
-		this.mainParentClass = '.item-inner';
-		this.textWrapper = '.item-title';
-		this.elementsPlace = this.id;
-
-		if(!options.customLI){
-			findEl(this.id).append(`<div class="item-inner">
-	        <div class="item-title">
-	            ${title}
-	        </div>
-	    </div>`).addClass(link ? 'item-link' : '');
-
-			if(typeof onClick == "function"){
-				this.on('click', onClick);
-			}
-			if(typeof onHold == "function"){
-				this.on('hold', onHold);
-			}
-
-			if(subtitle){
-				this.subtitle(subtitle);
-			}	
-		}
-
-		if(icon instanceof Icon){
-			this.media(icon);
-		}
+		if(title) this.text(title);
 		
 	}
 
@@ -122,20 +95,16 @@ class List extends ListBuilder {
 		super(options, _initList);
 	}
 
-	add(child){
-		return super.add(child, 'ul');
-	}
-
 	appendItem(item, index){
 		return this.add(this._fromTemplate(item, index));
 	}
 	
 	onItems(event, handler){
-		return this.onItems(event, handler, 'ul');
+		return this.onItems(event, handler, 'li');
 	}
 
 	empty(){
-		findEl(this.id).find('ul').empty();
+		findEl(this.id).empty();
 		return this;
 	}
 }

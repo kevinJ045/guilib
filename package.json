@@ -4,6 +4,19 @@
   "author": "",
   "description": "",
   "main": "index.js",
+  "exports": {
+    ".": "./client",
+    "./server": "./server"
+  },
+  "files": [
+    "client/",
+    "server/",
+    "bin/",
+    "index.js"
+  ],
+  "bin": {
+    "rayous": "./bin/rayous.js"
+  },
   "scripts": {
     "start": "bun --watch run ./server/server.ts",
     "startBuild": "/usr/bin/webpack --config webpack.config.js --stats-error-details",

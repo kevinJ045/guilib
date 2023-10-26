@@ -1,4 +1,4 @@
-import Widget from "../main/Widget.js";
+import Widget from "./Widget.js";
 import getDefaults from "../../utils/options.js";
 
 class Span extends Widget {

@@ -23,16 +23,16 @@ const htmlPseudos = [
   ':checked',
 ];
 
-function filteredChildren(children: any, makeOne = false, giveNull = false){
-  const filtered = children
-    .toArray()
+function filteredChildren(children: Widget | Dom | Widget[], makeOne = false, giveNull = false){
+  const filtered = Array.isArray(children) ? children : ((children instanceof Widget ? children
+    .toArray() : children.elements)
     .filter((element: HTMLGUIWidget) => element.GUIWIDGET)
-    .map((element: HTMLGUIWidget) => element.GUIWIDGET);
+    .map((element: HTMLGUIWidget) => element.GUIWIDGET));
   const isOne = filtered.length == 1 && makeOne;
   if(isOne){
     filtered[0].toArray = () => WidgetList.from([filtered[0]]);
   } else {
-    filtered.toArray = () => WidgetList.from([...filtered]);
+    (filtered as any).toArray = () => WidgetList.from([...filtered]);
   }
   let toGive = isOne ? filtered[0] : (filtered.length ? filtered : (giveNull ? null : filtered));
   if(Array.isArray(toGive)){
@@ -43,7 +43,7 @@ function filteredChildren(children: any, makeOne = false, giveNull = false){
 
 function resolveSubchild(element: Widget, child : string | null = null){
   let el = element;
-  if(child && el.find(child)) el = el.find(child);
+  if(child && el.find(child) instanceof Widget) el = el.find(child);
   return el;
 }
 

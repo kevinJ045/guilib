@@ -1,4 +1,4 @@
-import { components } from "../src/widgets/main/Component";
+import { components } from "../client/widgets/main/Component";
 
 console.log(components);
 

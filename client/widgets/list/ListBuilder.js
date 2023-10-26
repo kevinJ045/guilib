@@ -1,11 +1,12 @@
 import $ from "jquery";
-import Widget from "../main/Widget.js";
+import Widget from "../main/Widget";
 import getDefaults from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";
 import Icon from "../icons/Icon.js";
 import Store from "../../data/Store.js";
+import StateWidget from "../main/StateWidget";
 
-class ListBuilder extends Widget {
+class ListBuilder extends StateWidget {
 
 	state = new Store({items: []});
 
@@ -15,15 +16,15 @@ class ListBuilder extends Widget {
 
 		this.updateList(options);
 
-		_initList(this, this.getState());
+		_initList(this, this.getStore());
 
-		this.on('state:change', (e, {new: state}) => {
-			_initList(this, state);
+		this.on('state:change', (e) => {
+			_initList(this, this.getStore());
 		});
 	}
 
 	_fromTemplate(item, index){
-		if(!index) index = this.state.getStore()[this.options.itemsStateName].length || 0;
+		if(!index) index = this.getStore()[this.options.itemsStateName].length || 0;
 		let widget = this.options.template.call(this, item, index);
 		if(!widget instanceof Widget) throw new Error("ListBuilder requires for a widget as a template");
 		return widget;
@@ -35,7 +36,7 @@ class ListBuilder extends Widget {
 		}
 		const options = {...this.options, ...newOptions};
 		if(options.items){
-			this.setState({[options.itemsStateName]: options.items});
+			this.setStore({[options.itemsStateName]: options.items});
 		}
 		if(options.loader){
 			super.add(options.loader);
@@ -53,12 +54,12 @@ class ListBuilder extends Widget {
 	}
 
 	addItem(...items){
-		this.setState({items: [...items].concat(this.getState()[this.options.itemsStateName])});
+		this.setStore({items: [...items].concat(this.getStore()[this.options.itemsStateName])});
 		return this;
 	}
 
 	removeItems(...itemsToRemove) {
-    const currentItems = this.getState()[this.options.itemsStateName];
+    const currentItems = this.getStore()[this.options.itemsStateName];
 
     const remain = currentItems.filter((item, index) => {
       let shouldRemove = false;
@@ -81,7 +82,7 @@ class ListBuilder extends Widget {
       return !shouldRemove;
     });
 
-    this.setState({ items: remain });
+    this.setStore({ items: remain });
 		return this;
   }
 
