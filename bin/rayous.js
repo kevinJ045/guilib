@@ -1,14 +1,21 @@
 
 import { spawn } from "node:child_process";
+import path from "node:path";
 
 let subcommand = process.argv.slice(2, process.argv.length);
 
 if(subcommand[0]){
 	
 } else {
-	console.log(process.cwd());
+	console.log('Server location: '+process.cwd());
 
-	const child = spawn("bun", ["--watch", "run", "server/server.ts"]);
+	const currentModuleUrl = new URL(import.meta.url);
+  const currentModuleDirectory = path.dirname(currentModuleUrl.pathname);
+
+  const serverScriptPath = path.join(currentModuleDirectory, "server", "server.ts");
+
+
+	const child = spawn("bun", ["--watch", "run", serverScriptPath]);
 
   child.stdout.on("data", (data) => {
     console.log(`${data}`);
