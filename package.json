@@ -13,6 +13,7 @@
     "client/",
     "server/",
     "bin/",
+    "extra/",
     "index.js"
   ],
   "bin": {
