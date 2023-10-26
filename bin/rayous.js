@@ -12,17 +12,17 @@ if(subcommand[0]){
 	const currentModuleUrl = new URL(import.meta.url);
   const currentModuleDirectory = path.dirname(currentModuleUrl.pathname);
 
-  const serverScriptPath = path.join(currentModuleDirectory, "server", "server.ts");
+  const serverScriptPath = path.join(currentModuleDirectory, "../", "server", "server.ts");
 
 	console.log('Server location: '+serverScriptPath);
 	const child = spawn("bun", ["--watch", "run", serverScriptPath]);
 
   child.stdout.on("data", (data) => {
-    console.log(`${data}`);
+    console.log(data);
   });
 
   child.on("error", (error) => {
-    console.error(`${error}`);
+    console.error(error);
   });
 
   child.on("close", (code) => {
