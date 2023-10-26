@@ -1,7 +1,7 @@
 {
   "name": "rayous",
-  "version": "1.0.34",
-  "author": "",
+  "version": "1.0.4",
+  "author": "makano",
   "description": "",
   "main": "index.js",
   "exports": {
