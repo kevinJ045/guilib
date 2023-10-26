@@ -4,6 +4,7 @@ import { findEl, registerElement } from "../../utils/elman";
 import getDefaults, { options } from "../../utils/options";
 import WidgetProps, { child, widget, widgetF } from "../_ghost/WidgetProps";
 import Dom from "../../utils/dom";
+import Store from "../../data/Store";
 
 type wid = widget;
 
@@ -80,7 +81,16 @@ function _init(widget: widgetF, options: options){
 		});
 		element.at(0).GUIWIDGET = widget;
 		registerElement(element, widget.id!);
+
+
+		
+		widget.store.addEventListener('change', () => {
+			widget.emit('state:change', widget.store);
+		});
+
 	}
+
+	if(options.store instanceof Store) widget.store = options.store;
 
 	if(typeof options.build! == "function"){
 		if(!options.children) options.children = [] as widgetF[];
@@ -130,7 +140,9 @@ function _init(widget: widgetF, options: options){
 		element.attr(options.attr);
 	}
 
-	widget.options = options;
+	widget.options = widget.registerProxy(options, () => {
+		widget.setOptions({});
+	});
 
 	const setterFunctions = [
 		'padding',
@@ -165,6 +177,12 @@ class Widget extends WidgetProps {
 	constructor(options: options = { element: { name: 'div' }, class: 'widget' }){
 		super();
 		_init(this, {...getDefaults({}), ...(options as Record<string, any>)});
+	}
+
+	setOptions(options: options){
+		const currentOptions = {...this.options, ...options};
+		_init(this,currentOptions );
+		this._optionChange(currentOptions);
 	}
 
 	static from(child: HTMLElement | string){

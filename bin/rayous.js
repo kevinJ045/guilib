@@ -29,7 +29,7 @@ export default class extends Component {
   const serverScriptPath = path.join(currentModuleDirectory, "../", "server", "server.ts");
 
 	console.log('Server location: '+serverScriptPath);
-	const child = spawn("bun", ["--watch", "run", serverScriptPath]);
+	const child = spawn("bun", ["run", serverScriptPath]);
 
   child.stdout.on("data", (data) => {
     console.log(data.toString().trim());

@@ -1,15 +1,13 @@
 import Widget from "../main/Widget";
 import getDefaults from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";
-import Icon from "../icons/Icon.js";
 import Store from "../../data/Store.js";
-import StateWidget from "../main/StateWidget";
 
-class ListBuilder extends StateWidget {
+class ListBuilder extends Widget {
 
 	state = new Store({items: []});
 
-	constructor(selectedOptions, _initList){
+	constructor(selectedOptions: Record<string, any>, _initList: CallableFunction){
 		const options = {...selectedOptions};
 		super(options);
 
@@ -17,23 +15,23 @@ class ListBuilder extends StateWidget {
 
 		_initList(this, this.getStore());
 
-		this.on('state:change', (e) => {
+		this.on('state:change', (e: any) => {
 			_initList(this, this.getStore());
 		});
 	}
 
-	_fromTemplate(item, index){
-		if(!index) index = this.getStore()[this.options.itemsStateName].length || 0;
-		let widget = this.options.template.call(this, item, index);
-		if(!widget instanceof Widget) throw new Error("ListBuilder requires for a widget as a template");
+	_fromTemplate(item: any, index: number){
+		if(!index) index = this.getStore()[(this.options as any).itemsStateName].length || 0;
+		let widget: Widget = (this.options as any).template.call(this, item, index);
+		if(!(widget  instanceof Widget)) throw new Error("ListBuilder requires for a widget as a template");
 		return widget;
 	}
 
-	updateList(newOptions){
+	updateList(newOptions: Record<string, any>){
 		if(Array.isArray(newOptions)){
 			newOptions = {items: newOptions};
 		}
-		const options = {...this.options, ...newOptions};
+		const options: Record<string, any> = {...this.options, ...newOptions};
 		if(options.items){
 			this.setStore({[options.itemsStateName]: options.items});
 		}
@@ -52,15 +50,17 @@ class ListBuilder extends StateWidget {
 		return this;
 	}
 
-	addItem(...items){
-		this.setStore({items: [...items].concat(this.getStore()[this.options.itemsStateName])});
+	_onUpdate(any: any){}
+
+	addItem(...items: any[]){
+		this.setStore({items: [...items].concat(this.getStore()[(this.options as any).itemsStateName])});
 		return this;
 	}
 
-	removeItems(...itemsToRemove) {
-    const currentItems = this.getStore()[this.options.itemsStateName];
+	removeItems(...itemsToRemove: any[]) {
+    const currentItems = this.getStore()[(this.options as any).itemsStateName];
 
-    const remain = currentItems.filter((item, index) => {
+    const remain = currentItems.filter((item: any, index: number) => {
       let shouldRemove = false;
 
       itemsToRemove.forEach(it => {
@@ -85,9 +85,9 @@ class ListBuilder extends StateWidget {
 		return this;
   }
 
-	onItems(event, handler, subchild){
+	onItems(event: string, handler: CallableFunction, subchild: any){
 		this.children(subchild).forEach((child, index) => {
-			child.on(event, (e) => {
+			child.on(event, (e: any) => {
 				handler(e, { child, index });
 			});
 		});
@@ -95,7 +95,7 @@ class ListBuilder extends StateWidget {
 	}
 
 	empty(){
-		findEl(this.id).empty();
+		findEl(this.id!).empty();
 		return this;
 	}
 }

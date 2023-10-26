@@ -3,6 +3,7 @@ import { widget } from "../widgets/_ghost/WidgetProps";
 import { attr, attrNullable, attrOptions } from "./elman";
 
 class options {
+	id?: string;
 	element?: attrOptions | null = {};
 	class?: string | null = "";
 	style?: Style | Record<string, any> | null = {};
@@ -16,6 +17,8 @@ class options {
 	value?: string | null = "";
 	icon?: string | null = "";
 	accepts?: boolean | null = true;
+	store?: Store | null = null;
+	inheritStore?: boolean = false;
 	events?: Record<string, Function> | null = {};
 	type?: string[] | null = [];
 	_setters?: string[] | null = [];
@@ -33,7 +36,7 @@ class options {
 };
 
 export { options };
-export default function getDefaults(opts: options){
+export default function getDefaults<T>(opts: options | T){
 	let defaults = {
 		element: {
 			name: "div",

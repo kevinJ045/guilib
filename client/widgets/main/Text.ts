@@ -1,9 +1,11 @@
 import Widget from "./Widget";
 import getDefaults, { options } from "../../utils/options";
 import Store from "../../data/Store.js";
+import Controller from "../../data/Controller";
 
+type text = string | Controller<any> | ((widget: Widget) => string);
 class textOptions extends options {
-	text?: string | null = "";
+	text?: text | null = "";
 }
 
 const defaultText = () => getDefaults({
@@ -18,12 +20,30 @@ class Text extends Widget {
 		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultText()) as textOptions;
 		super(options);
 
-		if(options.text) this.text(options.text);
+		this.render();
 	}
 
+	_optionChange(options: any){
+		this.render();
+	}
+
+	render(){
+		const options: textOptions = this.options;
+		let text: text = options.text || "";
+		if(typeof text == "function"){
+			text = (options.text as Function)(this) as string;
+		} 
+		if(text instanceof Controller){
+			text.onChange((change: string) => {
+				(this.options as textOptions).text = change.toString();
+			});
+			text = text.get().toString() as string;
+		}
+		this.text(text);
+	}
 
 	static resolveOptions(selectedOptions: object | string, otheroptions: object | null, defaults: object){
-		if(typeof selectedOptions == 'string'){
+		if(typeof selectedOptions == 'string' || selectedOptions instanceof Controller){
 			selectedOptions = { text: selectedOptions };
 		}
 		if(otheroptions){
@@ -33,4 +53,5 @@ class Text extends Widget {
 	}
 }
 
+export type {textOptions, text};
 export default Text;

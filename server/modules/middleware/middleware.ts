@@ -23,7 +23,7 @@ function runthroughApp(pathName: string | null = null) {
 	return _files;
 }
 
-export function middleWare(router: RouterType){
+export async function middleWare(router: RouterType){
 	const openListeners: any[] = [];
 	const closeListeners: any[] = [];
 	const messageListeners: any[] = [];
@@ -50,10 +50,12 @@ export function middleWare(router: RouterType){
 		}
 	}
 
-	const useFiles = () => {
+	const useFiles = async () => {
 		emptyAll();
 		let files = runthroughApp();
-		files.forEach(file => useFile(file));
+		for(let file of files){
+			await useFile(file);
+		}
 	}
 
 
@@ -67,7 +69,7 @@ export function middleWare(router: RouterType){
 		messageListeners.forEach((fn) => fn(ws, message, svr));
 	};
 
-
+	await useFiles();
 
 	return {
 		sockets: {
@@ -77,7 +79,6 @@ export function middleWare(router: RouterType){
 		},
 		connectServer: (server: any) => {
 			svr = server;
-			useFiles();
 		}
 	}
 }

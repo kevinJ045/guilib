@@ -1,3 +1,11 @@
+
+function _inheritStore(store: Store, parentStore: Store){
+	let stores = parentStore.getStores();
+	for(let i in stores){
+		store.setStore(stores[i], i);
+	}
+}
+
 class Store extends EventTarget {
 
 	stores: Record<string, Record<string, any>> = {
@@ -29,6 +37,17 @@ class Store extends EventTarget {
 		if(state) for(var i in state){
 			this.set(i, state[i], store);
 		}
+	}
+
+	getStores(){
+		return this.stores;
+	}
+
+	inherit(store: Store){
+		store.addEventListener('change', () => {
+			_inheritStore(this, store);
+		});
+		_inheritStore(this, store);
 	}
 
 }

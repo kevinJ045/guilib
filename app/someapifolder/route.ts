@@ -1,5 +1,5 @@
 
 
 export function GET(){
-	return "Hello!";
+	return "Hesllos!";
 }

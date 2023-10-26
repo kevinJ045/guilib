@@ -3,8 +3,8 @@ import getDefaults, { options } from "../../utils/options.js";
 import Text from "./Text.js";
 import Store from "../../data/Store.js";
 import { findEl } from "../../utils/elman.js";
-import Icon from "../icons/Icon.js";
 import Dom from "../../utils/dom";
+import { Controller } from "../../extra";
 
 const defaultLink = (more: string | null = null) => getDefaults({
 	element: { name: 'a' },
@@ -37,8 +37,11 @@ class Link extends Text {
 	}
 
 
-	set url(url: string){
-		link(findEl(this.id!), url);
+	set url(url: string | Controller<string>){
+		if(url instanceof Controller) url.onChange((change: string) => {
+			this.url = change;
+		});
+		link(findEl(this.id!), url instanceof Controller ? url.get() : url);
 	}
 	
 }

@@ -51,8 +51,20 @@ function onHold(widget: Widget, callback: any, duration: number) {
 	return widget;
 }
 
+function onTextInput(widget: Widget, callback: any){
+	const eventName = getEventName('textinput');
+	const input = (e: any) => {
+		var data = createEventData(e, eventName);
+		callback.call(widget, data, {});
+		widget.emit(eventName, createEventData({}, eventName));
+	}
+	findEl(widget.id!).on("input", input);
+	findEl(widget.id!).on("change", input);
+}
+
 export {
 	onHold,
+	onTextInput,
 	createEventData,
 	getEventName
 }

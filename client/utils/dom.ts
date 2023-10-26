@@ -109,7 +109,7 @@ class Dom {
 	}
 
 	text(text: string | null): string | null {
-		if(text) this.elements.at(0)!.innerText = text;
+		if(typeof text == "string") this.elements.at(0)!.innerText = text;
 		return this.elements.at(0)!.innerText;
 	}
 
@@ -185,6 +185,23 @@ class Dom {
 		});
 		return this;
 	}
+
+	is(selector: string) {
+		const element = this.elements.at(0) as any;
+		if ('matches' in element) {
+			return element.matches(selector);
+		} else if ('msMatchesSelector' in element && typeof element.msMatchesSelector === "function") {
+			return element.msMatchesSelector(selector);
+		} else if ('webkitMatchesSelector' in element && typeof element.msMatchesSelector === "function") {
+			return element.webkitMatchesSelector(selector);
+		} else if ('mozMatchesSelector' in element && typeof element.msMatchesSelector === "function") {
+			return element.mozMatchesSelector(selector);
+		} else {
+			const matches = document.querySelectorAll(selector);
+			return Array.from(matches).indexOf(element) !== -1;
+		}
+	}
+	
 
 	off(name: string, callback: Function | null = null){
 		doAll(this, (el: HTMLElementWithEvents) => {

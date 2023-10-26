@@ -15,17 +15,18 @@ export default class Builder {
 			const requests = await import(
 				path.join(process.cwd(), route.correspondingFile)
 			);
+			const response = req.method.toUpperCase() in requests
+			? await requests[req.method.toUpperCase()](req)
+			: null;
 			return {
-				response:
-					req.method.toUpperCase() in requests
-						? await requests[req.method.toUpperCase()](req)
-						: null,
+				response,
 				status: req.method.toUpperCase() in requests ? 200 : 400,
 			};
 		} else {
-			return new Response(await bundle(route), {
-				headers: { "Content-Type": "text/html" },
-			});
+			return {
+				status: 200,
+				response: await bundle(route)
+			}
 		}
 	}
 }

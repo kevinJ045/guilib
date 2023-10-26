@@ -2,7 +2,7 @@ import Style from "../../components/Style";
 import Store from "../../data/Store";
 import Dom from "../../utils/dom";
 import { attr, elementTypes, findEl } from "../../utils/elman";
-import { createEventData, getEventName, onHold } from "../../utils/events";
+import { createEventData, getEventName, onHold, onTextInput } from "../../utils/events";
 import { filteredChildren, htmlPseudos, resolveSubchild } from "../../utils/misc";
 import { options } from "../../utils/options";
 import { isHTMLElement, isWidget } from "../../utils/type";
@@ -20,6 +20,9 @@ function registerEvent(widget: WidgetProps, event: string, callback: Function){
 	event = getEventName(event);
 	if(event == 'hold'){
 		return onHold(widget, callback, widget.options.holdDuration as number);
+	}
+	if(event == 'textinput'){
+		return onTextInput(widget, callback);
 	}
 	widget.__events__.push({ event, callback });
 	findEl(widget.id!).on(event, (e: Event, args: []) => {
@@ -45,6 +48,7 @@ class WidgetProps {
 	options: options = {};
 	__generated : boolean = false;
 	_onBuild?: Function;
+	store = new Store({});
 
 	__events__: event[] = [];
 
@@ -83,15 +87,14 @@ class WidgetProps {
 		return this;
 	}
 
+	setOptions(options: options){}
+	_optionChange(options: options){}
+
 	addHTMLElement(child: HTMLGUIWidget | HTMLElement, subchild: string | null){
 		let hadGUI = (child as HTMLGUIWidget).GUIWIDGET;
 		const elt = this.add(hadGUI ? (child as HTMLGUIWidget).GUIWIDGET : Widget.from(child), subchild);
 		if(!hadGUI) elt.stripElement();
 		return elt;
-	}
-
-	_onMount(parent: WidgetProps){
-		// this.setStore(parent.state);
 	}
 
 	addWidget(child: child, subchild: string | null){
@@ -377,7 +380,44 @@ class WidgetProps {
 		return [this];
 	}
 
+	// State Management
 
+	getStore(store = 'state'){
+		return this.store.getStore(store);
+	}
+
+	setStore(props: Record<string, any>, store = 'state'){
+		this.store.setStore(props, store);
+	}
+
+	_onMount(parent: widget){
+		if(parent instanceof Widget){
+			if(this.options.inheritStore){
+				this.store.inherit(parent.store);
+			}
+		}
+	}
+
+	registerProxy(object: any, callback: Function, set = true){
+		try{
+			return new Proxy(object, {
+				set: (target, prop, value) => {
+					if(set) target[prop] = value;
+					callback(target, prop, value);
+					return true;
+				}
+			});
+		} catch(e){
+			return object;
+		}
+	}
+
+	proxyCloner(object: any, object1: any){
+		return this.registerProxy(object, (target: any, prop: any, value: any) => {
+			console.log(object, object1);
+			object1[prop] = value;
+		}, false);
+	}
 
 	set $id(id: string) { this._id = id, findEl(this.id!).attr({'id': id}); };
 }
