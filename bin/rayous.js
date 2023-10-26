@@ -32,11 +32,11 @@ export default class extends Component {
 	const child = spawn("bun", ["--watch", "run", serverScriptPath]);
 
   child.stdout.on("data", (data) => {
-    console.log(data.toString());
+    console.log(data.toString().trim());
   });
 
   child.on("error", (error) => {
-    console.error(error.toString());
+    console.error(`${error}`.trim());
   });
 
   child.on("close", (code) => {
