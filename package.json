@@ -1,11 +1,12 @@
 {
   "name": "rayous",
-  "version": "1.0.6",
+  "version": "1.0.62",
   "author": "makano",
   "description": "",
   "main": "index.js",
   "exports": {
     ".": "./client/index.js",
+    "./extra": "./client/extra.ts",
     "./server": "./server"
   },
   "files": [
