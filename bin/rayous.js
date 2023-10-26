@@ -7,14 +7,14 @@ let subcommand = process.argv.slice(2, process.argv.length);
 if(subcommand[0]){
 	
 } else {
-	console.log('Server location: '+process.cwd());
+	console.log('Project location: '+process.cwd());
 
 	const currentModuleUrl = new URL(import.meta.url);
   const currentModuleDirectory = path.dirname(currentModuleUrl.pathname);
 
   const serverScriptPath = path.join(currentModuleDirectory, "server", "server.ts");
 
-
+	console.log('Server location: '+serverScriptPath);
 	const child = spawn("bun", ["--watch", "run", serverScriptPath]);
 
   child.stdout.on("data", (data) => {
