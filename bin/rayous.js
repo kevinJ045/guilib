@@ -12,13 +12,19 @@ if(subcommand[0]){
 		fs.mkdirSync('./static');
 		fs.mkdirSync('./styles');
 		fs.writeFileSync('./app/page.ts', `import { Component, Text, Widget } from "rayous";
+import * as Extra from "rayous/extra";
 
 export default class extends Component {
 	build({ route: {} }) {
 		return new Widget({ children: [new Text("/ folder")] });
 	}
 }`);
-		fs.writeFileSync('./rayous.json', '{}');
+		fs.writeFileSync('./rayous.json', JSON.stringify({
+			title: "App",
+			meta: { author: "" },
+			links: [{type: "", link: ""}],
+			scripts: [""]
+		}, null, 2));
 	}
 } else {
 	console.log('Project location: '+process.cwd());

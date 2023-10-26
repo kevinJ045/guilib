@@ -24,17 +24,22 @@ To start building your web application with Rayous, follow these steps:
 1. Clone this repository to your local development environment.
 
 2. Install the required dependencies using npm or yarn:
-  ```bash
-  npm install rayous
- ```
+	```bash
+  	npm install rayous
+	```
 
-3.  Configure your routes, components, and other application-specific files within the `app/` directory. Take advantage of the flexible routing system to define your application's routes.
+3.  Configure your routes, components, and other application-specific files within the `app/` directory. Make sure to include `static/` for static files and `rayous.json` for generl information.
+
+	```bash
+	npx rayous create
+	```
     
 4.  Create reusable components in the `app/components/` directory and use them in your route handlers to build your web pages.
     
 5.  Run your Rayous application:
-    
-    `npx rayous` 
+	```bash
+	npx rayous
+	```
     
 6.  Access your application in a web browser by navigating to `http://localhost:3000` or the port specified in your configuration.
     
