@@ -50,7 +50,7 @@ You can customize your Rayous application by editing the `rayous.json` configura
 
 ## Examples
 
-For example usage and additional resources, visit the [Rayous GitHub repository](https://github.com/kevinj045/rayous). The repository includes code examples and detailed documentation to help you get started with Rayous.
+For example usage and additional resources, visit the [Rayous GitHub repository](https://github.com/kevinj045/guilib). The repository includes code examples and detailed documentation to help you get started with Rayous.
 
 ## Contributions
 
