@@ -52,6 +52,9 @@ You can customize your Rayous application by editing the `rayous.json` configura
 
 For example usage and additional resources, visit the [Rayous GitHub repository](https://github.com/kevinj045/guilib). The repository includes code examples and detailed documentation to help you get started with Rayous.
 
+## Demo Project
+Explore a practical example of Rayous in action with the [Rayous Todo App Demo](https://github.com/kevinJ045/rayous-todo-demo). This demo project showcases how to build a to-do list application using Rayous, providing valuable insights into creating web applications with the framework.
+
 ## Contributions
 
 Contributions to Rayous are welcome! If you have ideas, suggestions, or bug fixes, feel free to open issues and create pull requests on this repository.

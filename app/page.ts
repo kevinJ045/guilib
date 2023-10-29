@@ -1,6 +1,7 @@
 import { Component, Link, Text, Widget } from "../client";
 import { buildProps } from "../client/extra";
 import "../styles/main.scss";
+import "../styles/some.css";
 
 export default class extends Component {
 	build({ route }: buildProps) {

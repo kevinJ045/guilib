@@ -6,7 +6,7 @@ const sass = require('sass');
 export const bunSassLoader: BunPlugin = {
   name: 'Sass Loader',
   setup(build: any) {
-    build.onLoad({ filter: /\.scss$/ }, async ({ path }: { path: string }) => {
+    build.onLoad({ filter: /\.(s|)css$/ }, async ({ path }: { path: string }) => {
       const result = sass.compile(path);
 			return { loader: 'js', contents: `(() => {
         const style = document.createElement('style');
