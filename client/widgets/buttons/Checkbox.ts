@@ -7,7 +7,9 @@ import Controller from "../../data/Controller";
 const defaults = getDefaults({ element: { name: "input" }, class: 'checkbox', attr: { type: 'checkbox' } });
 
 export interface CheckboxOptions extends options {
-  controller?: CheckboxController
+  controller?: CheckboxController,
+  checked?: boolean,
+  onChange(): any
 }
 
 export class CheckboxController extends Controller<boolean> {
@@ -23,6 +25,9 @@ class Checkbox extends Widget {
 
     if (options.controller) {
       this.setController(options.controller);
+    }
+    if(options.checked){
+      this.setChecked(true);
     }
   }
 

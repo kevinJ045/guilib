@@ -3,6 +3,7 @@ import getDefaults, { options } from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";
 import ListBuilder from "./ListBuilder.js";
 import Text from "../main/Text.js";
+import Controller from "../../data/Controller";
 
 interface ListItemOptions extends options {
 	title?: Widget | string;
@@ -12,7 +13,7 @@ interface ListItemOptions extends options {
 interface ListOptions extends options {
 	itemsStateName?: string,
 	template?: CallableFunction,
-	items?: any[]
+	items?: Controller<any[]> | any[]
 }
 
 const defaultList = () => getDefaults<ListOptions>({
@@ -50,7 +51,7 @@ class ListItem extends Widget {
 		super(options);
 
 		if(title instanceof Widget) this.add(title);
-		else this.add(new Text(title!));
+		else if(title != null) this.add(new Text(title));
 		
 	}
 

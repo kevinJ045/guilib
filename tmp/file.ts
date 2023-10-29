@@ -1,4 +1,4 @@
-import Page0 from "../app/home/page";
+import Page0 from "../app/todo/page";
 
 import Page1 from "../app/layout";
 
@@ -7,7 +7,7 @@ import Page1 from "../app/layout";
 
 		window.addEventListener('load', () => {
 			const buildProps = (props) => (
-				{ route: {path: "/home", params: {} }, ...props}
+				{ route: {path: "/todo", params: {} }, ...props}
 			)
 
 			const initResponse = typeof clientInit.init == "function" ? clientInit.init(buildProps) || {} : {};

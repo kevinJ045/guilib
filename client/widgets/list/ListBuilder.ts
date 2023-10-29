@@ -2,6 +2,7 @@ import Widget from "../main/Widget";
 import getDefaults from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";
 import Store from "../../data/Store.js";
+import Controller from "../../data/Controller";
 
 class ListBuilder extends Widget {
 
@@ -33,7 +34,17 @@ class ListBuilder extends Widget {
 		}
 		const options: Record<string, any> = {...this.options, ...newOptions};
 		if(options.items){
-			this.setStore({[options.itemsStateName]: options.items});
+			if(options.items instanceof Controller){
+				if(!options.items.isTakenBy(this)) {
+					this.setStore({[options.itemsStateName]: options.items.get()});
+					options.items.take(this);
+					options.items.onChange(() => {
+						this.setStore({[options.itemsStateName]: options.items.get()});
+					});
+				}
+			} else {
+				this.setStore({[options.itemsStateName]: options.items});
+			}
 		}
 		if(options.loader){
 			super.add(options.loader);

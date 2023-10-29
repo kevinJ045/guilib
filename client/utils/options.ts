@@ -33,6 +33,7 @@ class options {
 	onKeyDown?: Function = () => {};
 	onKeyUp?: Function = () => {};
 	onKey?: Function = () => {};
+	onChange?: Function = () => {};
 };
 
 export { options };

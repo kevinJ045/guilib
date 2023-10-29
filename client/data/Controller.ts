@@ -1,11 +1,20 @@
 class Controller<T> {
   value: T;
   type: string;
+  taken: any[] = [];
   changeListeners: CallableFunction[] = [];
 
   constructor(val: T) {
     this.value = val;
     this.type = typeof val;
+  }
+
+  take(taker: any){
+    this.taken.push(taker);
+  }
+
+  isTakenBy(taker: any){
+    return this.taken.indexOf(taker) > -1;
   }
 
   set(newValue: T, doNoyNotify: boolean | CallableFunction = false) {
