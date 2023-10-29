@@ -1,4 +1,5 @@
 import Style from "../components/Style";
+import Store from "../data/Store";
 import { widget } from "../widgets/_ghost/WidgetProps";
 import { attr, attrNullable, attrOptions } from "./elman";
 
@@ -18,6 +19,7 @@ class options {
 	icon?: string | null = "";
 	accepts?: boolean | null = true;
 	store?: Store | null = null;
+	name?: string | null = null;
 	inheritStore?: boolean = false;
 	events?: Record<string, Function> | null = {};
 	type?: string[] | null = [];

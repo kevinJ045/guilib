@@ -10,14 +10,14 @@ export class EntryController extends Controller<string> {
 export interface EntryOptions extends options {
 	controller?: EntryController,
 	title?: string,
-	onTextInput: CallableFunction
+	onTextInput?: CallableFunction
 }
 
 class InputWrapper extends Widget{
 	__controller?: EntryController;
 
 	constructor(selectedOptions: EntryOptions){
-		const options = {...({ element: {name: 'input'}, class: "input-wrapper", _setters: ['inputType', 'title']}), ...selectedOptions};
+		const options = {...({ element: {name: 'input'}, attr: { type: 'text' }, class: "input-wrapper", _setters: ['inputType', 'title']}), ...selectedOptions};
 		super(options);
 
 		if(options.controller){

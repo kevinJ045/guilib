@@ -70,6 +70,10 @@ class WidgetProps {
 		findEl(this.id!).css({ "margin": value });
 	}
 
+	set name(value: string){
+		findEl(this.id!).attr({ "name": value });
+	}
+
 	set type(type: string | string[]){
 		if(typeof type == 'string'){
 			type = [type];

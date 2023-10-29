@@ -148,6 +148,7 @@ function _init(widget: widgetF, options: options){
 		'padding',
 		'margin',
 		'type',
+		'name',
 		'id:$id',
 		'animation',
 		'tooltip',
