@@ -1,5 +1,6 @@
 {
 	"title": "Rayous",
+	"port": 2345,
 	"meta": {
 		"author": "makano"
 	}
