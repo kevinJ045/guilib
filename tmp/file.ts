@@ -1,16 +1,16 @@
-import Page0 from "../app/test/loading/page";
+import Page0 from "../app/page";
 
 import Page1 from "../app/layout";
 
 		import * as clientInit from "../app/init.client";
 
 
-		import Loader from "../app/test/loading/loading.ts"
+		
 
-		let loaderOn = "app/test/loading/loading.ts", loader, after = false;
+		let loaderOn = false, loader, after = false;
 
 		const buildProps = (props) => (
-			{ route: {path: "/test/loading", params: {} }, ...props}
+			{ route: {path: "/", params: {} }, ...props}
 		)
 
 		if(loaderOn){
@@ -18,13 +18,13 @@ import Page1 from "../app/layout";
 				if(typeof Loader == "function"){
 					loader = Loader(buildProps());
 					if(!loader.to){
-						throw new TypeError('Loader from app/test/loading/loading.ts is not a returning a function that returns a widget!');
+						throw new TypeError('Loader from undefined is not a returning a function that returns a widget!');
 					} else {
 						if(loader.options.props?.removeAfterLoad) after = true;
 						loader.to(document.body);
 					}
 				} else {
-					throw new TypeError('Loader from app/test/loading/loading.ts is not a returning a function that returns a widget!');
+					throw new TypeError('Loader from undefined is not a returning a function that returns a widget!');
 				}
 			} catch(e){
 				document.write()

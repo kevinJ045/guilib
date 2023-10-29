@@ -14,7 +14,7 @@ function makeImportFile(route: route, ...filepath: string[]){
 
 		${route.loader ? 'import Loader from "../'+route.loader+'"' : ''}
 
-		let loaderOn = ${`"${route.loader}"` || 'false'}, loader, after = false;
+		let loaderOn = ${route.loader ? `"${route.loader}"` : 'false'}, loader, after = false;
 
 		const buildProps = (props) => (
 			{ route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }, ...props}
