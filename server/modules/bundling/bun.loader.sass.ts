@@ -1,3 +1,4 @@
+// @ts-ignore
 import { plugin, type BunPlugin } from "bun";
 const sass = require('sass');
 

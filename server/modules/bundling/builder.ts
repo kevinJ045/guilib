@@ -1,6 +1,7 @@
 import { route } from "../routing/routes";
-import { bundle } from "./bundler";
+import { bundle, portAndEnv } from "./bundler";
 import path from "node:path";
+
 
 export default class Builder {
 	route: route;
@@ -9,7 +10,7 @@ export default class Builder {
 		this.route = route;
 	}
 
-	async build(req: Request) {
+	async build(req: Request, { port, env }: portAndEnv ) {
 		const { route } = this;
 		if (route.type == "route") {
 			const requests = await import(
@@ -25,7 +26,7 @@ export default class Builder {
 		} else {
 			return {
 				status: 200,
-				response: await bundle(route)
+				response: await bundle(route, { port, env })
 			}
 		}
 	}

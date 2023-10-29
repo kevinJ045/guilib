@@ -1,14 +1,23 @@
 import { bunSassLoader } from "./bun.loader.sass";
 
-export async function bundleBun(options = {}){
+export async function bundleBun(env: string, options = {}){
 	let scriptText: string = "";
+
+	const imports: string[] = [];
 
 	// @ts-ignore
 	const bundled = await Bun.build({
 		entrypoints: ['./tmp/file.ts'],
 		// external: ['*'],
 		root: ".",
-		plugins: [bunSassLoader],
+		plugins: [bunSassLoader, {
+			name: 'Import Loader',
+			setup(build: any) {
+				build.onLoad({ filter: /.*/ }, async ({ path }: { path: string }) => {
+					imports.push(path);
+				})
+			},
+		}],
 		...options
 	});
 
@@ -26,5 +35,5 @@ export async function bundleBun(options = {}){
 		scriptText += (await result.text());
 	}
 
-	return scriptText;
+	return {result: scriptText, imports };
 }

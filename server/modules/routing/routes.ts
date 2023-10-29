@@ -16,6 +16,7 @@ export interface route {
 	type: 'route' | 'page',
 	params: Record<string, any>,
 	layouts?: string[]
+	loader?: string
 }
 
 function fixFilePath(string: string) {
@@ -129,6 +130,27 @@ export default class Routes {
 		route.layouts = layouts;
 		return layouts;
 	}
+
+  findLoader(route: route){
+    const loadings: string[] = [];
+		
+		const filePath = route.correspondingFile;
+		const segments = filePath.split('/');
+		
+		for (let i = segments.length; i > 0; i--) {
+			const currentPath = segments.slice(0, i).join('/');
+			const loadingPath = path.join(currentPath, 'loading.ts');
+	
+			if (fs.existsSync(loadingPath)) {
+				loadings.push(loadingPath);
+			}
+		}
+
+    let loader = loadings.pop();
+    
+		if(loader) route.loader = loader;
+		return loader;
+  }
 
   findFile(pathname: string){
     if (fs.existsSync(path.join('./static', pathname))) {

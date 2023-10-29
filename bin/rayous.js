@@ -23,7 +23,8 @@ export default class extends Component {
 			title: "App",
 			meta: { author: "" },
 			links: [{type: "", link: ""}],
-			scripts: [""]
+			scripts: [""],
+			envprod: false
 		}, null, 2));
 	}
 } else {
