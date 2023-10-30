@@ -44,9 +44,9 @@ function makeImportFile(route: route, ...filepath: string[]){
 
 			const initResponse = typeof clientInit.init == "function" ? clientInit.init(buildProps()) || {} : {};
 	
-			${filepath.map((filepath, index) => `let page${index} = new Page${index}();\nlet made${index} = page${index}.build(buildProps({init: initResponse, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'}}));`).join('\n')}
+			${filepath.map((filepath, index) => `let page${index} = new Page${index}();\npage${index}._beforeInit();\npage${index}.initState(buildProps());\nlet made${index} = page${index}.make(buildProps({init: initResponse, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'}}));`).join('\n')}
 	
-			${filepath.map((file, index) => `${index+1 == filepath.length ? `made${index}.to(document.body)` : ``}`).join('\n')}
+			${filepath.map((file, index) => `${index+1 == filepath.length ? `made${index}.to(document.body)` : `page${index}.afterBuild(buildProps({page: made0}));`}`).join('\n')}
 	
 			if(typeof page0.afterBuild == "function") page0.afterBuild(buildProps({page: made0}));
 			if(typeof clientInit.after == "function") clientInit.after(buildProps({page: made0}));

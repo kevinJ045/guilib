@@ -206,7 +206,7 @@ class WidgetProps {
 		return filteredChildren(findEl(this.id!).closest(q), true, true);
 	}
 
-	parent(container: boolean){
+	parent(container: boolean = false){
 		let parent = findEl(this.id!).parent();
 		if(!parent && !this.private) return Widget.from(document.body);
 		if(container) return this.container();

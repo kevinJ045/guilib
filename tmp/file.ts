@@ -1,4 +1,4 @@
-import Page0 from "../app/page";
+import Page0 from "../app/test/ref/page";
 
 import Page1 from "../app/layout";
 
@@ -10,7 +10,7 @@ import Page1 from "../app/layout";
 		let loaderOn = false, loader, after = false;
 
 		const buildProps = (props) => (
-			{ route: {path: "/", params: {} }, ...props}
+			{ route: {path: "/test/ref", params: {} }, ...props}
 		)
 
 		if(loaderOn){
@@ -38,11 +38,15 @@ import Page1 from "../app/layout";
 			const initResponse = typeof clientInit.init == "function" ? clientInit.init(buildProps()) || {} : {};
 	
 			let page0 = new Page0();
-let made0 = page0.build(buildProps({init: initResponse, page: null}));
+page0._beforeInit();
+page0.initState(buildProps());
+let made0 = page0.make(buildProps({init: initResponse, page: null}));
 let page1 = new Page1();
-let made1 = page1.build(buildProps({init: initResponse, page: made0}));
+page1._beforeInit();
+page1.initState(buildProps());
+let made1 = page1.make(buildProps({init: initResponse, page: made0}));
 	
-			
+			page0.afterBuild(buildProps({page: made0}));
 made1.to(document.body)
 	
 			if(typeof page0.afterBuild == "function") page0.afterBuild(buildProps({page: made0}));

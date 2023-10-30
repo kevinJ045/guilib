@@ -9,7 +9,7 @@ const defaults = getDefaults({ element: { name: "input" }, class: 'checkbox', at
 export interface CheckboxOptions extends options {
   controller?: CheckboxController,
   checked?: boolean,
-  onChange(): any
+  onChange?(): any
 }
 
 export class CheckboxController extends Controller<boolean> {

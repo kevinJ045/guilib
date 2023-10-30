@@ -63,6 +63,11 @@ function getParams(match: RegExpMatchArray, keys: string[]): Record<string, any>
   );
 }
 
+function sanitizePath(path: string): string {
+  if(path.endsWith('/')) path = path.replace(/\/$/, '');
+  return path || '/';
+}
+
 export default class Routes {
   basePath: string;
   paths: Map<string, pathmap>;
@@ -93,14 +98,16 @@ export default class Routes {
     });
   }
 
-  findPath(requestedPath: string) {
+  findPath(pathRequested: string) {
     this.registerMaps();
 
+    let requestedPath = sanitizePath(pathRequested);
+    
     for (const [pathName, { regex, path, keys }] of this.paths.entries()) {
       const match = requestedPath.match(regex);
       if (match) {
         return {
-					path: requestedPath,
+					path: pathRequested,
 					mappedPath: pathName,
 					correspondingFile: path,
 					type: path.endsWith('route.ts') || path.endsWith('route.js') ? 'route' : 'page',
