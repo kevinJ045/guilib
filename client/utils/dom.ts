@@ -108,6 +108,16 @@ class Dom {
 		return this.elements.at(0)!.innerHTML;
 	}
 
+	width(width: string | number | null = null){
+		if(width) doAll(this, (el: HTMLElement) => el.style.width = typeof width == "number" ? width+'px' : width);
+		return width ? this : this.at(0).getBoundingClientRect().width;
+	}
+
+	height(height: string | number | null = null){
+		if(height) doAll(this, (el: HTMLElement) => el.style.height = typeof height == "number" ? height+'px' : height);
+		return height ? this : this.at(0).getBoundingClientRect().height;
+	}
+
 	text(text: string | null): string | null {
 		if(typeof text == "string") this.elements.at(0)!.innerText = text;
 		return this.elements.at(0)!.innerText;
@@ -149,7 +159,7 @@ class Dom {
 	}
 
 	children(): Dom {
-		return Dom.from(this.at(0).children);
+		return Dom.from(this.at(0).children.length ?  this.at(0).children : []);
 	}
 	
 	siblings(): Dom {
@@ -232,7 +242,7 @@ class Dom {
 	}
 
 	static from(elements: HTMLElement[] | HTMLCollection){
-		let e = new Dom((elements as HTMLElement[]).shift() as HTMLElement);
+		let e = new Dom((Array.from(elements) as HTMLElement[]).shift() as HTMLElement);
 		Array.from(elements).forEach(el => e.push(el as HTMLElement));
 		return e;
 	}

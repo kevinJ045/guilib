@@ -11,12 +11,14 @@ function checkQuery(w: any, h: any, pw: any, ph: any, vw: any, vh: any, query: a
 		cases.push({case: query, true: false});
 	}
 
+	if(!w || !h || !pw || !ph || !vw || !vh) {}
+
 	let overallResult = true;
 	cases.forEach(c => {
 		let query = c.case.trim();
 		let match = query.match(/(w|h|pw|ph|vw|vh)(\s+|)(==|!=|>|<|>=|<=)(\s+|)([0-9]+)/);
 		if(match){
-			overallResult = overallResult && eval(query);
+			overallResult = overallResult && eval(`var w = ${w}, h = ${h}, pw = ${pw}, ph = ${ph}, vw = ${vw}, vh = ${vh};\n`+query);
 		} else {
 			throw new Error(`Invalid LayoutBuilder query: ${query}`);
 		}
@@ -34,8 +36,8 @@ const handleResize = (widget: any, options: any) => {
 	widget.emit('resize', { width: widget.width(), height: widget.height(), viewportWidth: window.innerWidth, viewportHeight: window.innerHeight });
 
 	if (options.queries) {
-		const prevChildren = widget.children().map((child: any) => findEl(child.id));
-		widget.remove('*');
+		const prevChildren = Array.from(widget.children()).map((child: any) => findEl(child.id));
+		prevChildren.forEach(child => child.remove());
 		const matchedQuery = Object.entries(options.queries).find(([query, builderFn]) => {
 			return checkQuery(widget.width(), widget.height(), parentWidth, parentHeight, window.innerWidth, window.innerHeight, query);
 		});
@@ -44,7 +46,7 @@ const handleResize = (widget: any, options: any) => {
 			const [query, builderFn] = matchedQuery;
 			const newChildren = typeof builderFn == "function" ? builderFn(prevChildren.map((child: any) => child.GUIWIDGET)) : builderFn;
 			if (newChildren instanceof Widget) {
-				(newChildren as any).forEach((child: any) => widget.add(child));
+				widget.add(newChildren);
 			} else if (Array.isArray(newChildren)) {
 				newChildren.forEach((child) => widget.add(child));
 			}
@@ -55,8 +57,12 @@ const handleResize = (widget: any, options: any) => {
 	delete widget.handlingResize;
 };
 
+interface LayoutBuilderOptions extends options {
+	queries?: Record<string, Widget[] | (() => Widget | Widget[])>
+}
+
 class LayoutBuilder extends Widget {
-	constructor(selectedOptions: options) {
+	constructor(selectedOptions: LayoutBuilderOptions) {
 		const options = {
 			...(getDefaults({ element: { name: 'div' }, class: 'layout-builder' })),
 			...selectedOptions,
@@ -67,7 +73,7 @@ class LayoutBuilder extends Widget {
 	_onMount(parent: Widget){
 		super._onMount(parent);
 		
-		$(window).on('resize', () => handleResize(this, this.options));
+		window.addEventListener('resize', () => handleResize(this, this.options));
 		handleResize(this, this.options);
 	}
 }
