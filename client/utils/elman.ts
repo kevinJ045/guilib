@@ -42,10 +42,11 @@ function setAttributeMap(element: HTMLElement, attr: attr){
 }
 
 function setClasses(element: HTMLElement, classes: string, type : 'add'|'remove'|'toggle'|'contains' = 'add' ){
-	element
+	const classNames = classes.match(' ') ? classes.split(' ') : [classes];
+	classNames.forEach(className => element
 		.classList
 			[type]
-		(classes);
+		(className));	
 }
 
 function setCss(element: HTMLElement, values: string | Record<string, any>, value: string | number | null = null) {

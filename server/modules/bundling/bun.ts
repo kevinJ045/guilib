@@ -1,4 +1,5 @@
 import { bunSassLoader } from "./bun.loader.sass";
+import { bunTailwindLoader } from "./bun.loader.tailwind";
 
 export async function bundleBun(env: string, options = {}){
 	let scriptText: string = "";
@@ -10,7 +11,7 @@ export async function bundleBun(env: string, options = {}){
 		entrypoints: ['./tmp/file.ts'],
 		// external: ['*'],
 		root: ".",
-		plugins: [bunSassLoader, {
+		plugins: [bunTailwindLoader, bunSassLoader, {
 			name: 'Import Loader',
 			setup(build: any) {
 				build.onLoad({ filter: /.*/ }, async ({ path }: { path: string }) => {

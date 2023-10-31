@@ -1,0 +1,60 @@
+
+:root{
+	--rayous-button-padding: 8px 32px;
+	--rayous-button-min-width: 80px;
+	--rayous-button-border-radius: 50px;
+	--rayous-button-border: none;
+	--rayous-button-bg: var(--rayous-theme-color);
+	--rayous-button-text: var(--rayous-text-color-accent);
+}
+
+.widget-button{
+	align-items: center;
+	appearance: button;
+	background: var(--rayous-button-bg);
+	color: var(--rayous-button-text);
+	padding: var(--rayous-button-padding);
+	min-width: var(--rayous-button-min-width);
+	border-radius: var(--rayous-button-border-radius);
+	border: var(--rayous-button-border);
+
+	font-weight: bolder;
+	transition: .3s;
+	cursor: pointer;
+}
+
+.widget-button:active{
+	opacity: .7;
+}
+
+.widget-button.outline{
+	--rayous-button-text: var(--rayous-theme-color);
+	--rayous-button-bg: transparent;
+	--rayous-button-border: 2px solid var(--rayous-theme-color);
+}
+
+.widget-button.outline:hover{
+	--rayous-button-text: inherit;
+	--rayous-button-bg: inherit;
+}
+
+.widget-button.mini{
+	--rayous-button-padding: 4px 8px;
+}
+
+.widget-button.transparent{
+	--rayous-button-text: var(--rayous-theme-color);
+	--rayous-button-bg: transparent;
+}
+
+.widget-button.nround{
+	--rayous-button-border-radius: 4px;
+}
+
+.widget-button.full{
+	width: 100%;
+}
+
+.widget-button.disabled{
+	--rayous-button-bg: #666666;
+}

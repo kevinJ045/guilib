@@ -1,4 +1,4 @@
-import Page0 from "../app/test/layout/page";
+import Page0 from "../app/test/components/page";
 
 import Page1 from "../app/layout";
 
@@ -10,7 +10,7 @@ import Page1 from "../app/layout";
 		let loaderOn = false, loader, after = false;
 
 		const buildProps = (props) => (
-			{ route: {path: "/test/layout", params: {} }, ...props}
+			{ route: {path: "/test/components", params: {} }, ...props}
 		)
 
 		if(loaderOn){
@@ -46,8 +46,12 @@ page1._beforeInit();
 page1.initState(buildProps());
 let made1 = page1.make(buildProps({init: initResponse, page: made0}));
 	
-			page0.afterBuild(buildProps({page: made0}));
+			if(Page0.layouts === false){
+				made0.to(document.body);
+			} else {
+				page0.afterBuild(buildProps({page: made0}));
 made1.to(document.body)
+			}
 	
 			if(typeof page0.afterBuild == "function") page0.afterBuild(buildProps({page: made0}));
 			if(typeof clientInit.after == "function") clientInit.after(buildProps({page: made0}));

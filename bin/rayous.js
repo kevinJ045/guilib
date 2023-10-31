@@ -26,6 +26,15 @@ export default class extends Component {
 			scripts: [""],
 			envprod: false
 		}, null, 2));
+		fs.writeFileSync('./tailwind.config.js', `/** @type {import('tailwindcss').Config} */\nmodule.exports = `+JSON.stringify({
+			content: [
+				'./app/**/*.{js,ts,jsx,tsx,mdx}'
+			],
+			theme: {
+				extend: {},
+			},
+			plugins: [],
+		}, null, 2));
 	}
 } else {
 	console.log('Project location: '+process.cwd());

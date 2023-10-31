@@ -12,7 +12,7 @@ export const bunSassLoader: BunPlugin = {
 			return { loader: 'js', contents: `(() => {
         const style = document.createElement('style');
         style.pathname = '${path}';
-        style.textContent = \`${result.css.toString()}\`
+        style.textContent = \`${result.css.toString().replace(/`/g, '\\`')}\`
         document.head.appendChild(style);
       })()` };
     })
