@@ -1,6 +1,9 @@
+import Style from "./components/Style.js";
 import Controller from "./data/Controller.js";
 
-export { Controller };
+
+
+export { Controller, Style };
 export { EntryController } from "./widgets/entry/InputWrapper.js";
 export { CheckboxController } from "./widgets/buttons/Checkbox.js";
 export type { CheckboxOptions } from "./widgets/buttons/Checkbox.js";
