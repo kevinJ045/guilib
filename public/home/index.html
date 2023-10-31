@@ -4219,8 +4219,158 @@ class ListBuilder extends Widget_default {
     return this;
   }
 }
+var ListBuilder_default = ListBuilder;
+
+// client/widgets/list/List.ts
+var _initList = function(list, state) {
+  if (state[list.options.itemsStateName] && Array.isArray(state[list.options.itemsStateName])) {
+    list.empty();
+    state[list.options.itemsStateName].forEach((item, index) => {
+      list.appendItem(item, index);
+    });
+  }
+};
+var defaultList = () => getDefaults({
+  element: { name: "ul" },
+  items: [],
+  itemsStateName: "$items_list",
+  template: (item) => new ListItem(item)
+});
+var defaultListItem = () => getDefaults({
+  element: { name: "li" },
+  title: new Text_default(""),
+  link: false,
+  _setters: ["url"]
+});
+
+class ListItem extends Widget_default {
+  constructor(selectedOptions) {
+    const options7 = { ...defaultListItem(), ...selectedOptions };
+    const { title, link } = options7;
+    if (link === true)
+      options7.element.name = "a";
+    super(options7);
+    if (title instanceof Widget_default)
+      this.add(title);
+    else if (title != null)
+      this.add(new Text_default(title));
+  }
+  set url(link) {
+    findEl(this.id).attr("href", link);
+  }
+}
+
+class List extends ListBuilder_default {
+  constructor(selectedOptions) {
+    const options7 = { ...defaultList(), ...selectedOptions };
+    super(options7, _initList);
+  }
+  appendItem(item, index) {
+    return this.add(this._fromTemplate(item, index));
+  }
+  onItems(event, handler) {
+    return this.onItems(event, handler);
+  }
+  empty() {
+    findEl(this.id).empty();
+    return this;
+  }
+}
+var List_default = List;
+
+// client/widgets/entry/InputWrapper.ts
+class EntryController extends Controller_default {
+  constructor(val) {
+    super(val);
+  }
+}
+
+class InputWrapper extends Widget_default {
+  __controller;
+  constructor(selectedOptions) {
+    const options7 = { ...{ element: { name: "input" }, attr: { type: "text" }, class: "input-wrapper", _setters: ["inputType", "title"] }, ...selectedOptions };
+    super(options7);
+    if (options7.controller) {
+      this.setController(options7.controller);
+    }
+  }
+  setController(controller) {
+    if (this.__controller)
+      throw new Error("Input already is married to a controller.");
+    if (controller instanceof EntryController) {
+      const change = (v) => this.val() !== v ? this.val(v) : [];
+      this.on("textinput", () => {
+        controller.set(this.val(), change);
+      });
+      controller.onChange(change);
+      this.__controller = controller;
+      this.val(controller.get());
+    }
+  }
+  val(value = null) {
+    if (value)
+      findEl(this.id).at(0).value = value;
+    return findEl(this.id).at(0).value;
+  }
+  set inputType(type4) {
+    if (type4 instanceof Controller_default)
+      type4.onChange((change) => {
+        this.inputType = change;
+      });
+    findEl(this.id).attr({ type: type4 instanceof Controller_default ? type4.get() : type4.toString() });
+  }
+  set title(text) {
+    if (text instanceof Controller_default)
+      text.onChange((change) => {
+        this.title = change;
+      });
+    findEl(this.id).attr({ placeholder: text instanceof Controller_default ? text.get() : text.toString() });
+  }
+}
+var InputWrapper_default = InputWrapper;
 // client/widgets/buttons/Checkbox.ts
 var defaults2 = getDefaults({ element: { name: "input" }, class: "checkbox", attr: { type: "checkbox" } });
+
+class CheckboxController extends Controller_default {
+  constructor(val) {
+    super(val);
+  }
+}
+
+class Checkbox extends Widget_default {
+  __controller;
+  constructor(selectedOptions) {
+    const options8 = { ...defaults2, ...selectedOptions };
+    super(options8);
+    if (options8.controller) {
+      this.setController(options8.controller);
+    }
+    if (options8.checked) {
+      this.setChecked(true);
+    }
+  }
+  isChecked() {
+    return findEl(this.id).at(0).checked;
+  }
+  setChecked(checked) {
+    findEl(this.id).at(0).checked = checked;
+    return this;
+  }
+  setController(controller) {
+    if (this.__controller)
+      throw new Error("Checkbox already has a controller.");
+    if (controller instanceof CheckboxController) {
+      const change = (v) => this.isChecked() !== v ? this.setChecked(v) : [];
+      this.on("change", () => {
+        controller.set(this.isChecked(), change);
+      });
+      controller.onChange(change);
+      this.__controller = controller;
+      this.setChecked(controller.get());
+    }
+  }
+}
+var Checkbox_default = Checkbox;
 // client/widgets/main/Link.ts
 var link = function(el, url) {
   if (url.match(/^ui\.([a-zA-Z]+):/)) {
@@ -4253,6 +4403,21 @@ class Link extends Text_default {
 }
 var Link_default = Link;
 
+// client/widgets/buttons/Button.ts
+var defaultButton = (more, link2) => getDefaults({
+  element: { name: link2 ? "a" : "button" },
+  class: more ? "button " + more : "button",
+  accepts: false
+});
+
+class Button extends Link_default {
+  constructor(selectedOptions, otheroptions = null) {
+    const options11 = Text_default.resolveOptions(selectedOptions, otheroptions, defaultButton(null, otheroptions?.url || selectedOptions?.url));
+    super(options11);
+  }
+}
+var Button_default = Button;
+
 // client/widgets/buttons/Radio.ts
 var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: { type: "radio" } });
 
@@ -4277,27 +4442,48 @@ var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: 
   document.head.appendChild(style);
 })();
 
-// styles/some.css
-(() => {
-  const style = document.createElement("style");
-  style.pathname = "/home/makano/workspace/rayous/styles/some.css";
-  style.textContent = `body {
-  font-size: 40px;
-}`;
-  document.head.appendChild(style);
-})();
-
-// app/page.ts
+// app/home/page.ts
 class page_default extends Component {
   constructor() {
     super(...arguments);
   }
-  build({ route }) {
-    const text = new Text_default({ text: "" });
-    setTimeout(() => text.options.text = "route:" + route.path, 1000);
-    const link2 = new Link_default("Hi");
-    setTimeout(() => link2.url = "/home", 1000);
-    return new Widget_default({ children: [text, link2] });
+  c;
+  cc;
+  build({ route: {} }) {
+    const c = this.c = new EntryController("sss");
+    const cc = this.cc = new CheckboxController(true);
+    return new Widget_default({
+      children: [
+        new Checkbox_default({
+          controller: cc
+        }),
+        new Button_default("Hi", {
+          onClick() {
+            c.set("Hello");
+            console.log("hi");
+          }
+        }),
+        new InputWrapper_default({
+          title: "Hello",
+          controller: this.c,
+          onTextInput() {
+            console.log(c);
+          }
+        }),
+        new Link_default("fff", { url: "/" }),
+        new List_default({
+          id: "list",
+          items: [
+            {
+              title: "ss"
+            }
+          ]
+        })
+      ]
+    });
+  }
+  afterBuild({ page }) {
+    setTimeout(() => page.find("#list").updateList({ items: [{ title: this.c }, { title: this.cc }] }), 1000);
   }
 }
 
@@ -4310,7 +4496,7 @@ function init() {
 var loaderOn = false;
 var loader;
 var after2 = false;
-var buildProps = (props) => ({ route: { path: "/", params: {} }, ...props });
+var buildProps = (props) => ({ route: { path: "/home", params: {} }, ...props });
 if (loaderOn) {
   try {
     if (typeof Loader == "function") {

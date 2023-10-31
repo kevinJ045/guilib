@@ -4221,38 +4221,6 @@ class ListBuilder extends Widget_default {
 }
 // client/widgets/buttons/Checkbox.ts
 var defaults2 = getDefaults({ element: { name: "input" }, class: "checkbox", attr: { type: "checkbox" } });
-// client/widgets/main/Link.ts
-var link = function(el, url) {
-  if (url.match(/^ui\.([a-zA-Z]+):/)) {
-    let [, name, ui] = url.match(/ui\.([a-zA-Z]+):(.+)/);
-    el.addClass(name + "-link").attr({ ["data-" + name]: ui });
-  } else {
-    el.attr({ href: url });
-  }
-};
-var defaultLink = (more = null) => getDefaults({
-  element: { name: "a" },
-  class: more ? "link " + more : "link",
-  accepts: false,
-  _setters: ["url"],
-  icon: null
-});
-
-class Link extends Text_default {
-  constructor(selectedOptions, otheroptions = null) {
-    const options10 = Text_default.resolveOptions(selectedOptions, otheroptions, { ...defaultLink() });
-    super(options10);
-  }
-  set url(url) {
-    if (url instanceof Controller_default)
-      url.onChange((change) => {
-        this.url = change;
-      });
-    link(findEl(this.id), url instanceof Controller_default ? url.get() : url);
-  }
-}
-var Link_default = Link;
-
 // client/widgets/buttons/Radio.ts
 var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: { type: "radio" } });
 
@@ -4277,27 +4245,17 @@ var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: 
   document.head.appendChild(style);
 })();
 
-// styles/some.css
-(() => {
-  const style = document.createElement("style");
-  style.pathname = "/home/makano/workspace/rayous/styles/some.css";
-  style.textContent = `body {
-  font-size: 40px;
-}`;
-  document.head.appendChild(style);
-})();
-
-// app/page.ts
+// app/test/loading/page.ts
 class page_default extends Component {
   constructor() {
     super(...arguments);
   }
-  build({ route }) {
-    const text = new Text_default({ text: "" });
-    setTimeout(() => text.options.text = "route:" + route.path, 1000);
-    const link2 = new Link_default("Hi");
-    setTimeout(() => link2.url = "/home", 1000);
-    return new Widget_default({ children: [text, link2] });
+  build(props) {
+    return new Widget_default({
+      children: [
+        new Text_default("Done!")
+      ]
+    });
   }
 }
 
@@ -4310,7 +4268,7 @@ function init() {
 var loaderOn = false;
 var loader;
 var after2 = false;
-var buildProps = (props) => ({ route: { path: "/", params: {} }, ...props });
+var buildProps = (props) => ({ route: { path: "/test/loading", params: {} }, ...props });
 if (loaderOn) {
   try {
     if (typeof Loader == "function") {

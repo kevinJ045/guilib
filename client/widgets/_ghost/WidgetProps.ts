@@ -202,6 +202,10 @@ class WidgetProps {
 		return q == '*' ? this.children() : filteredChildren(resolveSubchild(findEl(this.id!), subchild).find(q), true);
 	}
 
+	findAll(q: string, subchild: string | null = null): Widget {
+		return q == '*' ? this.children() : filteredChildren(resolveSubchild(findEl(this.id!), subchild).find(q));
+	}
+
 	closest(q: string){
 		return filteredChildren(findEl(this.id!).closest(q), true, true);
 	}

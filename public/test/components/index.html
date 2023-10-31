@@ -4253,9 +4253,121 @@ class Link extends Text_default {
 }
 var Link_default = Link;
 
+// client/widgets/buttons/Button.ts
+var defaultButton = (more, link2) => getDefaults({
+  element: { name: link2 ? "a" : "button" },
+  class: more ? "button " + more : "button",
+  accepts: false
+});
+
+class Button extends Link_default {
+  constructor(selectedOptions, otheroptions = null) {
+    const options11 = Text_default.resolveOptions(selectedOptions, otheroptions, defaultButton(null, otheroptions?.url || selectedOptions?.url));
+    super(options11);
+  }
+}
+var Button_default = Button;
+
 // client/widgets/buttons/Radio.ts
 var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: { type: "radio" } });
 
+// components/styles/main.scss
+(() => {
+  const style = document.createElement("style");
+  style.pathname = "/home/makano/workspace/rayous/components/styles/main.scss";
+  style.textContent = `* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+:root {
+  --rayous-theme-color: #09D0D0;
+  --rayous-theme-color-alter: #a509d0;
+  --rayous-bg-color-1: #000b0b;
+  --rayous-bg-color-2: #030707;
+  --rayous-text-color-bg: #ffffff;
+  --rayous-text-color-accent: #ffffff;
+  --rayous-shade-color: #1a1a1a;
+}
+
+.widget.disabled {
+  --rayous-theme-color: #666666;
+  --rayous-theme-color-alter: #666666;
+}
+
+:root {
+  --rayous-button-padding: 8px 32px;
+  --rayous-button-min-width: 80px;
+  --rayous-button-border-radius: 50px;
+  --rayous-button-border: none;
+  --rayous-button-bg: var(--rayous-theme-color);
+  --rayous-button-text: var(--rayous-text-color-accent);
+}
+
+.widget-button {
+  align-items: center;
+  appearance: button;
+  background: var(--rayous-button-bg);
+  color: var(--rayous-button-text);
+  padding: var(--rayous-button-padding);
+  min-width: var(--rayous-button-min-width);
+  border-radius: var(--rayous-button-border-radius);
+  border: var(--rayous-button-border);
+  font-weight: bolder;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.widget-button:active {
+  opacity: 0.7;
+}
+
+.widget-button.outline {
+  --rayous-button-text: var(--rayous-theme-color);
+  --rayous-button-bg: transparent;
+  --rayous-button-border: 2px solid var(--rayous-theme-color);
+}
+
+.widget-button.outline:hover {
+  --rayous-button-text: inherit;
+  --rayous-button-bg: inherit;
+}
+
+.widget-button.mini {
+  --rayous-button-padding: 4px 8px;
+}
+
+.widget-button.transparent {
+  --rayous-button-text: var(--rayous-theme-color);
+  --rayous-button-bg: transparent;
+}
+
+.widget-button.nround {
+  --rayous-button-border-radius: 4px;
+}
+
+.widget-button.full {
+  width: 100%;
+}
+
+.widget-button.disabled {
+  --rayous-button-bg: #666666;
+}`;
+  document.head.appendChild(style);
+})();
+
+// components/button.ts
+class Button3 extends Button_default {
+  constructor(text, options18 = null) {
+    super(text, {
+      class: "widget widget-button",
+      ...options18
+    });
+    let o = this.options;
+    if (o.variant)
+      this.addClass(o.variant);
+  }
+}
 // styles/main.scss
 (() => {
   const style = document.createElement("style");
@@ -4277,28 +4389,43 @@ var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: 
   document.head.appendChild(style);
 })();
 
-// styles/some.css
-(() => {
-  const style = document.createElement("style");
-  style.pathname = "/home/makano/workspace/rayous/styles/some.css";
-  style.textContent = `body {
-  font-size: 40px;
-}`;
-  document.head.appendChild(style);
-})();
-
-// app/page.ts
+// app/test/components/page.ts
 class page_default extends Component {
   constructor() {
     super(...arguments);
   }
-  build({ route }) {
-    const text = new Text_default({ text: "" });
-    setTimeout(() => text.options.text = "route:" + route.path, 1000);
-    const link2 = new Link_default("Hi");
-    setTimeout(() => link2.url = "/home", 1000);
-    return new Widget_default({ children: [text, link2] });
+  build(props) {
+    return new Widget_default({
+      style: {
+        margin: "10px"
+      },
+      children: [
+        new Text_default("Buttons", { class: "title" }),
+        new Widget_default({
+          class: "showcase",
+          children: [
+            new Button3("Normal"),
+            new Button3("Outlined", {
+              variant: "outline"
+            }),
+            new Button3("Mini", {
+              variant: "mini"
+            }),
+            new Button3("Not Round", {
+              variant: "nround"
+            }),
+            new Button3("Transparent", {
+              variant: "transparent"
+            }),
+            new Button3("Disabled", {
+              variant: "disabled"
+            })
+          ]
+        })
+      ]
+    });
   }
+  static layouts = false;
 }
 
 // app/init.client.ts
@@ -4310,7 +4437,7 @@ function init() {
 var loaderOn = false;
 var loader;
 var after2 = false;
-var buildProps = (props) => ({ route: { path: "/", params: {} }, ...props });
+var buildProps = (props) => ({ route: { path: "/test/components", params: {} }, ...props });
 if (loaderOn) {
   try {
     if (typeof Loader == "function") {

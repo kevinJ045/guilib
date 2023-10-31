@@ -4221,37 +4221,70 @@ class ListBuilder extends Widget_default {
 }
 // client/widgets/buttons/Checkbox.ts
 var defaults2 = getDefaults({ element: { name: "input" }, class: "checkbox", attr: { type: "checkbox" } });
-// client/widgets/main/Link.ts
-var link = function(el, url) {
-  if (url.match(/^ui\.([a-zA-Z]+):/)) {
-    let [, name, ui] = url.match(/ui\.([a-zA-Z]+):(.+)/);
-    el.addClass(name + "-link").attr({ ["data-" + name]: ui });
+// client/widgets/layout/LayoutBuilder.ts
+var checkQuery = function(w, h, pw, ph, vw, vh, query) {
+  const cases = [];
+  if (query.match(/\|\||&&/)) {
+    cases.push(...query.split(/\|\||&&/).map((c) => ({ case: c, true: false })));
   } else {
-    el.attr({ href: url });
+    cases.push({ case: query, true: false });
   }
+  if (!w || !h || !pw || !ph || !vw || !vh) {
+  }
+  let overallResult = true;
+  cases.forEach((c) => {
+    let query2 = c.case.trim();
+    let match2 = query2.match(/(w|h|pw|ph|vw|vh)(\s+|)(==|!=|>|<|>=|<=)(\s+|)([0-9]+)/);
+    if (match2) {
+      overallResult = overallResult && (0, eval)(`var w = ${w}, h = ${h}, pw = ${pw}, ph = ${ph}, vw = ${vw}, vh = ${vh};\n` + query2);
+    } else {
+      throw new Error(`Invalid LayoutBuilder query: ${query2}`);
+    }
+  });
+  return overallResult;
 };
-var defaultLink = (more = null) => getDefaults({
-  element: { name: "a" },
-  class: more ? "link " + more : "link",
-  accepts: false,
-  _setters: ["url"],
-  icon: null
-});
-
-class Link extends Text_default {
-  constructor(selectedOptions, otheroptions = null) {
-    const options10 = Text_default.resolveOptions(selectedOptions, otheroptions, { ...defaultLink() });
-    super(options10);
+var handleResize = (widget2, options15) => {
+  if (widget2.handlingResize)
+    return;
+  widget2.handlingResize = true;
+  const parentWidth = widget2.parent().width();
+  const parentHeight = widget2.parent().height();
+  widget2.emit("resize", { width: widget2.width(), height: widget2.height(), viewportWidth: window.innerWidth, viewportHeight: window.innerHeight });
+  if (options15.queries) {
+    const prevChildren = Array.from(widget2.children()).map((child2) => findEl(child2.id));
+    prevChildren.forEach((child2) => child2.remove());
+    const matchedQuery = Object.entries(options15.queries).find(([query, builderFn]) => {
+      return checkQuery(widget2.width(), widget2.height(), parentWidth, parentHeight, window.innerWidth, window.innerHeight, query);
+    });
+    if (matchedQuery) {
+      const [query, builderFn] = matchedQuery;
+      const newChildren = typeof builderFn == "function" ? builderFn(prevChildren.map((child2) => child2.GUIWIDGET)) : builderFn;
+      if (newChildren instanceof Widget_default) {
+        widget2.add(newChildren);
+      } else if (Array.isArray(newChildren)) {
+        newChildren.forEach((child2) => widget2.add(child2));
+      }
+    }
   }
-  set url(url) {
-    if (url instanceof Controller_default)
-      url.onChange((change) => {
-        this.url = change;
-      });
-    link(findEl(this.id), url instanceof Controller_default ? url.get() : url);
+  widget2.emit("layout:rebuild", { width: widget2.width(), height: widget2.height(), viewportWidth: window.innerWidth, viewportHeight: window.innerHeight });
+  delete widget2.handlingResize;
+};
+
+class LayoutBuilder extends Widget_default {
+  constructor(selectedOptions) {
+    const options15 = {
+      ...getDefaults({ element: { name: "div" }, class: "layout-builder" }),
+      ...selectedOptions
+    };
+    super(options15);
+  }
+  _onMount(parent) {
+    super._onMount(parent);
+    window.addEventListener("resize", () => handleResize(this, this.options));
+    handleResize(this, this.options);
   }
 }
-var Link_default = Link;
+var LayoutBuilder_default = LayoutBuilder;
 
 // client/widgets/buttons/Radio.ts
 var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: { type: "radio" } });
@@ -4277,27 +4310,23 @@ var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: 
   document.head.appendChild(style);
 })();
 
-// styles/some.css
-(() => {
-  const style = document.createElement("style");
-  style.pathname = "/home/makano/workspace/rayous/styles/some.css";
-  style.textContent = `body {
-  font-size: 40px;
-}`;
-  document.head.appendChild(style);
-})();
-
-// app/page.ts
+// app/test/layout/page.ts
 class page_default extends Component {
   constructor() {
     super(...arguments);
   }
   build({ route }) {
-    const text = new Text_default({ text: "" });
-    setTimeout(() => text.options.text = "route:" + route.path, 1000);
-    const link2 = new Link_default("Hi");
-    setTimeout(() => link2.url = "/home", 1000);
-    return new Widget_default({ children: [text, link2] });
+    return new Widget_default({
+      children: [
+        new LayoutBuilder_default({
+          queries: {
+            "pw > 700": () => {
+              return new Text_default("more");
+            }
+          }
+        })
+      ]
+    });
   }
 }
 
@@ -4310,7 +4339,7 @@ function init() {
 var loaderOn = false;
 var loader;
 var after2 = false;
-var buildProps = (props) => ({ route: { path: "/", params: {} }, ...props });
+var buildProps = (props) => ({ route: { path: "/test/layout", params: {} }, ...props });
 if (loaderOn) {
   try {
     if (typeof Loader == "function") {

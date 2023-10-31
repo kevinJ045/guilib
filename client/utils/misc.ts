@@ -35,10 +35,10 @@ function filteredChildren(children: Widget | Dom | Widget[], makeOne = false, gi
     (filtered as any).toArray = () => WidgetList.from([...filtered]);
   }
   let toGive = isOne ? filtered[0] : (filtered.length ? filtered : (giveNull ? null : filtered));
-  if(Array.isArray(toGive)){
+  if(Array.isArray(toGive) && !makeOne){
     return WidgetList.from(toGive);
   }
-	return toGive;
+	return makeOne && Array.isArray(toGive) ? toGive[0] : toGive;
 }
 
 function resolveSubchild(element: Widget, child : string | null = null){

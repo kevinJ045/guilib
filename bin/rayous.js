@@ -6,8 +6,15 @@ import fs from "node:fs";
 
 let subcommand = process.argv.slice(2, process.argv.length);
 
+const currentModuleUrl = new URL(import.meta.url);
+const currentModuleDirectory = path.dirname(currentModuleUrl.pathname);
+
+const serverScriptPath = path.join(currentModuleDirectory, "../", "server", "server.ts");
+const builderScriptPath = path.join(currentModuleDirectory, "../", "server", "build.ts");
+
 if(subcommand[0]){
 	if(subcommand[0] == 'create'){
+		console.log('creating');
 		fs.mkdirSync('./app');
 		fs.mkdirSync('./static');
 		fs.mkdirSync('./styles');
@@ -35,14 +42,22 @@ export default class extends Component {
 			},
 			plugins: [],
 		}, null, 2));
+	} else if(subcommand[0] == 'build') {
+		console.log('building');
+		const child = spawn("bun", ["run", builderScriptPath, subcommand[1]]);
+		child.stdout.on("data", (data) => {
+			console.log(data.toString().trim());
+		});
+	
+		child.on("error", (error) => {
+			console.error(`${error}`.trim());
+		});
+		child.on("close", (code) => {
+			process.exit(code);
+		});
 	}
 } else {
 	console.log('Project location: '+process.cwd());
-
-	const currentModuleUrl = new URL(import.meta.url);
-  const currentModuleDirectory = path.dirname(currentModuleUrl.pathname);
-
-  const serverScriptPath = path.join(currentModuleDirectory, "../", "server", "server.ts");
 
 	console.log('Server location: '+serverScriptPath);
 	const child = spawn("bun", ["run", serverScriptPath]);

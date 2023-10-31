@@ -4253,6 +4253,21 @@ class Link extends Text_default {
 }
 var Link_default = Link;
 
+// client/widgets/buttons/Button.ts
+var defaultButton = (more, link2) => getDefaults({
+  element: { name: link2 ? "a" : "button" },
+  class: more ? "button " + more : "button",
+  accepts: false
+});
+
+class Button extends Link_default {
+  constructor(selectedOptions, otheroptions = null) {
+    const options11 = Text_default.resolveOptions(selectedOptions, otheroptions, defaultButton(null, otheroptions?.url || selectedOptions?.url));
+    super(options11);
+  }
+}
+var Button_default = Button;
+
 // client/widgets/buttons/Radio.ts
 var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: { type: "radio" } });
 
@@ -4277,27 +4292,33 @@ var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: 
   document.head.appendChild(style);
 })();
 
-// styles/some.css
-(() => {
-  const style = document.createElement("style");
-  style.pathname = "/home/makano/workspace/rayous/styles/some.css";
-  style.textContent = `body {
-  font-size: 40px;
-}`;
-  document.head.appendChild(style);
-})();
-
-// app/page.ts
+// app/test/ref/page.ts
 class page_default extends Component {
   constructor() {
     super(...arguments);
   }
-  build({ route }) {
-    const text = new Text_default({ text: "" });
-    setTimeout(() => text.options.text = "route:" + route.path, 1000);
-    const link2 = new Link_default("Hi");
-    setTimeout(() => link2.url = "/home", 1000);
-    return new Widget_default({ children: [text, link2] });
+  text = "Hello";
+  textWithValue = "";
+  textRef = new Ref("Hi");
+  initState(props) {
+    this.ref("text");
+    this.ref("textWithValue", "Sup");
+  }
+  build(props) {
+    return new Widget_default({
+      children: [
+        new Text_default(this.text),
+        new Text_default(this.textRef),
+        new Text_default(this.textWithValue),
+        new Button_default("Stop the hello", {
+          onClick: () => {
+            this.text = "not hello";
+            this.textWithValue = "stopped";
+            this.textRef = "Fine!";
+          }
+        })
+      ]
+    });
   }
 }
 
@@ -4310,7 +4331,7 @@ function init() {
 var loaderOn = false;
 var loader;
 var after2 = false;
-var buildProps = (props) => ({ route: { path: "/", params: {} }, ...props });
+var buildProps = (props) => ({ route: { path: "/test/ref", params: {} }, ...props });
 if (loaderOn) {
   try {
     if (typeof Loader == "function") {
