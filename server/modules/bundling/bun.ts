@@ -11,6 +11,7 @@ export async function bundleBun(env: string, options = {}){
 		entrypoints: ['./tmp/file.ts'],
 		// external: ['*'],
 		root: ".",
+		minify: env == 'prod',
 		plugins: [bunTailwindLoader, bunSassLoader, {
 			name: 'Import Loader',
 			setup(build: any) {
