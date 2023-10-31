@@ -191,4 +191,5 @@ class Widget extends WidgetProps {
 	}
 }
 
+export type { widget };
 export default Widget;

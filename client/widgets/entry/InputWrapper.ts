@@ -10,7 +10,9 @@ export class EntryController extends Controller<string> {
 export interface EntryOptions extends options {
 	controller?: EntryController,
 	title?: string,
-	onTextInput?: CallableFunction
+	onTextInput?: CallableFunction,
+	required?: boolean,
+	inputType?: 'file' | 'text' | 'email' | 'password' | 'number'
 }
 
 class InputWrapper extends Widget{
@@ -22,6 +24,9 @@ class InputWrapper extends Widget{
 
 		if(options.controller){
 			this.setController(options.controller);
+		}
+		if(options.required){
+			findEl(this.id!).attr({ required: true });
 		}
 	}
 
@@ -55,6 +60,10 @@ class InputWrapper extends Widget{
 			this.title = change;
 		});
 		findEl(this.id!).attr({'placeholder': text instanceof Controller ? text.get() : text.toString()});
+	}
+
+	static textArea(selectedOptions: EntryOptions){
+		return new InputWrapper({...selectedOptions, element: { name: 'textarea' }});
 	}
 }
 
