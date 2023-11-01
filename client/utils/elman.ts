@@ -42,7 +42,7 @@ function setAttributeMap(element: HTMLElement, attr: attr){
 }
 
 function setClasses(element: HTMLElement, classes: string, type : 'add'|'remove'|'toggle'|'contains' = 'add' ){
-	const classNames = classes.match(' ') ? classes.split(' ') : [classes];
+	const classNames = classes.trim().match(' ') ? classes.trim().split(' ') : [classes.trim()];
 	classNames.forEach(className => element
 		.classList
 			[type]

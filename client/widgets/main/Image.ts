@@ -31,7 +31,7 @@ class Image extends Widget {
   }
 
   set src(src: string) {
-    if (this.sealed !== true) findEl(this.id!).attr("src", src);
+    if (this.sealed !== true) findEl(this.id!).attr({"src": src});
   }
 }
 
