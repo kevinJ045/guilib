@@ -57,7 +57,7 @@ export default class extends Component {
 					class: 'p-4 w-full',
 					children: [
 						new Alert({
-							title: "ssjjs"
+							title: "ssjjss"
 						})
 					]
 				})

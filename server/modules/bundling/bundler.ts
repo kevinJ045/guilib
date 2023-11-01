@@ -70,10 +70,8 @@ export function getListenerSocket(port: number, file : { imports: string[] }){
 		socket.addEventListener('message', event => {
 			try{
 				const data = JSON.parse(event.data);
-				if(data.type == 'file-change'){
-					console.log(data.path);
-					if(imports.indexOf(data.path) > -1) location.reload();
-				}
+				console.log(data);
+				if(imports.indexOf(data.path) > -1) location.reload();
 			} catch(e){}
 		});
 	})();</script>`;

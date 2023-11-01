@@ -1,9 +1,34 @@
 import { error, Router } from "itty-router";
-import { readFileSync, writeFileSync, existsSync } from "fs";
+import { readFileSync, readdirSync, statSync, watch, writeFileSync, existsSync } from "fs";
 import { middleWare } from "./modules/middleware/middleware";
 import { serve } from "./modules/serving/server.bun";
-import chokidar from "chokidar";
-import { resolve as resolvePath } from "node:path";
+
+import { resolve as resolvePath, join as joinPath } from "node:path";
+
+
+function watchFolder(dir: string, onchange: (path: string) => any) {
+  watch(dir, (eventType, filename) => {
+		if(!filename) return;
+    const filePath = joinPath(dir, filename as string);
+
+    if (eventType === 'rename') {
+      if (existsSync(filePath)) {
+        if (statSync(filePath).isDirectory()) {
+          watchFolder(filePath, onchange);
+        }
+      }
+    } else if (eventType === 'change') {
+      onchange(filePath);
+    }
+  });
+
+  readdirSync(dir).forEach((file) => {
+    const filePath = joinPath(dir, file);
+    if (statSync(filePath).isDirectory()) {
+      watchFolder(filePath, onchange);
+    }
+  });
+}
 
 
 async function startServer(){
@@ -48,14 +73,12 @@ async function startServer(){
 			}
 		}
 	});
-
-	if(env === 'dev') chokidar.watch('./app')
-	.on('all', (event, path) => {
+	
+	if(env === 'dev') watchFolder('./app', (filename: string) => {
 		server.publish('file-change-listeners', JSON.stringify({
 			type: 'file-change',
-			event: event,
-			relativePath: 'app/'+path,
-			path: resolvePath(path)
+			relativePath: filename,
+			path: resolvePath(filename)
 		}));
 	});
 
