@@ -1,4 +1,4 @@
-import Page0 from "../app/test/components/page";
+import Page0 from "../app/page";
 
 import Page1 from "../app/layout";
 
@@ -10,7 +10,7 @@ import Page1 from "../app/layout";
 		let loaderOn = false, loader, after = false;
 
 		const buildProps = (props) => (
-			{ route: {path: "/test/components", params: {} }, ...props}
+			{ route: {path: "/", params: {} }, ...props}
 		)
 
 		if(loaderOn){

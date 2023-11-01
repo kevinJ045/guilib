@@ -3,5 +3,8 @@
 	"port": 2345,
 	"meta": {
 		"author": "makano"
+	},
+	"html": {
+		"data-theme": "cupcake"
 	}
 }

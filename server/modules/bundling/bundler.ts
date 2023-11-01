@@ -126,6 +126,19 @@ export async function getHead() {
 	return html;
 }
 
+async function getAttrs(el: string){
+	const config = await import(path.join(process.cwd(), 'rayous.json'));
+	let attrs: string[] = [];
+	if(config[el]){
+		for(let i in config[el]){
+			let q = '"';
+			if(config[el][i].match('"')) q = "'";
+			attrs.push(`${i}=${q}${config[el][i]}${q}`);
+		}
+	}
+	return attrs.join(' ');
+}
+
 export async function templateHtml(scripts: string[], additional: string = ""){
-	return `<html>${await getHead()}<body>${scripts.map((script, index) => `<script type="module">${script}</script>`).join('')}${additional}</body></html>`
+	return `<html ${await getAttrs('html')}>${await getHead()}<body ${await getAttrs('body')}>${scripts.map((script, index) => `<script type="module">${script}</script>`).join('')}${additional}</body></html>`
 }
