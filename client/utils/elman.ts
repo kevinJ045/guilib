@@ -61,7 +61,7 @@ function setCss(element: HTMLElement, values: string | Record<string, any>, valu
 		for (const prop in values) {
 			let value = values[prop];
 			if(typeof value == 'number') value = value + 'px';
-			(element.style as Record<string, any>) [prop.toString()] = value;
+			element.style.setProperty(prop.toString(), value);
 		}
 	}
 }

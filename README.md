@@ -55,8 +55,10 @@ For any help, you can refer to the [Rayous Github Wiki](https://github.com/kevin
 
 For example usage and additional resources, visit the [Rayous GitHub repository](https://github.com/kevinj045/guilib). The repository includes code examples and detailed documentation to help you get started with Rayous.
 
-## Demo Project
-Explore a practical example of Rayous in action with the [Rayous Todo App Demo](https://github.com/kevinJ045/rayous-todo-demo). This demo project showcases how to build a to-do list application using Rayous, providing valuable insights into creating web applications with the framework.
+## Demo Projects
+
+- [Rayous Todo App Demo](https://github.com/kevinJ045/rayous-todo-demo): A to-do list application built with Rayous.
+- [Rayous DaisyUI Demo](https://github.com/kevinJ045/rayous-daisyui-demo): A demo project showcasing Rayous with DaisyUI integration.
 
 ## Contributions
 
