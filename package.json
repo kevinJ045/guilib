@@ -1,6 +1,6 @@
 {
   "name": "rayous",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "author": "makano",
   "description": "A mini router X ui kit with ts",
   "main": "./client/index.ts",
@@ -28,10 +28,7 @@
     "url": "https://github.com/kevinj045/guilib.git"
   },
   "scripts": {
-    "start": "bun --watch run ./server/server.ts",
-    "startBuild": "/usr/bin/webpack --config webpack.config.js --stats-error-details",
-    "dev": "npm run start & npm run startBuild",
-    "bun": "bun build ./src/main.js --outdir ./public/js --watch & npm run start"
+    "start": "bun --watch run ./server/server.ts"
   },
   "keywords": [],
   "license": "MIT",

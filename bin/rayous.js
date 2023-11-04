@@ -12,6 +12,11 @@ const currentModuleDirectory = path.dirname(currentModuleUrl.pathname);
 const serverScriptPath = path.join(currentModuleDirectory, "../", "server", "server.ts");
 const builderScriptPath = path.join(currentModuleDirectory, "../", "server", "build.ts");
 
+let buncommand = 'npx bun';
+if(fs.existsSync('/bin/bun') || fs.existsSync('/usr/bin/bun')){
+	buncommand = 'bun';
+}
+
 if(subcommand[0]){
 	if(subcommand[0] == 'create'){
 		console.log('creating');
@@ -44,7 +49,7 @@ export default class extends Component {
 		}, null, 2));
 	} else if(subcommand[0] == 'build') {
 		console.log('building');
-		const child = spawn("bun", ["run", builderScriptPath, subcommand[1]]);
+		const child = spawn(buncommand, ["run", builderScriptPath, subcommand[1]]);
 		child.stdout.on("data", (data) => {
 			console.log(data.toString().trim());
 		});
@@ -60,7 +65,7 @@ export default class extends Component {
 	console.log('Project location: '+process.cwd());
 
 	console.log('Server location: '+serverScriptPath);
-	const child = spawn("bun", ["run", serverScriptPath]);
+	const child = spawn(buncommand, ["run", serverScriptPath]);
 
   child.stdout.on("data", (data) => {
     console.log(data.toString().trim());
