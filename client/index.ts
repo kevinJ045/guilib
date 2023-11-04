@@ -13,7 +13,7 @@ import LayoutBuilder from "./widgets/layout/LayoutBuilder.js";
 import Checkbox from "./widgets/buttons/Checkbox.js";
 import Radio from "./widgets/buttons/Radio.js";
 import Container from "./widgets/containers/Container.js";
-import Selectbox from "./widgets/entry/SelectBox.js";
+import Selectbox, { SelectableOption } from "./widgets/entry/SelectBox.js";
 import { Center, Column, Row } from "./widgets/containers/DirectedContainer.js";
 
 
@@ -35,5 +35,6 @@ export {
 	Selectbox,
 	Row,
 	Column,
-	Center
+	Center,
+	SelectableOption
 };

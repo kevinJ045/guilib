@@ -6,7 +6,9 @@ import Widget, { widget } from "../main/Widget.js";
 
 export interface SelectableOptions {
 	title: widget | string,
-	value: string
+	value: string,
+	selected?: boolean,
+	disabled?: boolean
 }
 
 export class SelectController extends Controller<SelectableOption | SelectableOptions | string> {
@@ -28,9 +30,17 @@ export class SelectableOption extends Widget {
 	constructor(options: SelectOptionOptions){
 		super({
 			element: {name: 'option'},
-			_setters: ['value', 'title'],
+			_setters: ['value', 'title', 'selected', 'disabled'],
 			...options
 		});
+	}
+
+	set selected(value: boolean){
+		(findEl(this.id!) as Dom).attr({ selected: value });
+	}
+
+	set disabled(value: boolean){
+		(findEl(this.id!) as Dom).attr({ disabled: value });
 	}
 
 	set value(value: string){
