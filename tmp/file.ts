@@ -1,6 +1,4 @@
-import Page0 from "../app/page";
-
-import Page1 from "../app/layout";
+import Page0 from "../app/posts/[id]/page";
 
 		import * as clientInit from "../app/init.client";
 
@@ -10,7 +8,7 @@ import Page1 from "../app/layout";
 		let loaderOn = false, loader, after = false;
 
 		const buildProps = (props) => (
-			{ route: {path: "/", params: {} }, ...props}
+			{ route: {path: "/posts/hello", params: {"id":"hello"} }, ...props}
 		)
 
 		if(loaderOn){
@@ -41,16 +39,11 @@ import Page1 from "../app/layout";
 page0._beforeInit();
 page0.initState(buildProps());
 let made0 = page0.make(buildProps({init: initResponse, page: null}));
-let page1 = new Page1();
-page1._beforeInit();
-page1.initState(buildProps());
-let made1 = page1.make(buildProps({init: initResponse, page: made0}));
 	
 			if(Page0.layouts === false){
 				made0.to(document.body);
 			} else {
-				page0.afterBuild(buildProps({page: made0}));
-made1.to(document.body)
+				made0.to(document.body)
 			}
 	
 			if(typeof page0.afterBuild == "function") page0.afterBuild(buildProps({page: made0}));

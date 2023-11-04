@@ -128,9 +128,12 @@ export default class Routes {
 		for (let i = segments.length; i > 0; i--) {
 			const currentPath = segments.slice(0, i).join('/');
 			const layoutPath = path.join(currentPath, 'layout.ts');
+			const layoutPathJs = path.join(currentPath, 'layout.js');
 	
 			if (fs.existsSync(layoutPath)) {
 				layouts.push(layoutPath);
+			} else if (fs.existsSync(layoutPathJs)) {
+				layouts.push(layoutPathJs);
 			}
 		}
 
@@ -146,11 +149,14 @@ export default class Routes {
 		
 		for (let i = segments.length; i > 0; i--) {
 			const currentPath = segments.slice(0, i).join('/');
-			const loadingPath = path.join(currentPath, 'loading.ts');
+			const loadingPath_ts = path.join(currentPath, 'loading.ts');
+			const loadingPath_js = path.join(currentPath, 'loading.js');
 	
-			if (fs.existsSync(loadingPath)) {
-				loadings.push(loadingPath);
-			}
+			if (fs.existsSync(loadingPath_ts)) {
+				loadings.push(loadingPath_ts);
+			} else if(fs.existsSync(loadingPath_js)){
+        loadings.push(loadingPath_js);
+      }
 		}
 
     let loader = loadings.pop();
