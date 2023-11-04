@@ -2,6 +2,7 @@ import Widget from "./Widget";
 import getDefaults, { options } from "../../utils/options";
 import Store from "../../data/Store.js";
 import Controller from "../../data/Controller";
+import { child } from "../_ghost/WidgetProps";
 
 type text = string | Controller<any> | ((widget: Widget) => string);
 class textOptions extends options {
@@ -40,6 +41,7 @@ class Text extends Widget {
 			text = text.get().toString() as string;
 		}
 		this.text(text);
+		if(options.children) this.addAll(...(options.children as child[]));
 	}
 
 	static resolveOptions(selectedOptions: object | string, otheroptions: object | null, defaults: object){

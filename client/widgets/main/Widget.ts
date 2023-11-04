@@ -116,6 +116,8 @@ function _init(widget: widgetF, options: options){
 	
 	if(options.accepts === false){
 		widget.accepts = false;
+	} else if(options.accepts === true){
+		widget.accepts = true;
 	}
 
 	for(var i in options){
