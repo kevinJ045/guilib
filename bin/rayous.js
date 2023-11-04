@@ -19,7 +19,7 @@ if(fs.existsSync('/bin/bun') || fs.existsSync('/usr/bin/bun')){
 
 function resolvePath(routePath){
 	if(!routePath.startsWith('/')) routePath = '/'+routePath;
-	return 'app'+routePath.replace.replace(/(\:(\w+))/g, '[$2]');
+	return 'app'+routePath.replace(/(\:(\w+))/g, '[$2]');
 }
 
 if(subcommand[0]){
@@ -66,11 +66,15 @@ export default class extends Component {
 			process.exit(code);
 		});
 	} else if(subcommand[0] == 'route'){
-		let routePath = resolvePath(subcommand[1]);
-		fs.writeFileSync(routePath, `async function GET(){ return "empty"; }`);
+		let routePath = path.join(resolvePath(subcommand[1]), 'route.ts');
+		let folder = path.dirname(routePath);
+		if(!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true});
+		if(!fs.existsSync(routePath)) fs.writeFileSync(routePath, `async function GET(){ return "empty"; }`);
 	} else if(subcommand[0] == 'page'){
-		let routePath = resolvePath(subcommand[1]);
-		fs.writeFileSync(routePath, `import { Component, Widget } from "rayous";
+		let routePath = path.join(resolvePath(subcommand[1]), 'page.ts');
+		let folder = path.dirname(routePath);
+		if(!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true});
+		if(!fs.existsSync(routePath)) fs.writeFileSync(routePath, `import { Component, Widget } from "rayous";
 import { buildProps } from "rayous/extra";
 
 export default class extends Component {
