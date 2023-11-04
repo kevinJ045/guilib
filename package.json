@@ -30,7 +30,19 @@
   "scripts": {
     "start": "bun --watch run ./server/server.ts"
   },
-  "keywords": [],
+  "keywords": [
+    "rayous",
+    "guilib",
+    "widget",
+    "bundler",
+    "bundle",
+    "router",
+    "typescript",
+    "ui",
+    "uikit",
+    "builder",
+    "build"
+  ],
   "license": "MIT",
   "type": "module",
   "typings": "./types/index.d.ts",
