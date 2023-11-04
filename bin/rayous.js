@@ -17,6 +17,11 @@ if(fs.existsSync('/bin/bun') || fs.existsSync('/usr/bin/bun')){
 	buncommand = 'bun';
 }
 
+function resolvePath(routePath){
+	if(!routePath.startsWith('/')) routePath = '/'+routePath;
+	return 'app'+routePath.replace.replace(/(\:(\w+))/g, '[$2]');
+}
+
 if(subcommand[0]){
 	if(subcommand[0] == 'create'){
 		console.log('creating');
@@ -24,10 +29,10 @@ if(subcommand[0]){
 		fs.mkdirSync('./static');
 		fs.mkdirSync('./styles');
 		fs.writeFileSync('./app/page.ts', `import { Component, Text, Widget } from "rayous";
-import * as Extra from "rayous/extra";
+import { buildProps } from "rayous/extra";
 
 export default class extends Component {
-	build({ route: {} }) {
+	build(props: buildProps) {
 		return new Widget({ children: [new Text("/ folder")] });
 	}
 }`);
@@ -60,6 +65,23 @@ export default class extends Component {
 		child.on("close", (code) => {
 			process.exit(code);
 		});
+	} else if(subcommand[0] == 'route'){
+		let routePath = resolvePath(subcommand[1]);
+		fs.writeFileSync(routePath, `async function GET(){ return "empty"; }`);
+	} else if(subcommand[0] == 'page'){
+		let routePath = resolvePath(subcommand[1]);
+		fs.writeFileSync(routePath, `import { Component, Widget } from "rayous";
+import { buildProps } from "rayous/extra";
+
+export default class extends Component {
+	build(props: buildProps) {
+		return new Widget({
+			children: [
+
+			]
+		});
+	}
+}`);
 	}
 } else {
 	console.log('Project location: '+process.cwd());
