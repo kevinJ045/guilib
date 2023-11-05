@@ -1,6 +1,6 @@
 {
   "name": "rayous",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "author": "makano",
   "description": "A mini router X ui kit with ts",
   "main": "./client/index.ts",
@@ -44,8 +44,8 @@
     "build"
   ],
   "license": "MIT",
-  "type": "module",
   "typings": "./types/index.d.ts",
+  "type": "module",
   "dependencies": {
     "bun": "^1.0.7",
     "console": "^0.7.2",

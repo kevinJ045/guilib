@@ -20,7 +20,7 @@ function makeImportFile(route: route, paths: any, ...filepath: string[]){
 
 		const otherPaths = ${JSON.stringify(paths)};
 
-		const buildProps = (props) => (
+		const buildProps = (props: any) => (
 			{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path){ location.pathname = path }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }, ...props}
 		)
 

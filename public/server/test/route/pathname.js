@@ -1,0 +1,1 @@
+exports.pathname = "/test/route"

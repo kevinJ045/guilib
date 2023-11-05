@@ -119,6 +119,33 @@ export default class Routes {
     return null; // Path not found.
   }
 
+  find404(pathRequested: string) : route | null {
+    this.registerMaps();
+
+    let requestedPath = sanitizePath(pathRequested);
+    let pathname = path.join('./app', requestedPath, '404.ts');
+    let pathname_js = path.join('./app', requestedPath, '404.ts');
+    let p;
+
+    if(fs.existsSync(pathname)){
+      p = pathname;
+    } else if(fs.existsSync(pathname_js)){
+      p = pathname_js;
+    }
+
+    if(p){
+      return {
+        path: pathRequested,
+        mappedPath: requestedPath,
+        correspondingFile: p,
+        type: 'page',
+        params: {},
+      }
+    } else {
+      return this.find404(path.join(pathRequested, '../'));
+    }
+  }
+
 	findLayouts(route: route){
 		const layouts: string[] = [];
 		

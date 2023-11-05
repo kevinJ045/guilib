@@ -19,8 +19,8 @@ export default class Serving {
 		} else {
 			if(route?.type == 'page') this.routes.findLayouts(route as route);
 			
-			let builder = new Builder(route as route);
-			const built = await builder.build(req, res, next);
+			let builder = new Builder(route as route, this.routes);
+			const built = await builder.build(req);
 			
 			if(built.status == 404) res.send(this.error(404));
 			else res.send(built.response);
