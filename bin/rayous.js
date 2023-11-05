@@ -14,23 +14,33 @@ const builderScriptPath = path.join(currentModuleDirectory, "../", "server", "bu
 
 let buncommand = 'npx';
 let buncommand_1 = 'bun';
-if(fs.existsSync('/bin/bun') || fs.existsSync('/usr/bin/bun')){
+if(process.env.BUN_INSTALL || fs.existsSync('/bin/bun') || fs.existsSync('/usr/bin/bun')){
 	buncommand = 'bun';
 	buncommand_1 = '';
 }
+const rbun = (array) => buncommand_1.length ? [buncommand_1].concat(array) : array;
 
 function resolvePath(routePath){
 	if(!routePath.startsWith('/')) routePath = '/'+routePath;
 	return 'app'+routePath.replace(/(\:(\w+))/g, '[$2]');
 }
 
+function createFile(filename, filecontent){
+	console.log('Creating file:', filename);
+	if(filecontent){
+		fs.writeFileSync(filename, filecontent);
+	} else {
+		fs.mkdirSync(filename);
+	}
+}
+
 if(subcommand[0]){
 	if(subcommand[0] == 'create'){
-		console.log('creating');
-		fs.mkdirSync('./app');
-		fs.mkdirSync('./static');
-		fs.mkdirSync('./styles');
-		fs.writeFileSync('./app/page.ts', `import { Component, Text, Widget } from "rayous";
+		console.log('Starting create...');
+		createFile('./app');
+		createFile('./static');
+		createFile('./styles');
+		createFile('./app/page.ts', `import { Component, Text, Widget } from "rayous";
 import { buildProps } from "rayous/extra";
 
 export default class extends Component {
@@ -38,14 +48,14 @@ export default class extends Component {
 		return new Widget({ children: [new Text("/ folder")] });
 	}
 }`);
-		fs.writeFileSync('./rayous.json', JSON.stringify({
+		createFile('./rayous.json', JSON.stringify({
 			title: "App",
 			meta: { author: "" },
 			links: [{type: "", link: ""}],
 			scripts: [""],
 			envprod: false
 		}, null, 2));
-		fs.writeFileSync('./tailwind.config.js', `/** @type {import('tailwindcss').Config} */\nmodule.exports = `+JSON.stringify({
+		createFile('./tailwind.config.js', `/** @type {import('tailwindcss').Config} */\nmodule.exports = `+JSON.stringify({
 			content: [
 				'./app/**/*.{js,ts,jsx,tsx,mdx}'
 			],
@@ -55,8 +65,8 @@ export default class extends Component {
 			plugins: [],
 		}, null, 2));
 	} else if(subcommand[0] == 'build') {
-		console.log('building');
-		const child = spawn(buncommand, [buncommand_1, "run", builderScriptPath, subcommand[1]]);
+		console.log('Starting build...');
+		const child = spawn(buncommand, rbun(["run", builderScriptPath, ...subcommand.splice(0)]));
 		child.stdout.on("data", (data) => {
 			console.log(data.toString().trim());
 		});
@@ -93,7 +103,7 @@ export default class extends Component {
 	console.log('Project location: '+process.cwd());
 
 	console.log('Server location: '+serverScriptPath);
-	const child = spawn(buncommand, [buncommand_1, "run", serverScriptPath]);
+	const child = spawn(buncommand, rbun(["run", serverScriptPath]));
 
   child.stdout.on("data", (data) => {
     console.log(data.toString().trim());
