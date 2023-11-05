@@ -15,7 +15,8 @@ export default class extends Component {
 						margin: 0,
 						padding: 0,
 						gap: 20,
-						overflow: 'auto'
+						overflow: 'auto',
+						fontSize: '14px',
 					},
 					items: props.router.paths,
 					template(path: string){

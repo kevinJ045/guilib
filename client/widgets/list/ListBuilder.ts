@@ -34,16 +34,26 @@ class ListBuilder extends Widget {
 		}
 		const options: Record<string, any> = {...this.options, ...newOptions};
 		if(options.items){
-			if(options.items instanceof Controller){
-				if(!options.items.isTakenBy(this)) {
-					this.setStore({[options.itemsStateName]: options.items.get()});
-					options.items.take(this);
-					options.items.onChange(() => {
+			const doItems = () => {
+				if(options.items instanceof Controller){
+					if(!options.items.isTakenBy(this)) {
 						this.setStore({[options.itemsStateName]: options.items.get()});
-					});
+						options.items.take(this);
+						options.items.onChange(() => {
+							this.setStore({[options.itemsStateName]: options.items.get()});
+						});
+					}
+				} else {
+					this.setStore({[options.itemsStateName]: options.items});
 				}
+			}
+			if(options.items instanceof Promise){
+				options.items.then((items: any[]) => {
+					options.items = items;
+					doItems();
+				})
 			} else {
-				this.setStore({[options.itemsStateName]: options.items});
+				doItems();
 			}
 		}
 		if(options.loader){

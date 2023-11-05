@@ -10,10 +10,11 @@ interface ListItemOptions extends options {
 	link?: boolean
 }
 
+type items = Controller<any[]> | any[]
 interface ListOptions extends options {
 	itemsStateName?: string,
 	template?: CallableFunction,
-	items?: Controller<any[]> | any[]
+	items?: items | Promise<items>
 }
 
 const defaultList = () => getDefaults<ListOptions>({

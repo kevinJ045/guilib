@@ -5,8 +5,9 @@ import Controller from "../../data/Controller";
 import { child } from "../_ghost/WidgetProps";
 
 type text = string | Controller<any> | ((widget: Widget) => string);
+type textPromise = text | Promise<text>;
 class textOptions extends options {
-	text?: text | null = "";
+	text?: textPromise | null = "";
 }
 
 const defaultText = () => getDefaults({
@@ -30,22 +31,28 @@ class Text extends Widget {
 
 	render(){
 		const options: textOptions = this.options;
-		let text: text = options.text || "";
-		if(typeof text == "function"){
-			text = (options.text as Function)(this) as string;
-		} 
-		if(text instanceof Controller){
-			text.onChange((change: string) => {
-				(this.options as textOptions).text = change.toString();
-			});
-			text = text.get().toString() as string;
+		let text: textPromise = options.text || "";
+		const doText = (text: text) => {
+			if(typeof text == "function"){
+				text = (options.text as Function)(this) as string;
+			} else if(text instanceof Controller){
+				text.onChange((change: string) => {
+					(this.options as textOptions).text = change.toString();
+				});
+				text = text.get().toString() as string;
+			}
+			this.text(text);
+			if(options.children) this.addAll(...(options.children as child[]));
 		}
-		this.text(text);
-		if(options.children) this.addAll(...(options.children as child[]));
+		if(text instanceof Promise){
+			text.then(doText);
+		} else {
+			doText(text);
+		}
 	}
 
 	static resolveOptions(selectedOptions: object | string, otheroptions: object | null, defaults: object){
-		if(typeof selectedOptions == 'string' || selectedOptions instanceof Controller){
+		if(typeof selectedOptions == 'string' || selectedOptions instanceof Controller || selectedOptions instanceof Promise){
 			selectedOptions = { text: selectedOptions };
 		}
 		if(otheroptions){

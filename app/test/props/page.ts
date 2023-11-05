@@ -14,4 +14,5 @@ export default class extends Component {
 		});
 	}
 	static layouts = false;
+	static title = "Props Help";
 }

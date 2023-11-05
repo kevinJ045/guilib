@@ -11,8 +11,10 @@ function makeImportFile(route: route, paths: any, ...filepath: string[]){
 	const script = `${filepath.map((filepath, index) => 
 		`import Page${index} from "../${filepath.replace(/\.ts$/, '')}";\n`).join('\n')}
 		${existsSync('./app/init.client.ts') || existsSync('./app/init.client.js') ? `import * as clientInit from "../app/init.client";\n` : 'const clientInit = { init: () => {}, after: () => {} };'}
-
+		
 		${route.loader ? 'import Loader from "../'+route.loader+'"' : ''}
+
+		if(typeof Page0.title === "string") document.title = Page0.title;
 
 		let loaderOn = ${route.loader ? `"${route.loader}"` : 'false'}, loader, after = false;
 
@@ -21,6 +23,9 @@ function makeImportFile(route: route, paths: any, ...filepath: string[]){
 		const buildProps = (props) => (
 			{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path){ location.pathname = path }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }, ...props}
 		)
+
+		
+		if(typeof Page0.title === "function") document.title = Page0.title(buildProps({page: made0}));
 
 		if(loaderOn){
 			try{
@@ -36,7 +41,7 @@ function makeImportFile(route: route, paths: any, ...filepath: string[]){
 					throw new TypeError('Loader from ${route.loader} is not a returning a function that returns a widget!');
 				}
 			} catch(e){
-				document.write()
+				document.write(e);
 				throw e;
 			}
 		}
@@ -74,7 +79,9 @@ export function getListenerSocket(port: number, file : { imports: string[] }){
 				const data = JSON.parse(event.data);
 				console.log(data);
 				if(imports.indexOf(data.path) > -1) location.reload();
-			} catch(e){}
+			} catch(e){
+				console.log(e);
+			}
 		});
 	})();</script>`;
 }

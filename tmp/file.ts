@@ -1,19 +1,24 @@
-import Page0 from "../app/lll/page";
+import Page0 from "../app/test/promise/page";
 
 import Page1 from "../app/layout";
 
 		import * as clientInit from "../app/init.client";
 
-
 		
+		
+
+		if(typeof Page0.title === "string") document.title = Page0.title;
 
 		let loaderOn = false, loader, after = false;
 
-		const otherPaths = ["/","/someapifolder","/home","/test/route","/test/route/:id","/test/components","/test/props","/test/tailwind","/test/ref","/test/model","/test/loading","/test/layout","/test/select","/test/live","/lll","/posts/:id"];
+		const otherPaths = ["/","/someapifolder","/home","/test/route","/test/route/:id","/test/components","/test/promise","/test/props","/test/tailwind","/test/ref","/test/model","/test/loading","/test/layout","/test/select","/test/live","/lll","/posts/:id"];
 
 		const buildProps = (props) => (
-			{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path){ location.pathname = path }, back: function(){ location.back() } }, route: {path: "/lll", params: {} }, ...props}
+			{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path){ location.pathname = path }, back: function(){ location.back() } }, route: {path: "/test/promise", params: {} }, ...props}
 		)
+
+		
+		if(typeof Page0.title === "function") document.title = Page0.title(buildProps({page: made0}));
 
 		if(loaderOn){
 			try{
@@ -29,7 +34,7 @@ import Page1 from "../app/layout";
 					throw new TypeError('Loader from undefined is not a returning a function that returns a widget!');
 				}
 			} catch(e){
-				document.write()
+				document.write(e);
 				throw e;
 			}
 		}
