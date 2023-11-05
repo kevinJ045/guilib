@@ -89,7 +89,7 @@ async function build(path: string){
 		const routes = new Routes();
 		routes.registerMaps();
 		const route = routes.findPath(path);
-		if(path.match(/\:(\w+)/) && route) {
+		if(path.match(/\:(\w+)/) && route && route?.type == 'page') {
 			let buildParamsPath_ts = buildParamsPathFor(route.correspondingFile, 'ts');
 			let buildParamsPath_js = buildParamsPathFor(route.correspondingFile, 'js');
 			if(fs.existsSync(buildParamsPath_ts)){
