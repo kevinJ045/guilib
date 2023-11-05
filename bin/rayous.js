@@ -66,7 +66,7 @@ export default class extends Component {
 		}, null, 2));
 	} else if(subcommand[0] == 'build') {
 		console.log('Starting build...');
-		const child = spawn(buncommand, rbun(["run", builderScriptPath, ...subcommand.splice(0)]));
+		const child = spawn(buncommand, rbun(["run", builderScriptPath, ...subcommand.splice(1)]));
 		child.stdout.on("data", (data) => {
 			console.log(data.toString().trim());
 		});
