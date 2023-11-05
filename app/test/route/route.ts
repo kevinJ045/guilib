@@ -1,6 +1,5 @@
 
 
-export function GET(req: Request, route: object){
-	return JSON.stringify(route);
-	return "Hello!";
+export function GET(req: Request, route: object, paths: string[]){
+	return JSON.stringify({route, paths});
 }

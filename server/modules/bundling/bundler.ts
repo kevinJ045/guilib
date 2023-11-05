@@ -7,7 +7,7 @@ import { bundleBun } from "./bun";
 
 export type portAndEnv = { port: number, env: 'dev' | 'prod' };
 
-function makeImportFile(route: route, ...filepath: string[]){
+function makeImportFile(route: route, paths: any, ...filepath: string[]){
 	const script = `${filepath.map((filepath, index) => 
 		`import Page${index} from "../${filepath.replace(/\.ts$/, '')}";\n`).join('\n')}
 		${existsSync('./app/init.client.ts') || existsSync('./app/init.client.js') ? `import * as clientInit from "../app/init.client";\n` : 'const clientInit = { init: () => {}, after: () => {} };'}
@@ -16,8 +16,10 @@ function makeImportFile(route: route, ...filepath: string[]){
 
 		let loaderOn = ${route.loader ? `"${route.loader}"` : 'false'}, loader, after = false;
 
+		const otherPaths = ${JSON.stringify(paths)};
+
 		const buildProps = (props) => (
-			{ route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }, ...props}
+			{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path){ location.pathname = path }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }, ...props}
 		)
 
 		if(loaderOn){
@@ -77,10 +79,10 @@ export function getListenerSocket(port: number, file : { imports: string[] }){
 	})();</script>`;
 }
 
-export async function bundle(route: route, {port, env}: portAndEnv){
+export async function bundle(route: route, {port, env}: portAndEnv, paths: Record<any, any>){
 	const scripts: string[] = [];
 
-	makeImportFile(route, route.correspondingFile, ...(route.layouts ? route.layouts : []));
+	makeImportFile(route, paths, route.correspondingFile, ...(route.layouts ? route.layouts : []));
 
 	let file = await bundleBun(env);
 

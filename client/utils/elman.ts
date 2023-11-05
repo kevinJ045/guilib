@@ -42,6 +42,7 @@ function setAttributeMap(element: HTMLElement, attr: attr){
 }
 
 function setClasses(element: HTMLElement, classes: string, type : 'add'|'remove'|'toggle'|'contains' = 'add' ){
+	if(!classes.trim()) return;
 	const classNames = classes.trim().match(' ') ? classes.trim().split(' ') : [classes.trim()];
 	classNames.forEach(className => element
 		.classList
@@ -61,7 +62,8 @@ function setCss(element: HTMLElement, values: string | Record<string, any>, valu
 		for (const prop in values) {
 			let value = values[prop];
 			if(typeof value == 'number') value = value + 'px';
-			element.style.setProperty(prop.toString(), value);
+			if(prop in element.style) (element.style as any)[prop] = value;
+			else element.style.setProperty(prop, value);
 		}
 	}
 }

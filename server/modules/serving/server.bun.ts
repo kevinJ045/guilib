@@ -21,7 +21,7 @@ export async function serve({port,env}: portAndEnv, req: Request) {
 		if (route?.type == "page") routes.findLayouts(route as route);
 		if (route?.type == "page") routes.findLoader(route as route);
 
-		let builder = new Builder(route as route);
+		let builder = new Builder(route as route, routes);
 		const built = await builder.build(req, {port,env});
 
 		if (built.status == 404) return error(404);

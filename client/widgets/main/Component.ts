@@ -8,6 +8,12 @@ export type buildProps = {
 		path: string,
 		params: Record<string, any>
 	},
+	router: {
+		navigate: (path: string) => void,
+		back: () => void,
+		assign: (path: string) => void,
+		paths: string[]
+	},
 	init?: any,
 	page?: Widget
 }

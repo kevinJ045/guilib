@@ -4,7 +4,7 @@ import "../styles/main.scss";
 import "../styles/some.css";
 
 export default class extends Component {
-	build({ route }: buildProps) {
+	build({ route, router }: buildProps) {
 		const text = new Text({text: ''});
 		setTimeout(() => (text.options as any).text = 'route:' + route.path, 1000);
 

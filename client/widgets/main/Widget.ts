@@ -5,6 +5,7 @@ import getDefaults, { options } from "../../utils/options";
 import WidgetProps, { child, widget, widgetF } from "../_ghost/WidgetProps";
 import Dom from "../../utils/dom";
 import Store from "../../data/Store";
+import { createWidgetModel } from "../../utils/widgetmodel";
 
 type wid = widget;
 
@@ -190,6 +191,10 @@ class Widget extends WidgetProps {
 
 	static from(child: HTMLElement | string){
 		return new Widget({ element: {	raw: new Dom(child).at(0) } });
+	}
+
+	static model(model: any, options: Record<string, any>){
+		return createWidgetModel(model, options);
 	}
 }
 

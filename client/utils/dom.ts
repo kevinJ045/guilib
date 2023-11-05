@@ -138,7 +138,12 @@ class Dom {
 	}
 
 	prepend(element: HTMLElement) {
-    return this.at(0).insertBefore(element, this.at(0).firstChild);
+		if(element instanceof Dom){
+			element.forEach((element: HTMLElement) => this.at(0).insertBefore(element, this.at(0).firstChild));
+		} else {
+			this.at(0).insertBefore(element, this.at(0).firstChild)
+		}
+    return this;
 	}
 
 	prependTo(element: HTMLElement) {
