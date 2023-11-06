@@ -20,6 +20,7 @@ export class Video extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "video" }
 		});
 		if(options.text){
@@ -62,6 +63,7 @@ export class Ul extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "ul" }
 		});
 		if(options.text){
@@ -92,6 +94,7 @@ export class Track extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "track" }
 		});
 		if(options.text){
@@ -146,6 +149,7 @@ export class Title extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "title" }
 		});
 		if(options.text){
@@ -180,6 +184,7 @@ export class Time extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "time" }
 		});
 		if(options.text){
@@ -218,6 +223,7 @@ export class Textarea extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "textarea" }
 		});
 		if(options.text){
@@ -264,6 +270,7 @@ export class Template extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "template" }
 		});
 		if(options.text){
@@ -302,6 +309,7 @@ export class Tablesection extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "tablesection" }
 		});
 		if(options.text){
@@ -340,6 +348,7 @@ export class Tablerow extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "tablerow" }
 		});
 		if(options.text){
@@ -382,6 +391,7 @@ export class Table extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "table" }
 		});
 		if(options.text){
@@ -428,6 +438,7 @@ export class Tablecol extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "tablecol" }
 		});
 		if(options.text){
@@ -466,6 +477,7 @@ export class Tablecell extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "tablecell" }
 		});
 		if(options.text){
@@ -508,6 +520,7 @@ export class Tablecaption extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "tablecaption" }
 		});
 		if(options.text){
@@ -546,6 +559,7 @@ export class Style extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "style" }
 		});
 		if(options.text){
@@ -580,6 +594,7 @@ export class Span extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "span" }
 		});
 		if(options.text){
@@ -614,6 +629,7 @@ export class Source extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "source" }
 		});
 		if(options.text){
@@ -652,6 +668,7 @@ export class Slot extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "slot" }
 		});
 		if(options.text){
@@ -682,6 +699,7 @@ export class Select extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "select" }
 		});
 		if(options.text){
@@ -724,6 +742,7 @@ export class Script extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "script" }
 		});
 		if(options.text){
@@ -758,6 +777,7 @@ export class Quote extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "quote" }
 		});
 		if(options.text){
@@ -792,6 +812,7 @@ export class Progress extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "progress" }
 		});
 		if(options.text){
@@ -834,6 +855,7 @@ export class Pre extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "pre" }
 		});
 		if(options.text){
@@ -868,6 +890,7 @@ export class Picture extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "picture" }
 		});
 		if(options.text){
@@ -902,6 +925,7 @@ export class Param extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "param" }
 		});
 		if(options.text){
@@ -936,6 +960,7 @@ export class Paragraph extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "paragraph" }
 		});
 		if(options.text){
@@ -970,6 +995,7 @@ export class Output extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "output" }
 		});
 		if(options.text){
@@ -1004,6 +1030,7 @@ export class Option extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "option" }
 		});
 		if(options.text){
@@ -1050,6 +1077,7 @@ export class Optgroup extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "optgroup" }
 		});
 		if(options.text){
@@ -1088,6 +1116,7 @@ export class Object extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "object" }
 		});
 		if(options.text){
@@ -1122,6 +1151,7 @@ export class Ol extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "ol" }
 		});
 		if(options.text){
@@ -1156,6 +1186,7 @@ export class Mod extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "mod" }
 		});
 		if(options.text){
@@ -1190,6 +1221,7 @@ export class Meter extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "meter" }
 		});
 		if(options.text){
@@ -1248,6 +1280,7 @@ export class Meta extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "meta" }
 		});
 		if(options.text){
@@ -1282,6 +1315,7 @@ export class Menu extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "menu" }
 		});
 		if(options.text){
@@ -1316,6 +1350,7 @@ export class Media extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "media" }
 		});
 		if(options.text){
@@ -1354,6 +1389,7 @@ export class Marquee extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "marquee" }
 		});
 		if(options.text){
@@ -1404,6 +1440,7 @@ export class Map extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "map" }
 		});
 		if(options.text){
@@ -1434,6 +1471,7 @@ export class Link extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "link" }
 		});
 		if(options.text){
@@ -1476,6 +1514,7 @@ export class Legend extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "legend" }
 		});
 		if(options.text){
@@ -1514,6 +1553,7 @@ export class Label extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "label" }
 		});
 		if(options.text){
@@ -1552,6 +1592,7 @@ export class Li extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "li" }
 		});
 		if(options.text){
@@ -1586,6 +1627,7 @@ export class Input extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "input" }
 		});
 		if(options.text){
@@ -1624,6 +1666,7 @@ export class Image extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "image" }
 		});
 		if(options.text){
@@ -1658,6 +1701,7 @@ export class Iframe extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "iframe" }
 		});
 		if(options.text){
@@ -1700,6 +1744,7 @@ export class Heading extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "heading" }
 		});
 		if(options.text){
@@ -1734,6 +1779,7 @@ export class Head extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "head" }
 		});
 		if(options.text){
@@ -1768,6 +1814,7 @@ export class Hr extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "hr" }
 		});
 		if(options.text){
@@ -1807,6 +1854,7 @@ export class Frameset extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "frameset" }
 		});
 		if(options.text){
@@ -1841,6 +1889,7 @@ export class Frame extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "frame" }
 		});
 		if(options.text){
@@ -1879,6 +1928,7 @@ export class Form extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "form" }
 		});
 		if(options.text){
@@ -1929,6 +1979,7 @@ export class Font extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "font" }
 		});
 		if(options.text){
@@ -1963,6 +2014,7 @@ export class Fieldset extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "fieldset" }
 		});
 		if(options.text){
@@ -2001,6 +2053,7 @@ export class Embed extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "embed" }
 		});
 		if(options.text){
@@ -2035,6 +2088,7 @@ export class Div extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "div" }
 		});
 		if(options.text){
@@ -2073,6 +2127,7 @@ export class Directory extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "directory" }
 		});
 		if(options.text){
@@ -2111,6 +2166,7 @@ export class Dialog extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "dialog" }
 		});
 		if(options.text){
@@ -2149,6 +2205,7 @@ export class Details extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "details" }
 		});
 		if(options.text){
@@ -2187,6 +2244,7 @@ export class Datalist extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "datalist" }
 		});
 		if(options.text){
@@ -2222,6 +2280,7 @@ export class Data extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "data" }
 		});
 		if(options.text){
@@ -2256,6 +2315,7 @@ export class Dlist extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "dlist" }
 		});
 		if(options.text){
@@ -2294,6 +2354,7 @@ export class Canvas extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "canvas" }
 		});
 		if(options.text){
@@ -2328,6 +2389,7 @@ export class Button extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "button" }
 		});
 		if(options.text){
@@ -2358,6 +2420,7 @@ export class Base extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "base" }
 		});
 		if(options.text){
@@ -2396,6 +2459,7 @@ export class Br extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "br" }
 		});
 		if(options.text){
@@ -2430,6 +2494,7 @@ export class Audio extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "audio" }
 		});
 		if(options.text){
@@ -2472,6 +2537,7 @@ export class Area extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "area" }
 		});
 		if(options.text){
@@ -2522,6 +2588,7 @@ export class Anchor extends WebkitWidget {
 		}
 		super({
 			class: '',
+			...options,
 			element: { name: "a" }
 		});
 		if(options.text){
