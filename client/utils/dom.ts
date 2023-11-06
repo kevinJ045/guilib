@@ -100,11 +100,11 @@ class Dom {
 
 	attr(attr: object | string){
 		if(typeof attr == 'object') doAll(this, (el: HTMLElement) => setAttributeMap(el, attr as attr));
-		return typeof attr == "string" ? (this.elements.at(0)!.attributes as Record<string, any>)[attr as string] : this;
+		return typeof attr == "string" ? (this.elements.at(0)!.attributes as Record<string, any>)[attr as string].value : this;
 	}
 
 	getAttr(attr: string){
-		return (this.elements.at(0)!.attributes as Record<string, any>)[attr as string];
+		return (this.elements.at(0)!.attributes as Record<string, any>)[attr as string].value;
 	}
 
 	prop(attr: object | string){
