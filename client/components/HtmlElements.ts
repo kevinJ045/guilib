@@ -12,6 +12,7 @@ export class WebkitWidget extends Widget {
 export class Video extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","controls","src"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -70,6 +71,7 @@ export class Video extends WebkitWidget {
 export class Ul extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -101,6 +103,7 @@ export class Ul extends WebkitWidget {
 export class Track extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","kind","src","srclang","label","default"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -156,6 +159,7 @@ export class Track extends WebkitWidget {
 export class Title extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -191,6 +195,7 @@ export class Title extends WebkitWidget {
 export class Time extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","datetime"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -230,6 +235,7 @@ export class Time extends WebkitWidget {
 export class Textarea extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","rows","cols","readonly"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -277,6 +283,7 @@ export class Textarea extends WebkitWidget {
 export class Template extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","content"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -316,6 +323,7 @@ export class Template extends WebkitWidget {
 export class Tablesection extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","align"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -355,6 +363,7 @@ export class Tablesection extends WebkitWidget {
 export class Tablerow extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","align","valign"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -398,6 +407,7 @@ export class Tablerow extends WebkitWidget {
 export class Table extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","width","border","cellpadding","cellspacing"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -445,6 +455,7 @@ export class Table extends WebkitWidget {
 export class Tablecol extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","span"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -484,6 +495,7 @@ export class Tablecol extends WebkitWidget {
 export class Tablecell extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","align","valign"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -527,6 +539,7 @@ export class Tablecell extends WebkitWidget {
 export class Tablecaption extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","align"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -566,6 +579,7 @@ export class Tablecaption extends WebkitWidget {
 export class Style extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","contenteditable","media"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -601,6 +615,7 @@ export class Style extends WebkitWidget {
 export class Span extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -636,6 +651,7 @@ export class Span extends WebkitWidget {
 export class Source extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","contenteditable","src","media"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -675,6 +691,7 @@ export class Source extends WebkitWidget {
 export class Slot extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -706,6 +723,7 @@ export class Slot extends WebkitWidget {
 export class Select extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","size","multiple"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -749,6 +767,7 @@ export class Select extends WebkitWidget {
 export class Script extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","contenteditable","src"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -784,6 +803,7 @@ export class Script extends WebkitWidget {
 export class Quote extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -819,6 +839,7 @@ export class Quote extends WebkitWidget {
 export class Progress extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","max","value"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -862,6 +883,7 @@ export class Progress extends WebkitWidget {
 export class Pre extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","width"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -897,6 +919,7 @@ export class Pre extends WebkitWidget {
 export class Picture extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -932,6 +955,7 @@ export class Picture extends WebkitWidget {
 export class Param extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["type","contenteditable","value"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -967,6 +991,7 @@ export class Param extends WebkitWidget {
 export class Paragraph extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1002,6 +1027,7 @@ export class Paragraph extends WebkitWidget {
 export class Output extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1037,6 +1063,7 @@ export class Output extends WebkitWidget {
 export class Option extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","value","label","selected"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1084,6 +1111,7 @@ export class Option extends WebkitWidget {
 export class Optgroup extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","label"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1123,6 +1151,7 @@ export class Optgroup extends WebkitWidget {
 export class Object extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","contenteditable","data","height","width"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1158,6 +1187,7 @@ export class Object extends WebkitWidget {
 export class Ol extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1193,6 +1223,7 @@ export class Ol extends WebkitWidget {
 export class Mod extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1228,6 +1259,7 @@ export class Mod extends WebkitWidget {
 export class Meter extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","value","min","max","low","high","optimum"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1287,6 +1319,7 @@ export class Meter extends WebkitWidget {
 export class Meta extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["type","contenteditable","content"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1322,6 +1355,7 @@ export class Meta extends WebkitWidget {
 export class Menu extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","contenteditable","label"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1357,6 +1391,7 @@ export class Menu extends WebkitWidget {
 export class Media extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","src"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1396,6 +1431,7 @@ export class Media extends WebkitWidget {
 export class Marquee extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","behavior","direction","scrollamount","loop"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1447,6 +1483,7 @@ export class Marquee extends WebkitWidget {
 export class Map extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1478,6 +1515,7 @@ export class Map extends WebkitWidget {
 export class Link extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","rel","href"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1521,6 +1559,7 @@ export class Link extends WebkitWidget {
 export class Legend extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","align"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1560,6 +1599,7 @@ export class Legend extends WebkitWidget {
 export class Label extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","for"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1599,6 +1639,7 @@ export class Label extends WebkitWidget {
 export class Li extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1634,6 +1675,7 @@ export class Li extends WebkitWidget {
 export class Input extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","contenteditable","value","readonly"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1673,6 +1715,7 @@ export class Input extends WebkitWidget {
 export class Image extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1708,6 +1751,7 @@ export class Image extends WebkitWidget {
 export class Iframe extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","src","frameborder","height","width"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1751,6 +1795,7 @@ export class Iframe extends WebkitWidget {
 export class Heading extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1786,6 +1831,7 @@ export class Heading extends WebkitWidget {
 export class Head extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1821,6 +1867,7 @@ export class Head extends WebkitWidget {
 export class Hr extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","color","width"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1861,6 +1908,7 @@ export class Hr extends WebkitWidget {
 export class Frameset extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1896,6 +1944,7 @@ export class Frameset extends WebkitWidget {
 export class Frame extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","src"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1935,6 +1984,7 @@ export class Frame extends WebkitWidget {
 export class Form extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","action","method","enctype","target"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -1986,6 +2036,7 @@ export class Form extends WebkitWidget {
 export class Font extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2021,6 +2072,7 @@ export class Font extends WebkitWidget {
 export class Fieldset extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","disabled"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2060,6 +2112,7 @@ export class Fieldset extends WebkitWidget {
 export class Embed extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2095,6 +2148,7 @@ export class Embed extends WebkitWidget {
 export class Div extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","align"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2134,6 +2188,7 @@ export class Div extends WebkitWidget {
 export class Directory extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","compact"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2173,6 +2228,7 @@ export class Directory extends WebkitWidget {
 export class Dialog extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","open"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2212,6 +2268,7 @@ export class Dialog extends WebkitWidget {
 export class Details extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","open"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2251,6 +2308,7 @@ export class Details extends WebkitWidget {
 export class Datalist extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","id"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2287,6 +2345,7 @@ export class Datalist extends WebkitWidget {
 export class Data extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2322,6 +2381,7 @@ export class Data extends WebkitWidget {
 export class Dlist extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","compact"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2361,6 +2421,7 @@ export class Dlist extends WebkitWidget {
 export class Canvas extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","width","height"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2396,6 +2457,7 @@ export class Canvas extends WebkitWidget {
 export class Button extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["contenteditable","value"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2427,6 +2489,7 @@ export class Button extends WebkitWidget {
 export class Base extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","href"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2466,6 +2529,7 @@ export class Base extends WebkitWidget {
 export class Br extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2501,6 +2565,7 @@ export class Br extends WebkitWidget {
 export class Audio extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","controls","src"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2559,6 +2624,7 @@ export class Audio extends WebkitWidget {
 export class Area extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","shape","coords","href","alt"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
@@ -2610,6 +2676,7 @@ export class Area extends WebkitWidget {
 export class Anchor extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","type","contenteditable","target","href","title"];
+		if(!options.attr) options.attr = {};
 		for(let i in options){
 			if(attributes.indexOf(i) > -1){
 				if(!options.attr) options.attr = {};
