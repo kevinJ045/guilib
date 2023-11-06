@@ -229,7 +229,7 @@ function typeCase(widget: Widget, option: any, valueRaw: any){
 
 export function createWidgetModel<T = Record<string, any>>(model: widgetModel, _options: any) {
 	const classGenerated = class extends Widget {
-		constructor(options: T){
+		constructor(options: T = _options){
 			let wo:Record<string, any>  = {};
 			if(model.widgetOptions){
 				for(let i in model.widgetOptions)
