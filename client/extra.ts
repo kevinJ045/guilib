@@ -1,9 +1,11 @@
+import Macy from "./components/Macy.js";
 import Style from "./components/Style.js";
 import Controller from "./data/Controller.js";
+import anime from "./modules/anime.js";
+import voca from "./modules/voca.js";
+import { mergeOptions } from "./utils/options.js";
 
-
-
-export { Controller, Style };
+export { Controller, Style, mergeOptions, anime, Macy, voca };
 export { EntryController } from "./widgets/entry/InputWrapper.js";
 export { SelectController } from "./widgets/entry/SelectBox.js";
 export { CheckboxController } from "./widgets/buttons/Checkbox.js";
