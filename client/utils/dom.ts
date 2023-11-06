@@ -99,12 +99,12 @@ class Dom {
 	}
 
 	attr(attr: object | string){
-		doAll(this, (el: HTMLElement) => setAttributeMap(el, attr as attr));
+		if(typeof attr == 'object') doAll(this, (el: HTMLElement) => setAttributeMap(el, attr as attr));
 		return typeof attr == "string" ? (this.elements.at(0)!.attributes as Record<string, any>)[attr as string] : this;
 	}
 
 	prop(attr: object | string){
-		doAll(this, (el: HTMLElement) => setObjectProps(el, attr as attr));
+		if(typeof attr == 'object') doAll(this, (el: HTMLElement) => setObjectProps(el, attr as attr));
 		return typeof attr == "string" ? (this.elements.at(0)! as Record<string, any>)[attr as string] : this;
 	}
 
