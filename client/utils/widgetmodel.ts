@@ -86,21 +86,30 @@ function getSelectorContent(selector: string) {
 type widgetModel = {
 	selector: string,
 	children?: widgetModel[],
+	child?: widgetModel | string,
 	options?: Record<string, any>,
-	attributes?: Record<string, any>
+	attributes?: Record<string, any>,
+	text?: string,
+	widgetOptions?: Record<string, any>,
+	[key: string]: any
 }
 
 // @ts-ignore
-function modelToWidget(model: widgetModel){
-	if(typeof model == "string") model = { selector: model };
+function modelToWidget(model: widgetModel | string){
+	if(model instanceof Widget) return model;
+ 	if(typeof model == "string") model = { selector: model };
 	let el = getSelectorContent(model.selector);
-	return new Widget({
-		...model,
+	let widget: Widget = new Widget({
+		...model.options,
 		element: { name: el.element },
 		class: el.classes,
 		attr: model.attributes,
 		children: model.children ? model.children.map(modelToWidget) : [],
+		model: model
 	});
+	if(model.text) widget.text(model.text);
+	if(model.child) widget.add(modelToWidget(model.child));
+	return widget;
 }
 
 type modelValue = {
@@ -115,13 +124,20 @@ function determineValue(valueRaw: any, widget: Widget, option: any) {
 function resolveValue(valueRaw: any, value: modelValue){
 	let _value : modelValue  = {type: typeof valueRaw, value: valueRaw};
 	if(typeof valueRaw == "string" && valueRaw.startsWith('$')){
-		_value.value = value.value;
+		_value.value = value.type == "list" ? value.value[valueRaw.split('$')[1]] : value.value;
 		_value.type = typeof value;
 	}
-	if(typeof _value.value == "object" && _value.value.selector){
+	if(_value.value instanceof Widget){
+		return _value;
+	}
+	if(typeof _value.value == "object" && typeof _value.value.selector == "string"){
 		if(_value.value.attributes)
 			for(let i in _value.value.attributes)
 				_value.value.attributes[i] = resolveValue(_value.value.attributes[i], value).value;
+
+		for(let i in _value.value)
+			_value.value[i] = resolveValue(_value.value[i], value).value;
+
 		_value.value = modelToWidget(_value.value);
 	}
 	return _value;
@@ -140,9 +156,12 @@ function actionCase(actions: any, widget: Widget, value: modelValue){
 			widget.text(actionValue.value);
 		} else {
 			let w: any = widget;
-			// @ts-ignore
-			let args = actionValue.value.arguments ? actionValue.value.arguments : [actionValue.value]
-			if(typeof w[action] == "function") w[action](...args);
+			let args = typeof actionValue.value == "object" && actionValue.value.arguments ? actionValue.value.arguments : [actionValue.value]
+			if(typeof actionValue.value == "function" && action.startsWith('on')){
+				w.on(action.split('on')[1].toLowerCase(), function(e: any, ...data: any[]){
+					actionValue.value(w, e, ...data);
+				});
+			} else if(typeof w[action] == "function") w[action](...args);
 			else if(action in w){
 				w[action] = actionValue.value;
 			}
@@ -171,7 +190,13 @@ function typeCase(widget: Widget, option: any, valueRaw: any){
 export function createWidgetModel(model: widgetModel, _options: Record<string, any>) {
 	const classGenerated = class extends Widget {
 		constructor(options: Record<string, any>){
+			let wo:Record<string, any>  = {};
+			if(model.widgetOptions){
+				for(let i in model.widgetOptions)
+					wo[i] = resolveValue(model.widgetOptions[i], {type: "list", value: options} as modelValue).value;
+			}
 			super(mergeOptions({
+				...wo,
 				element: { name: getSelectorContent(model.selector).element },
 				class: getSelectorContent(model.selector).classes,
 				children: model.children ? model.children.map(modelToWidget) : [],
@@ -179,6 +204,8 @@ export function createWidgetModel(model: widgetModel, _options: Record<string, a
 			}, options));
 		}
 	};
+	if(typeof model._onMount == "function") classGenerated.prototype._onMount = model._onMount;
+	if(typeof model._optionChange == "function") classGenerated.prototype._optionChange = model._optionChange;
 	function generateClassOptions(model: widgetModel){
 		for(var i in model.options){
 			let option = model.options[i];

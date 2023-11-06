@@ -15,6 +15,13 @@ const Card = Widget.model({
 		}
 	],
 	"options": {
+		"click": {
+			"function": {
+				"this": {
+					"onClick": "$click"
+				}
+			}
+		},
 		"actions": {
 			"type": "array",
 			"forEach": {
@@ -38,7 +45,10 @@ const Card = Widget.model({
 		"title": {
 			"string": {
 				"h2.card-title": {
-					"text": "$title"
+					"append": {
+						"selector": "span.span",
+						"text": "$title"
+					}
 				}
 			},
 			"widget": {
@@ -107,7 +117,10 @@ export default class extends Component {
 					content: [
 						new Text('A mini webos')
 					],
-					actionClass: 'justify-end'
+					actionClass: 'justify-end',
+					click(){
+						console.log("sjjs");
+					}
 				})
 			]
 		});
