@@ -186,7 +186,12 @@ function actionCase(actions: any, widget: Widget, value: modelValue){
 			widget.text(actionValue.value);
 		} else {
 			let w: any = widget;
-			let args = typeof actionValue.value == "object" && actionValue.value.arguments ? actionValue.value.arguments : [actionValue.value]
+			let args = typeof actionValue.value == "object" && actionValue.value.arguments ? actionValue.value.arguments : [actionValue.value];
+			if(typeof actionValue.value == "object" && actionValue.value.resolve){
+				for(let i in actionValue.value){
+					actionValue.value = resolveValue(actionValue.value, value);
+				}
+			}
 			if(typeof actionValue.value == "function" && action.startsWith('on')){
 				w.on(action.split('on')[1].toLowerCase(), function(e: any, ...data: any[]){
 					actionValue.value(w, e, ...data);
