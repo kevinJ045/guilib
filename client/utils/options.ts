@@ -1,3 +1,4 @@
+import { animation } from "../components/Animate";
 import Style from "../components/Style";
 import Store from "../data/Store";
 import { widget } from "../widgets/_ghost/WidgetProps";
@@ -5,6 +6,7 @@ import { attr, attrNullable, attrOptions } from "./elman";
 
 class options {
 	id?: string;
+	animation?: animation;
 	element?: attrOptions | null = {};
 	class?: string | null = "";
 	style?: Style | Record<string, any> | null = {};
@@ -36,6 +38,7 @@ class options {
 	onKeyUp?: Function = () => {};
 	onKey?: Function = () => {};
 	onChange?: Function = () => {};
+	[key: string]: any;
 };
 
 export { options };

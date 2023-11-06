@@ -1,3 +1,4 @@
+import { animateWidget, animateWidgets, animation } from "../../components/Animate";
 import Style from "../../components/Style";
 import Store from "../../data/Store";
 import Dom from "../../utils/dom";
@@ -202,7 +203,7 @@ class WidgetProps {
 		return q == '*' ? this.children() : filteredChildren(resolveSubchild(findEl(this.id!), subchild).find(q), true);
 	}
 
-	findAll(q: string, subchild: string | null = null): Widget {
+	findAll(q: string, subchild: string | null = null): Widget[] {
 		return q == '*' ? this.children() : filteredChildren(resolveSubchild(findEl(this.id!), subchild).find(q));
 	}
 
@@ -386,6 +387,24 @@ class WidgetProps {
 
 	toArray(){
 		return [this];
+	}
+
+	/*
+		Animations
+	*/
+
+
+	set animation(animation: animation){
+		// (this.options as any)._animation = animation;
+		animateWidget(this, animation);
+	}
+	setAnimation(animation: animation){
+		this.animation = animation;
+	}
+
+	animate(children: string, animation: animation){
+		animateWidgets(this.findAll(children), animation);
+		return this;
 	}
 
 	// State Management
@@ -635,6 +654,12 @@ class WidgetList extends Array {
 			}
 		});
 		return responses;
+	}
+
+	animate(animation: animation){
+		let widgets = this.filter((widget: WidgetProps) => isWidget(widget));
+		animateWidgets(widgets, animation);
+		return this;
 	}
 
 }

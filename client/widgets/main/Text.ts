@@ -18,7 +18,7 @@ const defaultText = () => getDefaults({
 
 class Text extends Widget {
 
-	constructor(selectedOptions: string | Record<string, any>, otheroptions: Record<string, any> | null = null){
+	constructor(selectedOptions: string | textOptions, otheroptions: textOptions | null = null){
 		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultText()) as textOptions;
 		super(options);
 

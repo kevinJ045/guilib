@@ -2,10 +2,11 @@ import { isPosition } from "../../utils/type";
 import generateRandomID from "../../utils/id";
 import { findEl, registerElement } from "../../utils/elman";
 import getDefaults, { options } from "../../utils/options";
-import WidgetProps, { child, widget, widgetF } from "../_ghost/WidgetProps";
+import WidgetProps, { WidgetList, child, widget, widgetF } from "../_ghost/WidgetProps";
 import Dom from "../../utils/dom";
 import Store from "../../data/Store";
 import { createWidgetModel } from "../../utils/widgetmodel";
+import { animation } from "../../components/Animate";
 
 type wid = widget;
 
@@ -195,6 +196,10 @@ class Widget extends WidgetProps {
 
 	static model(model: any, options: Record<string, any>){
 		return createWidgetModel(model, options);
+	}
+
+	static animateWidgets(animation: animation, ...widgets: Widget[]){
+		return WidgetList.from(widgets).animate(animation);
 	}
 }
 

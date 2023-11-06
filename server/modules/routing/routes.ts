@@ -142,8 +142,8 @@ export default class Routes {
         params: {},
       }
     } else {
-      return this.find404(path.join(pathRequested, '../'));
-    }
+      return pathRequested == '/' ? null : this.find404(path.join(pathRequested, '../'));
+    } 
   }
 
 	findLayouts(route: route){

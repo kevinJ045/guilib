@@ -179,24 +179,27 @@ export function createWidgetModel(model: widgetModel, _options: Record<string, a
 			}, options));
 		}
 	};
-	for(var i in model.options){
-		let option = model.options[i];
-		(classGenerated.prototype as any).__defineSetter__(i, function(value: any){
-			// @ts-ignore
-			let that: Widget = this;
-			if(option.type == "array"){
-				let items: Widget[] = value;
-				for(let i in option){
-					if(typeof (items as any)[i] == 'function'){
-						(items as any)[i](function(item: Widget){
-							typeCase(that, option[i], item);
-						});
+	function generateClassOptions(model: widgetModel){
+		for(var i in model.options){
+			let option = model.options[i];
+			(classGenerated.prototype as any).__defineSetter__(i, function(value: any){
+				// @ts-ignore
+				let that: Widget = this;
+				if(option.type == "array"){
+					let items: Widget[] = value;
+					for(let i in option){
+						if(typeof (items as any)[i] == 'function'){
+							(items as any)[i](function(item: Widget){
+								typeCase(that, option[i], item);
+							});
+						}
 					}
+				} else {
+					typeCase(that, option, value);
 				}
-			} else {
-				typeCase(that, option, value);
-			}
-		});
+			});
+		}
 	}
+	generateClassOptions(model);
 	return classGenerated;
 }
