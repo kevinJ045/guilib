@@ -1,6 +1,6 @@
 import { HTMLGUIWidget, child } from "../widgets/_ghost/WidgetProps";
 import Widget from "../widgets/main/Widget";
-import { attr, createElement, emptyElement, findEl, setAttributeMap, setClasses, setCss, siblings } from "./elman";
+import { attr, createElement, emptyElement, findEl, setAttributeMap, setClasses, setCss, setObjectProps, siblings } from "./elman";
 
 interface HTMLElementWithEvents extends HTMLElement {
   domEventListeners?: any;
@@ -101,6 +101,11 @@ class Dom {
 	attr(attr: object | string){
 		doAll(this, (el: HTMLElement) => setAttributeMap(el, attr as attr));
 		return typeof attr == "string" ? (this.elements.at(0)!.attributes as Record<string, any>)[attr as string] : this;
+	}
+
+	prop(attr: object | string){
+		doAll(this, (el: HTMLElement) => setObjectProps(el, attr as attr));
+		return typeof attr == "string" ? (this.elements.at(0)! as Record<string, any>)[attr as string] : this;
 	}
 
 	html(html: string | null): string | null {

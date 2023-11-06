@@ -42,6 +42,12 @@ function setAttributeMap(element: HTMLElement, attr: attr){
 	}
 }
 
+function setObjectProps(element: HTMLElement, attr: attr){
+	for(var i in attr){
+		(element as any)[i] = attr[i];
+	}
+}
+
 function setClasses(element: HTMLElement, classes: string, type : 'add'|'remove'|'toggle'|'contains' = 'add' ){
 	if(!classes.trim()) return;
 	const classNames = classes.trim().match(' ') ? classes.trim().split(' ') : [classes.trim()];
@@ -86,6 +92,7 @@ export {
 	elementList as GUIDOMTREE,
 	createElement,
 	setAttributeMap,
+	setObjectProps,
 	setClasses,
 	setCss,
 	emptyElement,

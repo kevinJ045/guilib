@@ -228,13 +228,13 @@ class WidgetProps {
 		return Widget.from(parent.at(0));
 	}
 
-	attr(props: attr){
+	attr(props: attr | string){
 		if(this.sealed === true) return this;
 		if(typeof props == "object") findEl(this.id!).attr(props);
 		return typeof props == "string" ? findEl(this.id!).attr(props) : this;
 	}
 
-	prop(props: attr){
+	prop(props: attr | string){
 		if(this.sealed === true) return this;
 		if(typeof props == "object") findEl(this.id!).prop(props);
 		return typeof props == "string" ? findEl(this.id!).prop(props) : this;
