@@ -85,7 +85,7 @@ function getSelectorContent(selector: string) {
 
 export type widgetModel = {
 	selector: string,
-	children?: widgetModel[],
+	children?: (widgetModel | string)[],
 	child?: widgetModel | string,
 	options?: Record<string, any>,
 	attributes?: Record<string, any>,
