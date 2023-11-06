@@ -189,7 +189,7 @@ function actionCase(actions: any, widget: Widget, value: modelValue){
 			let args = typeof actionValue.value == "object" && actionValue.value.arguments ? actionValue.value.arguments : [actionValue.value];
 			if(typeof actionValue.value == "object" && actionValue.value.resolve){
 				for(let i in actionValue.value){
-					actionValue.value = resolveValue(actionValue.value, value);
+					actionValue.value[i] = resolveValue(actionValue.value[i], value);
 				}
 			}
 			if(typeof actionValue.value == "function" && action.startsWith('on')){
