@@ -17,7 +17,7 @@ class options {
 	children?: widget[] | [] | null = [];
 	private?: boolean | null = false;
 	reset?: boolean | null = false;
-	value?: string | null = "";
+	value?: string | number | null = "";
 	icon?: string | null = "";
 	accepts?: boolean | null = true;
 	store?: Store | null = null;
