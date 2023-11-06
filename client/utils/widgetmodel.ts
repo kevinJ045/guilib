@@ -157,7 +157,7 @@ function resolveValue(valueRaw: any, value: modelValue){
 		_value.value = value.type == "list" ? value.value[valueRaw.split('$')[1]] : value.value;
 		_value.type = typeof value;
 	}
-	if(typeof valueRaw == "string" && valueRaw.startsWith('-$')){
+	if(typeof valueRaw == "string" && valueRaw.match('-$')){
 		_value.value = valueRaw.replace(/\-\$(.+)\-/g, value.value);
 		_value.type = 'string';
 	}
