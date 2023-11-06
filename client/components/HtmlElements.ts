@@ -1,3 +1,4 @@
+import { findEl } from "../utils/elman";
 import Widget from "../widgets/main/Widget";
 
 export type ElementOptions = Record<string, any>;
@@ -26,6 +27,21 @@ export class Video extends WebkitWidget {
 		if(options.text){
 			this.text(options.text);
 		}
+	}
+
+	play(){
+		findEl(this.id!).at(0).play();
+		return this;
+	}
+
+	pause(){
+		findEl(this.id!).at(0).pause();
+		return this;
+	}
+
+	paused(){
+		findEl(this.id!).at(0).paused;
+		return this;
 	}
 	
 	set name(value: any){
@@ -2500,6 +2516,21 @@ export class Audio extends WebkitWidget {
 		if(options.text){
 			this.text(options.text);
 		}
+	}
+
+	play(){
+		findEl(this.id!).at(0).play();
+		return this;
+	}
+
+	pause(){
+		findEl(this.id!).at(0).pause();
+		return this;
+	}
+
+	paused(){
+		findEl(this.id!).at(0).paused;
+		return this;
 	}
 	
 	set name(value: any){

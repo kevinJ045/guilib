@@ -1,5 +1,5 @@
 import Widget from "./Widget.js";
-import getDefaults from "../../utils/options.js";
+import getDefaults, { options } from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";
 
 const defaultImage = () =>
@@ -10,8 +10,12 @@ const defaultImage = () =>
 		_setters: ['src']
   });
 
+interface ImageOptions extends options {
+  src?: string
+}
+
 class Image extends Widget {
-  constructor(selectedOptions: string | Record<string, any>, otheroptions: Record<string, any> | null = null) {
+  constructor(selectedOptions: string | ImageOptions, otheroptions: ImageOptions | null = null) {
     const options = Image.resolveOptions(
       selectedOptions,
       otheroptions,

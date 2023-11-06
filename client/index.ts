@@ -1,5 +1,3 @@
-// import "./style/main.scss";
-
 import Widget from "./widgets/main/Widget.js";
 import Component from "./widgets/main/Component.js";
 import Text from "./widgets/main/Text.js";
@@ -15,7 +13,10 @@ import Radio from "./widgets/buttons/Radio.js";
 import Container from "./widgets/containers/Container.js";
 import Selectbox, { SelectableOption } from "./widgets/entry/SelectBox.js";
 import { Center, Column, Row } from "./widgets/containers/DirectedContainer.js";
-
+import Span from "./widgets/main/Span.js";
+import Video from "./widgets/media/Video.js";
+import Audio from "./widgets/media/Audio.js";
+import Grid from "./widgets/containers/Grid.js";
 
 export {
 	Component,
@@ -36,5 +37,9 @@ export {
 	Row,
 	Column,
 	Center,
-	SelectableOption
+	SelectableOption,
+	Span,
+	Video,
+	Audio,
+	Grid
 };

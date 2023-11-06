@@ -1,4 +1,5 @@
 import WidgetProps, { HTMLGUIWidget } from "../widgets/_ghost/WidgetProps";
+import Dom from "./dom";
 
 const elementList: Record<string, any> = {};
 const specificTypes = 'large|transparent|outline'.split('|')
@@ -8,7 +9,7 @@ type attr = Record<string, number | string | boolean>;
 type attrNullable = Record<string, number | string | boolean | null>;
 type attrOptions = Record<string, WidgetProps | HTMLGUIWidget | number | string | boolean | null>;
 
-function registerElement(element: object, id: String){
+function registerElement(element: any, id: String){
 	elementList[id as string] = element;
 }
 

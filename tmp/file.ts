@@ -1,4 +1,4 @@
-import Page0 from "../app/test/promise/page";
+import Page0 from "../app/test/grid/page";
 
 import Page1 from "../app/layout";
 
@@ -11,10 +11,10 @@ import Page1 from "../app/layout";
 
 		let loaderOn = false, loader, after = false;
 
-		const otherPaths = ["/","/someapifolder","/home","/test/route","/test/route/:id","/test/components","/test/promise","/test/props","/test/tailwind","/test/ref","/test/model","/test/loading","/test/layout","/test/animation","/test/select","/test/live","/lll","/posts/:id"];
+		const otherPaths = ["/","/someapifolder","/home","/test/route","/test/route/:id","/test/promise","/test/props","/test/grid","/test/tailwind","/test/ref","/test/model","/test/loading","/test/layout","/test/animation","/test/select","/test/live","/lll","/posts/:id"];
 
 		const buildProps = (props: any) => (
-			{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path){ location.pathname = path }, back: function(){ location.back() } }, route: {path: "/test/promise", params: {} }, ...props}
+			{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path){ location.pathname = path }, back: function(){ location.back() } }, route: {path: "/test/grid", params: {} }, ...props}
 		)
 
 		

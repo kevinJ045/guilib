@@ -20,6 +20,7 @@ class Text extends Widget {
 
 	constructor(selectedOptions: string | textOptions, otheroptions: textOptions | null = null){
 		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultText()) as textOptions;
+		if(options.children) options.accepts = true;
 		super(options);
 
 		this.render();

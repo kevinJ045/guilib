@@ -12,14 +12,14 @@ export interface EntryOptions extends options {
 	title?: string,
 	onTextInput?: CallableFunction,
 	required?: boolean,
-	inputType?: 'file' | 'text' | 'email' | 'password' | 'number'
+	inputType?: 'file' | 'text' | 'email' | 'password' | 'number' | 'textarea' | 'range' | 'progress'
 }
 
 class InputWrapper extends Widget{
 	__controller?: EntryController;
 
 	constructor(selectedOptions: EntryOptions){
-		const options = {...({ element: {name: 'input'}, attr: { type: 'text' }, class: "input-wrapper", _setters: ['inputType', 'title']}), ...selectedOptions};
+		const options = {...({ element: {name: selectedOptions.inputType == 'textarea' ? 'textarea' : 'input'}, attr: { type: 'text' }, class: "input-wrapper", _setters: ['inputType', 'title']}), ...selectedOptions};
 		super(options);
 
 		if(options.controller){

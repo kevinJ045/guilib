@@ -14,13 +14,15 @@ type items = Controller<any[]> | any[]
 interface ListOptions extends options {
 	itemsStateName?: string,
 	template?: CallableFunction,
-	items?: items | Promise<items>
+	items?: items | Promise<items>,
+	empty?: boolean
 }
 
 const defaultList = () => getDefaults<ListOptions>({
 	element: { name: 'ul' },
 	items: [],
 	itemsStateName: '$items_list',
+	empty: true,
 	template: (item: any) => new ListItem(item),
 });
 
@@ -33,7 +35,7 @@ const defaultListItem = () => getDefaults<ListItemOptions>({
 
 function _initList(list: List, state: Record<string, any>){
 	if(state[(list.options as any).itemsStateName] && Array.isArray(state[(list.options as any).itemsStateName])){
-		list.empty();
+		if(list.options.empty !== false) list.empty();
 		state[(list.options as any).itemsStateName].forEach((item: any, index: number) => {
 			list.appendItem(item, index);
 		});
