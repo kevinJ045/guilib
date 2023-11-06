@@ -157,6 +157,10 @@ function resolveValue(valueRaw: any, value: modelValue){
 		_value.value = value.type == "list" ? value.value[valueRaw.split('$')[1]] : value.value;
 		_value.type = typeof value;
 	}
+	if(typeof valueRaw == "string" && valueRaw.startsWith('-$')){
+		_value.value = valueRaw.replace(/\-\$(.+)\-/g, value.value);
+		_value.type = 'string';
+	}
 	if(_value.value instanceof Widget){
 		return _value;
 	}
