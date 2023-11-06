@@ -103,9 +103,17 @@ class Dom {
 		return typeof attr == "string" ? (this.elements.at(0)!.attributes as Record<string, any>)[attr as string] : this;
 	}
 
+	getAttr(attr: string){
+		return (this.elements.at(0)!.attributes as Record<string, any>)[attr as string];
+	}
+
 	prop(attr: object | string){
 		if(typeof attr == 'object') doAll(this, (el: HTMLElement) => setObjectProps(el, attr as attr));
 		return typeof attr == "string" ? (this.elements.at(0)! as Record<string, any>)[attr as string] : this;
+	}
+
+	getProp(attr: string){
+		return (this.elements.at(0)! as Record<string, any>)[attr as string];
 	}
 
 	html(html: string | null): string | null {
