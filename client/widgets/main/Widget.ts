@@ -194,8 +194,8 @@ class Widget extends WidgetProps {
 		return new Widget({ element: {	raw: new Dom(child).at(0) } });
 	}
 
-	static model(model: widgetModel, options: Record<string, any>){
-		return createWidgetModel(model, options);
+	static model<T = options>(model: widgetModel, options: Record<string, any>){
+		return createWidgetModel<T>(model, options);
 	}
 
 	static animateWidgets(animation: animation, ...widgets: Widget[]){

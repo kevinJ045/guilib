@@ -226,9 +226,10 @@ function typeCase(widget: Widget, option: any, valueRaw: any){
 	else if('else' in option) selectorCase(option.else, widget, value);
 }
 
-export function createWidgetModel(model: widgetModel, _options: Record<string, any>) {
+
+export function createWidgetModel<T = Record<string, any>>(model: widgetModel, _options: any) {
 	const classGenerated = class extends Widget {
-		constructor(options: Record<string, any>){
+		constructor(options: T){
 			let wo:Record<string, any>  = {};
 			if(model.widgetOptions){
 				for(let i in model.widgetOptions)
@@ -239,8 +240,8 @@ export function createWidgetModel(model: widgetModel, _options: Record<string, a
 				element: { name: getSelectorContent(model.selector).element },
 				class: getSelectorContent(model.selector).classes,
 				children: model.children ? model.children.map(modelToWidget) : [],
-				_setters: Object.keys(options)
-			}, options));
+				_setters: Object.keys(options as Record<string, any>)
+			}, options as Record<string, any>));
 		}
 	};
 	if(typeof model._onMount == "function") classGenerated.prototype._onMount = model._onMount;
