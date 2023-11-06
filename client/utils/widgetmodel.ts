@@ -83,11 +83,41 @@ function getSelectorContent(selector: string) {
 	}
 */
 
+
+export type widgetModelActionCases = {
+	[key: string]: {
+		[key: string]: any,
+		text?: string,
+		addClass?: string,
+		removeClass?: string,
+		toggleClass?: string,
+		append?: string | widgetModel,
+		empty?: boolean,
+		prepend?: string | widgetModel
+	}
+}
+
+export type widgetModelTypeCases = {
+	any?: widgetModelActionCases,
+	number?: widgetModelActionCases,
+	boolean?: widgetModelActionCases,
+	string?: widgetModelActionCases,
+	function?: widgetModelActionCases,
+	object?: widgetModelActionCases,
+	null?: widgetModelActionCases,
+	undefined?: widgetModelActionCases,
+	widget?: widgetModelActionCases,
+	else?: widgetModelActionCases,
+	type?: string,
+	forEach?: widgetModelTypeCases,
+	[key: string]: any
+}
+
 export type widgetModel = {
 	selector: string,
 	children?: (widgetModel | string)[],
 	child?: widgetModel | string,
-	options?: Record<string, any>,
+	options?: Record<string, widgetModelTypeCases>,
 	attributes?: Record<string, any>,
 	text?: string,
 	widgetOptions?: Record<string, any>,
