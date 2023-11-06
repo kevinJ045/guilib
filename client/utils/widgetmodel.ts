@@ -83,7 +83,7 @@ function getSelectorContent(selector: string) {
 	}
 */
 
-type widgetModel = {
+export type widgetModel = {
 	selector: string,
 	children?: widgetModel[],
 	child?: widgetModel | string,
