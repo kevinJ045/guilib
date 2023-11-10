@@ -3,6 +3,12 @@
 import { spawn } from "node:child_process";
 import path from "node:path";
 import fs from "node:fs";
+import readline from "node:readline";
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 let subcommand = process.argv.slice(2, process.argv.length);
 
@@ -37,33 +43,78 @@ function createFile(filename, filecontent){
 if(subcommand[0]){
 	if(subcommand[0] == 'create'){
 		console.log('Starting create...');
-		createFile('./app');
-		createFile('./static');
-		createFile('./styles');
-		createFile('./app/page.ts', `import { Component, Text, Widget } from "rayous";
-import { buildProps } from "rayous/extra";
-
-export default class extends Component {
-	build(props: buildProps) {
-		return new Widget({ children: [new Text("/ folder")] });
-	}
-}`);
-		createFile('./rayous.json', JSON.stringify({
-			title: "App",
-			meta: { author: "" },
-			links: [{type: "", link: ""}],
-			scripts: [""],
+		let options = {
+			ts: false,
+			tailwind: false,
+			name: "App",
+			author: "",
 			envprod: false
-		}, null, 2));
-		createFile('./tailwind.config.js', `/** @type {import('tailwindcss').Config} */\nmodule.exports = `+JSON.stringify({
-			content: [
-				'./app/**/*.{js,ts,jsx,tsx,mdx}'
-			],
-			theme: {
-				extend: {},
-			},
-			plugins: [],
-		}, null, 2));
+		};
+
+		function createFiles(){
+			createFile('./app');
+			createFile('./static');
+			createFile('./styles');
+			createFile('./app/page.ts', `import { Component, Text, Widget } from "rayous";
+	import { buildProps } from "rayous/extra";
+
+	export default class extends Component {
+		build(props: buildProps) {
+			return new Widget({ children: [new Text("/ folder")] });
+		}
+	}`);
+			createFile('./rayous.json', JSON.stringify({
+				title: options.name,
+				meta: { author: options.author },
+				links: [],
+				scripts: [],
+				envprod: options.envprod
+			}, null, 2));
+			if(options.ts) createFile('./tsconfig.json', JSON.stringify({
+				"compilerOptions": {
+					"paths": {
+						"@/*": ["./*"]
+					}
+				}
+			}, null, 2));
+			if(options.tailwind) createFile('./tailwind.config.js', `/** @type {import('tailwindcss').Config} */\nmodule.exports = `+JSON.stringify({
+				content: [
+					'./app/**/*.{js,ts,jsx,tsx,mdx}',
+					'./components/**/*.{js,ts,jsx,tsx,mdx}',
+					'./ui/**/*.{js,ts,jsx,tsx,mdx}'
+				],
+				theme: {
+					extend: {},
+				},
+				plugins: [],
+			}, null, 2));
+		}
+
+		rl.question("Do you want to use TypeScript? (y/n): ", (answer) => {
+			if (answer.toLowerCase() === 'yes' || answer.toLowerCase() == 'y') {
+				options.ts = true;
+			}
+			rl.question("Do you want to use tailwindcss? (y/n): ", (answer) => {
+				if (answer.toLowerCase() === 'yes' || answer.toLowerCase() == 'y') {
+					options.tailwind = true;
+				}
+				rl.question('Enter the project name: ', (name) => {
+					options.name = name || 'App';
+		
+					rl.question('Enter the author name: ', (author) => {
+						options.author = author;
+		
+						rl.question('Do you want to set production environment? (y/n): ', (answer) => {
+							if (answer.toLowerCase() === 'yes' || answer.toLowerCase() === 'y') {
+								options.envprod = true;
+							}
+		
+							createFiles();
+						});
+					});
+				});
+			});
+		});
 	} else if(subcommand[0] == 'build') {
 		console.log('Starting build...');
 		const child = spawn(buncommand, rbun(["run", builderScriptPath, ...subcommand.splice(1)]));
