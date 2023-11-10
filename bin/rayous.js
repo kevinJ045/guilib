@@ -108,7 +108,7 @@ if(subcommand[0]){
 							if (answer.toLowerCase() === 'yes' || answer.toLowerCase() === 'y') {
 								options.envprod = true;
 							}
-		
+							rl.close();
 							createFiles();
 						});
 					});
