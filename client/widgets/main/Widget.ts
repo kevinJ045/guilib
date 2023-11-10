@@ -177,8 +177,18 @@ function _init(widget: widgetF, options: options){
 
 }
 
+/**
+ * Widget class represents a graphical user interface (GUI) element.
+ *
+ * @class Widget
+ * @extends {WidgetProps}
+ */
 class Widget extends WidgetProps {
-
+	/**
+	 * Creates an instance of the Widget.
+	 *
+	 * @param {options} [options={}] - Configuration options for the Widget.
+	 */
 	constructor(options: options = { element: { name: 'div' }, class: 'widget' }){
 		super();
 		_init(this, {...getDefaults({}), ...(options as Record<string, any>)});
@@ -194,6 +204,12 @@ class Widget extends WidgetProps {
 		return new Widget({ element: {	raw: new Dom(child).at(0) } });
 	}
 
+	/**
+	 * Creates a Widget class from config.
+	 *
+	 * @param {widgetModel} [model] - Configuration model for the Widget.
+	 * @param {any} [options] - Configuration options for the Widget.
+	 */
 	static model<T = options>(model: widgetModel, options: Record<string, any> = {}){
 		return createWidgetModel<T>(model, options);
 	}

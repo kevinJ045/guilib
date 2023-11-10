@@ -1,6 +1,7 @@
 import { HTMLGUIWidget, child } from "../widgets/_ghost/WidgetProps";
 import Widget from "../widgets/main/Widget";
 import { attr, createElement, emptyElement, findEl, setAttributeMap, setClasses, setCss, setObjectProps, siblings } from "./elman";
+import { isHTMLElement } from "./type";
 
 interface HTMLElementWithEvents extends HTMLElement {
   domEventListeners?: any;
@@ -258,6 +259,42 @@ class Dom {
 		});
 		return this;
 	}
+
+	show() {
+    return doAll(this, (el: HTMLElement) => {
+      el.style.display = '';
+    });
+  }
+
+  hide() {
+    return doAll(this, (el: HTMLElement) => {
+      el.style.display = 'none';
+    });
+  }
+
+  toggle() {
+    return doAll(this, (el: HTMLElement) => {
+      el.style.display = el.style.display === 'none' ? '' : 'none';
+    });
+  }
+
+	enable() {
+    return doAll(this, (el: HTMLElement) => {
+      if (isHTMLElement(el)) {
+        (el as HTMLFormElement).disabled = false;
+        (el as HTMLFormElement).setAttribute('disabled', 'false');
+      }
+    });
+  }
+
+  disable() {
+    return doAll(this, (el: HTMLElement) => {
+      if (isHTMLElement(el)) {
+        (el as HTMLFormElement).disabled = true;
+        (el as HTMLFormElement).setAttribute('disabled', 'true');
+      }
+    });
+  }
 
 	static from(elements: HTMLElement[] | HTMLCollection){
 		let e = new Dom((Array.from(elements) as HTMLElement[]).shift() as HTMLElement);

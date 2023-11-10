@@ -4,13 +4,56 @@ import Store from "../data/Store";
 import { widget } from "../widgets/_ghost/WidgetProps";
 import { attr, attrNullable, attrOptions } from "./elman";
 
+export interface elementOptions {
+	name?: string,
+	raw?: any,
+	html?: string,
+	selector?: string,
+	[key: string]: any
+}
+/**
+ * Represents a configuration object for the Widget class.
+ * @class
+ */
 class options {
+	/**
+   * The ID of the widget.
+   * @type {string | undefined}
+   */
 	id?: string;
+
+	/**
+   * The animation settings for the widget.
+   * @type {animation | undefined}
+   */
 	animation?: animation;
-	element?: attrOptions | null = {};
+
+	/**
+   * Configuration options for the HTML element of the widget.
+   * @type {elementOptions | null}
+   */
+	element?: elementOptions | null = {};
+	
+	/**
+   * The CSS class name for the widget.
+   * @type {string | null}
+   */
 	class?: string | null = "";
+
+	/**
+	 * Inline styles for the widget.
+	 *
+	 * @type {Style | Record<string, any> | null}
+	 */
 	style?: Style | Record<string, any> | null = {};
+
+	/**
+	 * Position settings for the widget.
+	 *
+	 * @type {attrNullable | null}
+	 */
 	position?: attrNullable | null = {};
+	
 	size?: attrNullable | null = {};
 	attr?: attr | null = {};
 	props?: attr | null = {};
