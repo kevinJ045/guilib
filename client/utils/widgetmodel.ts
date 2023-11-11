@@ -154,7 +154,7 @@ function determineValue(valueRaw: any, widget: Widget, option: any) {
 function resolveValue(valueRaw: any, value: modelValue){
 	let _value : modelValue  = {type: typeof valueRaw, value: valueRaw};
 	if(typeof valueRaw == "string" && valueRaw.match(/\$\(/)){
-		_value.value = valueRaw.replace(/\$\(([\w]+)\)/g, value.value);
+		_value.value = valueRaw.replace(/\$\(([\w]+)\)/g, value.type == "list" ? ((a: string, name: string) => value.value[name]) :value.value);
 		_value.type = 'string';
 	} else if(typeof valueRaw == "string" && valueRaw.startsWith('$')){
 		_value.value = value.type == "list" ? value.value[valueRaw.split('$')[1]] : value.value;
@@ -178,7 +178,11 @@ function resolveValue(valueRaw: any, value: modelValue){
 
 function actionCase(actions: any, widget: Widget, value: modelValue){
 	for(let action in actions){
-		let actionValue = resolveValue(actions[action], value);
+		let act = typeof actions[action] == "object" ? 
+		(
+			Array.isArray(actions[action]) ? [...actions[action]] : {...actions[action]}
+		) : actions[action];
+		let actionValue = resolveValue(act, value);
 		if(action == 'empty' && actionValue.value == true){
 			widget.remove('*');
 		} else if(action == 'append'){
