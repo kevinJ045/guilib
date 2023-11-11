@@ -47,7 +47,7 @@ export class TableController<T> extends ArrayController<T> {
   }
 }
 
-interface TableOptions extends options {
+export interface TableOptions extends options {
 	itemsStateName?: string,
 	template?: CallableFunction,
 	items?: items | Promise<items>,
