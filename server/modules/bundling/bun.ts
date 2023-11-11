@@ -1,17 +1,17 @@
 import { bunSassLoader } from "./bun.loader.sass";
 import { bunTailwindLoader } from "./bun.loader.tailwind";
 
-export async function bundleBun(env: string, options = {}){
+export async function bundleBun(env: string, options: any = {}){
 	let scriptText: string = "";
 
 	const imports: string[] = [];
 
 	// @ts-ignore
 	const bundled = await Bun.build({
-		entrypoints: ['./tmp/file.ts'],
+		entrypoints: [(options.file || './tmp/file.ts')],
 		// external: ['*'],
 		root: ".",
-		minify: env == 'prod',
+		minify: options.minify || env == 'prod',
 		plugins: [bunTailwindLoader, bunSassLoader, {
 			name: 'Import Loader',
 			setup(build: any) {

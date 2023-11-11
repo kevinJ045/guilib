@@ -1,5 +1,7 @@
-import { Text } from "../../../client";
+
 
 export default function loader(){
-	return new Text('loading');
+	let loading = document.createElement('div');
+	loading.innerText = 'loading';
+	return loading;
 }

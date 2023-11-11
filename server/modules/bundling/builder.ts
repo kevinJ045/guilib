@@ -14,6 +14,7 @@ export default class Builder {
 
 	async build(req: Request, { port, env }: portAndEnv ) {
 		const { route } = this;
+		let url = new URL(req.url);
 		const paths = Array.from(this.routes.paths.entries()).map((key: any) => key[0] || "/");
 		if (route.type == "route") {
 			const requests = await import(
@@ -29,7 +30,7 @@ export default class Builder {
 		} else {
 			return {
 				status: 200,
-				response: await bundle(route, { port, env }, paths)
+				response: await bundle(route, { port, env }, paths, Object.fromEntries(url.searchParams.entries()))
 			}
 		}
 	}

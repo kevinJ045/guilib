@@ -9,60 +9,64 @@ export type portAndEnv = { port: number, env: 'dev' | 'prod' };
 
 function makeImportFile(route: route, paths: any, ...filepath: string[]){
 	const script = `${filepath.map((filepath, index) => 
-		`import Page${index} from "../${filepath.replace(/\.ts$/, '')}";\n`).join('\n')}
-		${existsSync('./app/init.client.ts') || existsSync('./app/init.client.js') ? `import * as clientInit from "../app/init.client";\n` : 'const clientInit = { init: () => {}, after: () => {} };'}
-		
-		${route.loader ? 'import Loader from "../'+route.loader+'"' : ''}
+		`
+import Page${index} from "../${filepath.replace(/\.ts$/, '')}";\n`).join('\n')}
+${existsSync('./app/init.client.ts') || existsSync('./app/init.client.js') ? `import * as clientInit from "../app/init.client";\n` : 'const clientInit = { init: () => {}, after: () => {} };'}
 
-		if(typeof Page0.title === "string") document.title = Page0.title;
+let cscript = document.currentScript;
+const pages = [];
 
-		let loaderOn = ${route.loader ? `"${route.loader}"` : 'false'}, loader, after = false;
+if(typeof Page0.title === "string") document.title = Page0.title;
 
-		const otherPaths = ${JSON.stringify(paths)};
+const otherPaths = ${JSON.stringify(paths)};
 
-		const buildProps = (props: any) => (
-			{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path){ location.pathname = path }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }, ...props}
-		)
+const buildProps = (props: any) => (
+	{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path){ location.pathname = path; }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }, ...props}
+)
 
-		
-		if(typeof Page0.title === "function") document.title = Page0.title(buildProps({page: made0}));
 
-		if(loaderOn){
-			try{
-				if(typeof Loader == "function"){
-					loader = Loader(buildProps());
-					if(!loader.to){
-						throw new TypeError('Loader from ${route.loader} is not a returning a function that returns a widget!');
-					} else {
-						if(loader.options.props?.removeAfterLoad) after = true;
-						loader.to(document.body);
-					}
-				} else {
-					throw new TypeError('Loader from ${route.loader} is not a returning a function that returns a widget!');
-				}
-			} catch(e){
-				document.write(e);
-				throw e;
-			}
+if(typeof Page0.title === "function") document.title = Page0.title(buildProps({page: made0}));
+if(Array.isArray(Page0.links)){
+	Page0.links.forEach(url => {
+		let link = document.createElement('link');
+		if(typeof url == 'string'){
+			link.rel = 'stylesheet';
+			link.href = url
+		} else {
+			if(url.rel) link.rel = url.rel;
+			if(url.href) link.href = url.href;
 		}
+		document.head.appendChild(link);
+	});
+}
 
-		window.addEventListener('load', () => {
-			if(!after && loaderOn) loader.remove();
+if(Array.isArray(Page0.scripts)){
+	Page0.scripts.forEach(url => {
+		let script = document.createElement('script');
+		script.src = url;
+		document.body.appendChild(script);
+	});
+}
 
-			const initResponse = typeof clientInit.init == "function" ? clientInit.init(buildProps()) || {} : {};
-	
-			${filepath.map((filepath, index) => `let page${index} = new Page${index}();\npage${index}._beforeInit();\npage${index}.initState(buildProps());\nlet made${index} = page${index}.make(buildProps({init: initResponse, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'}}));`).join('\n')}
-	
-			if(Page0.layouts === false){
-				made0.to(document.body);
-			} else {
-				${filepath.map((file, index) => `${index+1 == filepath.length ? `made${index}.to(document.body)` : `page${index}.afterBuild(buildProps({page: made0}));`}`).join('\n')}
-			}
-	
-			if(typeof page0.afterBuild == "function") page0.afterBuild(buildProps({page: made0}));
-			if(typeof clientInit.after == "function") clientInit.after(buildProps({page: made0}));
-			if(after && loaderOn) loader.remove();
-		});
+window.loadFunction = () => {
+	if(!window.after && window.loaderOn) window.loader.remove();	
+	const initResponse = typeof clientInit.init == "function" ? clientInit.init(buildProps()) || {} : {};
+
+	${filepath.map((filepath, index) => `let page${index} = new Page${index}();\npage${index}._beforeInit();\npage${index}.initState(buildProps());\nlet made${index} = page${index}.make(buildProps({init: initResponse, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'}}));`).join('\n')}
+
+	if(Page0.layouts === false){
+		made0.to(document.body);
+	} else {
+		${filepath.map((file, index) => `${index+1 == filepath.length ? `made${index}.to(document.body)` : `page${index}.afterBuild(buildProps({page: made0}));`}`).join('\n')}
+	}
+
+	${filepath.map((file, index) => `pages.push(page${index})`).join('\n')}
+
+	if(typeof clientInit.after == "function") clientInit.after(buildProps({page: made0}));
+	if(window.after && window.loaderOn) window.loader.remove();
+}
+
+window.addEventListener('load', window.loadFunction);
 	`;
 	if(!existsSync('./tmp')) mkdirSync('./tmp');
 	writeFileSync('./tmp/file.ts', script);
@@ -86,16 +90,53 @@ export function getListenerSocket(port: number, file : { imports: string[] }){
 	})();</script>`;
 }
 
-export async function bundle(route: route, {port, env}: portAndEnv, paths: Record<any, any>){
+function makeLoaderFile(route: route){
+	 let script = `
+	${route.loader ? 'import Loader from "../'+route.loader+'"' : ''}
+	(function(){
+
+let loaderOn = ${route.loader ? `"${route.loader}"` : 'false'}, loader, after = false;
+
+
+if(loaderOn){
+	try{
+		if(typeof Loader == "function"){
+			loader = Loader({ route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }});
+			if(!loader instanceof HTMLElement){
+				throw new TypeError('Loader from ${route.loader} is not a returning a function that returns a widget!');
+			} else {
+				if(loader?.removeAfterLoad) after = true;
+				document.body.appendChild(loader);
+			}
+		} else {
+			throw new TypeError('Loader from ${route.loader} is not a returning a function that returns a widget!');
+		}
+	} catch(e){
+		document.write(e);
+		throw e;
+	}
+}
+window.loader = loader;
+window.loaderAfter = after;
+window.loaderOn = loaderOn;
+})();`;
+	if(!existsSync('./tmp')) mkdirSync('./tmp');
+	writeFileSync('./tmp/loader.ts', script);
+	return script;
+}
+
+export async function bundle(route: route, {port, env}: portAndEnv, paths: Record<any, any>, params: Record<string, any> = {}){
 	const scripts: string[] = [];
 
 	makeImportFile(route, paths, route.correspondingFile, ...(route.layouts ? route.layouts : []));
 
-	let file = await bundleBun(env);
+	let file = await bundleBun(env, {minify: params.minify == 'true'});
 
-	scripts.push(file.result);
+	if(route.loader) makeLoaderFile(route);
+	let loader = route.loader ? `(function(){${(await bundleBun(env, {minify: params.minify == 'true', file: './tmp/loader.ts'})).result}})();` : '';
 
-	return await templateHtml(scripts, env == 'dev' ? getListenerSocket(port, file) : '');
+	scripts.push(`(function(){${file.result}})();`);
+	return params.onlyjs == 'true' ? scripts.join('\n') : await templateHtml(params.script == 'true' ? [loader, ...scripts] : [loader], (params.script == 'true' ? '' : '<script src="'+(params.origin || '?onlyjs=true'+(params.minify == 'true' ? '&minify=true' : ''))+'"></script>')+(env == 'dev' ? getListenerSocket(port, file) : ''));
 }
 
 export async function getHead() {
@@ -149,5 +190,5 @@ async function getAttrs(el: string){
 }
 
 export async function templateHtml(scripts: string[], additional: string = ""){
-	return `<html ${await getAttrs('html')}>${await getHead()}<body ${await getAttrs('body')}>${scripts.map((script, index) => `<script type="module">${script}</script>`).join('')}${additional}</body></html>`
+	return `<html ${await getAttrs('html')}>${await getHead()}<body ${await getAttrs('body')}>${scripts.map((script, index) => `<script _type="base">${script}</script>`).join('')}${additional}</body></html>`
 }

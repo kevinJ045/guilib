@@ -10,4 +10,5 @@ export default class extends Component {
 			]
 		});
 	}
+	static scripts = ['https://scriff.onrender.com/app/lib/js/at.js']
 }
