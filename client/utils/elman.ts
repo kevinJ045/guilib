@@ -68,7 +68,7 @@ function setCss(element: HTMLElement, values: string | Record<string, any>, valu
 	} else if (typeof values === 'object') {
 		for (const prop in values) {
 			let value = values[prop];
-			if(typeof value == 'number') value = value + 'px';
+			if(!prop.startsWith('--') && typeof value == 'number') value = value + 'px';
 			if(prop in element.style) (element.style as any)[prop] = value;
 			else element.style.setProperty(prop, value);
 		}
