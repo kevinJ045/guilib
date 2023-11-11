@@ -4,8 +4,9 @@ import Controller from "./data/Controller.js";
 import anime from "./modules/anime.js";
 import voca from "./modules/voca.js";
 import { mergeOptions } from "./utils/options.js";
+import ListBuilder from "./widgets/list/ListBuilder.js";
 
-export { Controller, Style, mergeOptions, anime, Macy, voca };
+export { ListBuilder, Controller, Style, mergeOptions, anime, Macy, voca };
 export { EntryController } from "./widgets/entry/InputWrapper.js";
 export { SelectController } from "./widgets/entry/SelectBox.js";
 export { CheckboxController } from "./widgets/buttons/Checkbox.js";
