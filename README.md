@@ -59,6 +59,7 @@ For example usage and additional resources, visit the [Rayous GitHub repository]
 
 - [Rayous Todo App Demo](https://github.com/kevinJ045/rayous-todo-demo): A to-do list application built with Rayous.
 - [Rayous DaisyUI Demo](https://github.com/kevinJ045/rayous-daisyui-demo): A demo project showcasing Rayous with DaisyUI integration.
+- [Rayous DaisyUI Components](https://github.com/kevinJ045/rayous-daisyui-components): A component list and an example for [Rayous DaisyUI Library](https://github.com/kevinJ045/rayous-daisyui)
 
 ## Contributions
 
