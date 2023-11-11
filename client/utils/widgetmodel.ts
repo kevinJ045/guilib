@@ -120,6 +120,7 @@ export type widgetModel = {
 	options?: Record<string, widgetModelTypeCases>,
 	attributes?: Record<string, any>,
 	text?: string,
+	html?: string,
 	widgetOptions?: Record<string, any>,
 	[key: string]: any
 }
@@ -138,6 +139,7 @@ function modelToWidget(model: widgetModel | string){
 		model: model
 	});
 	if(model.text) widget.text(model.text);
+	if(model.html) widget.html(model.html);
 	if(model.child) widget.add(modelToWidget(model.child));
 	return widget;
 }
