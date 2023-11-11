@@ -53,7 +53,8 @@ export interface TableOptions extends options {
 	items?: items | Promise<items>,
 	columns?: items | Promise<items>,
 	tableOptions?: {},
-	empty?: boolean
+	empty?: boolean,
+	controller?: TableController<any>
 }
 
 const defaultGrid = () : TableOptions => ({
@@ -157,6 +158,7 @@ export class TableRow extends Widget {
 }
 
 export class Table extends ListBuilder {
+	controller?: TableController<any>;
 
 	constructor(selectedOptions: TableOptions){
 		let children = [new Widget({ element: { name: 'thead' } }), new Widget({ element: { name: 'tbody' } })];
@@ -164,7 +166,13 @@ export class Table extends ListBuilder {
 		
 		const options = {...defaultGrid(), children, ...selectedOptions};
 		
+		if(options.controller){
+			options.items = options.controller;
+			options.columns = options.controller;
+		}
+
 		super(options, _initTable);
+		if(options.controller) this.controller = options.controller;
 	}
 	
 	appendItem(item: any, index: number){
