@@ -284,7 +284,7 @@ class WidgetProps {
 	remove(child: child | string | null = null, subchild: string | null = null){
 		if(this.sealed === true) return this;
 		if(!child) resolveSubchild(findEl(this.id!), subchild).remove(); 
-		else if (child == '*') findEl(resolveSubchild(findEl(this.id!), subchild).id!)?.empty();
+		else if (child == '*') (resolveSubchild(findEl(this.id!), subchild) as any)?.empty();
 		else (child as widget)!.remove();
 		return this;
 	}

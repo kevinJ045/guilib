@@ -23,7 +23,7 @@ const htmlPseudos = [
   ':checked',
 ];
 
-function filteredChildren(children: Widget | Dom | Widget[], makeOne = false, giveNull = false){
+function filteredChildren(children: Widget | any | Widget[], makeOne = false, giveNull = false){
   const filtered = Array.isArray(children) ? children : ((children instanceof Widget ? children
     .toArray() : children.elements)
     .filter((element: HTMLGUIWidget) => element.GUIWIDGET)

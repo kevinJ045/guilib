@@ -1,4 +1,5 @@
 import Controller from "../../data/Controller";
+import Dom from "../../utils/dom";
 import { findEl } from "../../utils/elman";
 import { options } from "../../utils/options";
 import Text from "../main/Text";
@@ -30,6 +31,7 @@ export class SelectableOption extends Widget {
 	constructor(options: SelectOptionOptions){
 		super({
 			element: {name: 'option'},
+			class: '',
 			_setters: ['value', 'title', 'selected', 'disabled'],
 			...options
 		});
@@ -55,7 +57,7 @@ export class SelectableOption extends Widget {
 		if(title instanceof Widget){
 			this.add(title);
 		} else {
-			title != null ? this.add(new Text(title.toString())) : null;
+			title != null ? this.text(title.toString()) : null;
 		}
 	}
 }

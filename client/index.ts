@@ -17,6 +17,7 @@ import Span from "./widgets/main/Span.js";
 import Video from "./widgets/media/Video.js";
 import Audio from "./widgets/media/Audio.js";
 import Grid from "./widgets/containers/Grid.js";
+import { Table, TableRow } from "./widgets/list/Table.js";
 
 export {
 	Component,
@@ -41,5 +42,7 @@ export {
 	Span,
 	Video,
 	Audio,
-	Grid
+	Grid,
+	Table,
+	TableRow
 };

@@ -40,4 +40,35 @@ class Controller<T> {
   }
 }
 
+export class ArrayController<T> extends Controller<Array<T>>{
+  push(item: T){
+    this.value.push(item);
+    this.notifyChangeListeners();
+    return this;
+  }
+  unshift(item: T){
+    this.value.unshift(item);
+    this.notifyChangeListeners();
+    return this;
+  }
+  pop(){
+    let popped = this.value.pop();
+    this.notifyChangeListeners();
+    return popped;
+  }
+  shift(){
+    let popped = this.value.shift();
+    this.notifyChangeListeners();
+    return popped;
+  }
+  forEach(callback: (value?: T, index?: number, array?: T[]) => void){
+    this.value.forEach(callback);
+    return this;
+  }
+  setArray(array: T[]){
+    this.set(array);
+    return this;
+  }
+}
+
 export default Controller;
