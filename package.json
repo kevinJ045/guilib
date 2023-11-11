@@ -1,6 +1,6 @@
 {
   "name": "rayous",
-  "version": "1.7.9",
+  "version": "1.8.0",
   "author": "makano",
   "description": "A mini router X ui kit with ts",
   "main": "./client/index.ts",
@@ -48,7 +48,6 @@
   "typings": "./types/index.d.ts",
   "type": "module",
   "dependencies": {
-    "bun": "^1.0.7",
     "console": "^0.7.2",
     "itty-router": "^4.0.23",
     "postcss": "^8.4.31",
@@ -56,5 +55,8 @@
     "schema-utils": "^4.2.0",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.2.2"
+  },
+  "optionalDependencies": {
+    "bun": "^1.0.7"
   }
 }
