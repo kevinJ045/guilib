@@ -16,6 +16,7 @@ export type { CheckboxOptions } from "./widgets/buttons/Checkbox.js";
 export type { EntryOptions } from "./widgets/entry/InputWrapper.js";
 export type { textOptions as TextOptions, text } from "./widgets/main/Text.js";
 export type { buildProps } from "./widgets/main/Component";
+export { buildComponent } from "./widgets/main/Component";
 export { Ref } from "./widgets/main/Component";
 export type { options } from "./utils/options.js";
 export type { rowValue as TableRowValue, TableRowOptions, TableOptions } from "./widgets/list/Table.js";

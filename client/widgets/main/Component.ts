@@ -36,6 +36,18 @@ type link = string | {
 	href: string
 }
 
+export function buildComponent(component: any, from: Component){
+	let _comp: Component = new component(from._buildProps);
+	_comp._beforeInit();
+	if(component.inheritState !== false) _comp._inheritState(from._buildProps);
+	_comp.initState(from._buildProps);
+	let widget = _comp.make(from._buildProps);
+	return {
+		widget,
+		component: _comp
+	}
+}
+
 export default class Component {
 	/**
 	 * The _currentWidget stores the current widget to manipulate later, it 
