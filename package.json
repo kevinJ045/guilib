@@ -1,6 +1,6 @@
 {
   "name": "rayous",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "author": "makano",
   "description": "A mini router X ui kit with ts",
   "main": "./client/index.ts",
@@ -57,6 +57,7 @@
     "typescript": "^5.2.2"
   },
   "optionalDependencies": {
-    "bun": "^1.0.7"
+    "bun": "^1.0.7",
+    "daisyui": "^4.0.3"
   }
 }

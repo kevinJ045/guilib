@@ -14,21 +14,34 @@ const defaultLink = (more: string | null = null) => getDefaults({
 	icon: null
 });
 
-function link(el: Dom, url: string){
-	if(url.match(/^ui\.([a-zA-Z]+):/)){
-		let [, name, ui] = url.match(/ui\.([a-zA-Z]+):(.+)/) as RegExpMatchArray;
-		el
-			.addClass(name+'-link')
-			.attr({['data-'+name]: ui});
-	} else {
+export interface urlOptions {
+	url: string,
+	click: (url: string) => void
+}
+
+function link(el: Dom, url: string | urlOptions){
+	if(typeof url == "string"){
 		el
 			.attr({'href': url});
+	} else {
+		if(url.url){
+			el
+			.attr({'href': url.url})
+			.on('click', (e: MouseEvent) => {
+				e.preventDefault();
+				url.click(url.url);
+			});
+		}
 	}
+}
+
+export interface LinkOptions extends options {
+	url?: string | urlOptions
 }
 
 class Link extends Text {
 
-	constructor(selectedOptions: string | Record<string, any>, otheroptions: Record<string, any> | null = null){
+	constructor(selectedOptions: string | LinkOptions, otheroptions: LinkOptions | null = null){
 		const options = Text.resolveOptions(selectedOptions, otheroptions, {...defaultLink()}) as options;
 		super(options);
 		// if(options.close) findEl(this.id).append($(`<span class="material-icons close-tab">close</span>`).on('click', () => {

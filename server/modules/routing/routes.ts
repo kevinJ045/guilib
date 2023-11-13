@@ -147,25 +147,36 @@ export default class Routes {
   }
 
 	findLayouts(route: route){
-		const layouts: string[] = [];
-		
-		const filePath = route.correspondingFile;
-		const segments = filePath.split('/');
-		
-		for (let i = segments.length; i > 0; i--) {
-			const currentPath = segments.slice(0, i).join('/');
-			const layoutPath = path.join(currentPath, 'layout.ts');
-			const layoutPathJs = path.join(currentPath, 'layout.js');
-	
-			if (fs.existsSync(layoutPath)) {
-				layouts.push(layoutPath);
-			} else if (fs.existsSync(layoutPathJs)) {
-				layouts.push(layoutPathJs);
-			}
-		}
+		const layouts = [];
+    let ignorePreviousLayouts = false; // Flag to ignore previous layouts
 
-		route.layouts = layouts;
-		return layouts;
+    const filePath = route.correspondingFile;
+    const segments = filePath.split('/');
+    const routeJson = path.join(segments.slice(0, segments.length-1).join('/'), 'route.json');
+    if (fs.existsSync(routeJson)) {
+      let json = JSON.parse(fs.readFileSync(routeJson).toString());
+      ignorePreviousLayouts = json.ignorePreviousLayouts === true;
+    }
+
+    for (let i = segments.length; i > 0; i--) {
+      const currentPath = segments.slice(0, i).join('/');
+      const layoutPath = path.join(currentPath, 'layout.ts');
+      const layoutPathJs = path.join(currentPath, 'layout.js');
+      
+
+      if (fs.existsSync(layoutPath) || fs.existsSync(layoutPathJs)) {
+        // If there's no ignoreLayoutsPath, add the layout to the list
+        layouts.push(layoutPath);
+        if (fs.existsSync(layoutPathJs)) {
+          layouts.push(layoutPathJs);
+        }
+      } else if (ignorePreviousLayouts && i !== segments.length) {
+        break;
+      }
+    }
+
+    route.layouts = layouts;
+    return layouts;
 	}
 
   findLoader(route: route){
