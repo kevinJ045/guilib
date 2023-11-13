@@ -7,7 +7,7 @@ import { bundleBun } from "./bun";
 
 export type portAndEnv = { port: number, env: 'dev' | 'prod' };
 
-function makeImportFile(route: route, paths: any, ...filepath: string[]){
+function makeImportFile(env: portAndEnv, route: route, paths: any, ...filepath: string[]){
 	const script = `${filepath.map((filepath, index) => 
 		`
 import Page${index} from "../${filepath.replace(/\.ts$/, '')}";\n`).join('\n')}
@@ -33,16 +33,27 @@ const _navigate = (path, options = {}) => {
 		return location.pathname = pathname;
 	}
 
-	document.getElementById('current_script')?.remove();
+	let tries = 0;
+	const _startScriptLoad = (notIndex) => {
+		tries++;
+		document.getElementById('current_script')?.remove();
 
-	let script = document.createElement('script');
-	script.src = pathname+'?onlyjs=true';
-	script.id = "current_script";
-	script.onload = () => {
-		cscript.remove();
-		document.body.innerHTML = '';
-		window.loadFunction();
-		if(options.push !== false) history.pushState(null, false, pathname);
+		let script = document.createElement('script');
+		let onlyjs = pathname+'?onlyjs=true';
+		let index = pathname+"/index.js".replace(/\\/\\//g, '/');
+		script.src = ${env.env == 'prod' ? `notIndex ? onlyjs : index` : `onlyjs`};
+		script.id = "current_script";
+		script.onload = () => {
+			cscript.remove();
+			document.body.innerHTML = '';
+			window.loadFunction();
+			if(options.push !== false) history.pushState(null, false, pathname);
+		}
+		script.onerror = (e) => {
+			e.preventDefault();
+			if(tries < 5) _startScriptLoad(true);
+		}
+		document.head.appendChild(script);
 	}
 
 	if(options.inherit == false){
@@ -55,7 +66,7 @@ const _navigate = (path, options = {}) => {
 	}
 
 	window.previousPathname = location.pathname;
-	document.head.appendChild(script);
+	_startScriptLoad();
 }
 
 const buildProps = (props: any) => (
@@ -191,7 +202,7 @@ window.loaderOn = loaderOn;
 export async function bundle(route: route, {port, env}: portAndEnv, paths: Record<any, any>, params: Record<string, any> = {}){
 	const scripts: string[] = [];
 
-	makeImportFile(route, paths, route.correspondingFile, ...(route.layouts ? route.layouts : []));
+	makeImportFile({port, env}, route, paths, route.correspondingFile, ...(route.layouts ? route.layouts : []));
 
 	let file = await bundleBun(env, {minify: params.minify == 'true'});
 

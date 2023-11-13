@@ -44,8 +44,8 @@ if(subcommand[0]){
 	if(subcommand[0] == 'create'){
 		console.log('Starting create...');
 		let options = {
-			ts: false,
-			tailwind: false,
+			ts: true,
+			tailwind: true,
 			name: "App",
 			author: "",
 			envprod: false
@@ -72,6 +72,7 @@ if(subcommand[0]){
 			}, null, 2));
 			if(options.ts) createFile('./tsconfig.json', JSON.stringify({
 				"compilerOptions": {
+					"esModuleInterop": true,
 					"paths": {
 						"@/*": ["./*"]
 					}
@@ -90,21 +91,30 @@ if(subcommand[0]){
 			}, null, 2));
 		}
 
-		rl.question("Do you want to use TypeScript? (y/n): ", (answer) => {
+		let defname = "", defauth = "";
+		let json = JSON.parse(fs.readFileSync('./package.json', { encoding: 'utf-8' }));
+		defname = json.name;
+		defauth = json.author;
+
+		rl.question("Do you want to use TypeScript(yes by default)? (y/n): ", (answer) => {
 			if (answer.toLowerCase() === 'yes' || answer.toLowerCase() == 'y') {
 				options.ts = true;
+			} else {
+				options.ts = false;
 			}
-			rl.question("Do you want to use tailwindcss? (y/n): ", (answer) => {
+			rl.question("Do you want to use tailwindcss(yes by default)? (y/n): ", (answer) => {
 				if (answer.toLowerCase() === 'yes' || answer.toLowerCase() == 'y') {
 					options.tailwind = true;
+				} else {
+					options.tailwind = false;
 				}
-				rl.question('Enter the project name: ', (name) => {
-					options.name = name || 'App';
+				rl.question('Enter the project name'+(defname ? ' ('+defname+')' : '')+': ', (name) => {
+					options.name = name || defname;
 		
-					rl.question('Enter the author name: ', (author) => {
-						options.author = author;
+					rl.question('Enter the author name'+(defauth ? ' ('+defauth+')' : '')+': ', (author) => {
+						options.author = author || defauth;
 		
-						rl.question('Do you want to set production environment? (y/n): ', (answer) => {
+						rl.question('Do you want to set project to production environment(no by default)? (y/n): ', (answer) => {
 							if (answer.toLowerCase() === 'yes' || answer.toLowerCase() === 'y') {
 								options.envprod = true;
 							}

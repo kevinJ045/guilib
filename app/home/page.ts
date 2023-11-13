@@ -18,14 +18,14 @@ export default class extends Component {
 				new Button('Hi', {
 					onClick(){
 						c.set('Hello');
-						console.log('hi')
+						console.log('hi');
 					}
 				}),
 				new InputWrapper({
 					title: 'Hello',
 					controller: this.c,
 					onTextInput(){
-						console.log(c);
+						console.log(c.get());
 					}
 				}),
 				new Link('fff', { url: '/' }),

@@ -1,5 +1,5 @@
 
-import Page0 from "../app/test/building/page";
+import Page0 from "../app/page";
 
 
 import Page1 from "../app/layout";
@@ -27,16 +27,27 @@ const _navigate = (path, options = {}) => {
 		return location.pathname = pathname;
 	}
 
-	document.getElementById('current_script')?.remove();
+	let tries = 0;
+	const _startScriptLoad = (notIndex) => {
+		tries++;
+		document.getElementById('current_script')?.remove();
 
-	let script = document.createElement('script');
-	script.src = pathname+'?onlyjs=true';
-	script.id = "current_script";
-	script.onload = () => {
-		cscript.remove();
-		document.body.innerHTML = '';
-		window.loadFunction();
-		if(options.push !== false) history.pushState(null, false, pathname);
+		let script = document.createElement('script');
+		let onlyjs = pathname+'?onlyjs=true';
+		let index = pathname+"/index.js".replace(/\/\//g, '/');
+		script.src = onlyjs;
+		script.id = "current_script";
+		script.onload = () => {
+			cscript.remove();
+			document.body.innerHTML = '';
+			window.loadFunction();
+			if(options.push !== false) history.pushState(null, false, pathname);
+		}
+		script.onerror = (e) => {
+			e.preventDefault();
+			if(tries < 5) _startScriptLoad(true);
+		}
+		document.head.appendChild(script);
 	}
 
 	if(options.inherit == false){
@@ -49,11 +60,11 @@ const _navigate = (path, options = {}) => {
 	}
 
 	window.previousPathname = location.pathname;
-	document.head.appendChild(script);
+	_startScriptLoad();
 }
 
 const buildProps = (props: any) => (
-	{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/test/building", params: {} }, wrap(object){ return {...this, ...object}; }, ...props}
+	{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/", params: {} }, wrap(object){ return {...this, ...object}; }, ...props}
 )
 
 

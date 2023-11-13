@@ -12,6 +12,10 @@ function dirname(p: string){
 	return path.dirname(p);
 }
 
+function pathJoin(...paths: string[]){
+	return path.join(...paths);
+}
+
 const copyDir = (source: string, target: string) => {
   if (!fs.existsSync(target)) {
     fs.mkdirSync(target);
@@ -107,7 +111,7 @@ async function build(path: string){
 				routes.findLoader(route as route);
 				let builder = new Builder(route as route, routes);
 				try{
-					const built = await builder.build({url: 'http://localhost:1001'+path+'?origin=index.js'} as Request, {port: 1001, env: 'prod'});
+					const built = await builder.build({url: 'http://localhost:1001'+path+'?origin='+(path + '/index.js').replace(/\/\//g, '/')} as Request, {port: 1001, env: 'prod'});
 					const builtScript = await builder.build({url: 'http://localhost:1001'+path+'?onlyjs=true'} as Request, {port: 1001, env: 'prod'});
 					if (built.status == 404) return;
 					else {
@@ -141,106 +145,106 @@ async function build(path: string){
 				});
 				fs.writeFileSync(_public('package.json'), JSON.stringify({name: config.title || "none", main: "./server/index.js", version: config.version || "1.0.0", "type": "commonjs", "scripts": {"start": "node ./server/index.js" }, "dependencies": {"express": "^4.18.2", "express-ws": "^5.0.2"}}, null, 2));
 				if(!fs.existsSync(_public('server/index.js'))) fs.writeFileSync(_public('server/index.js'), `
-				const fs = require('fs');
-				const path = require('path');
-				const express = require('express');
-				const expressWs = require('express-ws');
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
+const expressWs = require('express-ws');
 
-				const app = express();
-				app.use('/', express.static(path.join(__dirname, '../client')));
+const app = express();
+app.use('/', express.static(path.join(__dirname, '../client')));
 
-				let pathname = __dirname;
+let pathname = __dirname;
 
-				function runthroughApp(pathName = null) {
-					const _files = [];
-					let currentPath = pathName || './app';
-					const files = fs.readdirSync(currentPath);
-				
-					files.forEach((file) => {
-						const filePath = path.join(currentPath, file);
-						const stats = fs.statSync(filePath);
-				
-						if (stats.isDirectory()) {
-							_files.push(...runthroughApp(filePath));
-						} else {
-							if(file.endsWith('use.js')){
-								_files.push(filePath);
-							}
-						}
-					});
-					return _files;
-				}
+function runthroughApp(pathName = null) {
+	const _files = [];
+	let currentPath = pathName || './app';
+	const files = fs.readdirSync(currentPath);
 
-				const openListeners = [];
-				const closeListeners = [];
-				const messageListeners = [];
+	files.forEach((file) => {
+		const filePath = path.join(currentPath, file);
+		const stats = fs.statSync(filePath);
 
-				const useFile = async (filename) => {
-					const file = require(path.join(process.cwd(), filename));
-					if(typeof file.socket == "object"){
-						for(let i in file.socket){
-							if(i == 'open' && typeof file.socket[i] == 'function') openListeners.push(file.socket[i])
-							if(i == 'close' && typeof file.socket[i] == 'function') closeListeners.push(file.socket[i])
-							if(i == 'message' && typeof file.socket[i] == 'function') messageListeners.push(file.socket[i])
-						}
-					}
-					if(typeof file.middleware == "function"){
-						file.middleware(app, app);
-					}
-				}
+		if (stats.isDirectory()) {
+			_files.push(...runthroughApp(filePath));
+		} else {
+			if(file.endsWith('use.js')){
+				_files.push(filePath);
+			}
+		}
+	});
+	return _files;
+}
 
-				const useFiles = async () => {
-					let files = runthroughApp();
-					for(let file of files){
-						await useFile(file);
-					}
-				}
+const openListeners = [];
+const closeListeners = [];
+const messageListeners = [];
 
-				expressWs(app);
+const useFile = async (filename) => {
+	const file = require(path.join(process.cwd(), filename));
+	if(typeof file.socket == "object"){
+		for(let i in file.socket){
+			if(i == 'open' && typeof file.socket[i] == 'function') openListeners.push(file.socket[i])
+			if(i == 'close' && typeof file.socket[i] == 'function') closeListeners.push(file.socket[i])
+			if(i == 'message' && typeof file.socket[i] == 'function') messageListeners.push(file.socket[i])
+		}
+	}
+	if(typeof file.middleware == "function"){
+		file.middleware(app, app);
+	}
+}
 
-				app.ws('/', (ws, req) => {
-					// Handle WebSocket connections here
-					ws.on('open', () => {
-						openListeners.forEach((fn) => fn(ws, app));
-					});
-					ws.on('message', (message) => {
-						messageListeners.forEach((fn) => fn(ws, message, app));
-					});
-					ws.on('close', () => {
-						closeListeners.forEach((fn) => fn(ws, app));
-					});
+const useFiles = async () => {
+	let files = runthroughApp();
+	for(let file of files){
+		await useFile(file);
+	}
+}
+
+expressWs(app);
+
+app.ws('/', (ws, req) => {
+	// Handle WebSocket connections here
+	ws.on('open', () => {
+		openListeners.forEach((fn) => fn(ws, app));
+	});
+	ws.on('message', (message) => {
+		messageListeners.forEach((fn) => fn(ws, message, app));
+	});
+	ws.on('close', () => {
+		closeListeners.forEach((fn) => fn(ws, app));
+	});
+});
+
+async function requireIndexFiles(dir) {
+	// Get a list of all files and directories in the current directory
+	const entries = fs.readdirSync(dir);
+
+	// Look for an "index.js" file in the current directory
+	if (entries.includes('index.js') && dir !== pathname) {
+		let index = require(path.join(dir, 'index.js'));
+		let { pathname } = require(path.join(dir, 'pathname.js'));
+		for(let i in index){
+			if(app[i.toLowerCase()]){
+				app[i.toLowerCase()](pathname, async (req, res) => {
+					res.send(await index[i]());
 				});
+			}
+		}
+	}
 
-				async function requireIndexFiles(dir) {
-					// Get a list of all files and directories in the current directory
-					const entries = fs.readdirSync(dir);
-				
-					// Look for an "index.js" file in the current directory
-					if (entries.includes('index.js') && dir !== pathname) {
-						let index = require(path.join(dir, 'index.js'));
-						let { pathname } = require(path.join(dir, 'pathname.js'));
-						for(let i in index){
-							if(app[i.toLowerCase()]){
-								app[i.toLowerCase()](pathname, async (req, res) => {
-									res.send(await index[i]());
-								});
-							}
-						}
-					}
-				
-					// Recursively process subdirectories
-					entries.forEach(entry => {
-						const entryPath = path.join(dir, entry);
-						if (fs.statSync(entryPath).isDirectory()) {
-							requireIndexFiles(entryPath);
-						}
-					});
-				}
+	// Recursively process subdirectories
+	entries.forEach(entry => {
+		const entryPath = path.join(dir, entry);
+		if (fs.statSync(entryPath).isDirectory()) {
+			requireIndexFiles(entryPath);
+		}
+	});
+}
 
-				requireIndexFiles(pathname);
+requireIndexFiles(pathname);
 
-				app.listen(${port}, () => console.log('localhost:${port}'));
-				`);
+app.listen(${port}, () => console.log('localhost:${port}'));
+`);
 				console.log('Warning: server building still in experiment stage')
 			}
 		}	else {

@@ -1,1 +1,0 @@
-exports.pathname = "/test/route"

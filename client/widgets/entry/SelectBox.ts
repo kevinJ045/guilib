@@ -66,7 +66,7 @@ export default class Selectbox extends Widget {
 	__controller?: SelectController;
 
 	constructor(selectedOptions: SelectOptions){
-		const options = {...({ element: {name: 'select'}, attr: { multiple: selectedOptions.multiple ? true : false }, class: "selectbox-wrapper", _setters: ['selectableOptions', 'multiple']}), ...selectedOptions};
+		const options = {...({ element: {name: 'select'}, class: "selectbox-wrapper", _setters: ['selectableOptions', 'multiple']}), ...selectedOptions};
 		super(options);
 
 		if(options.controller){

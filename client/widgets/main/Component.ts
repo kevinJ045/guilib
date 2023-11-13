@@ -212,14 +212,14 @@ export default class Component {
 	 * the job is done right after inheritance and before the build
 	 * is done, it is also not expected to return anything useful
 	 */
-	initState(props: buildProps) : void {}
+	initState(props: buildProps | any) : void {}
 
 	/**
 	 * build runs after initState, it has a little different buildProps,
 	 * and it can be executed again when state changes, meant to be used as a basic
 	 * template and be manipulated in the afterBuild section later on
 	 */
-	build(props: buildProps) : Widget {
+	build(props: buildProps | any) : Widget {
 		return new Widget({});
 	}
 
@@ -231,7 +231,7 @@ export default class Component {
 	 * You can also use afterBuild for async requests using Controllers and 
 	 * such for stateful change.
 	 */
-	afterBuild(props: buildProps) : void {}
+	afterBuild(props: buildProps | any) : void {}
 
 	/**
 	 * Makes reference setters and getters for a data value 
