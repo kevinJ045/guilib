@@ -2,25 +2,67 @@ import Widget from "./Widget";
 
 export const components: Component[] = [];
 
-export interface navigationOptions{
+export interface navigationOptions {
 	reinit?: boolean,
 	refresh?: boolean,
 	inherit?: boolean
 }
 
-export type buildProps = {
+export interface buildProps {
 	route: {
 		path: string,
 		params: Record<string, any>
 	},
+
+	/**
+	 * The router prop is used to do routing management.
+	 * 
+	 * Can be used to navigate, back and forth and change the
+	 * current route paths.
+	 * 
+	 */
 	router: {
+		/**
+		 * Used to navigate to a path
+		 * 
+		 * @param {string} path The path to be navigated
+		 * @param {navigationOptions} options Navgation Options
+		 * @returns 
+		 */
 		navigate: (path: string, options?: navigationOptions) => void,
 		back: () => void,
+		forward: () => void,
 		assign: (path: string) => void,
 		paths: string[]
 	},
+
+	/**
+	 * This value is null unless you have the /app/init.client.ts return a value.
+	 * 
+	 * To use the init prop you have to export a function init in your init.client.ts 
+	 * file and make it return a value, that returned value will be the value of
+	 * the init prop.
+	 */
 	init?: any,
-	page?: Widget
+
+	/**
+	 * The page property is only found either in Layouts or inside of 
+	 * the afterBuild buildProps.
+	 * 
+	 * It holds the value of a build result.
+	 */
+	page?: Widget,
+
+	/**
+	 * This function allows you to clone the buildProps and
+	 * add custom properties into it.
+	 * 
+	 * 
+	 * @param {any} object: The object to wrap around the buildProps
+	 * @returns {buildProps}
+	 */
+	wrap?: (object: any) => buildProps,
+	[key: string]: any
 }
 
 export function makeComponent(component: Component, props: buildProps | any){
@@ -36,16 +78,14 @@ type link = string | {
 	href: string
 }
 
-export function buildComponent(component: any, from: Component){
-	let _comp: Component = new component(from._buildProps);
+export function buildComponent<T>(component: any, props: T, from: Component | null = null){
+	let _comp: Component = new component(props);
 	_comp._beforeInit();
-	if(component.inheritState !== false) _comp._inheritState(from._buildProps);
-	_comp.initState(from._buildProps);
-	let widget = _comp.make(from._buildProps);
-	return {
-		widget,
-		component: _comp
-	}
+	if(component.inheritState !== false && from) _comp._inheritState(from);
+	_comp.initState(props as buildProps);
+	let widget = _comp.make(props as buildProps);
+	widget.component = _comp;
+	return widget;
 }
 
 export default class Component {
@@ -96,8 +136,17 @@ export default class Component {
 	 */
 	static scripts: string[] = [];
 
+
+	/**
+	 * DO NOT OVERRIDE!!
+	 * 
+	 * This function is not overridable, or in other words, 
+	 * this function is a core function to make the Component
+	 * logic work, please don't touch it
+	 */
 	constructor(props: buildProps | any){
 		components.push(this);
+		this._buildProps = props;
 	}
 
 	/**
@@ -163,14 +212,14 @@ export default class Component {
 	 * the job is done right after inheritance and before the build
 	 * is done, it is also not expected to return anything useful
 	 */
-	initState(props: buildProps | any){}
+	initState(props: buildProps) : void {}
 
 	/**
 	 * build runs after initState, it has a little different buildProps,
 	 * and it can be executed again when state changes, meant to be used as a basic
 	 * template and be manipulated in the afterBuild section later on
 	 */
-	build(props: buildProps | any){
+	build(props: buildProps) : Widget {
 		return new Widget({});
 	}
 
@@ -182,7 +231,7 @@ export default class Component {
 	 * You can also use afterBuild for async requests using Controllers and 
 	 * such for stateful change.
 	 */
-	afterBuild(props: buildProps | any){}
+	afterBuild(props: buildProps) : void {}
 
 	/**
 	 * Makes reference setters and getters for a data value 
@@ -246,6 +295,19 @@ export default class Component {
 			let newWidget = makeComponent(this, this._buildProps);
 			if(parent) newWidget.to(parent);
 		} 
+	}
+
+	/**
+	 * DO NOT OVERRIDE!!
+	 * 
+	 * The update function is used to re-render the component when a ref
+	 * is changed, you can use this to re-render anytime but you shouldn't
+	 * override it.
+	 * 
+	 * This function is to build Components inside other Components.
+	 */
+	static buildFor<T = buildProps>(parent: Component | null, props: T){
+		return buildComponent<T>(this, props, parent);
 	}
 }
 

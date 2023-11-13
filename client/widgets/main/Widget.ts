@@ -189,6 +189,8 @@ class Widget extends WidgetProps {
 	 *
 	 * @param {options} [options={}] - Configuration options for the Widget.
 	 */
+	component?: any;
+	
 	constructor(options: options = { element: { name: 'div' }, class: 'widget' }){
 		super();
 		_init(this, {...getDefaults({}), ...(options as Record<string, any>)});

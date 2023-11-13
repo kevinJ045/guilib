@@ -1,5 +1,5 @@
 
-import Page0 from "../app/test/animation/page";
+import Page0 from "../app/test/building/page";
 
 
 import Page1 from "../app/layout";
@@ -13,7 +13,7 @@ if(!window.pages) window.pages = pages;
 
 if(typeof Page0.title === "string") document.title = Page0.title;
 
-const otherPaths = ["/","/someapifolder","/home","/test/route","/test/route/:id","/test/promise","/test/props","/test/grid","/test/tailwind","/test/navigate","/test/navigate/target","/test/route.json","/test/ref","/test/model","/test/loading","/test/loading/widget","/test/layout","/test/animation","/test/select","/test/live","/test/table","/lll","/posts/:id"];
+const otherPaths = ["/","/someapifolder","/home","/test/route","/test/route/:id","/test/promise","/test/props","/test/grid","/test/tailwind","/test/navigate","/test/navigate/target","/test/route.json","/test/ref","/test/model","/test/loading","/test/loading/widget","/test/building","/test/layout","/test/animation","/test/select","/test/live","/test/table","/lll","/posts/:id"];
 
 const _navigate = (path, options = {}) => {
 	let pathname = path;
@@ -53,7 +53,7 @@ const _navigate = (path, options = {}) => {
 }
 
 const buildProps = (props: any) => (
-	{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/test/animation", params: {} }, ...props}
+	{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/test/building", params: {} }, wrap(object){ return {...this, ...object}; }, ...props}
 )
 
 
@@ -104,6 +104,7 @@ let made1 = page1.make(buildProps({init: initResponse, page: made0}));
 	} else {
 		page0.afterBuild(buildProps({page: made0}));
 made1.to(document.body)
+		
 	}
 
 	

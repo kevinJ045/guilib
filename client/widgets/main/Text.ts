@@ -16,6 +16,11 @@ const defaultText = () => getDefaults({
 	accepts: false,
 } as textOptions);
 
+/**
+ * Text representation for the Widget class
+ * @class Text
+ * @extends Widget
+ */
 class Text extends Widget {
 
 	constructor(selectedOptions: string | textOptions, otheroptions: textOptions | null = null){
