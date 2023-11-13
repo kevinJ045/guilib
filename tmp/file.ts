@@ -1,5 +1,5 @@
 
-import Page0 from "../app/page";
+import Page0 from "../app/test/animation/page";
 
 
 import Page1 from "../app/layout";
@@ -53,7 +53,7 @@ const _navigate = (path, options = {}) => {
 }
 
 const buildProps = (props: any) => (
-	{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/", params: {} }, ...props}
+	{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/test/animation", params: {} }, ...props}
 )
 
 

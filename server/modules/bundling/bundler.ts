@@ -103,6 +103,7 @@ window.loadFunction = () => {
 		page0.afterBuild(buildProps({page: made0}));
 	} else {
 		${filepath.map((file, index) => `${index+1 == filepath.length ? `made${index}.to(document.body)` : `page${index}.afterBuild(buildProps({page: made0}));`}`).join('\n')}
+		${filepath.length == 1 ? 'page0.afterBuild(buildProps({page: made0}));' : ''}
 	}
 
 	
