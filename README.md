@@ -21,7 +21,7 @@ Rayous is a modern, lightweight, and flexible web application framework for buil
 
 To start building your web application with Rayous, follow these steps:
 
-1. Clone this repository to your local development environment.
+1. Create a new folder and do `npm init -y`
 
 2. Install the required dependencies using npm or yarn:
 	```bash
