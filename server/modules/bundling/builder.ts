@@ -17,7 +17,7 @@ export default class Builder {
 		let url = new URL(req.url);
 		const paths = Array.from(this.routes.paths.entries()).map((key: any) => key[0] || "/");
 		if (route.type == "route") {
-			delete require.cache[require.resolve(path.join(process.cwd(), route.correspondingFile))];
+			for(let i in require.cache) delete require.cache[i];
 			const requests = require(path.join(process.cwd(), route.correspondingFile));
 			const response = req.method.toUpperCase() in requests
 			? await requests[req.method.toUpperCase()](req, route, paths)

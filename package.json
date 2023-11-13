@@ -1,6 +1,6 @@
 {
   "name": "rayous",
-  "version": "1.8.3",
+  "version": "1.8.4",
   "author": "makano",
   "description": "A mini router X ui kit with ts",
   "main": "./client/index.ts",
@@ -22,11 +22,11 @@
     "index.d.ts"
   ],
   "bin": {
-    "rayous": "./bin/rayous.js"
+    "rayous": "bin/rayous.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kevinj045/guilib.git"
+    "url": "git+https://github.com/kevinj045/guilib.git"
   },
   "scripts": {
     "start": "bun --watch run ./server/server.ts"
