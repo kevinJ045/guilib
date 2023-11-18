@@ -27,7 +27,7 @@ export async function bundleBun(env: string, options: any = {}){
 		console.error("Build failed");
 		for (const message of bundled.logs) {
 			// Bun will pretty print the message object
-			scriptText += `var message = \`${message}\`;document.body.innerHTML = (message);throw new Error(message);`;
+			scriptText += `var message = \`${message}\`;document.write(message);throw new Error(message);`;
 			console.error(message);
 		}
 	}

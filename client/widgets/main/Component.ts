@@ -62,11 +62,41 @@ export interface buildProps {
 	 * @returns {buildProps}
 	 */
 	wrap?: (object: any) => buildProps,
+
+	/**
+	 * This function allows you to add properties to the base buildProps
+	 * to pass it to the next built components.
+	 * 
+	 * 
+	 * @param {string} key: The property name
+	 * @param {any} value: The property value
+	 * @returns {buildProps}
+	 */
+	add?: (key: string, value: any) => buildProps,
+
+	/**
+	 * This function allows you to add arguments to the base buildProps
+	 * 'arg' property to pass it to the next built components.
+	 * 
+	 * 
+	 * @param {any} args: The arguments value
+	 * @returns {buildProps}
+	 */
+	addArgument?: (...args: any[]) => buildProps,
+
+	/**
+	 * The args to pass to the next built components 
+	 * as build args instead of buildprops.
+	 * 
+	 */
+	args?: any[],
 	[key: string]: any
 }
 
 export function makeComponent(component: Component, props: buildProps | any){
-	const widget = component.build(props);
+	let args: any[] = Array.isArray(props.args) ? props.args : [];
+	// @ts-ignore
+	const widget = component.build(props, ...args);
 	if(!(widget instanceof Widget)) throw new TypeError('Component.build does not return a widget.');
 	component._currentWidget = widget;
 	component._buildProps = props;
@@ -135,6 +165,14 @@ export default class Component {
 	 * for example cdns, vanilla libraries...
 	 */
 	static scripts: string[] = [];
+
+	/**
+	 * A function to run before any component build starts.
+	 * 
+	 * Can be used to register arguments to a component chain,
+	 * or to register properties to child components.
+	 */
+	static beforeBuildStart?: (props: buildProps) => void; 
 
 
 	/**

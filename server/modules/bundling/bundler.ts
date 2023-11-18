@@ -7,7 +7,8 @@ import { bundleBun } from "./bun";
 
 export type portAndEnv = { port: number, env: 'dev' | 'prod' };
 
-function makeImportFile(env: portAndEnv, route: route, paths: any, ...filepath: string[]){
+function makeImportFile(env: portAndEnv, route: route, paths: any, ...files: string[]){
+	const filepath = Array.from(files);
 	const script = `${filepath.map((filepath, index) => 
 		`
 import Page${index} from "../${filepath.replace(/\.ts$/, '')}";\n`).join('\n')}
@@ -69,8 +70,10 @@ const _navigate = (path, options = {}) => {
 	_startScriptLoad();
 }
 
+let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }}
+
 const buildProps = (props: any) => (
-	{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }, wrap(object){ return {...this, ...object}; }, ...props}
+	{ ...base_props, wrap(object){ return {...this, ...object}; }, addArgument(...args){if(!Array.isArray(base_props.args)) base_props.args = [];base_props.args.push(...args);return buildProps();}, add(prop, value){base_props[prop] = value; return buildProps();}, ...props }
 )
 
 
@@ -102,8 +105,9 @@ window.loadFunction = () => {
 	const initResponse = window.initResponse ? window.initResponse : typeof clientInit.init == "function" ? clientInit.init(buildProps()) || {} : {};
 	if(!window.initResponse) window.initResponse = initResponse;
 
-	${filepath.map((filepath, index) => `let page${index} = new Page${index}();\npage${index}._beforeInit();\npage${index}.initState(buildProps());`).join('\n')}
+	${filepath.map((file, index) => `if(typeof Page${(filepath.length-1) - index}.beforeBuildStart == "function") Page${(filepath.length-1) - index}.beforeBuildStart(buildProps());`).join('\n')}
 	
+	${filepath.map((filepath, index) => `let page${index} = new Page${index}();\npage${index}._beforeInit();\npage${index}.initState(buildProps());`).join('\n')}
 
 	if(window.lastPage && Page0.inheritState !== false) page0._inheritState(window.lastPage);
 
@@ -111,10 +115,10 @@ window.loadFunction = () => {
 
 	if(Page0.layouts === false){
 		made0.to(document.body);
-		page0.afterBuild(buildProps({page: made0}));
+		page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));
 	} else {
-		${filepath.map((file, index) => `${index+1 == filepath.length ? `made${index}.to(document.body)` : `page${index}.afterBuild(buildProps({page: made0}));`}`).join('\n')}
-		${filepath.length == 1 ? 'page0.afterBuild(buildProps({page: made0}));' : ''}
+		${filepath.map((file, index) => `${index+1 == filepath.length ? `made${index}.to(document.body)` : `page${index}.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));`}`).join('\n')}
+		${filepath.length == 1 ? 'page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));' : ''}
 	}
 
 	

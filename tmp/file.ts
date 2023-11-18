@@ -1,8 +1,11 @@
 
-import Page0 from "../app/page";
+import Page0 from "../app/test/args/page";
 
 
-import Page1 from "../app/layout";
+import Page1 from "../app/test/args/layout";
+
+
+import Page2 from "../app/layout";
 
 import * as clientInit from "../app/init.client";
 
@@ -13,7 +16,7 @@ if(!window.pages) window.pages = pages;
 
 if(typeof Page0.title === "string") document.title = Page0.title;
 
-const otherPaths = ["/","/someapifolder","/home","/test/route","/test/route/:id","/test/promise","/test/props","/test/grid","/test/tailwind","/test/navigate","/test/navigate/target","/test/route.json","/test/ref","/test/model","/test/loading","/test/loading/widget","/test/building","/test/layout","/test/animation","/test/select","/test/live","/test/table","/lll","/posts/:id"];
+const otherPaths = ["/","/someapifolder","/home","/test/route","/test/route/:id","/test/promise","/test/props","/test/grid","/test/tailwind","/test/navigate","/test/navigate/target","/test/route.json","/test/ref","/test/model","/test/loading","/test/loading/widget","/test/building","/test/args","/test/dev","/test/layout","/test/animation","/test/select","/test/live","/test/table","/lll","/posts/:id"];
 
 const _navigate = (path, options = {}) => {
 	let pathname = path;
@@ -63,8 +66,10 @@ const _navigate = (path, options = {}) => {
 	_startScriptLoad();
 }
 
+let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/test/args", params: {} }}
+
 const buildProps = (props: any) => (
-	{ router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/", params: {} }, wrap(object){ return {...this, ...object}; }, ...props}
+	{ ...base_props, wrap(object){ return {...this, ...object}; }, addArgument(...args){if(!Array.isArray(base_props.args)) base_props.args = [];base_props.args.push(...args);return buildProps()}, add(prop, value){base_props[prop] = value; return buildProps();}, ...props }
 )
 
 
@@ -96,32 +101,41 @@ window.loadFunction = () => {
 	const initResponse = window.initResponse ? window.initResponse : typeof clientInit.init == "function" ? clientInit.init(buildProps()) || {} : {};
 	if(!window.initResponse) window.initResponse = initResponse;
 
+	if(typeof Page2.beforeIn == "function") Page2.beforeIn(buildProps());
+if(typeof Page1.beforeIn == "function") Page1.beforeIn(buildProps());
+if(typeof Page0.beforeIn == "function") Page0.beforeIn(buildProps());
+	
 	let page0 = new Page0();
 page0._beforeInit();
 page0.initState(buildProps());
 let page1 = new Page1();
 page1._beforeInit();
 page1.initState(buildProps());
-	
+let page2 = new Page2();
+page2._beforeInit();
+page2.initState(buildProps());
 
 	if(window.lastPage && Page0.inheritState !== false) page0._inheritState(window.lastPage);
 
 	let made0 = page0.make(buildProps({init: initResponse, page: null}));
 let made1 = page1.make(buildProps({init: initResponse, page: made0}));
+let made2 = page2.make(buildProps({init: initResponse, page: made1}));
 
 	if(Page0.layouts === false){
 		made0.to(document.body);
-		page0.afterBuild(buildProps({page: made0}));
+		page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));
 	} else {
-		page0.afterBuild(buildProps({page: made0}));
-made1.to(document.body)
+		page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));
+page1.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));
+made2.to(document.body)
 		
 	}
 
 	
 
 	pages.push(page0)
-pages.push(page1);
+pages.push(page1)
+pages.push(page2);
 	window.lastPage = page0;
 
 	if(typeof clientInit.after == "function" && !window.initted) clientInit.after(buildProps({page: made0}));
