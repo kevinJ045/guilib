@@ -10,11 +10,11 @@ export interface ListItemOptions extends options {
 	link?: boolean
 }
 
-type items = Controller<any[]> | any[]
-export interface ListOptions extends options {
+type items<T = any> = Controller<T[]> | T[];
+export interface ListOptions<T = any> extends options {
 	itemsStateName?: string,
-	template?: CallableFunction,
-	items?: items | Promise<items>,
+	items?: items<T> | Promise<items<T | any>>,
+	template?: (item: T, index: number, array: items<T>) => Widget,
 	empty?: boolean
 }
 
@@ -65,9 +65,9 @@ class ListItem extends Widget {
 
 }
 
-class List extends ListBuilder {
+class List<T = any> extends ListBuilder<T> {
 
-	constructor(selectedOptions: ListOptions){
+	constructor(selectedOptions: ListOptions<T>){
 		const options = {...defaultList(), ...selectedOptions};
 		super(options, _initList);
 	}

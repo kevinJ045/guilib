@@ -4,7 +4,7 @@ import { findEl } from "../../utils/elman.js";
 import Store from "../../data/Store.js";
 import Controller from "../../data/Controller";
 
-class ListBuilder extends Widget {
+class ListBuilder<T = any> extends Widget {
 
 	state = new Store({items: []});
 
@@ -21,7 +21,7 @@ class ListBuilder extends Widget {
 		});
 	}
 
-	_fromTemplate(item: any, index: number){
+	_fromTemplate(item: T, index: number){
 		if(!index) index = this.getStore()[(this.options as any).itemsStateName].length || 0;
 		let widget: Widget = (this.options as any).template.call(this, item, index);
 		if(!(widget  instanceof Widget)) throw new Error("ListBuilder requires for a widget as a template");

@@ -84,7 +84,7 @@ class options {
 };
 
 export { options };
-export default function getDefaults<T>(opts: options | T){
+export default function getDefaults<T = options>(opts: options | T){
 	let defaults = {
 		element: {
 			name: "div",
@@ -118,7 +118,7 @@ export default function getDefaults<T>(opts: options | T){
 	return {
     ...defaults,
     ...opts,
-  } as options;
+  } as T;
 }
 
 const mergableOptions = 'class|type|_setters|children'.split('|');
