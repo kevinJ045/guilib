@@ -1,12 +1,38 @@
 import Widget from "../widgets/main/Widget";
 import { findEl } from "./elman";
 
+interface WidgetEvent<T = any> {
+	prevent: () => void,
+	stop: () => void,
+	key: {
+		code: number,
+		name: string,
+		output: string,
+		ctrl: boolean,
+		alt: boolean,
+		meta: boolean,
+		shift: boolean
+	},
+	pos: {
+		x: number,
+		y: number
+	},
+	offset: {
+		x: number,
+		y: number
+	},
+	name: string,
+	data?: any,
+	dataTransfer?: any,
+	target: Widget,
+	original: T
+}
 
 function createEventData(e: any, name: string, widget: Widget | null = null){
 	return { 
 		prevent: () => e.preventDefault(), 
 		stop: () => e.stopPropagation(), 
-		key: { code: e.keyCode, name: e.code, output: e.key, ctrl: e.ctrlKey}, 
+		key: { code: e.keyCode, name: e.code, output: e.key, ctrl: e.ctrlKey, shift: e.shiftKey, alt: e.altKey, meta: e.metaKey }, 
 		pos: {x: e.clientX, y: e.clientY}, 
 		offset: {x: e.offsetX, y: e.offsetY}, 
 		name,
@@ -63,6 +89,8 @@ function onTextInput(widget: Widget, callback: any){
 	findEl(widget.id!).on("change", input);
 }
 
+
+export type { WidgetEvent }; 
 export {
 	onHold,
 	onTextInput,

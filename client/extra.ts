@@ -19,4 +19,5 @@ export type { buildProps } from "./widgets/main/Component";
 export { buildComponent } from "./widgets/main/Component";
 export { Ref } from "./widgets/main/Component";
 export { options } from "./utils/options.js";
+export type { WidgetEvent } from "./utils/events.js";
 export type { rowValue as TableRowValue, TableRowOptions, TableOptions } from "./widgets/list/Table.js";
