@@ -67,7 +67,6 @@ class options {
 	name?: string | null = null;
 	inheritStore?: boolean = false;
 	events?: Record<string, Function> | null = {};
-	type?: string[] | null = [];
 	_setters?: string[] | null = [];
 	holdDuration?: number = 1000;
 	build?: Function = () => {};
