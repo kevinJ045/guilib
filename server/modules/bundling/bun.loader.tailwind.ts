@@ -1,5 +1,6 @@
 // @ts-ignore
 import { plugin, type BunPlugin } from "bun";
+import { loaderStyle } from "./loadstyle";
 const tailwindcss = require('tailwindcss');
 const postcss = require('postcss');
 const { readFileSync } = require('fs');
@@ -12,12 +13,7 @@ export const bunTailwindLoader: BunPlugin = {
 			const result = await postcss([tailwindcss])
 				.process(readFileSync(path), { from: undefined });
 
-			return { loader: 'js', contents: `(() => {
-        const style = document.createElement('style');
-        style.pathname = '${path}';
-        style.textContent = \`${result.css.replace(/`/g, '\\`')}\`;
-        document.head.appendChild(style);
-      })()` };
+			return { loader: 'js', contents: loaderStyle(path, result.css) };
     })
   },
 }
