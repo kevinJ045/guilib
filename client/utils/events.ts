@@ -11,8 +11,9 @@ function createEventData(e: any, name: string, widget: Widget | null = null){
 		offset: {x: e.offsetX, y: e.offsetY}, 
 		name,
 		data: e.data || e.originalEvent?.data,
-		dataTransfer: e.originalEvent?.dataTransfer,
-		target: widget || e.target ? Widget.from(e.target) : null
+		dataTransfer: e.dataTransfer || e.originalEvent?.dataTransfer,
+		target: widget || e.target ? Widget.from(e.target) : null,
+		original: e
 	};
 }
 

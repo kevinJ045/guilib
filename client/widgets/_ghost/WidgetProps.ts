@@ -11,7 +11,7 @@ import Widget from "../main/Widget";
 
 type widget = Widget | WidgetProps | null;
 type widgetF = Widget | WidgetProps;
-type child = WidgetProps | HTMLElement | HTMLGUIWidget;
+type child = Widget | WidgetProps | HTMLElement | HTMLGUIWidget;
 interface HTMLGUIWidget extends HTMLElement {
   GUIWIDGET?: any;
 }

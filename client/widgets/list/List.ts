@@ -5,13 +5,13 @@ import ListBuilder from "./ListBuilder.js";
 import Text from "../main/Text.js";
 import Controller from "../../data/Controller";
 
-interface ListItemOptions extends options {
+export interface ListItemOptions extends options {
 	title?: Widget | string;
 	link?: boolean
 }
 
 type items = Controller<any[]> | any[]
-interface ListOptions extends options {
+export interface ListOptions extends options {
 	itemsStateName?: string,
 	template?: CallableFunction,
 	items?: items | Promise<items>,
