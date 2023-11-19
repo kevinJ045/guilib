@@ -156,8 +156,19 @@ export function getListenerSocket(port: number, file : { imports: string[] }){
 		socket.addEventListener('message', event => {
 			try{
 				const data = JSON.parse(event.data);
-				console.log(data);
-				if(imports.indexOf(data.path) > -1) location.reload();
+				if(imports.indexOf(data.path) > -1) return location.reload();
+				else {
+					let styles = document.head.getElementsByTagName('style');
+					Array.from(styles).forEach(style => {
+						if(style.pathname == data.path){
+							fetch('/__css__?path='+data.path)
+							.then(r => r.text())
+							.then(css => {
+								style.textContent = css;
+							});
+						}
+					});
+				}
 			} catch(e){
 				console.log(e);
 			}

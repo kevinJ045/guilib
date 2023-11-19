@@ -4,6 +4,7 @@ import { middleWare } from "./modules/middleware/middleware";
 import { serve } from "./modules/serving/server.bun";
 
 import { resolve as resolvePath, join as joinPath } from "node:path";
+import { bundleCss } from "./modules/bundling/cssfull";
 
 
 function watchFolder(dir: string, onchange: (path: string) => any) {
@@ -47,6 +48,14 @@ async function startServer(){
 
 	const { sockets, connectServer } = await middleWare(router);
 
+	router.get('/__css__', async (req: Request) => {
+		let url = new URL(req.url);
+		let pathname = url.searchParams.get('path');
+		if(!pathname) return new Response('');
+		const processedCss = await bundleCss(pathname);
+		return new Response(processedCss);
+	});
+
 	router.all("*", (req: Request) => serve({port, env}, req));
 
 	console.log('localhost:'+port);
@@ -74,13 +83,22 @@ async function startServer(){
 		}
 	});
 	
-	if(env === 'dev') watchFolder('./app', (filename: string) => {
-		server.publish('file-change-listeners', JSON.stringify({
-			type: 'file-change',
-			relativePath: filename,
-			path: resolvePath(filename)
-		}));
-	});
+	if(env === 'dev') {
+		watchFolder('./app', (filename: string) => {
+			server.publish('file-change-listeners', JSON.stringify({
+				type: 'file-change',
+				relativePath: filename,
+				path: resolvePath(filename)
+			}));
+		});
+		watchFolder('./styles', (filename: string) => {
+			server.publish('file-change-listeners', JSON.stringify({
+				type: 'file-change',
+				relativePath: filename,
+				path: resolvePath(filename)
+			}));
+		});
+	}
 
 	connectServer(server);
 }
