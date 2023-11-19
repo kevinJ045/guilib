@@ -17,18 +17,6 @@ function findEl(id: string): Dom | any {
 	return elementList[id as string];
 }
 
-function elementTypes(type1: string | null, types: Array<string>, id: string){
-	if(!typedElements.includes(type1 as string)) type1 = null;
-	types.forEach((type: string) => {
-		let el = findEl(id);
-		if(specificTypes.includes(type)){
-			type1 = findEl(id).GUIWIDGET.options.class;
-		}
-		let t = (type1 ? type1+'-' : '')+type;
-		el.classList.toggle(t);
-	});
-}
-
 function createElement(element: string, classes: string, attr: attr){
 	let el = document.createElement(element);
 	if(attr) setAttributeMap(el, attr);
@@ -88,7 +76,6 @@ function siblings(element: HTMLElement) {
 export {
 	registerElement,
 	findEl,
-	elementTypes,
 	elementList as GUIDOMTREE,
 	createElement,
 	setAttributeMap,

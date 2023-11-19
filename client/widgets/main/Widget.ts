@@ -151,7 +151,6 @@ function _init(widget: widgetF, options: options){
 	const setterFunctions = [
 		'padding',
 		'margin',
-		'type',
 		'name',
 		'id:$id',
 		'animation',

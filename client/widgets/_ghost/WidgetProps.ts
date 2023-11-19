@@ -2,7 +2,7 @@ import { animateWidget, animateWidgets, animation } from "../../components/Anima
 import Style from "../../components/Style";
 import Store from "../../data/Store";
 import Dom from "../../utils/dom";
-import { attr, elementTypes, findEl } from "../../utils/elman";
+import { attr, findEl } from "../../utils/elman";
 import { createEventData, getEventName, onHold, onTextInput } from "../../utils/events";
 import { filteredChildren, htmlPseudos, resolveSubchild } from "../../utils/misc";
 import { options } from "../../utils/options";
@@ -105,23 +105,6 @@ class WidgetProps {
 	 */
 	set name(value: string){
 		findEl(this.id!).attr({ "name": value });
-	}
-
-	set type(type: string | string[]){
-		if(typeof type == 'string'){
-			type = [type];
-		} else if(Array.isArray(type)){
-			type = type;
-		} else {
-			throw new Error('Undefined type type');
-		}
-
-		elementTypes(null, type, this.id!);
-		this.emit('typechange', type);
-	}
-	setType(type: string){
-		this.type = type;
-		return this;
 	}
 
 
