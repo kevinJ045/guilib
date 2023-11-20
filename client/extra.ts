@@ -17,6 +17,8 @@ export type { EntryOptions } from "./widgets/entry/InputWrapper.js";
 export type { textOptions as TextOptions, text } from "./widgets/main/Text.js";
 export type { buildProps } from "./widgets/main/Component";
 export { buildComponent } from "./widgets/main/Component";
+export { getComponentExports } from "./utils/extra.js";
+export type { RayousExport } from "./utils/extra.js";
 export { Ref } from "./widgets/main/Component";
 export { options } from "./utils/options.js";
 export type { WidgetEvent } from "./utils/events.js";
