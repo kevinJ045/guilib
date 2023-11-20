@@ -7,20 +7,23 @@ import { bundleBun } from "./bun";
 
 export type portAndEnv = { port: number, env: 'dev' | 'prod' };
 
-function makeImportFile(env: portAndEnv, route: route, paths: any, ...files: string[]){
+function makeImportFile(options: Record<string, any>, env: portAndEnv, route: route, paths: any, ...files: string[]){
 	const filepath = Array.from(files);
 	const script = `${filepath.map((filepath, index) => 
 		`
 import Page${index} from "../${filepath.replace(/\.ts$/, '')}";\n`).join('\n')}
 ${existsSync('./app/init.client.ts') || existsSync('./app/init.client.js') ? `import * as clientInit from "../app/init.client";\n` : 'const clientInit = { init: () => {}, after: () => {} };'}
 
+
+const otherPaths = ${JSON.stringify(paths)};
+let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }}
+
+function start(){
 let cscript = document.currentScript;
 const pages = window.pages || [];
 if(!window.pages) window.pages = pages;
 
 if(typeof Page0.title === "string") document.title = Page0.title;
-
-const otherPaths = ${JSON.stringify(paths)};
 
 const _navigate = (path, options = {}) => {
 	let pathname = path;
@@ -69,8 +72,6 @@ const _navigate = (path, options = {}) => {
 	window.previousPathname = location.pathname;
 	_startScriptLoad();
 }
-
-let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }}
 
 const buildProps = (props: any) => (
 	{ ...base_props, wrap(object){ return {...this, ...object}; }, addArgument(...args){if(!Array.isArray(base_props.args)) base_props.args = [];base_props.args.push(...args);return buildProps();}, add(prop, value){base_props[prop] = value; return buildProps();}, ...props }
@@ -142,6 +143,16 @@ if(!window.popStateListenerListening) window.addEventListener('popstate', window
 window.popStateListenerListening = true;
 
 window.addEventListener('load', window.loadFunction);
+}
+${options.export ? `(() => {
+	if(!window.__rayous_exports) window.__rayous_exports = {};
+	window.__rayous_exports['${route.correspondingFile}'] = {
+		component: Page0,
+		layouts: ${route.layouts ? JSON.stringify(route.layouts) : '[]'},
+		path: "${route.path}",
+		props: base_props
+	};
+})()` : 'start()'}
 	`;
 	if(!existsSync('./tmp')) mkdirSync('./tmp');
 	writeFileSync('./tmp/file.ts', script);
@@ -217,7 +228,7 @@ window.loaderOn = loaderOn;
 export async function bundle(route: route, {port, env}: portAndEnv, paths: Record<any, any>, params: Record<string, any> = {}){
 	const scripts: string[] = [];
 
-	makeImportFile({port, env}, route, paths, route.correspondingFile, ...(route.layouts ? route.layouts : []));
+	makeImportFile({export: params.export == 'true'}, {port, env}, route, paths, route.correspondingFile, ...(route.layouts ? route.layouts : []));
 
 	let file = await bundleBun(env, {minify: params.minify == 'true'});
 
