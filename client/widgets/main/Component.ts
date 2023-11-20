@@ -33,7 +33,7 @@ export interface buildProps {
 		back: () => void,
 		forward: () => void,
 		assign: (path: string) => void,
-		paths: string[]
+		paths: {pathname: string, filename: string}[]
 	},
 
 	/**

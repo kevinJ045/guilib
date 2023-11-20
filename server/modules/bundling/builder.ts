@@ -15,12 +15,12 @@ export default class Builder {
 	async build(req: Request, { port, env }: portAndEnv ) {
 		const { route } = this;
 		let url = new URL(req.url);
-		const paths = Array.from(this.routes.paths.entries()).map((key: any) => key[0] || "/");
+		const paths = Object.fromEntries(this.routes.paths.entries());
 		if (route.type == "route") {
 			for(let i in require.cache) delete require.cache[i];
 			const requests = require(path.join(process.cwd(), route.correspondingFile));
 			const response = req.method.toUpperCase() in requests
-			? await requests[req.method.toUpperCase()](req, route, paths)
+			? await requests[req.method.toUpperCase()](req, route, Object.keys(paths))
 			: null;
 			return {
 				response,
@@ -29,7 +29,7 @@ export default class Builder {
 		} else {
 			return {
 				status: 200,
-				response: await bundle(route, { port, env }, paths, Object.fromEntries(url.searchParams.entries()))
+				response: await bundle(route, { port, env }, Object.keys(paths).map(path => ({ pathname: path, filename: paths[path].path })), Object.fromEntries(url.searchParams.entries()))
 			}
 		}
 	}

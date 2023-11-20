@@ -18,7 +18,7 @@ export default class extends Component {
 						overflow: 'auto',
 						fontSize: '14px',
 					},
-					items: props.router.paths,
+					items: props.router.paths.map(item => item.pathname),
 					template(path: string){
 						return new ListItem({
 							title: new Link({
