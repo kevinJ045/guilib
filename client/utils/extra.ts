@@ -6,7 +6,7 @@ export function getComponentExports(){
 }
 
 export interface RayousExport {
-	component: Component,
+	component: new (props: buildProps | any) => Component,
 	layouts: string[],
 	path: string,
 	props: buildProps
