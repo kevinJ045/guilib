@@ -92,7 +92,10 @@ if(subcommand[0]){
 		}
 
 		let defname = "", defauth = "";
-		let json = JSON.parse(fs.readFileSync('./package.json', { encoding: 'utf-8' }));
+		let json = {};
+		try{
+			json = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json'), { encoding: 'utf-8' }))
+		} catch(e) {}
 		defname = json.name;
 		defauth = json.author;
 
