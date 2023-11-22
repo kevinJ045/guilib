@@ -241,7 +241,7 @@ export async function bundle(route: route, {port, env}: portAndEnv, paths: Recor
 		otherOrigin = origin.split('|')[1];
 		origin = origin.split('|')[0];
 	}
-	return params.onlyjs == 'true' ? scripts.join('\n') : await templateHtml(params.script == 'true' ? [loader, ...scripts] : [loader], (params.script == 'true' ? '' : '<script src="'+(origin || '?onlyjs=true'+(params.minify == 'true' ? '&minify=true' : ''))+'" '+(otherOrigin ? ` onerror="let s=document.createElement(\'script\');s.src=\''${otherOrigin}'\';document.head.appendChild(s);this.remove();"` : '')+'></script>')+(env == 'dev' ? getListenerSocket(port, file) : ''));
+	return params.onlyjs == 'true' ? scripts.join('\n') : await templateHtml(params.script == 'true' ? [loader, ...scripts] : [loader], (params.script == 'true' ? '' : '<script src="'+(origin || '?onlyjs=true'+(params.minify == 'true' ? '&minify=true' : ''))+'" '+(otherOrigin ? ` onerror="let s=document.createElement(\'script\');s.src='${otherOrigin}';document.head.appendChild(s);this.remove();"` : '')+'></script>')+(env == 'dev' ? getListenerSocket(port, file) : ''));
 }
 
 export async function getHead() {
