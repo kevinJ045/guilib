@@ -9725,12 +9725,12 @@ class Page extends Component {
                 findNext(page, true) ? new Link_default({
                   class: "btn",
                   text: findNext(page, true),
-                  url: "/page/" + findNext(page, true)
+                  url: location.href.match("page/") ? "./" + findNext(page, true) : "page/" + findNext(page, true)
                 }) : null,
                 findNext(page) ? new Link_default({
                   class: "btn next",
                   text: findNext(page),
-                  url: "/page/" + findNext(page)
+                  url: location.href.match("page/") ? "./" + findNext(page) : "page/" + findNext(page)
                 }) : null
               ]
             })
@@ -9741,7 +9741,7 @@ class Page extends Component {
   }
   afterBuild(props) {
     let page = props.route.params.page;
-    fetch("/views/" + page + ".md").then((r) => r.text()).then((text) => {
+    fetch("../views/" + page + ".md").then((r) => r.text()).then((text) => {
       this.pageMarkdown = text;
       Widget_default.from(document.body).emit("markdown_loaded", {});
     });
@@ -9754,10 +9754,10 @@ var docItem = function(title) {
     class: location.href.match(new RegExp(title + "$")) ? "active" : "",
     title: new Link_default({
       text: title,
-      url: "/page/" + title
+      url: location.href.match("page/") ? "./" + title : "page/" + title
     }),
     onClick() {
-      location.href = "/page/" + title;
+      location.href = location.href.match("page/") ? "./" + title : "page/" + title;
     }
   });
 };
