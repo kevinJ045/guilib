@@ -1,11 +1,27 @@
+<h3 align="center">
+<img src="https://raw.githubusercontent.com/kevinJ045/guilib/main/assets/logo.png" width="100" />
+<br/>
+Rayous
+<br/>
+</h3>
 
-# Rayous
+<h6 align="center">
+<a href="https://github.com/kevinJ045/guilib/wiki">Wiki</a>
+ · 
+<a  href="https://kevinj045.github.io/guilib/">Docs</a>
+</h6>
 
-Rayous is a modern, lightweight, and flexible web application framework for building server-rendered web applications using TypeScript and JavaScript. With Rayous, you can quickly create web applications that embrace the power of server and client-side rendering, allowing you to deliver dynamic, interactive, and SEO-friendly web experiences.
+<p  align="center">
+<a href="https://github.com/kevinj045/guilib/stargazers">  <img src="https://img.shields.io/github/stars/kevinj045/guilib?style=for-the-badge&logo=starship&color=111111&logoColor=ffffff&labelColor=000000" alt="GitHub stars"/></a>
+<a href="https://github.com/kevinj045/guilib/issues">
+  <img src="https://img.shields.io/github/issues/kevinj045/guilib?style=for-the-badge&logo=gitbook&color=111111&logoColor=ffffff&labelColor=000000" alt="GitHub issues"/></a>
+<a href="https://github.com/kevinj045/guilib">  <img src="https://img.shields.io/github/forks/kevinj045/guilib?style=for-the-badge&logo=git&color=111111&logoColor=ffffff&labelColor=000000" alt="GitHub forks"/></a>
+<a href="https://www.npmjs.com/package/rayous">  <img src="https://img.shields.io/npm/v/rayous?style=for-the-badge&logo=npm&color=111111&logoColor=ffffff&labelColor=000000" alt="npm version" /></a>
+</p>
+
+Rayous is a modern, lightweight, and flexible web application framework for building server-rendered web applications using TypeScript and JavaScript. With Rayous, you can quickly create web applications that embrace the power of server and client-side rendering, allowing you to deliver dynamic, interactive web experiences.
 
 ## Features
-
-- **Server-Side Rendering**: Rayous is designed with server-side rendering (SSR) in mind, allowing you to generate and serve HTML content from the server, making your web applications search engine friendly and performant.
 
 - **Flexible Routing**: Rayous provides a powerful routing system inspired by popular frameworks like Next.js. Define routes using a simple file structure and use dynamic parameters, giving you full control over your application's URLs.
 
@@ -71,6 +87,6 @@ Rayous is released under the [MIT License](https://chat.openai.com/c/LICENSE), w
 
 ## Support
 
-For any questions or support, please [open an issue](https://github.com/kevinj045/rayous/issues) on this repository.
+For any questions or support, please [open an issue](https://github.com/kevinj045/guilib/issues) on this repository.
 
 Happy coding with Rayous!
