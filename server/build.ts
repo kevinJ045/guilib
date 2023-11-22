@@ -116,7 +116,7 @@ async function build(path: string){
 				let builder = new Builder(route as route, routes);
 				try{
 					const built = await builder.build({url: 'http://localhost:1001'+path+'?origin='+(pathJoin('./',basename(path),'index.js'))} as Request, {port: 1001, env: 'prod'});
-					const builtScript = await builder.build({url: 'http://localhost:1001'+path+'?onlyjs=true'} as Request, {port: 1001, env: 'prod'});
+					const builtScript = await builder.build({url: 'http://localhost:1001'+path+'?onlyjs=true&minify=true'} as Request, {port: 1001, env: 'prod'});
 					if (built.status == 404) return;
 					else {
 						fs.writeFileSync(_public('client/'+route.path+'/index.html'), built.response);
