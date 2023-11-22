@@ -115,6 +115,7 @@ export function buildComponent<T>(component: any, props: T, from: Component | nu
 	_comp.initState(props as buildProps);
 	let widget = _comp.make(props as buildProps);
 	widget.component = _comp;
+	_comp.afterBuild({...props, page: widget});
 	return widget;
 }
 
