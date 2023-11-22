@@ -236,7 +236,12 @@ export async function bundle(route: route, {port, env}: portAndEnv, paths: Recor
 	let loader = route.loader ? `body::(function(){${(await bundleBun(env, {minify: params.minify == 'true', file: './tmp/loader.ts'})).result}})();` : '';
 
 	scripts.push(`(function(){${file.result}})();`);
-	return params.onlyjs == 'true' ? scripts.join('\n') : await templateHtml(params.script == 'true' ? [loader, ...scripts] : [loader], (params.script == 'true' ? '' : '<script src="'+(params.origin || '?onlyjs=true'+(params.minify == 'true' ? '&minify=true' : ''))+'"></script>')+(env == 'dev' ? getListenerSocket(port, file) : ''));
+	let origin = params.origin, otherOrigin = null;
+	if(origin && origin.match('|')){
+		otherOrigin = origin.split('|')[1];
+		origin = origin.split('|')[0];
+	}
+	return params.onlyjs == 'true' ? scripts.join('\n') : await templateHtml(params.script == 'true' ? [loader, ...scripts] : [loader], (params.script == 'true' ? '' : '<script src="'+(origin || '?onlyjs=true'+(params.minify == 'true' ? '&minify=true' : ''))+(otherOrigin ? `onerror="this.src='${otherOrigin}'"` : '')+'"></script>')+(env == 'dev' ? getListenerSocket(port, file) : ''));
 }
 
 export async function getHead() {
