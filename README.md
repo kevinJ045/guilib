@@ -81,10 +81,6 @@ For example usage and additional resources, visit the [Rayous GitHub repository]
 
 Contributions to Rayous are welcome! If you have ideas, suggestions, or bug fixes, feel free to open issues and create pull requests on this repository.
 
-## License
-
-Rayous is released under the [MIT License](https://chat.openai.com/c/LICENSE), which means you can use it for your own projects and even contribute to the framework.
-
 ## Support
 
 For any questions or support, please [open an issue](https://github.com/kevinj045/guilib/issues) on this repository.
