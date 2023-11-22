@@ -106,6 +106,7 @@ function _init(widget: widgetF, options: options){
 
 	if(options.children && options.children.length){
 		options.children.forEach((element: widget) => {
+			if(element == null) return;
 			widget.add(element!);
 		});
 	}
