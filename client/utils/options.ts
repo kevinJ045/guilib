@@ -11,6 +11,23 @@ export interface elementOptions {
 	selector?: string,
 	[key: string]: any
 }
+
+export interface sizeOptions {
+	width?: number | string,
+	height?: number | string,
+	[key: string]: any
+}
+
+export interface positionOption {
+	type?: 'relative' | 'sticky' | 'static' | 'absolute' | 'unset' | 'fixed' | 'inherit' | 'none',
+	centered?: boolean,
+	top?: number | string,
+	left?: number | string,
+	right?: number | string,
+	bottom?: number | string,
+	[key: string]: any
+}
+
 /**
  * Represents a configuration object for the Widget class.
  * @class
@@ -52,9 +69,9 @@ class options {
 	 *
 	 * @type {attrNullable | null}
 	 */
-	position?: attrNullable | null = {};
+	position?: positionOption | null = {};
 	
-	size?: attrNullable | null = {};
+	size?: sizeOptions | null = {};
 	attr?: attr | null = {};
 	props?: attr | null = {};
 	children?: widget[] | [] | null = [];

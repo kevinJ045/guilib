@@ -14,16 +14,20 @@ interface VideoOptions extends options {
   src?: string;
   controls?: boolean;
 	autoplay?: boolean;
+  height?: string | number;
+  width?: string | number;
 }
 
 class Video extends Widget {
   constructor(selectedOptions: string | VideoOptions, otheroptions: VideoOptions | null = null) {
-    const options = Video.resolveOptions(
+    const options: VideoOptions = Video.resolveOptions(
       selectedOptions,
       otheroptions,
       defaultVideo()
     );
     super(options);
+    if(options.width) this.width(options.width);
+    if(options.height) this.height(options.height);
   }
 
   static resolveOptions(selectedOptions: object | string, otheroptions: object | null, defaults: object) {

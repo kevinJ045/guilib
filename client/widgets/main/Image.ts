@@ -11,17 +11,21 @@ const defaultImage = () =>
   });
 
 interface ImageOptions extends options {
-  src?: string
+  src?: string,
+  height?: string | number,
+  width?: string | number
 }
 
 class Image extends Widget {
   constructor(selectedOptions: string | ImageOptions, otheroptions: ImageOptions | null = null) {
-    const options = Image.resolveOptions(
+    const options: ImageOptions = Image.resolveOptions(
       selectedOptions,
       otheroptions,
       defaultImage()
     );
     super(options);
+    if(options.width) this.width(options.width);
+    if(options.height) this.height(options.height);
   }
 
   static resolveOptions(selectedOptions: object | string, otheroptions: object | null, defaults: object) {
@@ -31,7 +35,7 @@ class Image extends Widget {
     if (otheroptions) {
       selectedOptions = { ...otheroptions, ...selectedOptions };
     }
-    return { ...defaults, ...selectedOptions };
+    return { ...defaults, ...selectedOptions } as ImageOptions;
   }
 
   set src(src: string) {
