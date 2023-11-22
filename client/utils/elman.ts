@@ -26,7 +26,8 @@ function createElement(element: string, classes: string, attr: attr){
 
 function setAttributeMap(element: HTMLElement, attr: attr){
 	for(var i in attr){
-		element.setAttribute(i, attr[i].toString());
+		if(attr[i]) element.setAttribute(i, attr[i].toString());
+		else if(attr[i] == false) element.removeAttribute(i);
 	}
 }
 
