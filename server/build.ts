@@ -12,6 +12,10 @@ function dirname(p: string){
 	return path.dirname(p);
 }
 
+function basename(p: string){
+	return path.basename(p);
+}
+
 function pathJoin(...paths: string[]){
 	return path.join(...paths);
 }
@@ -111,7 +115,7 @@ async function build(path: string){
 				routes.findLoader(route as route);
 				let builder = new Builder(route as route, routes);
 				try{
-					const built = await builder.build({url: 'http://localhost:1001'+path+'?origin='+('./index.js').replace(/\/\//g, '/')} as Request, {port: 1001, env: 'prod'});
+					const built = await builder.build({url: 'http://localhost:1001'+path+'?origin='+(pathJoin('./',basename(path),'index.js'))} as Request, {port: 1001, env: 'prod'});
 					const builtScript = await builder.build({url: 'http://localhost:1001'+path+'?onlyjs=true'} as Request, {port: 1001, env: 'prod'});
 					if (built.status == 404) return;
 					else {
