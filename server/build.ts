@@ -45,7 +45,7 @@ async function buildDynamicWithPathMap(route: route, paramsPath: string){
 		paramKeys.push(c);
 		return a;
 	});
-	let paramsGetter = await import('../'+paramsPath);
+	let paramsGetter = await import(pathJoin(process.cwd(), paramsPath));
 	if(typeof paramsGetter.params == "function"){
 		let params = await paramsGetter.params(route);
 		if(Array.isArray(params)){
