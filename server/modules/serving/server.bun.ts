@@ -25,7 +25,8 @@ async function buildPageRoute(route: route, req: Request, pathname: string, {por
 }
 
 export async function serve({port,env}: portAndEnv, req: Request) {
-	const { pathname } = new URL(req.url);
+	let { pathname } = new URL(req.url);
+	if(pathname.endsWith('/') && pathname !== "/") pathname = pathname.replace(/\/$/, '');
 	let route = routes.findPath(pathname);
 	console.log(req.method+": "+pathname);
 	if (!route) {

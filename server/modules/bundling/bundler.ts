@@ -17,7 +17,7 @@ ${existsSync('./app/init.client.ts') || existsSync('./app/init.client.js') ? `im
 
 const otherPaths = ${JSON.stringify(paths)};
 let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }}
-
+if(!window.all_possible_paths) window.all_possible_paths = otherPaths;
 function start(){
 let cscript = document.currentScript;
 const pages = window.pages || [];
