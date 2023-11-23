@@ -9,3 +9,11 @@ constructor(text: string | object, options: object): extends Text
 ``` 
 
 > Button only extends Text, and has no special options or methods.
+#### Example
+```ts
+let button = new Button('Click Me!', { onClick(){ ... } });
+// or
+let button = new Button({ text: 'Click Me!', onClick(){ ... } });
+
+button.on('click', () => {...});
+```

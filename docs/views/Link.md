@@ -12,3 +12,13 @@ constructor(text: string | object, options: object): extends Text
 | Setter | Type | Description |
 | --- | --- | --- |
 | `url` | string | The URL or pathname for the Link `href`. |
+
+
+#### Example
+```ts
+let link = new Link('Link', { url: '/path/to/page' });
+// or
+let link = new Link({ text: 'Link', url: '/path/to/page' });
+
+link.url =  '/path/to/page';
+```

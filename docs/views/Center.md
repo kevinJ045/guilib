@@ -15,3 +15,13 @@ constructor(options: object): extends DirectedWidget
 | `crossAxisAlignment` | string | The cross axis alignment, eg: center. |
 | `mainAxisAlignment` | string | The cross axis alignment, eg: space-between. |
 | `wrap` | boolean \| string | The wrap of children widgets. |
+
+#### Example
+```ts
+let center = new Center({
+	height: 400,
+	children: [
+		new Text('Centered Item')
+	]
+});
+```

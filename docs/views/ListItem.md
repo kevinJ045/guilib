@@ -18,3 +18,18 @@ constructor(options: object)
 | Setter | Type | Description |
 | --- | --- | --- |
 | `url` | string | The URL or pathname for the List Item `href`. |
+
+#### Example
+```ts
+let li = new ListItem({
+	title: new Text('Title'),
+	// or
+	title: 'Title'
+});
+// or
+let liLink = new ListItem({
+	title: 'Title',
+	link: true,
+	url: '/path/to/page'
+});
+```

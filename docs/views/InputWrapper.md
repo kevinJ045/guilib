@@ -22,3 +22,14 @@ constructor(options: object)
 | --- | --- |
 | `setController(controller: EntryController)` | Set the controller. |
 | `val(text: string)` | Retrieve or set the value. |
+
+#### Example
+```ts
+let username = new InputWrapper({
+	title: 'Username'
+});
+let password = new InputWrapper({
+	title: 'Password',
+	inputType: 'password'
+});
+```

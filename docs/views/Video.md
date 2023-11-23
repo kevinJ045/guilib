@@ -27,3 +27,12 @@ constructor(src: string | object, options: object)
 | --- | --- |
 | `play()` | Play video. |
 | `pause()` | Pause video. |
+
+#### Example
+```ts
+let video = new Video('/path/to/video.mp4');
+// or
+let video = new Video({ src: '/path/to/video.mp4', controls: true });
+video.play();
+let time = new Text(video.currentTime.toString());
+```

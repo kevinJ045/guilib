@@ -11,3 +11,10 @@ constructor(options: object)
 | Method | Description |
 | --- | --- |
 | `getContext(context)` | Returns the HTMLCanvas context. |
+
+#### Example
+```ts
+let canvas = new Canvas();
+let ctx = canvas.getContext('2d');
+...
+```

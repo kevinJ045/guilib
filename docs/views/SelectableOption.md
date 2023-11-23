@@ -15,3 +15,10 @@ constructor(options: object)
 | `disabled` | boolean | Wether option is disabled or not. |
 | `value` | string | The value of the option. |
 | `title` | string \| Widget | The display title of the option. |
+
+#### Example
+```ts
+let selectableOption = new SelectableOption({
+	title: 'Some item',
+	value: 'some_item'
+})

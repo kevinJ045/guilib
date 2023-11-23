@@ -21,3 +21,10 @@ constructor(options: object)
 | `setController(controller: CheckboxController)` | Set the controller. |
 | `setChecked(checked: boolean)` | Set checked state. |
 | `isChecked()` | Get checked state. |
+
+#### Example
+```ts
+let controller = new CheckboxController(true);
+let checkbox = new Checkbox({ controller });
+console.log(checkbox.isChecked()); // true
+```
