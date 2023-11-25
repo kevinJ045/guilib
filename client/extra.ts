@@ -12,6 +12,7 @@ export { SelectController } from "./widgets/entry/SelectBox.js";
 export { CheckboxController } from "./widgets/buttons/Checkbox.js";
 export { TableController } from "./widgets/list/Table.js";
 export type { widget } from "./widgets/main/Widget.js";
+export { uiwidget } from "./widgets/main/Widget.js";
 export type { CheckboxOptions } from "./widgets/buttons/Checkbox.js";
 export type { EntryOptions } from "./widgets/entry/InputWrapper.js";
 export type { textOptions as TextOptions, text } from "./widgets/main/Text.js";

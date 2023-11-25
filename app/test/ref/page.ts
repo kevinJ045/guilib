@@ -3,6 +3,7 @@ import { buildProps } from "../../../client/extra";
 import { Ref, ref, typeref } from "../../../client/widgets/main/Component";
 import "../../../styles/main.scss";
 
+
 export default class extends Component {
 	text: string = "Hello";
 	textWithValue: string = "";
@@ -17,6 +18,7 @@ export default class extends Component {
 		this.ref('textWithValue', 'Sup');
 	}
 	build(props: buildProps) {
+
 		return new Widget({
 			children: [
 				new Text(this.text),
