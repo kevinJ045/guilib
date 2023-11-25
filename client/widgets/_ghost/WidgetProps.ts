@@ -38,6 +38,7 @@ function mounted(parent: widget, child: widget){
 	if(typeof child!._onMount == "function") child!._onMount(parent!);
 }
 
+
 class WidgetProps {
 
 	tree = [];
@@ -113,8 +114,8 @@ class WidgetProps {
 	 * @param {options} options the options to replace the default widget options
 	 * @returns {Widget} 
 	 */
-	setOptions(options: options){}
-	_optionChange(options: options){}
+	setOptions(options: options | any){}
+	_optionChange(options: options | any){}
 	
 	addHTMLElement(child: HTMLGUIWidget | HTMLElement, subchild: string | null){
 		let hadGUI = (child as HTMLGUIWidget).GUIWIDGET;
@@ -741,7 +742,7 @@ class WidgetProps {
 		return this;
 	}
 	
-	toHTMLElement(parent: HTMLGUIWidget | HTMLElement, direction: string | null = null){
+	toHTMLElement(parent: HTMLGUIWidget | HTMLElement, direction: string | null = null) : this {
 		if(this.sealed === true) return this;
 		return this.toWidget(Widget.from(parent as HTMLElement), direction);
 	}

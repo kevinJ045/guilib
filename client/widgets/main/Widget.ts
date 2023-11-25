@@ -1,7 +1,7 @@
 import { isPosition } from "../../utils/type";
 import generateRandomID from "../../utils/id";
 import { findEl, registerElement } from "../../utils/elman";
-import getDefaults, { options } from "../../utils/options";
+import getDefaults, { mergeOptions, options } from "../../utils/options";
 import WidgetProps, { WidgetList, child, widget, widgetF } from "../_ghost/WidgetProps";
 import Dom from "../../utils/dom";
 import Store from "../../data/Store";
@@ -11,7 +11,16 @@ import { animation } from "../../components/Animate";
 type wid = widget;
 
 const defaults = getDefaults({});
-let $1$app = {};
+
+const setterFunctions = [
+	'padding',
+	'margin',
+	'name',
+	'id:$id',
+	'animation',
+	'tooltip',
+	'style'
+];
 
 function initiateSetters(widget: widgetF, setterFunctions: string[], options: options){
 	setterFunctions.forEach((setterFull) => {
@@ -149,16 +158,6 @@ function _init(widget: widgetF, options: options){
 		widget.setOptions({});
 	});
 
-	const setterFunctions = [
-		'padding',
-		'margin',
-		'name',
-		'id:$id',
-		'animation',
-		'tooltip',
-		'style'
-	];
-
 	if(options._setters){
 		setterFunctions.push(...options._setters);
 	}
@@ -183,7 +182,8 @@ function _init(widget: widgetF, options: options){
  * @class Widget
  * @extends {WidgetProps}
  */
-class Widget extends WidgetProps {
+
+class Widget<O = options> extends WidgetProps {
 	/**
 	 * Creates an instance of the Widget.
 	 *
@@ -191,14 +191,15 @@ class Widget extends WidgetProps {
 	 */
 	component?: any;
 	
-	constructor(options: options = { element: { name: 'div' }, class: 'widget' }){
+	constructor(options: O){
 		super();
+		if(typeof options !== "object") options = { element: { name: 'div' }, class: 'widget' } as O;
 		_init(this, {...getDefaults({}), ...(options as Record<string, any>)});
 	}
 
-	setOptions(options: options){
+	setOptions(options: O){
 		const currentOptions = {...this.options, ...options};
-		_init(this,currentOptions );
+		_init(this as Widget, currentOptions as options);
 		this._optionChange(currentOptions);
 	}
 
@@ -218,6 +219,56 @@ class Widget extends WidgetProps {
 
 	static animateWidgets(animation: animation, ...widgets: Widget[]){
 		return WidgetList.from(widgets).animate(animation);
+	}
+
+	static new<T = options>(options: T){
+		return new this(options as Record<string, any>);
+	}
+}
+
+function getAllSetters(obj: object) {
+  const setters = [];
+
+  let currentObj = obj;
+
+  while (currentObj) {
+    const descriptors = Object.getOwnPropertyDescriptors(currentObj);
+
+    for (const key in descriptors) {
+      const descriptor = descriptors[key];
+
+			if(key == '__proto__') continue;
+			if(setterFunctions.includes(key) || setterFunctions.find(k => k.endsWith(':'+key))) continue;
+
+      if (descriptor.set) {
+        setters.push(key);
+      }
+    }
+
+    currentObj = Object.getPrototypeOf(currentObj);
+  }
+
+  return setters;
+}
+
+export function uiwidget<T = options>(defaults: T){
+	return function(target: any, extended?: any) {
+		let setters: string[] = [];
+		class WidgetClass extends target {
+			constructor(options: T){
+				let o = mergeOptions({...defaults, _setters: setters} as any, options as options) as T;
+				super(o);
+				this.onInit(o);
+			}
+			onInit(o: T){}
+		}
+		Object.getOwnPropertyNames(target.prototype).forEach((key) => {
+      if (key !== 'constructor') {
+        WidgetClass.prototype[key] = target.prototype[key];
+      }
+    });
+		setters.push(...getAllSetters(WidgetClass.prototype));
+		return WidgetClass as typeof target;
 	}
 }
 

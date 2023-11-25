@@ -4,7 +4,9 @@ import { resolve } from "../server/client";
 import "../styles/main.scss";
 import "../styles/some.css";
 
+
 export default class extends Component {
+
 	build({ route, router }: buildProps) {
 		const text = new Text({text: ''});
 

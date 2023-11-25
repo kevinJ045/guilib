@@ -119,6 +119,51 @@ export function buildComponent<T>(component: any, props: T, from: Component | nu
 	return widget;
 }
 
+export function ref(target: any, propertyKey: string | Record<string, any>){
+	let key: string = "";
+	if(typeof propertyKey == "object") key = propertyKey.name as string;
+	else key = propertyKey;
+	Object.defineProperty(target, key, {
+		get: function(){
+			return this._data[key]
+		},
+		set: function(newValue){
+			this._data[key] = newValue;
+			this.update();
+		}
+	});
+}
+
+export function typeref(type: "string" | "number" | "symbol" | "bigint" | "boolean" | "function" | "object" | "array" | "undefined" | "null"){
+	return function(target: any, propertyKey: string | Record<string, any>){
+		let key: string = "";
+		if(typeof propertyKey == "object") key = propertyKey.name as string;
+		else key = propertyKey;
+		
+		Object.defineProperty(target, key, {
+			get: function(){
+				return this._data[key]
+			},
+			set: function(newValue){
+				const s = () => {
+					this._data[key] = newValue;
+					this.update();
+				}
+				if(type == "array" && Array.isArray(newValue)){
+					s();
+				} else if(typeof newValue == type){
+					s();
+				} else if(type == "null" && typeof newValue == "undefined"){
+					s();
+				} else {
+					throw new TypeError(newValue+' is not of type '+type);
+				}
+				
+			}
+		});
+	}
+}
+
 export default class Component {
 	/**
 	 * The _currentWidget stores the current widget to manipulate later, it 
