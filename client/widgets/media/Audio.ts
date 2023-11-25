@@ -16,14 +16,14 @@ interface AudioOptions extends options {
   autoplay?: boolean;
 }
 
-class Audio extends Widget {
+class Audio<T = AudioOptions> extends Widget<T> {
   constructor(selectedOptions: string | AudioOptions, otheroptions: AudioOptions | null = null) {
     const options = Audio.resolveOptions(
       selectedOptions,
       otheroptions,
       defaultAudio()
     );
-    super(options);
+    super(options as T);
   }
 
   static resolveOptions(selectedOptions: object | string, otheroptions: object | null, defaults: object) {

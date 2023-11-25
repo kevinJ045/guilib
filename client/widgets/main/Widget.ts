@@ -158,11 +158,13 @@ function _init(widget: widgetF, options: options){
 		widget.setOptions({});
 	});
 
+	let setters = [...setterFunctions];
+
 	if(options._setters){
-		setterFunctions.push(...options._setters);
+		setters.push(...options._setters);
 	}
 	
-	initiateSetters(widget, setterFunctions, options);
+	initiateSetters(widget, setters, options);
 	
 	if(!widget.__generated) widget.__generated = true;
 
@@ -191,7 +193,7 @@ class Widget<O = options> extends WidgetProps {
 	 */
 	component?: any;
 	
-	constructor(options: O){
+	constructor(options?: O){
 		super();
 		if(typeof options !== "object") options = { element: { name: 'div' }, class: 'widget' } as O;
 		_init(this, {...getDefaults({}), ...(options as Record<string, any>)});

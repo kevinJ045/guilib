@@ -14,7 +14,7 @@ type items<T = any> = Controller<T[]> | T[];
 export interface ListOptions<T = any> extends options {
 	itemsStateName?: string,
 	items?: items<T> | Promise<items<T | any>>,
-	template?: (item: T, index: number, array: items<T>) => Widget,
+	template?: CallableFunction & ((item: T, index: number, array: items<T>) => Widget),
 	empty?: boolean
 }
 
@@ -42,7 +42,7 @@ function _initList(list: List, state: Record<string, any>){
 	}
 }
 
-class ListItem extends Widget {
+class ListItem extends Widget<ListItemOptions> {
 
 	constructor(selectedOptions: ListItemOptions){
 		const options = {...defaultListItem(), ...selectedOptions};
@@ -65,7 +65,7 @@ class ListItem extends Widget {
 
 }
 
-class List<T = any> extends ListBuilder<T> {
+class List<T = any> extends ListBuilder<T, ListOptions> {
 
 	constructor(selectedOptions: ListOptions<T>){
 		const options = {...defaultList(), ...selectedOptions};

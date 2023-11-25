@@ -16,12 +16,12 @@ export class CheckboxController extends Controller<boolean> {
 	constructor(val: boolean){super(val)}
 };
 
-class Checkbox extends Widget {
+class Checkbox<T = CheckboxOptions> extends Widget<T> {
   __controller?: CheckboxController; // Use EntryController for state management
 
   constructor(selectedOptions: CheckboxOptions) {
     const options = { ...defaults, ...selectedOptions };
-    super(options);
+    super(options as T);
 
     if (options.controller) {
       this.setController(options.controller);

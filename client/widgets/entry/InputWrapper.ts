@@ -15,12 +15,12 @@ export interface EntryOptions extends options {
 	inputType?: 'file' | 'text' | 'email' | 'password' | 'number' | 'textarea' | 'range' | 'progress'
 }
 
-class InputWrapper extends Widget{
+class InputWrapper<T = EntryOptions> extends Widget<T> {
 	__controller?: EntryController;
 
 	constructor(selectedOptions: EntryOptions){
 		const options = {...({ element: {name: selectedOptions.inputType == 'textarea' ? 'textarea' : 'input'}, attr: { type: 'text' }, class: "input-wrapper", _setters: ['inputType', 'title']}), ...selectedOptions};
-		super(options);
+		super(options as T);
 
 		if(options.controller){
 			this.setController(options.controller);

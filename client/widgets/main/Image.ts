@@ -16,14 +16,14 @@ interface ImageOptions extends options {
   width?: string | number
 }
 
-class Image extends Widget {
+class Image<T = ImageOptions> extends Widget<T> {
   constructor(selectedOptions: string | ImageOptions, otheroptions: ImageOptions | null = null) {
     const options: ImageOptions = Image.resolveOptions(
       selectedOptions,
       otheroptions,
       defaultImage()
     );
-    super(options);
+    super(options as T);
     if(options.width) this.width(options.width);
     if(options.height) this.height(options.height);
   }

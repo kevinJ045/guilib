@@ -11,7 +11,7 @@ export interface DirectedWidgetOptions extends options {
 	wrap?: boolean | string
 }
 
-class DirectedWidget extends Widget {
+class DirectedWidget<T = DirectedWidgetOptions> extends Widget<T> {
 	
 	constructor(selectedOptions: DirectedWidgetOptions, type: string){
 		const options = {...(getDefaults({
@@ -22,7 +22,7 @@ class DirectedWidget extends Widget {
 				flexDirection: type
 			},
 		})), ...selectedOptions, _setters: ['gap', 'crossAxisAlignment', 'mainAxisAlignment', 'wrap']};
-		super(options);
+		super(options as T);
 
 		if(options.height){
 			this.height(options.height);
@@ -52,19 +52,19 @@ class DirectedWidget extends Widget {
 }
 
 
-export class Column extends DirectedWidget {
+export class Column<T = DirectedWidgetOptions> extends DirectedWidget<T> {
 	constructor(selectedOptions: DirectedWidgetOptions){
 		super(selectedOptions, 'column');
 	}
 }
 
-export class Row extends DirectedWidget {
+export class Row<T = DirectedWidgetOptions> extends DirectedWidget<T> {
 	constructor(selectedOptions: DirectedWidgetOptions){
 		super(selectedOptions, 'row');
 	}
 }
 
-export class Center extends DirectedWidget {
+export class Center<T = DirectedWidgetOptions> extends DirectedWidget<T> {
 	constructor(selectedOptions: DirectedWidgetOptions){
 		super({
 			crossAxisAlignment: 'center',

@@ -21,12 +21,12 @@ const defaultText = () => getDefaults({
  * @class Text
  * @extends Widget
  */
-class Text extends Widget {
+class Text<T = textOptions> extends Widget<T> {
 
 	constructor(selectedOptions: string | textOptions, otheroptions: textOptions | null = null){
 		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultText()) as textOptions;
 		if(options.children) options.accepts = true;
-		super(options);
+		super(options as T);
 
 		this.render();
 	}

@@ -63,7 +63,7 @@ function _initGrid(list: Grid, state: Record<string, any>){
 	}
 }
 
-class Grid extends ListBuilder {
+class Grid<T = any, U = GridOptions> extends ListBuilder<T, U> {
 
 	constructor(selectedOptions: GridOptions){
 		const options = {...defaultGrid(), ...selectedOptions};

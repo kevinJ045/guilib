@@ -157,8 +157,8 @@ export class TableRow extends Widget {
 	}
 }
 
-export class Table extends ListBuilder {
-	controller?: TableController<any>;
+export class Table<T = any, U = TableOptions> extends ListBuilder<T, U> {
+	controller?: TableController<T>;
 
 	constructor(selectedOptions: TableOptions){
 		let children = [new Widget({ element: { name: 'thead' } }), new Widget({ element: { name: 'tbody' } })];
@@ -175,7 +175,7 @@ export class Table extends ListBuilder {
 		if(options.controller) this.controller = options.controller;
 	}
 	
-	appendItem(item: any, index: number){
+	appendItem(item: T, index: number){
 		return this.find('tbody').add(this._fromTemplate(item, index));
 	}
 	

@@ -1,16 +1,16 @@
 import Widget from "../main/Widget";
-import getDefaults from "../../utils/options.js";
+import getDefaults, { options } from "../../utils/options.js";
 import { findEl } from "../../utils/elman.js";
 import Store from "../../data/Store.js";
 import Controller from "../../data/Controller";
 
-class ListBuilder<T = any> extends Widget {
+class ListBuilder<T = any, U = options> extends Widget<U> {
 
 	state = new Store({items: []});
 
 	constructor(selectedOptions: Record<string, any>, _initList: CallableFunction){
 		const options = {...selectedOptions};
-		super(options);
+		super(options as U);
 
 		this.updateList(options);
 

@@ -61,13 +61,13 @@ interface LayoutBuilderOptions extends options {
 	queries?: Record<string, Widget[] | (() => Widget | Widget[])>
 }
 
-class LayoutBuilder extends Widget {
+class LayoutBuilder<T = LayoutBuilderOptions> extends Widget<T> {
 	constructor(selectedOptions: LayoutBuilderOptions) {
 		const options = {
 			...(getDefaults({ element: { name: 'div' }, class: 'layout-builder' })),
 			...selectedOptions,
 		};
-		super(options);
+		super(options as T);
 	}
 
 	_onMount(parent: Widget){

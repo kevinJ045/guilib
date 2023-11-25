@@ -18,14 +18,14 @@ interface VideoOptions extends options {
   width?: string | number;
 }
 
-class Video extends Widget {
+class Video<T = VideoOptions> extends Widget<T> {
   constructor(selectedOptions: string | VideoOptions, otheroptions: VideoOptions | null = null) {
     const options: VideoOptions = Video.resolveOptions(
       selectedOptions,
       otheroptions,
       defaultVideo()
     );
-    super(options);
+    super(options as T);
     if(options.width) this.width(options.width);
     if(options.height) this.height(options.height);
   }
