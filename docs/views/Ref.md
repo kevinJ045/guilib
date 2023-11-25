@@ -39,3 +39,36 @@ export default class extends Component {
 ```
 
 This way, we won't have to register it in `initState`, but we can just declare it and change it later.
+
+## Decorators
+By using the `@ref` decorator, we can declare the variable as a ref for later use.
+
+Example:
+```ts
+import { Component, Text } from "rayous";
+import { ref } from "rayous/extra";
+
+export default class extends Component {
+	@ref text: string = "Click Me!";
+
+	build(){
+		return new Text(this.text, {
+			onClick: () => this.text = 'Hi';
+		});
+	}
+}
+```
+
+### `@typeref`
+The `@typeref` decorator can be used to make typed references, that way it will prevent you from making runtime type errors.
+Example:
+```ts
+...
+import { typeref } from "rayous/extra";
+
+export default class extends Component {
+	@typeref text: string = "...";
+
+	...
+}
+```
