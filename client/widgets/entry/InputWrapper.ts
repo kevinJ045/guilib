@@ -15,7 +15,7 @@ export interface EntryOptions extends options {
 	inputType?: 'file' | 'text' | 'email' | 'password' | 'number' | 'textarea' | 'range' | 'progress'
 }
 
-class InputWrapper<T = EntryOptions> extends Widget<T> {
+class InputWrapper<T extends options = EntryOptions> extends Widget<T> {
 	__controller?: EntryController;
 
 	constructor(selectedOptions: EntryOptions){

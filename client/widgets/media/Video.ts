@@ -18,7 +18,7 @@ interface VideoOptions extends options {
   width?: string | number;
 }
 
-class Video<T = VideoOptions> extends Widget<T> {
+class Video<T extends options = VideoOptions> extends Widget<T> {
   constructor(selectedOptions: string | VideoOptions, otheroptions: VideoOptions | null = null) {
     const options: VideoOptions = Video.resolveOptions(
       selectedOptions,

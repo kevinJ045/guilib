@@ -27,14 +27,14 @@ export interface SelectOptionOptions extends SelectableOptions, options {
 	value: string
 }
 
-export class SelectableOption<T = SelectOptionOptions> extends Widget<T> {
+export class SelectableOption<T extends options = SelectOptionOptions> extends Widget<T> {
 	constructor(options: SelectOptionOptions){
 		super({
 			element: {name: 'option'},
 			class: '',
 			_setters: ['value', 'title', 'selected', 'disabled'],
 			...options
-		} as T);
+		});
 	}
 
 	set selected(value: boolean){
@@ -62,7 +62,7 @@ export class SelectableOption<T = SelectOptionOptions> extends Widget<T> {
 	}
 }
 
-export default class Selectbox<T = SelectOptions> extends Widget<T> {
+export default class Selectbox<T extends options = SelectOptions> extends Widget<T> {
 	__controller?: SelectController;
 
 	constructor(selectedOptions: SelectOptions){

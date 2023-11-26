@@ -16,7 +16,7 @@ interface AudioOptions extends options {
   autoplay?: boolean;
 }
 
-class Audio<T = AudioOptions> extends Widget<T> {
+class Audio<T extends options = AudioOptions> extends Widget<T> {
   constructor(selectedOptions: string | AudioOptions, otheroptions: AudioOptions | null = null) {
     const options = Audio.resolveOptions(
       selectedOptions,

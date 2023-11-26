@@ -16,15 +16,7 @@ ${existsSync('./app/init.client.ts') || existsSync('./app/init.client.js') ? `im
 
 
 const otherPaths = ${JSON.stringify(paths)};
-let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }}
-if(!window.all_possible_paths) window.all_possible_paths = otherPaths;
-function start(){
 let cscript = document.currentScript;
-const pages = window.pages || [];
-if(!window.pages) window.pages = pages;
-
-if(typeof Page0.title === "string") document.title = Page0.title;
-
 const _navigate = (path, options = {}) => {
 	let pathname = path;
 	if(typeof options !== "object") options = {};
@@ -72,6 +64,13 @@ const _navigate = (path, options = {}) => {
 	window.previousPathname = location.pathname;
 	_startScriptLoad();
 }
+let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "${route.path}", params: ${JSON.stringify(route.params)} }}
+if(!window.all_possible_paths) window.all_possible_paths = otherPaths;
+function start(){
+const pages = window.pages || [];
+if(!window.pages) window.pages = pages;
+
+if(typeof Page0.title === "string") document.title = Page0.title;
 
 const buildProps = (props: any) => (
 	{ ...base_props, wrap(object){ return {...this, ...object}; }, addArgument(...args){if(!Array.isArray(base_props.args)) base_props.args = [];base_props.args.push(...args);return buildProps();}, add(prop, value){base_props[prop] = value; return buildProps();}, ...props }
@@ -108,18 +107,21 @@ window.loadFunction = () => {
 
 	${filepath.map((file, index) => `if(typeof Page${(filepath.length-1) - index}.beforeBuildStart == "function") Page${(filepath.length-1) - index}.beforeBuildStart(buildProps());`).join('\n')}
 	
-	${filepath.map((filepath, index) => `let page${index} = new Page${index}();\npage${index}._beforeInit();\npage${index}.initState(buildProps());`).join('\n')}
+	${filepath.map((filepath, index) => `let page${index} = new Page${index}();`).join('\n')}
 
 	if(window.lastPage && Page0.inheritState !== false) page0._inheritState(window.lastPage);
 
-	${filepath.map((filepath, index) => `let made${index} = page${index}.make(buildProps({init: initResponse, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'}}));`).join('\n')}
+	${filepath.map((filepath, index) => `page${index}._beforeInit();\npage${index}.emit('initState', { component: page${index}, props: buildProps() });\npage${index}.initState(buildProps());`).join('\n')}
+
+	${filepath.map((filepath, index) => `page${index}.emit('beforeBuildStart', { component: page${index}, props: buildProps() });\nlet made${index} = page${index}.make(buildProps({init: initResponse, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'}}));\npage${index}.emit('afterBuild', { widget: made${index}, component: page${index}, props: buildProps() });`).join('\n')}
 
 	if(Page0.layouts === false){
 		made0.to(document.body);
 		page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));
+		page0.emit('afterBuildEnd', { widget: made0, component: page0, props: buildProps() });
 	} else {
-		${filepath.map((file, index) => `${index+1 == filepath.length ? `made${index}.to(document.body)` : `page${index}.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));`}`).join('\n')}
-		${filepath.length == 1 ? 'page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));' : ''}
+		${filepath.map((file, index) => `${(index+1 == filepath.length ? `made${index}.to(document.body)` : '')+`;page${index}.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));page${index}.emit('afterBuildEnd', { widget: made${index}, component: page${index}, props: buildProps() });`}`).join('\n')}
+		${filepath.length == 1 ? 'page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));\npage0.emit(\'afterBuildEnd\', { widget: made0, component: page0, props: buildProps() });' : ''}
 	}
 
 	

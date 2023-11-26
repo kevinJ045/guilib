@@ -185,21 +185,25 @@ function _init(widget: widgetF, options: options){
  * @extends {WidgetProps}
  */
 
-class Widget<O = options> extends WidgetProps {
+class Widget<O extends options = options> extends WidgetProps {
+
+	component?: any;
+
 	/**
 	 * Creates an instance of the Widget.
 	 *
 	 * @param {options} [options={}] - Configuration options for the Widget.
 	 */
-	component?: any;
+
+	options: O | options = {};
 	
-	constructor(options?: O){
+	constructor(options?: O | options){
 		super();
 		if(typeof options !== "object") options = { element: { name: 'div' }, class: 'widget' } as O;
 		_init(this, {...getDefaults({}), ...(options as Record<string, any>)});
 	}
 
-	setOptions(options: O){
+	setOptions(options: O | options){
 		const currentOptions = {...this.options, ...options};
 		_init(this as Widget, currentOptions as options);
 		this._optionChange(currentOptions);

@@ -8,7 +8,7 @@ let loaderOn = "app/test/loading/loading.ts", loader, after = false;
 if(loaderOn){
 	try{
 		if(typeof Loader == "function"){
-			loader = Loader({ route: {path: "/test/loading/widget", params: {} }});
+			loader = Loader({ route: {path: "/test/loading", params: {} }});
 			if(typeof loader.to == "function"){
 				loader.to(document.body);
 			} else if(!loader instanceof HTMLElement){

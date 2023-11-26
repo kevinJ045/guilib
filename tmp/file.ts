@@ -1,5 +1,5 @@
 
-import Page0 from "../app/test/ref/page";
+import Page0 from "../app/home/page";
 
 
 import Page1 from "../app/layout";
@@ -8,16 +8,8 @@ import * as clientInit from "../app/init.client";
 
 
 
-const otherPaths = [{"pathname":"","filename":"app/page.ts"},{"pathname":"/someapifolder","filename":"app/someapifolder/route.ts"},{"pathname":"/home","filename":"app/home/page.ts"},{"pathname":"/test/route","filename":"app/test/route/route.ts"},{"pathname":"/test/route/:id","filename":"app/test/route/[id]/route.ts"},{"pathname":"/test/promise","filename":"app/test/promise/page.ts"},{"pathname":"/test/props","filename":"app/test/props/page.ts"},{"pathname":"/test/grid","filename":"app/test/grid/page.ts"},{"pathname":"/test/tailwind","filename":"app/test/tailwind/page.ts"},{"pathname":"/test/navigate","filename":"app/test/navigate/page.ts"},{"pathname":"/test/navigate/target","filename":"app/test/navigate/target/page.ts"},{"pathname":"/test/route.json","filename":"app/test/route.json/page.ts"},{"pathname":"/test/ref","filename":"app/test/ref/page.ts"},{"pathname":"/test/model","filename":"app/test/model/page.ts"},{"pathname":"/test/loading","filename":"app/test/loading/page.ts"},{"pathname":"/test/loading/widget","filename":"app/test/loading/widget/page.ts"},{"pathname":"/test/resolve","filename":"app/test/resolve/page.ts"},{"pathname":"/test/building","filename":"app/test/building/page.ts"},{"pathname":"/test/args","filename":"app/test/args/page.ts"},{"pathname":"/test/dev","filename":"app/test/dev/page.ts"},{"pathname":"/test/layout","filename":"app/test/layout/page.ts"},{"pathname":"/test/animation","filename":"app/test/animation/page.ts"},{"pathname":"/test/select","filename":"app/test/select/page.ts"},{"pathname":"/test/live","filename":"app/test/live/page.ts"},{"pathname":"/test/table","filename":"app/test/table/page.ts"},{"pathname":"/lll","filename":"app/lll/page.ts"},{"pathname":"/posts/:id","filename":"app/posts/[id]/page.ts"}];
-let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/test/ref", params: {} }}
-if(!window.all_possible_paths) window.all_possible_paths = otherPaths;
-function start(){
+const otherPaths = [{"pathname":"/","filename":"app/page.ts"},{"pathname":"/someapifolder","filename":"app/someapifolder/route.ts"},{"pathname":"/home","filename":"app/home/page.ts"},{"pathname":"/test/route","filename":"app/test/route/route.ts"},{"pathname":"/test/route/:id","filename":"app/test/route/[id]/route.ts"},{"pathname":"/test/events","filename":"app/test/events/page.ts"},{"pathname":"/test/promise","filename":"app/test/promise/page.ts"},{"pathname":"/test/props","filename":"app/test/props/page.ts"},{"pathname":"/test/grid","filename":"app/test/grid/page.ts"},{"pathname":"/test/tailwind","filename":"app/test/tailwind/page.ts"},{"pathname":"/test/navigate","filename":"app/test/navigate/page.ts"},{"pathname":"/test/navigate/target","filename":"app/test/navigate/target/page.ts"},{"pathname":"/test/route.json","filename":"app/test/route.json/page.ts"},{"pathname":"/test/ref","filename":"app/test/ref/page.ts"},{"pathname":"/test/model","filename":"app/test/model/page.ts"},{"pathname":"/test/loading","filename":"app/test/loading/page.ts"},{"pathname":"/test/loading/widget","filename":"app/test/loading/widget/page.ts"},{"pathname":"/test/resolve","filename":"app/test/resolve/page.ts"},{"pathname":"/test/building","filename":"app/test/building/page.ts"},{"pathname":"/test/args","filename":"app/test/args/page.ts"},{"pathname":"/test/dev","filename":"app/test/dev/page.ts"},{"pathname":"/test/layout","filename":"app/test/layout/page.ts"},{"pathname":"/test/animation","filename":"app/test/animation/page.ts"},{"pathname":"/test/select","filename":"app/test/select/page.ts"},{"pathname":"/test/live","filename":"app/test/live/page.ts"},{"pathname":"/test/table","filename":"app/test/table/page.ts"},{"pathname":"/lll","filename":"app/lll/page.ts"},{"pathname":"/posts/:id","filename":"app/posts/[id]/page.ts"}];
 let cscript = document.currentScript;
-const pages = window.pages || [];
-if(!window.pages) window.pages = pages;
-
-if(typeof Page0.title === "string") document.title = Page0.title;
-
 const _navigate = (path, options = {}) => {
 	let pathname = path;
 	if(typeof options !== "object") options = {};
@@ -65,6 +57,13 @@ const _navigate = (path, options = {}) => {
 	window.previousPathname = location.pathname;
 	_startScriptLoad();
 }
+let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/home", params: {} }}
+if(!window.all_possible_paths) window.all_possible_paths = otherPaths;
+function start(){
+const pages = window.pages || [];
+if(!window.pages) window.pages = pages;
+
+if(typeof Page0.title === "string") document.title = Page0.title;
 
 const buildProps = (props: any) => (
 	{ ...base_props, wrap(object){ return {...this, ...object}; }, addArgument(...args){if(!Array.isArray(base_props.args)) base_props.args = [];base_props.args.push(...args);return buildProps();}, add(prop, value){base_props[prop] = value; return buildProps();}, ...props }
@@ -103,23 +102,31 @@ window.loadFunction = () => {
 if(typeof Page0.beforeBuildStart == "function") Page0.beforeBuildStart(buildProps());
 	
 	let page0 = new Page0();
-page0._beforeInit();
-page0.initState(buildProps());
 let page1 = new Page1();
-page1._beforeInit();
-page1.initState(buildProps());
 
 	if(window.lastPage && Page0.inheritState !== false) page0._inheritState(window.lastPage);
 
-	let made0 = page0.make(buildProps({init: initResponse, page: null}));
+	page0._beforeInit();
+page0.emit('initState', { component: page0, props: buildProps() });
+page0.initState(buildProps());
+page1._beforeInit();
+page1.emit('initState', { component: page1, props: buildProps() });
+page1.initState(buildProps());
+
+	page0.emit('beforeBuildStart', { component: page0, props: buildProps() });
+let made0 = page0.make(buildProps({init: initResponse, page: null}));
+page0.emit('afterBuild', { widget: made0, component: page0, props: buildProps() });
+page1.emit('beforeBuildStart', { component: page1, props: buildProps() });
 let made1 = page1.make(buildProps({init: initResponse, page: made0}));
+page1.emit('afterBuild', { widget: made1, component: page1, props: buildProps() });
 
 	if(Page0.layouts === false){
 		made0.to(document.body);
 		page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));
+		page0.emit('afterBuildEnd', { widget: made0, component: page0, props: buildProps() });
 	} else {
-		page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));
-made1.to(document.body)
+		;page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));page0.emit('afterBuildEnd', { widget: made0, component: page0, props: buildProps() });
+made1.to(document.body);page1.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));page1.emit('afterBuildEnd', { widget: made1, component: page1, props: buildProps() });
 		
 	}
 

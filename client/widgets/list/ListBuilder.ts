@@ -4,7 +4,7 @@ import { findEl } from "../../utils/elman.js";
 import Store from "../../data/Store.js";
 import Controller from "../../data/Controller";
 
-class ListBuilder<T = any, U = options> extends Widget<U> {
+class ListBuilder<T = any, U extends options = options> extends Widget<U> {
 
 	state = new Store({items: []});
 

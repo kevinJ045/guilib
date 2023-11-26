@@ -20,7 +20,7 @@ export default class Builder {
 			for(let i in require.cache) delete require.cache[i];
 			const requests = require(path.join(process.cwd(), route.correspondingFile));
 			const response = req.method.toUpperCase() in requests
-			? await requests[req.method.toUpperCase()](req, route, Object.keys(paths))
+			? await requests[req.method.toUpperCase()](req, route, Object.keys(paths).map(i => i || '/'))
 			: null;
 			return {
 				response,
@@ -29,7 +29,7 @@ export default class Builder {
 		} else {
 			return {
 				status: 200,
-				response: await bundle(route, { port, env }, Object.keys(paths).map(path => ({ pathname: path, filename: paths[path].path })), Object.fromEntries(url.searchParams.entries()))
+				response: await bundle(route, { port, env }, Object.keys(paths).map(path => ({ pathname: path || "/", filename: paths[path].path })), Object.fromEntries(url.searchParams.entries()))
 			}
 		}
 	}

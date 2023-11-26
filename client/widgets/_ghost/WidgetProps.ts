@@ -335,8 +335,8 @@ class WidgetProps {
 	 * // Retrieve children within the 'subchild'
 	 * const subchildChildren = widget.children('.subchild');
 	 */
-	children(subchild: string | null = null): Widget[] {
-		return filteredChildren(resolveSubchild(findEl(this.id!), subchild).children());
+	children(subchild: string | null = null): WidgetList {
+		return WidgetList.from(filteredChildren(resolveSubchild(findEl(this.id!), subchild).children()));
 	}
 
 	/**
@@ -1100,7 +1100,7 @@ class WidgetList extends Array {
 		return new WidgetList(...array);
 	}
 
-	add(child: child, subchild: any){
+	add(child: child, subchild?: any){
 		let responses = new WidgetList();
 		this.forEach(widget => {
 			if(isWidget(widget)){
@@ -1110,7 +1110,17 @@ class WidgetList extends Array {
 		return responses;
 	}
 
-	remove(child: child, subchild: any){
+	to(child: Widget | HTMLElement, subchild?: any){
+		let responses = new WidgetList();
+		this.forEach(widget => {
+			if(isWidget(widget)){
+				responses.push(widget.to(child, subchild));
+			}
+		});
+		return responses;
+	}
+
+	remove(child: child, subchild?: any){
 		let responses = new WidgetList();
 		this.forEach(widget => {
 			if(isWidget(widget)){
@@ -1120,7 +1130,7 @@ class WidgetList extends Array {
 		return responses;
 	}
 
-	is(state: string, is: any){
+	is(state: string, is?: any){
 		let responses = new WidgetList();
 		this.forEach(widget => {
 			if(isWidget(widget)){

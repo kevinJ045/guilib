@@ -1,6 +1,12 @@
+import { WidgetEventTarget } from "../../utils/eventtarget";
+import generateRandomID from "../../utils/id";
+import { WidgetList } from "../_ghost/WidgetProps";
 import Widget from "./Widget";
 
-export const components: Component[] = [];
+export const components: {component: Component, [key: string]: any}[] = [];
+function findComponent(component: Component){
+	return components.find(c => c.component == component);
+}
 
 export interface navigationOptions {
 	reinit?: boolean,
@@ -93,10 +99,12 @@ export interface buildProps {
 	[key: string]: any
 }
 
-export function makeComponent(component: Component, props: buildProps | any){
+export function makeComponent(component: Component, props: buildProps | any, event: boolean = true){
 	let args: any[] = Array.isArray(props.args) ? props.args : [];
+	if(event) component.emit('beforeBuildStart', { component, props });
 	// @ts-ignore
 	const widget = component.build(props, ...args);
+	if(event) component.emit('afterBuild', { component, props });
 	if(!(widget instanceof Widget)) throw new TypeError('Component.build does not return a widget.');
 	component._currentWidget = widget;
 	component._buildProps = props;
@@ -108,17 +116,41 @@ type link = string | {
 	href: string
 }
 
+export enum componentEvents {
+	'onInitState' = 'initState',
+	'onBeforeBuildStart' = 'beforeBuildStart',
+	'onAfterBuild' = 'afterBuild',
+	'onAfterBuildEnd' = 'afterBuildEnd',
+	'onRebuild' = 'rebuild',
+}
+
+function getEventKeyByName(value: string): string | undefined {
+  for (const key in componentEvents) {
+    if ((componentEvents as Record<string, string>)[key] === value) {
+      return key;
+    }
+  }
+  return undefined;
+}
+
 export function buildComponent<T>(component: any, props: T, from: Component | null = null){
 	let _comp: Component = new component(props);
 	_comp._beforeInit();
 	if(component.inheritState !== false && from) _comp._inheritState(from);
+	_comp.emit('initState', { component, props });
 	_comp.initState(props as buildProps);
+	_comp.emit('beforeBuildStart', { component, props });
 	let widget = _comp.make(props as buildProps);
+	_comp.emit('afterBuild', { component, props, widget });
 	widget.component = _comp;
 	_comp.afterBuild({...props, page: widget});
+	_comp.emit('afterBuildEnd', { component, props, widget });
 	return widget;
 }
 
+/**
+ * A class decorator to define references before class initiation.
+ */
 export function ref(target: any, propertyKey: string | Record<string, any>){
 	let key: string = "";
 	if(typeof propertyKey == "object") key = propertyKey.name as string;
@@ -164,13 +196,53 @@ export function typeref(type: "string" | "number" | "symbol" | "bigint" | "boole
 	}
 }
 
-export default class Component {
+/**
+ * An event decorator to listen to class events before class initiaition.
+ */
+export function onComponent(target: any, propertyKey: string | Record<string, any>){
+	let key: string = "";
+	if(typeof propertyKey == "object") key = propertyKey.name as string;
+	else key = propertyKey;
+	let eventKey = getEventKeyByName(key);
+	if(eventKey && !target.events){
+		let prev = target.afterConstruct;
+		function afterConstruct(){
+			// @ts-ignore
+			let that = this;
+			that.on(key, target[key]);
+			if(typeof prev == "function") prev.call(that);
+		};
+		target.afterConstruct = afterConstruct;
+	}
+}
+
+export interface ComponentEventData {
+	component: Component,
+	props: buildProps,
+	widget?: Widget
+}
+export interface ComponentEvent<T = ComponentEventData> extends CustomEvent<T> {}
+
+export default class Component extends WidgetEventTarget<ComponentEvent> {
+
+	/**
+	 * DO NOT OVERRIDE
+	 * The eventEmitMethod tells the event emitter to emit the events as
+	 * raw data instead of an event data.
+	 */
+	_eventEmitMethod = "raw";
+
 	/**
 	 * The _currentWidget stores the current widget to manipulate later, it 
 	 * binds the component with it's built widget after the build
 	 * is done.
 	 */
 	_currentWidget?: Widget;
+
+	/**
+	 * The id property is to identify the component among other initiated components. 
+	 */
+	id?: string;
 
 	/**
 	 * The _buildProps are the properties for the build, stored to
@@ -229,8 +301,10 @@ export default class Component {
 	 * logic work, please don't touch it
 	 */
 	constructor(props: buildProps | any){
-		components.push(this);
+		super();
+		components.push({ component: this });
 		this._buildProps = props;
+		this.id = generateRandomID(12);
 	}
 
 	/**
@@ -245,6 +319,9 @@ export default class Component {
 			for(let i in this){
 				if(this[i] instanceof Ref){
 					this.ref(i, (this[i] as any).value);
+				}
+				if(typeof i == "function" && i in componentEvents){
+					this.on((componentEvents as Record<string, any>)[i as string], this[i] as () => void);
 				}
 			}
 		};
@@ -318,6 +395,7 @@ export default class Component {
 	afterBuild(props: buildProps | any) : void {}
 
 	/**
+	 * 
 	 * Makes reference setters and getters for a data value 
 	 * that can be used to make a Stateful component.
 	 * 
@@ -327,8 +405,9 @@ export default class Component {
 	 * @param {string} property : property name
 	 * @param {any} value : property initial value
 	 * @returns {Component}
+	 *  
 	 */
-	ref(property: string, value: any | null = null){
+	ref(property: string, value: any | null = null) : this {
 		let that: Record<string, any> = this;
 		if(property in Component.prototype) return this;
 		if(property in this){
@@ -374,19 +453,92 @@ export default class Component {
 	 */
 	update(){
 		if(this._currentWidget) {
-			let parent = this._currentWidget.parent(true);
-			this._currentWidget.remove();
-			let newWidget = makeComponent(this, this._buildProps);
-			if(parent) newWidget.to(parent);
+			let comp = findComponent(this);
+			let rendererElement: Widget | string | false = false;
+			if(comp){
+				if(comp.preventNextUpdate) { comp.preventNextUpdate = false; return this; }
+				else if(comp.preventAllUpdates) { return this; }
+
+				if(comp.rendererElement && typeof comp.rendererElement == "string" || comp.rendererElement instanceof Widget) rendererElement = comp.rendererElement;
+			}
+			let el = rendererElement == false ? this._currentWidget : (rendererElement instanceof Widget ? rendererElement : this._currentWidget.find(rendererElement as string) || this._currentWidget);
+			let parent = rendererElement ? el : el.parent(true);
+			if(rendererElement) {
+				el.remove('*');
+			}
+			else this._currentWidget.remove();
+			let oldWidget = this._currentWidget;
+			let newWidget = makeComponent(this, this._buildProps.wrap({page: oldWidget}), false);
+			let lastWidget: Widget | WidgetList = newWidget;
+
+			if(typeof rendererElement == "string" && newWidget.find(rendererElement))
+			lastWidget = newWidget.find(rendererElement).children();
+			else if(rendererElement) newWidget.children();
+
+			if(parent) {
+				lastWidget.to(parent);
+			}
+			
+			this.emit('rebuild', { widget: lastWidget, oldWidget, component: this, props: this._buildProps });
 		} 
 	}
 
 	/**
-	 * DO NOT OVERRIDE!!
+	 * DO NOT OVERRIDE
 	 * 
-	 * The update function is used to re-render the component when a ref
-	 * is changed, you can use this to re-render anytime but you shouldn't
-	 * override it.
+	 * This function is not overridable, or in other words, 
+	 * this function is a core function to make the Component
+	 * logic work, please don't touch it
+	 * 
+	 * A method to prevent the next component update/rebuild,
+	 * 
+	 * Can be used to stop a build loop.
+	 * 
+	 * @deprecated
+	 */
+	preventNextUpdate(){
+		findComponent(this)!.
+		preventNextUpdate = true;
+	}
+
+	/**
+	 * DO NOT OVERRIDE
+	 * 
+	 * 
+	 * This function is not overridable, or in other words, 
+	 * this function is a core function to make the Component
+	 * logic work, please don't touch it
+	 * 
+	 * This function can be used to disable
+	 * the rebuildability of the entire component.
+	 * 
+	 * @deprecated
+	 */
+	preventAllUpdates(prevent: boolean){
+		findComponent(this)!.
+		preventAllUpdates = prevent;
+	}
+
+	/**
+	 * 
+	 * DO NOT OVERRIDE
+	 * 
+	 * This function is not overridable, or in other words, 
+	 * this function is a core function to make the Component
+	 * logic work, please don't touch it
+	 * 
+	 * This class can be used to set a base renderer widget inside of your widget so it does not remove
+	 * everything everytime you update.
+	 * 
+	 * @param {string | Widget} widget The widget selector for the renderer widget or the renderer widget itself.
+	 */
+	rendererWidget(widget: string | Widget){
+		findComponent(this)!.
+		rendererElement = widget;
+	}
+
+	/**
+	 * DO NOT OVERRIDE!!
 	 * 
 	 * This function is to build Components inside other Components.
 	 */
@@ -396,6 +548,9 @@ export default class Component {
 }
 
 /**
+ * @deprecated Use the {@link ref} class decorator instead
+ * @see {ref}
+ * 
  * The Ref class can only be used in Components and 
  * it's use it to make a referencable stateful variable for a
  * component to make it re-render when the value is changed.

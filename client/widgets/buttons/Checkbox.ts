@@ -16,7 +16,7 @@ export class CheckboxController extends Controller<boolean> {
 	constructor(val: boolean){super(val)}
 };
 
-class Checkbox<T = CheckboxOptions> extends Widget<T> {
+class Checkbox<T  extends options = CheckboxOptions> extends Widget<T> {
   __controller?: CheckboxController; // Use EntryController for state management
 
   constructor(selectedOptions: CheckboxOptions) {

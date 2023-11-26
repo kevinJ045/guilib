@@ -16,7 +16,7 @@ interface ImageOptions extends options {
   width?: string | number
 }
 
-class Image<T = ImageOptions> extends Widget<T> {
+class Image<T extends options = ImageOptions> extends Widget<T> {
   constructor(selectedOptions: string | ImageOptions, otheroptions: ImageOptions | null = null) {
     const options: ImageOptions = Image.resolveOptions(
       selectedOptions,

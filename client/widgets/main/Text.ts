@@ -6,8 +6,8 @@ import { child } from "../_ghost/WidgetProps";
 
 type text = string | Controller<any> | ((widget: Widget) => string);
 type textPromise = text | Promise<text>;
-class textOptions extends options {
-	text?: textPromise | null = "";
+interface textOptions extends options {
+	text?: textPromise | null;
 }
 
 const defaultText = () => getDefaults({
@@ -21,7 +21,7 @@ const defaultText = () => getDefaults({
  * @class Text
  * @extends Widget
  */
-class Text<T = textOptions> extends Widget<T> {
+class Text<T extends options = textOptions> extends Widget<T> {
 
 	constructor(selectedOptions: string | textOptions, otheroptions: textOptions | null = null){
 		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultText()) as textOptions;
