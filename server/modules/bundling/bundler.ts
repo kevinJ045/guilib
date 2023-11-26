@@ -111,17 +111,17 @@ window.loadFunction = () => {
 
 	if(window.lastPage && Page0.inheritState !== false) page0._inheritState(window.lastPage);
 
-	${filepath.map((filepath, index) => `page${index}._beforeInit();\npage${index}.emit('initState', { component: page${index}, props: buildProps() });\npage${index}.initState(buildProps());`).join('\n')}
+	${filepath.map((filepath, index) => `page${index}._beforeInit();\npage${index}.emit('beforeInit', { component: page${index}, props: buildProps() });\npage${index}.initState(buildProps());`).join('\n')}
 
-	${filepath.map((filepath, index) => `page${index}.emit('beforeBuildStart', { component: page${index}, props: buildProps() });\nlet made${index} = page${index}.make(buildProps({init: initResponse, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'}}));\npage${index}.emit('afterBuild', { widget: made${index}, component: page${index}, props: buildProps() });`).join('\n')}
+	${filepath.map((filepath, index) => `page${index}.emit('initState', { component: page${index}, props: buildProps() });\nlet made${index} = page${index}.make(buildProps({init: initResponse, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'}}));\npage${index}.emit('buildStart', { widget: made${index}, component: page${index}, props: buildProps() });`).join('\n')}
 
 	if(Page0.layouts === false){
 		made0.to(document.body);
 		page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));
-		page0.emit('afterBuildEnd', { widget: made0, component: page0, props: buildProps() });
+		page0.emit('buildEnd', { widget: made0, component: page0, props: buildProps() });
 	} else {
-		${filepath.map((file, index) => `${(index+1 == filepath.length ? `made${index}.to(document.body)` : '')+`;page${index}.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));page${index}.emit('afterBuildEnd', { widget: made${index}, component: page${index}, props: buildProps() });`}`).join('\n')}
-		${filepath.length == 1 ? 'page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));\npage0.emit(\'afterBuildEnd\', { widget: made0, component: page0, props: buildProps() });' : ''}
+		${filepath.map((file, index) => `${(index+1 == filepath.length ? `made${index}.to(document.body)` : '')+`;page${index}.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));page${index}.emit('buildEnd', { widget: made${index}, component: page${index}, props: buildProps() });`}`).join('\n')}
+		${filepath.length == 1 ? 'page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));\npage0.emit(\'buildEnd\', { widget: made0, component: page0, props: buildProps() });' : ''}
 	}
 
 	

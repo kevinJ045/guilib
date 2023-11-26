@@ -117,10 +117,10 @@ type link = string | {
 }
 
 export enum componentEvents {
+	'onBeforeInit' = 'beforeInit',
 	'onInitState' = 'initState',
-	'onBeforeBuildStart' = 'beforeBuildStart',
-	'onAfterBuild' = 'afterBuild',
-	'onAfterBuildEnd' = 'afterBuildEnd',
+	'onBuildStart' = 'buildStart',
+	'onBuildEnd' = 'buildEnd',
 	'onRebuild' = 'rebuild',
 }
 
@@ -137,14 +137,14 @@ export function buildComponent<T>(component: any, props: T, from: Component | nu
 	let _comp: Component = new component(props);
 	_comp._beforeInit();
 	if(component.inheritState !== false && from) _comp._inheritState(from);
-	_comp.emit('initState', { component, props });
+	_comp.emit('beforeInit', { component, props });
 	_comp.initState(props as buildProps);
-	_comp.emit('beforeBuildStart', { component, props });
+	_comp.emit('initState', { component, props });
 	let widget = _comp.make(props as buildProps);
-	_comp.emit('afterBuild', { component, props, widget });
+	_comp.emit('buildStart', { component, props, widget });
 	widget.component = _comp;
 	_comp.afterBuild({...props, page: widget});
-	_comp.emit('afterBuildEnd', { component, props, widget });
+	_comp.emit('buildEnd', { component, props, widget });
 	return widget;
 }
 
@@ -213,6 +213,31 @@ export function onComponent(target: any, propertyKey: string | Record<string, an
 			if(typeof prev == "function") prev.call(that);
 		};
 		target.afterConstruct = afterConstruct;
+	}
+}
+
+
+export interface AsyncBuildOptions {
+  loading?: () => Widget; // Function returning the loading widget
+}
+
+export function asyncComponent(options?: AsyncBuildOptions) {
+  return function (constructor: any, extended?: any) {
+		constructor.prototype.buildAsync = constructor.prototype.build;
+		constructor.prototype.build = function(...args: any[]){
+			let mainWidget = new Widget({
+				children: [ options?.loading?.() || null ]
+			});
+		
+			this.buildAsync(...args).then((widget: Widget) => {
+				let parent = mainWidget.parent(true);
+				if(!parent) mainWidget.remove('*');
+				widget.to(parent || mainWidget);
+				if(parent) mainWidget.remove();
+			});
+
+			return mainWidget;
+		}
 	}
 }
 
@@ -380,7 +405,7 @@ export default class Component extends WidgetEventTarget<ComponentEvent> {
 	 * and it can be executed again when state changes, meant to be used as a basic
 	 * template and be manipulated in the afterBuild section later on
 	 */
-	build(props: buildProps | any) : Widget {
+	build(props: buildProps | any) : Widget | Promise<Widget> {
 		return new Widget({});
 	}
 
