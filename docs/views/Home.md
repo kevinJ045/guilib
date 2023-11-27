@@ -2,6 +2,8 @@
 
 Rayous is a web framework designed to make TypeScript web development straightforward and efficient. If you're familiar with Next.js and enjoy working with TypeScript, Rayous could be your new go-to framework.
 
+[Github](https://github.com/kevinJ045/guilib) · [NPM](https://www.npmjs.com/package/rayous)
+
 ## Why Rayous?
 
 -   **Simple Widget Creation:** Building a basic widget is as easy as defining its structure. Rayous simplifies the process, making it accessible for developers at any skill level.
