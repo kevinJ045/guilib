@@ -6,20 +6,27 @@ export async function bundleBun(env: string, options: any = {}){
 
 	const imports: string[] = [];
 
+	const plugins = [bunTailwindLoader, bunSassLoader, {
+		name: 'Import Loader',
+		setup(build: any) {
+			build.onLoad({ filter: /.*/ }, async ({ path }: { path: string }) => {
+				imports.push(path);
+			})
+		},
+	}];
+
+	if(options.nocss){
+		plugins.shift();
+		plugins.shift();
+	}
+
 	// @ts-ignore
 	const bundled = await Bun.build({
 		entrypoints: [(options.file || './tmp/file.ts')],
 		// external: ['*'],
 		root: ".",
 		minify: options.minify || env == 'prod',
-		plugins: [bunTailwindLoader, bunSassLoader, {
-			name: 'Import Loader',
-			setup(build: any) {
-				build.onLoad({ filter: /.*/ }, async ({ path }: { path: string }) => {
-					imports.push(path);
-				})
-			},
-		}],
+		plugins,
 		...options
 	});
 

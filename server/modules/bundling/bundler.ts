@@ -163,13 +163,24 @@ ${options.export ? `(() => {
 
 export function getListenerSocket(port: number, file : { imports: string[] }){
 	return `<script>(function(){
+		const tscript = document.currentScript;
 		const imports = ${JSON.stringify(file.imports)};
 		const origin = location.hostname+(location.port ? ':'+location.port : '');
 		const socket = new WebSocket("ws://"+origin);
 		socket.addEventListener('message', event => {
 			try{
 				const data = JSON.parse(event.data);
-				if(imports.indexOf(data.path) > -1) return location.reload();
+				if(imports.indexOf(data.path) > -1) {
+					try{
+						const script = document.createElement('script');
+						script.src = '?onlyjs=true&nocss=true';
+						document.head.appendChild(script);
+						document.body.innerHTML = "";
+						window.loadFunction();
+					} catch(e){
+						location.reload();
+					}
+				}
 				else {
 					let styles = document.head.getElementsByTagName('style');
 					Array.from(styles).forEach(style => {
@@ -232,7 +243,7 @@ export async function bundle(route: route, {port, env}: portAndEnv, paths: Recor
 
 	makeImportFile({export: params.export == 'true'}, {port, env}, route, paths, route.correspondingFile, ...(route.layouts ? route.layouts : []));
 
-	let file = await bundleBun(env, {minify: params.minify == 'true'});
+	let file = await bundleBun(env, {nocss: params.nocss, minify: params.minify == 'true'});
 
 	if(route.loader) makeLoaderFile(route);
 	let loader = route.loader ? `body::(function(){${(await bundleBun(env, {minify: params.minify == 'true', file: './tmp/loader.ts'})).result}})();` : '';
@@ -243,7 +254,7 @@ export async function bundle(route: route, {port, env}: portAndEnv, paths: Recor
 		otherOrigin = origin.split('|')[1];
 		origin = origin.split('|')[0];
 	}
-	return params.onlyjs == 'true' ? scripts.join('\n') : await templateHtml(params.script == 'true' ? [loader, ...scripts] : [loader], (params.script == 'true' ? '' : '<script src="'+(origin || '?onlyjs=true'+(params.minify == 'true' ? '&minify=true' : ''))+'" '+(otherOrigin ? ` onerror="let s=document.createElement(\'script\');s.src='${otherOrigin}';document.head.appendChild(s);this.remove();"` : '')+'></script>')+(env == 'dev' ? getListenerSocket(port, file) : ''));
+	return params.onlyjs == 'true' ? scripts.join('\n') : await templateHtml(params.script == 'true' ? [loader, ...scripts] : [loader], (params.script == 'true' ? '' : '<script id="app_script" src="'+(origin || '?onlyjs=true'+(params.minify == 'true' ? '&minify=true' : ''))+'" '+(otherOrigin ? ` onerror="let s=document.createElement(\'script\');s.src='${otherOrigin}';document.head.appendChild(s);this.remove();"` : '')+'></script>')+(env == 'dev' ? getListenerSocket(port, file) : ''));
 }
 
 export async function getHead() {
