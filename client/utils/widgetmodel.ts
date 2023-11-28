@@ -7,9 +7,14 @@ function determineType(thing: any) {
 
 function getSelectorContent(selector: string) {
   const parts = selector.split('.');
-  const element = parts[0];
-  const classes = parts.slice(1).join(' ');
-  return { element, classes };
+  let element = parts[0];
+  const classes = parts.slice(1).join(' ').trim();
+	let id = null;
+	if(element.match('#')){
+		id = element.split('#')[1];
+		element = element.split('#')[0];
+	}
+  return { element, classes, id };
 }
 
 /**
@@ -87,13 +92,13 @@ function getSelectorContent(selector: string) {
 export type widgetModelActionCases = {
 	[key: string]: {
 		[key: string]: any,
-		text?: string,
-		addClass?: string,
-		removeClass?: string,
-		toggleClass?: string,
-		append?: string | widgetModel,
-		empty?: boolean,
-		prepend?: string | widgetModel
+		text?: string | ((widget: any, context: any) => string),
+		addClass?: string | ((widget: any, context: any) => string),
+		removeClass?: string | ((widget: any, context: any) => string),
+		toggleClass?: string | ((widget: any, context: any) => string),
+		append?: string | widgetModel | ((widget: any, context: any) => string | widgetModel),
+		empty?: boolean | ((widget: any, context: any) => boolean),
+		prepend?: string | widgetModel  | ((widget: any, context: any) => string | widgetModel)
 	}
 }
 
@@ -113,7 +118,7 @@ export type widgetModelTypeCases = {
 	[key: string]: any
 }
 
-export type widgetModel = {
+export type widgetModel<T = Record<string, any>> = {
 	selector: string,
 	children?: (widgetModel | string)[],
 	child?: widgetModel | string,
@@ -121,7 +126,7 @@ export type widgetModel = {
 	attributes?: Record<string, any>,
 	text?: string,
 	html?: string,
-	widgetOptions?: Record<string, any>,
+	widgetOptions?: T,
 	[key: string]: any
 }
 
@@ -130,14 +135,16 @@ function modelToWidget(model: widgetModel | string){
 	if(model instanceof Widget) return model;
  	if(typeof model == "string") model = { selector: model };
 	let el = getSelectorContent(model.selector);
-	let widget: Widget = new Widget({
+	const config: any = {
 		...model.options,
 		element: { name: el.element },
 		class: el.classes,
 		attr: model.attributes,
 		children: model.children ? model.children.map(modelToWidget) : [],
 		model: model
-	});
+	};
+	if(el.id) config.id = el.id;
+	let widget: Widget = new Widget(config);
 	if(model.text) widget.text(model.text);
 	if(model.html) widget.html(model.html);
 	if(model.child) widget.add(modelToWidget(model.child));
@@ -146,10 +153,12 @@ function modelToWidget(model: widgetModel | string){
 
 type modelValue = {
 	type: string,
-	value: any
+	value: any,
+	widget?: Widget,
+	option?: any
 };
 function determineValue(valueRaw: any, widget: Widget, option: any) {
-	let value : modelValue  = {type: typeof valueRaw, value: valueRaw};
+	let value : modelValue  = {type: typeof valueRaw, value: valueRaw, option, widget};
   return value;
 }
 
@@ -164,6 +173,10 @@ function resolveValue(valueRaw: any, value: modelValue){
 	}
 	if(_value.value instanceof Widget){
 		return _value;
+	}
+	if(typeof _value.value == "function"){
+		let v = _value.value(value.widget, value.option);
+		return resolveValue(v, value);
 	}
 	if(typeof _value.value == "object" && typeof _value.value.selector == "string"){
 		if(_value.value.attributes)
@@ -213,11 +226,12 @@ function actionCase(actions: any, widget: Widget, value: modelValue){
 	}
 }
 
-function selectorCase(selectors: any, widget: Widget, value: modelValue){
+function selectorCase(selectors: any, widget: Widget, value: modelValue, option: any){
 	for(let i in selectors){
 		let item = i == 'this' ? widget : widget.find(i);
 		if(item){
-			actionCase(selectors[i], item, value);
+			let v = value;
+			actionCase(selectors[i], item, v);
 		}
 	}
 }
@@ -225,33 +239,36 @@ function selectorCase(selectors: any, widget: Widget, value: modelValue){
 function typeCase(widget: Widget, option: any, valueRaw: any){
 	let value = determineValue(valueRaw, widget, option);
 	let type = determineType(value.value);
-	if('any' in option) selectorCase(option.any, widget, value);
+	if('any' in option) selectorCase(option.any, widget, value, option);
 	
-	if(type in option) selectorCase(option[type], widget, value);
-	else if('else' in option) selectorCase(option.else, widget, value);
+	if(type in option) selectorCase(option[type], widget, value, option);
+	else if('else' in option) selectorCase(option.else, widget, value, option);
 }
 
 
-export function createWidgetModel<T = Record<string, any>>(model: widgetModel, _options: any) {
-	const classGenerated = class extends Widget {
+export function createWidgetModel<T extends options = options, U = Record<string, any>>(model: widgetModel<U>, _options: any, widget: new (...args: any[]) => Widget = Widget<T>) {
+	const classGenerated = class extends widget {
+		options: T = {} as T;
 		constructor(options: T = _options){
 			let wo:Record<string, any>  = {};
 			if(model.widgetOptions){
 				for(let i in model.widgetOptions)
 					wo[i] = resolveValue(model.widgetOptions[i], {type: "list", value: options} as modelValue).value;
 			}
-			super(mergeOptions({
+			const config = mergeOptions<T>({
 				...wo,
 				element: { name: getSelectorContent(model.selector).element },
 				class: getSelectorContent(model.selector).classes,
 				children: model.children ? model.children.map(modelToWidget) : [],
 				_setters: Object.keys(options as Record<string, any>)
-			}, options as Record<string, any>));
+			} as T, options as T);
+			if(getSelectorContent(model.selector).id) config.id = getSelectorContent(model.selector).id!;
+			super(config);
 		}
 	};
 	if(typeof model._onMount == "function") classGenerated.prototype._onMount = model._onMount;
 	if(typeof model._optionChange == "function") classGenerated.prototype._optionChange = model._optionChange;
-	function generateClassOptions(model: widgetModel){
+	function generateClassOptions(model: widgetModel<U>){
 		for(var i in model.options){
 			let option = model.options[i];
 			(classGenerated.prototype as any).__defineSetter__(i, function(value: any){

@@ -219,15 +219,15 @@ class Widget<O extends options = options> extends WidgetProps {
 	 * @param {widgetModel} [model] - Configuration model for the Widget.
 	 * @param {any} [options] - Configuration options for the Widget.
 	 */
-	static model<T = options>(model: widgetModel, options: Record<string, any> = {}){
-		return createWidgetModel<T>(model, options);
+	static model<T extends options = options, U = any>(model: widgetModel<U>, options: Record<string, any> = {}){
+		return createWidgetModel<T, U>(model, options, this);
 	}
 
 	static animateWidgets(animation: animation, ...widgets: Widget[]){
 		return WidgetList.from(widgets).animate(animation);
 	}
 
-	static new<T = options>(options: T){
+	static new<T extends options = options>(options: T){
 		return new this(options as Record<string, any>);
 	}
 }

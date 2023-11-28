@@ -144,7 +144,7 @@ const mergeSeparator: Record<string, string> = {
 };
 
 
-export function mergeOptions(defaults: Record<string, any>, options: Record<string, any>){
+function _merge(defaults: Record<string, any>, options: Record<string, any>){
 	let o = {...defaults};
 	for(let i in options){
 		if(o[i]){
@@ -169,4 +169,18 @@ export function mergeOptions(defaults: Record<string, any>, options: Record<stri
 		}
 	}
 	return o;
+}
+
+export function mergeOptions<T extends options = options>(defaults: T, options: T){
+	// if(!options){
+	// 	return function(target: any, extended?: any){
+	// 		target._on_init = target.constructor;
+	// 		target.constructor = function(options: T){
+	// 			this._on_init(options);
+	// 		}
+	// 	};
+	// } else {
+	// 	return _merge(defaults as Record<string, any>, options as Record<string, any>);
+	// }
+	return _merge(defaults as Record<string, any>, options as Record<string, any>) as T;
 }

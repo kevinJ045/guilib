@@ -85,7 +85,7 @@ const Card = Widget.model({
 			},
 			"widget": {
 				"figure.card-image-container": {
-					"append": "$image"
+					"append": (a, b) => {console.log(a, b); return "$image"}
 				}
 			}
 		}
