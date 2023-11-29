@@ -172,6 +172,12 @@ export function getListenerSocket(port: number, file : { imports: string[] }){
 				const data = JSON.parse(event.data);
 				if(imports.indexOf(data.path) > -1) {
 					try{
+						let styles = document.head.getElementsByTagName('style');
+						Array.from(styles).forEach(style => {
+							if(style.pathname && style.pathname.endsWith('.tail.css')){
+								style.remove();
+							}
+						});
 						const script = document.createElement('script');
 						script.src = '?onlyjs=true&nocss=true';
 						document.head.appendChild(script);

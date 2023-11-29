@@ -1,5 +1,5 @@
 
-import Page0 from "../app/test/model/page";
+import Page0 from "../app/test/tailwind/page";
 
 
 import Page1 from "../app/layout";
@@ -57,7 +57,7 @@ const _navigate = (path, options = {}) => {
 	window.previousPathname = location.pathname;
 	_startScriptLoad();
 }
-let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/test/model", params: {} }}
+let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/test/tailwind", params: {} }}
 if(!window.all_possible_paths) window.all_possible_paths = otherPaths;
 function start(){
 const pages = window.pages || [];

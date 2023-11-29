@@ -7,7 +7,7 @@ export async function bundleBun(env: string, options: any = {}){
 
 	const imports: string[] = [];
 
-	const plugins = [bunTailwindLoader, bunSassLoader, bunImageLoader, {
+	const plugins = [bunSassLoader, bunTailwindLoader, bunImageLoader, {
 		name: 'Import Loader',
 		setup(build: any) {
 			build.onLoad({ filter: /.*/ }, async ({ path }: { path: string }) => {
@@ -17,7 +17,6 @@ export async function bundleBun(env: string, options: any = {}){
 	}];
 
 	if(options.nocss){
-		plugins.shift();
 		plugins.shift();
 	}
 
