@@ -12,9 +12,11 @@ Once you include that js file you can just:
 ```html
 <script src="/path/to/rayous.js"></script>
 <script>
-	const { Text } = Rayous;
+	const { Text } = Rayous.widgets;
 
 	new Text('Hello World')
 	.to(document.body);
+
+	Rayous.dom('.widget').remove();
 </script>
 ```
