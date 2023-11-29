@@ -19,6 +19,7 @@ class Rayous {
 		let widgets = all.elements.map(el => el.GUIWIDGET);
 		return returnOne && widgets.length == 1 ? widgets[0] : WidgetList.from(widgets);
 	}
+	WidgetList = WidgetList;
 }
 
 // @ts-ignore
