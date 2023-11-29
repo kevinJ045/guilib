@@ -1,3 +1,4 @@
+import { bunImageLoader } from "./bun.loader.image";
 import { bunSassLoader } from "./bun.loader.sass";
 import { bunTailwindLoader } from "./bun.loader.tailwind";
 
@@ -6,7 +7,7 @@ export async function bundleBun(env: string, options: any = {}){
 
 	const imports: string[] = [];
 
-	const plugins = [bunTailwindLoader, bunSassLoader, {
+	const plugins = [bunTailwindLoader, bunSassLoader, bunImageLoader, {
 		name: 'Import Loader',
 		setup(build: any) {
 			build.onLoad({ filter: /.*/ }, async ({ path }: { path: string }) => {

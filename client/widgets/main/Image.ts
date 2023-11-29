@@ -11,13 +11,13 @@ const defaultImage = () =>
   });
 
 interface ImageOptions extends options {
-  src?: string,
+  src?: string | Blob,
   height?: string | number,
   width?: string | number
 }
 
 class Image<T extends options = ImageOptions> extends Widget<T> {
-  constructor(selectedOptions: string | ImageOptions, otheroptions: ImageOptions | null = null) {
+  constructor(selectedOptions: Blob | string | ImageOptions, otheroptions: ImageOptions | null = null) {
     const options: ImageOptions = Image.resolveOptions(
       selectedOptions,
       otheroptions,
@@ -29,7 +29,7 @@ class Image<T extends options = ImageOptions> extends Widget<T> {
   }
 
   static resolveOptions(selectedOptions: object | string, otheroptions: object | null, defaults: object) {
-    if (typeof selectedOptions == "string") {
+    if (typeof selectedOptions == "string" || selectedOptions instanceof Blob) {
       selectedOptions = { src: selectedOptions };
     }
     if (otheroptions) {
@@ -38,8 +38,13 @@ class Image<T extends options = ImageOptions> extends Widget<T> {
     return { ...defaults, ...selectedOptions } as ImageOptions;
   }
 
-  set src(src: string) {
-    if (this.sealed !== true) findEl(this.id!).attr({"src": src});
+  set src(src: string | Blob) {
+    if (this.sealed !== true) {
+      if(typeof src != "string"){
+        src = URL.createObjectURL(src);
+      }
+      findEl(this.id!).attr({"src": src});
+    }
   }
 }
 
