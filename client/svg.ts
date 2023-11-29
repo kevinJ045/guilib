@@ -129,3 +129,65 @@ export class SVGGroup extends SVGBare<SVGGroupOptions> {
 		}, options));
 	}
 }
+
+export interface SVGCircleOptions extends SVGOptions{
+	cx?: string,
+	cy?: string,
+	r?: string
+}
+
+export class SVGCircle extends Widget<SVGCircleOptions> {
+  constructor(options: SVGCircleOptions) {
+    super(mergeOptions({
+      element: { name: 'circle' },
+      class: '',
+      _setters: ['cx', 'cy', 'r'],
+    }, options));
+  }
+
+  set cx(cx: number) {
+    this.attr({ cx });
+  }
+
+  set cy(cy: number) {
+    this.attr({ cy });
+  }
+
+  set r(r: number) {
+    this.attr({ r });
+  }
+}
+
+
+export interface SVGRectOptions extends SVGOptions{
+	x?: string,
+	y?: string,
+	w?: string,
+	h?: string
+}
+
+export class SVGRect extends Widget<SVGRectOptions> {
+  constructor(options: SVGRectOptions) {
+    super(mergeOptions({
+      element: { name: 'rect' },
+      class: '',
+      _setters: ['x', 'y', 'w', 'h'],
+    }, options));
+  }
+
+  set x(x: number) {
+    this.attr({ x });
+  }
+
+  set y(y: number) {
+    this.attr({ y });
+  }
+
+  set w(width: number) {
+    this.attr({ width });
+  }
+
+  set h(height: number) {
+    this.attr({ height });
+  }
+}
