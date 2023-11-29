@@ -5,7 +5,7 @@ You can find that js file [here](https://raw.githubusercontent.com/kevinJ045/gui
 
 Or you can just include from `unpkg`:
 ```html
-<script src="https://unpkg.com/rayous@2.3.2/dist/index.js"></script>
+<script src="https://unpkg.com/rayous/dist/index.js"></script>
 ```
 
 Once you include that js file you can just:
