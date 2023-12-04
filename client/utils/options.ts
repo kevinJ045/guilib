@@ -1,5 +1,5 @@
 import { animation } from "../components/Animate";
-import Style from "../components/Style";
+import Style, { styleProps } from "../components/Style";
 import Store from "../data/Store";
 import { widget } from "../widgets/_ghost/WidgetProps";
 import { attr, attrNullable, attrOptions } from "./elman";
@@ -62,7 +62,7 @@ class options {
 	 *
 	 * @type {Style | Record<string, any> | null}
 	 */
-	style?: Style | Record<string, any> | null = {};
+	style?: Style | styleProps | null = {};
 
 	/**
 	 * Position settings for the widget.

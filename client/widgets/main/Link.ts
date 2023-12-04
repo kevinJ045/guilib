@@ -10,7 +10,7 @@ const defaultLink = (more: string | null = null) => getDefaults({
 	element: { name: 'a' },
 	class: more ? 'link '+more : 'link',
 	accepts: false,
-	_setters: ['url'],
+	_setters: ['url', 'target'],
 	icon: null
 });
 
@@ -36,17 +36,15 @@ function link(el: Dom, url: string | urlOptions){
 }
 
 export interface LinkOptions extends options {
-	url?: string | urlOptions
+	url?: string | urlOptions,
+	target?: string
 }
 
-class Link<T = LinkOptions> extends Text<T> {
+class Link<T extends LinkOptions = LinkOptions> extends Text<T> {
 
 	constructor(selectedOptions: string | LinkOptions, otheroptions: LinkOptions | null = null){
 		const options = Text.resolveOptions(selectedOptions, otheroptions, {...defaultLink()}) as options;
 		super(options);
-		// if(options.close) findEl(this.id).append($(`<span class="material-icons close-tab">close</span>`).on('click', () => {
-		// 	this.emit('closed');
-		// }));
 	}
 
 
@@ -55,6 +53,10 @@ class Link<T = LinkOptions> extends Text<T> {
 			this.url = change;
 		});
 		link(findEl(this.id!), url instanceof Controller ? url.get() : url);
+	}
+
+	set target(target: string){
+		findEl(this.id!).at(0).target = target;
 	}
 	
 }
