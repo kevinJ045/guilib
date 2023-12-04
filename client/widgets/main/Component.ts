@@ -497,7 +497,7 @@ export default class Component extends WidgetEventTarget<ComponentEvent> {
 		let that: Record<string, any> = this;
 		if(property in Component.prototype) return this;
 		if(property in this){
-			if(!value) value = that[property];
+			if(value == null && that[property] !instanceof Ref) value = that[property];
 			delete that[property];
 		}
 		Object.defineProperty(this, property, {
