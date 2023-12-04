@@ -101,6 +101,7 @@ if(Array.isArray(Page0.scripts)){
 }
 
 window.loadFunction = () => {
+	document.body.setAttribute('class', '');
 	if(!window.after && window.loaderOn) window.loader.remove();	
 	const initResponse = window.initResponse ? window.initResponse : typeof clientInit.init == "function" ? clientInit.init(buildProps()) || {} : {};
 	if(!window.initResponse) window.initResponse = initResponse;
@@ -110,6 +111,10 @@ window.loadFunction = () => {
 	${filepath.map((filepath, index) => `let page${index} = new Page${index}();`).join('\n')}
 
 	if(window.lastPage && Page0.inheritState !== false) page0._inheritState(window.lastPage);
+
+	if(Page0.updateMode == "refresh") window.__refresh_on_update = true;
+
+	if(Page0.bodyClass) document.body.setAttribute('class', Page0.bodyClass);
 
 	${filepath.map((filepath, index) => `page${index}._beforeInit();\npage${index}.emit('beforeInit', { component: page${index}, props: buildProps() });\npage${index}.initState(buildProps());`).join('\n')}
 
@@ -172,6 +177,7 @@ export function getListenerSocket(port: number, file : { imports: string[] }){
 				const data = JSON.parse(event.data);
 				if(imports.indexOf(data.path) > -1) {
 					try{
+						if(window.__refresh_on_update == true) return location.reload();
 						let styles = document.head.getElementsByTagName('style');
 						Array.from(styles).forEach(style => {
 							if(style.pathname && style.pathname.endsWith('.tail.css')){

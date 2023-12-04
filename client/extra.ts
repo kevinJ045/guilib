@@ -20,8 +20,8 @@ export type { buildProps, ComponentEvent, ComponentEventData, AsyncBuildOptions 
 export { buildComponent } from "./widgets/main/Component";
 export { getComponentExports } from "./utils/extra.js";
 export type { RayousExport } from "./utils/extra.js";
-export { Ref, ref, typeref, onComponent, asyncComponent, componentEvents } from "./widgets/main/Component";
+export { Ref, ref, typeref, onComponent, asyncComponent, componentEvents, ComponentStyles } from "./widgets/main/Component";
 export { options } from "./utils/options.js";
-export type { WidgetEventTarget } from "./utils/eventtarget.js";
+export { WidgetEventTarget } from "./utils/eventtarget.js";
 export type { WidgetEvent } from "./utils/events.js";
 export type { rowValue as TableRowValue, TableRowOptions, TableOptions } from "./widgets/list/Table.js";

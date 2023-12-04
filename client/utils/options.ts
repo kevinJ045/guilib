@@ -97,6 +97,7 @@ class options {
 	onKeyUp?: Function = () => {};
 	onKey?: Function = () => {};
 	onChange?: Function = () => {};
+	onMount?: Function = () => {};
 	[key: string]: any;
 };
 

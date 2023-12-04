@@ -1,3 +1,5 @@
+import { styleProps } from "../../components/Style";
+import { Style } from "../../extra";
 import { WidgetEventTarget } from "../../utils/eventtarget";
 import generateRandomID from "../../utils/id";
 import { WidgetList } from "../_ghost/WidgetProps";
@@ -248,6 +250,45 @@ export interface ComponentEventData {
 }
 export interface ComponentEvent<T = ComponentEventData> extends CustomEvent<T> {}
 
+export class ComponentStyles {
+
+	private styles: Record<string, styleProps> = {};
+	id: string;
+
+	constructor(styles: Record<string, styleProps>){
+		this.id = generateRandomID(6);
+		for(let i in styles){
+			this.set(i, styles[i]);
+		}
+	}
+
+	set(name: string, styles: styleProps){
+		const n = this.id+'_'+name;
+		this.styles[n] = new Style(n, styles);
+		return this;
+	}
+
+	get(name: string){
+		const n = this.id+'_'+name;
+		return this.styles[n] as Style;
+	}
+
+	remove(name: string){
+		const n = this.id+'_'+name;
+		delete this.styles[n];
+		return this;
+	}
+
+	change(name: string, styles: styleProps){
+		const n = this.id+'_'+name;
+		for(let i in styles){
+			(this.styles[n] as any)[i] = (styles as any)[i];
+		}
+		return this;
+	}
+
+}
+
 export default class Component extends WidgetEventTarget<ComponentEvent> {
 
 	/**
@@ -291,6 +332,11 @@ export default class Component extends WidgetEventTarget<ComponentEvent> {
 	static title: string | null = null;
 
 	/**
+	 * An option to set the body class for this component.
+	 */
+	static bodyClass: string | null = null;
+
+	/**
 	 * An option to disable state inheritance in this component.
 	 */
 	static inheritState = true;
@@ -308,6 +354,21 @@ export default class Component extends WidgetEventTarget<ComponentEvent> {
 	 * for example cdns, vanilla libraries...
 	 */
 	static scripts: string[] = [];
+
+	/**
+	 * Update mode refers to how the page updates when you
+	 * made changes to your files.
+	 * 
+	 * If the updateMode is reinit, it will re-import the js and re init
+	 * everything without reloading.
+	 * 
+	 * If the updateMode is refresh, it will refresh the page on file
+	 * update to sync the changes.
+	 */
+	static updateMode: "reinit" | "refresh" = "reinit";
+
+
+	styles?: ComponentStyles;
 
 	/**
 	 * A function to run before any component build starts.
@@ -563,6 +624,17 @@ export default class Component extends WidgetEventTarget<ComponentEvent> {
 	}
 
 	/**
+	 * Get a style from the styles in a component
+	 * @param {string} name the style name inside the component style
+	 */
+	getStyle(name: string) : Style | null {
+		if(this.styles){
+			return this.styles.get(name) as Style;
+		}
+		return null;
+	}
+
+	/**
 	 * DO NOT OVERRIDE!!
 	 * 
 	 * This function is to build Components inside other Components.
@@ -577,7 +649,7 @@ export default class Component extends WidgetEventTarget<ComponentEvent> {
  * @see {ref}
  * 
  * The Ref class can only be used in Components and 
- * it's use it to make a referencable stateful variable for a
+ * it's use is to make a referencable stateful variable for a
  * component to make it re-render when the value is changed.
  */
 export class Ref<T> {

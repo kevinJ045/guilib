@@ -1,5 +1,5 @@
 import { animateWidget, animateWidgets, animation } from "../../components/Animate";
-import Style from "../../components/Style";
+import Style, { styleProps } from "../../components/Style";
 import Store from "../../data/Store";
 import Dom from "../../utils/dom";
 import { attr, findEl } from "../../utils/elman";
@@ -36,6 +36,7 @@ function registerEvent(widget: WidgetProps, event: string, callback: Function){
 
 function mounted(parent: widget, child: widget){
 	if(typeof child!._onMount == "function") child!._onMount(parent!);
+	child?.emit('mount', { parent });
 }
 
 
@@ -62,19 +63,29 @@ class WidgetProps {
 	 * // You can change it later on
 	 * widget.style = { display: 'none' }
 	 */
-	set style(style){
-		if(!findEl(this.id!).at(0).GUISTYLE) findEl(this.id!).at(0).GUISTYLE = style;
-		else findEl(this.id!).at(0).GUISTYLE = {...findEl(this.id!).at(0).GUISTYLE, ...style};
-		if(style instanceof Style) findEl(this.id!).css(style.all);
-		else findEl(this.id!).css(style);
+	set style(style: Style | styleProps){
+		const _setCss = (style: Record<string, any>) => {
+			if(!findEl(this.id!).at(0).GUISTYLE) findEl(this.id!).at(0).GUISTYLE = style;
+			else findEl(this.id!).at(0).GUISTYLE = {...findEl(this.id!).at(0).GUISTYLE, ...style};
+			findEl(this.id!).css(style);
+		}
+		if(style instanceof Style){
+			findEl(this.id!).at(0).WIDGET_STYLE = style;
+			_setCss(style.all);
+			style.on('update', () => {
+				_setCss(style.all);
+			});
+		} else {
+			if(style) _setCss(style);
+		}
 	}
 
 	/**
 	 * returns all the applied styles 
-	 * @returns {Style}
+	 * @returns {Style | styleProps}
 	 */
-	get style(){
-		return findEl(this.id!).at(0).GUISTYLE;
+	get style() : Style | styleProps {
+		return findEl(this.id!).at(0).WIDGET_STYLE as Style || findEl(this.id!).at(0).GUISTYLE as styleProps || findEl(this.id!).at(0).style as styleProps;
 	}
 	
 	/**

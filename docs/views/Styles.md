@@ -1,5 +1,5 @@
 # Styles
-To stylize a widget in GUILIB, you can just use the Style class for shared styles, inline style property, or even css classes.
+To stylize a widget in GUILIB, you can just use the Style class for shared styles, inline style property, component styles, or even css classes.
 
 ## Inline `style` property
 The inline `style` option for Widgets gives a css style to your component just the same way as you would in a style attribute. 
@@ -26,6 +26,31 @@ new Text("Text!", {
 new Text("Text!", {
 	style: new Style('text-style'),
 })
+```
+
+## The `ComponentStyle` class
+```ts
+import { ComponentStyles } from "rayous/extra";
+
+export default class extends Component {
+
+	styles = new ComponentStyles({
+		title: {
+			fontSize: '25px'
+		}
+	});
+
+	build({ route }: buildProps) {
+
+		return new Widget({
+			children: [
+				new Text('Hello', {
+					style: this.getStyle('title')
+				})
+			]
+		});
+	}
+}
 ```
 
 ## Css and Scss

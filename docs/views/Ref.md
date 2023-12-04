@@ -67,7 +67,7 @@ Example:
 import { typeref } from "rayous/extra";
 
 export default class extends Component {
-	@typeref text: string = "...";
+	@typeref('string') text: string = "...";
 
 	...
 }

@@ -1,5 +1,5 @@
 
-import Page0 from "../app/test/tailwind/page";
+import Page0 from "../app/test/styling/page";
 
 
 import Page1 from "../app/layout";
@@ -8,7 +8,7 @@ import * as clientInit from "../app/init.client";
 
 
 
-const otherPaths = [{"pathname":"/","filename":"app/page.ts"},{"pathname":"/someapifolder","filename":"app/someapifolder/route.ts"},{"pathname":"/home","filename":"app/home/page.ts"},{"pathname":"/test/route","filename":"app/test/route/route.ts"},{"pathname":"/test/route/:id","filename":"app/test/route/[id]/route.ts"},{"pathname":"/test/options","filename":"app/test/options/page.ts"},{"pathname":"/test/events","filename":"app/test/events/page.ts"},{"pathname":"/test/async","filename":"app/test/async/page.ts"},{"pathname":"/test/svg","filename":"app/test/svg/page.ts"},{"pathname":"/test/promise","filename":"app/test/promise/page.ts"},{"pathname":"/test/props","filename":"app/test/props/page.ts"},{"pathname":"/test/image","filename":"app/test/image/page.ts"},{"pathname":"/test/grid","filename":"app/test/grid/page.ts"},{"pathname":"/test/tailwind","filename":"app/test/tailwind/page.ts"},{"pathname":"/test/navigate","filename":"app/test/navigate/page.ts"},{"pathname":"/test/navigate/target","filename":"app/test/navigate/target/page.ts"},{"pathname":"/test/route.json","filename":"app/test/route.json/page.ts"},{"pathname":"/test/ref","filename":"app/test/ref/page.ts"},{"pathname":"/test/model","filename":"app/test/model/page.ts"},{"pathname":"/test/loading","filename":"app/test/loading/page.ts"},{"pathname":"/test/loading/widget","filename":"app/test/loading/widget/page.ts"},{"pathname":"/test/resolve","filename":"app/test/resolve/page.ts"},{"pathname":"/test/building","filename":"app/test/building/page.ts"},{"pathname":"/test/args","filename":"app/test/args/page.ts"},{"pathname":"/test/layout","filename":"app/test/layout/page.ts"},{"pathname":"/test/animation","filename":"app/test/animation/page.ts"},{"pathname":"/test/select","filename":"app/test/select/page.ts"},{"pathname":"/test/live","filename":"app/test/live/page.ts"},{"pathname":"/test/table","filename":"app/test/table/page.ts"},{"pathname":"/lll","filename":"app/lll/page.ts"},{"pathname":"/posts/:id","filename":"app/posts/[id]/page.ts"}];
+const otherPaths = [{"pathname":"/","filename":"app/page.ts"},{"pathname":"/someapifolder","filename":"app/someapifolder/route.ts"},{"pathname":"/home","filename":"app/home/page.ts"},{"pathname":"/test/route","filename":"app/test/route/route.ts"},{"pathname":"/test/route/:id","filename":"app/test/route/[id]/route.ts"},{"pathname":"/test/options","filename":"app/test/options/page.ts"},{"pathname":"/test/events","filename":"app/test/events/page.ts"},{"pathname":"/test/styling","filename":"app/test/styling/page.ts"},{"pathname":"/test/async","filename":"app/test/async/page.ts"},{"pathname":"/test/svg","filename":"app/test/svg/page.ts"},{"pathname":"/test/promise","filename":"app/test/promise/page.ts"},{"pathname":"/test/props","filename":"app/test/props/page.ts"},{"pathname":"/test/image","filename":"app/test/image/page.ts"},{"pathname":"/test/grid","filename":"app/test/grid/page.ts"},{"pathname":"/test/tailwind","filename":"app/test/tailwind/page.ts"},{"pathname":"/test/navigate","filename":"app/test/navigate/page.ts"},{"pathname":"/test/navigate/target","filename":"app/test/navigate/target/page.ts"},{"pathname":"/test/route.json","filename":"app/test/route.json/page.ts"},{"pathname":"/test/ref","filename":"app/test/ref/page.ts"},{"pathname":"/test/model","filename":"app/test/model/page.ts"},{"pathname":"/test/loading","filename":"app/test/loading/page.ts"},{"pathname":"/test/loading/widget","filename":"app/test/loading/widget/page.ts"},{"pathname":"/test/resolve","filename":"app/test/resolve/page.ts"},{"pathname":"/test/building","filename":"app/test/building/page.ts"},{"pathname":"/test/args","filename":"app/test/args/page.ts"},{"pathname":"/test/layout","filename":"app/test/layout/page.ts"},{"pathname":"/test/animation","filename":"app/test/animation/page.ts"},{"pathname":"/test/select","filename":"app/test/select/page.ts"},{"pathname":"/test/live","filename":"app/test/live/page.ts"},{"pathname":"/test/table","filename":"app/test/table/page.ts"},{"pathname":"/lll","filename":"app/lll/page.ts"},{"pathname":"/posts/:id","filename":"app/posts/[id]/page.ts"}];
 let cscript = document.currentScript;
 const _navigate = (path, options = {}) => {
 	let pathname = path;
@@ -57,7 +57,7 @@ const _navigate = (path, options = {}) => {
 	window.previousPathname = location.pathname;
 	_startScriptLoad();
 }
-let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/test/tailwind", params: {} }}
+let base_props = { router: { paths: otherPaths, assign: function(path){ location.assign(path) }, navigate: function(path, options){ _navigate(path, options) }, back: function(){ location.back() } }, route: {path: "/test/styling", params: {} }}
 if(!window.all_possible_paths) window.all_possible_paths = otherPaths;
 function start(){
 const pages = window.pages || [];
@@ -94,6 +94,7 @@ if(Array.isArray(Page0.scripts)){
 }
 
 window.loadFunction = () => {
+	document.body.setAttribute('class', '');
 	if(!window.after && window.loaderOn) window.loader.remove();	
 	const initResponse = window.initResponse ? window.initResponse : typeof clientInit.init == "function" ? clientInit.init(buildProps()) || {} : {};
 	if(!window.initResponse) window.initResponse = initResponse;
@@ -105,6 +106,10 @@ if(typeof Page0.beforeBuildStart == "function") Page0.beforeBuildStart(buildProp
 let page1 = new Page1();
 
 	if(window.lastPage && Page0.inheritState !== false) page0._inheritState(window.lastPage);
+
+	if(Page0.updateMode == "refresh") window.__refresh_on_update = true;
+
+	if(Page0.bodyClass) document.body.setAttribute('class', Page0.bodyClass);
 
 	page0._beforeInit();
 page0.emit('beforeInit', { component: page0, props: buildProps() });
