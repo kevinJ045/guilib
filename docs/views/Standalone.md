@@ -61,12 +61,14 @@ In the simpler version, all you have to do is:
 ```
 and in the js:
 ```ts
-class extends Component {
-	build({ prop }){
+class extends Component{
+
+	build(){
 		return new Widget({
-			children: [ new Text(prop) ] // 'value'
+			children: [ new Text('hi') ]
 		})
 	}
+
 }
 ```
 you should put the class code before anything else, if the component class is not declared
@@ -77,13 +79,13 @@ The other one is more complex, you have to actually define the component inside 
 <script type="rayous-component" src="/path/to/component.js" componentName="ExampleComponent"></script>
 ```
 In the JS, all you have to do is:
-```
+```ts
 const { Component, Widget, Text } = Rayous.widgets; 
 
 Rayous.component(class ExampleComponent extends Component {
-	build({ prop }){
+	build(){
 		return new Widget({
-			children: [ new Text(prop) ] // 'value'
+			children: [ new Text('hi') ]
 		})
 	}
 });
