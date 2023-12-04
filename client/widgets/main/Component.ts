@@ -554,7 +554,7 @@ export default class Component extends WidgetEventTarget<ComponentEvent> {
 			}
 			else this._currentWidget.remove();
 			let oldWidget = this._currentWidget;
-			let newWidget = makeComponent(this, this._buildProps.wrap({page: oldWidget}), false);
+			let newWidget = makeComponent(this, this._buildProps.wrap ? this._buildProps.wrap({page: oldWidget}) : { page: oldWidget }, false);
 			let lastWidget: Widget | WidgetList = newWidget;
 
 			if(typeof rendererElement == "string" && newWidget.find(rendererElement))
