@@ -655,6 +655,6 @@ export default class Component extends WidgetEventTarget<ComponentEvent> {
 export class Ref<T> {
 	value?: T;
 	constructor(value: T | null = null){
-		if(value) this.value = value;
+		if(value != null) this.value = value;
 	}
 }
