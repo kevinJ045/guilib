@@ -672,9 +672,10 @@ function getCss(name: string, prop: string | null = null){
 export interface StyleEvent extends CustomEvent<{}> {}
 
 
-class Style extends WidgetEventTarget<StyleEvent, props> {
+class Style<variableMap = Record<string, any>> extends WidgetEventTarget<StyleEvent, props> {
 
 	name = "";
+	values: variableMap = {} as variableMap;
 
 	constructor(name: string | props | null, map: props | null = null){
 		super();
@@ -687,6 +688,9 @@ class Style extends WidgetEventTarget<StyleEvent, props> {
 		if(map){
 			this.set(map);
 		}
+		this.values = new Proxy({}, {
+			get: (target: any, propName: string) => (this as any)[propName] || (this.all as any)[propName]
+		})
 	}
 
 	addProperty(prop: string, value: any){
@@ -699,7 +703,8 @@ class Style extends WidgetEventTarget<StyleEvent, props> {
 	}
 	set all(all){
 		for(var i in all){
-			(this as Record<string, any>)[i] = all[i];
+			if(i in this) (this as Record<string, any>)[i] = all[i];
+			else this.variable(i, all[i]);
 		}
 		this._updated();
 	}
@@ -9887,11 +9892,16 @@ class Style extends WidgetEventTarget<StyleEvent, props> {
 		return this;
 	}
 	
-	variable(name: string, value: any){
-		setCss(this.name, {
-			['--'+name]: value
-		});
-		this._updated();
+	variable(name: string, value: any | null = null){
+		const vname = name.startsWith('--') ? name : '--'+name;
+		if(value){
+			setCss(this.name, {
+				[vname]: value
+			});
+			this._updated();
+		} else {
+			return getCss(this.name, vname);
+		}
 		return this;
 	}
 
@@ -9904,8 +9914,8 @@ class Style extends WidgetEventTarget<StyleEvent, props> {
 	 * @param {props} props additional properties to add into the mix
 	 * @returns {Style}
 	 */
-	extends(props: props, override: boolean = true) : Style {
-		return Style.extends(this, props, this.name, override);
+	extends(props: props, override: boolean = true) : Style<variableMap> {
+		return Style.extends<variableMap>(this, props, this.name, override);
 	}
 	
 
@@ -9943,9 +9953,9 @@ class Style extends WidgetEventTarget<StyleEvent, props> {
 		}
 	}
 
-	static copy(target: Style | string, name: string | null = null, mode : "simple" | "all" = "all", style: Style | null = null, update: boolean = true){
+	static copy<U = any>(target: Style<U> | string, name: string | null = null, mode : "simple" | "all" = "all", style: Style<U> | null = null, update: boolean = true){
 		if(mode == "all" && target instanceof Style){
-			let newStyle = style || new Style(name || generateRandomID(5));
+			let newStyle = style || new Style<U>(name || generateRandomID(5));
 			newStyle.set(target.all);
 			if(update) target.on('update', () => newStyle.set(target.all));
 			return newStyle;
@@ -9955,9 +9965,9 @@ class Style extends WidgetEventTarget<StyleEvent, props> {
 		}
 	}
 
-	static extends(target: Style, props: props, name: string | null = null, override: boolean = true){
-		let style = new Style(name);
-		Style.copy(target, name, 'all', style, override);
+	static extends<U = any>(target: Style<U>, props: props, name: string | null = null, override: boolean = true){
+		let style = new Style<U>(name);
+		Style.copy<U>(target, name, 'all', style, override);
 		if(!override) target.on('update', () => {
 			const p = {...target.all, ...props};
 			style.set(p);

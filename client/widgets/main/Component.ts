@@ -264,7 +264,7 @@ export class ComponentStyles {
 
 	set(name: string, styles: styleProps){
 		const n = this.id+'_'+name;
-		this.styles[n] = new Style(n, styles);
+		this.styles[n] = new Style<typeof styles>(n, styles);
 		return this;
 	}
 
@@ -627,9 +627,9 @@ export default class Component extends WidgetEventTarget<ComponentEvent> {
 	 * Get a style from the styles in a component
 	 * @param {string} name the style name inside the component style
 	 */
-	getStyle(name: string) : Style | null {
+	getStyle<U = any>(name: string) : Style<U> | null {
 		if(this.styles){
-			return this.styles.get(name) as Style;
+			return this.styles.get(name) as Style<U>;
 		}
 		return null;
 	}

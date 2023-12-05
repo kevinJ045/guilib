@@ -3,7 +3,36 @@ import * as html from "../html";
 import * as widgets from "../index";
 import * as svg from "../svg";
 import Dom from "../utils/dom";
+import { findEl } from "../utils/elman";
 import { WidgetList } from "../widgets/_ghost/WidgetProps";
+
+const pathToRegex = (path: string) => new RegExp("^"+ path.replace(/\\/g,"\\/")
+		.replace(/:\w+/g,"(.+)") +"$");
+
+const getParams = (match: { result: any[], route: { path: string } }) => {
+	const values = match.result.slice(1);
+	const keys = Array.from(match.route.path.matchAll(/:(\w+)/g)).map(result => result[1]);
+
+	return Object.fromEntries(keys.map((key,i) => {
+		return [key,values[0]];
+	}));
+};
+
+const getCurrentHref = (root: string) => {
+	let href = location.href;
+	if(!href.match(root.replace(/\?/, '\\?'))) href += root;
+	let currentPath = href.split(root)[1];
+	if(!currentPath || !currentPath.length) currentPath = '/';
+	return currentPath;
+}
+
+const setCurrentHref = (root: string, path: string) => {
+	let currentPath = getCurrentHref(root);
+	let p = location.href.match(currentPath) ? location.href.replace(root+currentPath, root+path) : location.href + (location.href.match(root.replace(/\?/, '\\?')) ? '' : root) + path;
+	if(!p.endsWith(root+path)) p += (root+path);
+	history.pushState(null, '', p);
+}
+
 
 function makeComponent(componentString: string){
 	if(!componentString) return "";
@@ -35,12 +64,48 @@ function callComponentClass(componentFunction: () => any, script: HTMLScriptElem
 		}
 	}
 	
-	const component = componentClass.buildFor(null, props);
-	if(!component) return;
-	if(!component.to) return;
+	
 	const newElement = document.createElement('div');
+	newElement.className = 'rayous-widget-component';
 	script.parentNode!.insertBefore(newElement, script.nextSibling);
-	component.to(newElement);
+
+	(newElement as any).script = script;
+
+	function buildComponent(props: any){
+		const component = componentClass.buildFor(null, props);
+		if(!component) return;
+		if(!component.to) return;
+		component.to(newElement);
+	}
+
+	(script as any).buildScript = (fromRouter: any) => {
+		if(fromRouter) {
+			buildComponent({...props, ...fromRouter});
+		} else if(script.hasAttribute('route')){
+			let route = eval(`(${script.getAttribute('route')!})`);
+			if(typeof route !== "object") throw new Error('route not a valid JSON object');
+			if(typeof route.path !== "string") throw new Error('route.path is not a string as required');
+			let root = route.root || "#!";
+			if(root == 'origin') root = location.origin;
+
+			(newElement as any).route = route;
+	
+			const currentPath = getCurrentHref(root);
+			
+			const regex = pathToRegex(route.path);
+	
+			let match = regex.exec(currentPath);
+			if(match){
+				let params = getParams({result: match, route});
+				buildComponent({ ...props, params });
+			}
+	
+		} else {
+			buildComponent(props);
+		}
+	}
+
+	(script as any).buildScript();
 }
 
 function buildScriptComponent(script: HTMLScriptElement, scriptContent: string){
@@ -109,6 +174,34 @@ class Rayous {
 		this.components[component.name] = component;
 	}
 
+	navigate(path: string, props: any = {}){
+		const allComponents = Array.from(document.querySelectorAll('.rayous-widget-component'))
+		.filter((f: any) => f.route);
+
+		if(!allComponents.length) return;
+
+		let component = allComponents.find(component => {
+			let route = (component as any).route;
+			return pathToRegex(route.path).test(path);
+		});
+
+		if(component){
+			allComponents.forEach((s) => s.innerHTML = "");
+
+			let route = (component as any).route;
+
+			const regex = pathToRegex(route.path);
+
+			let match = regex.exec(path);
+			let params = getParams({result: match!, route});
+
+			setCurrentHref(route.root || "#!", path);
+
+			(component as any).script.buildScript({ params, ...props });
+		}
+
+	}
+
 	extra = extra;
 	html = html;
 	widgets = widgets;
@@ -119,8 +212,11 @@ class Rayous {
 	find(selector: string, returnOne: boolean = false){
 		let all = new Dom(selector);
 		// @ts-ignore
-		let widgets = all.elements.map(el => el.GUIWIDGET);
+		let widgets = all.elements.filter(el => el.GUIWIDGET).map(el => el.GUIWIDGET);
 		return returnOne && widgets.length == 1 ? widgets[0] : WidgetList.from(widgets);
+	}
+	raw(widget: any){
+		return !widget.id ? null : findEl(widget.id).at(0);
 	}
 	WidgetList = WidgetList;
 }

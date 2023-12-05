@@ -7,7 +7,8 @@ export default class extends Component {
 
 	styles = new ComponentStyles({
 		title: {
-			background: 'black'
+			background: 'black',
+			'--test-variable': 'value'
 		}
 	});
 
