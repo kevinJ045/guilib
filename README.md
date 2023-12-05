@@ -64,8 +64,9 @@ To start building your web application with Rayous, follow these steps:
 
 You can customize your Rayous application by editing the `rayous.json` configuration file. This file allows you to set the application's title, author, and other metadata that is important for SEO and presentation.
 
-## Wiki
-For any help, you can refer to the [Rayous Github Wiki](https://github.com/kevinJ045/guilib/wiki).
+## Docs and wiki
+For any help, you can refer to the [Rayous Docs](https://kevinj045.github.io/guilib/) or  [Rayous Github Wiki](https://github.com/kevinJ045/guilib/wiki).
+
 
 ## Examples
 
