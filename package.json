@@ -1,6 +1,6 @@
 {
   "name": "rayous",
-  "version": "2.4.7",
+  "version": "2.4.8",
   "author": "makano",
   "description": "A mini router X ui kit with ts",
   "main": "./client/index.ts",

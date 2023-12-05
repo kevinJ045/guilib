@@ -57,7 +57,7 @@ if(subcommand[0]){
 			createFile('./app');
 			createFile('./static');
 			createFile('./styles');
-			createFile('./app/page.'+(options.ts ? 'ts' : 'js'), `import { Component, Text, Widget } from "rayous";
+			createFile('./app/page.'+(options.ts ? (options.jsx ? 'tsx' : 'ts') : (options.jsx ? 'jsx' : 'js')), `import { Component, Text, Widget } from "rayous";
 import { buildProps } from "rayous/extra";
 ${options.jsx ? `import { React } from "rayous/react";\n` : ''}
 export default class extends Component {
