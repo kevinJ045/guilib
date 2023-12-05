@@ -1,4 +1,4 @@
-import { isPosition } from "../../utils/type";
+import { isHTMLElement, isPosition, isWidget } from "../../utils/type";
 import generateRandomID from "../../utils/id";
 import { findEl, registerElement } from "../../utils/elman";
 import getDefaults, { mergeOptions, options } from "../../utils/options";
@@ -7,8 +7,6 @@ import Dom from "../../utils/dom";
 import Store from "../../data/Store";
 import { createWidgetModel, widgetModel } from "../../utils/widgetmodel";
 import { animation } from "../../components/Animate";
-
-type wid = widget;
 
 const defaults = getDefaults({});
 
@@ -114,8 +112,10 @@ function _init(widget: widgetF, options: options){
 	}
 
 	if(options.children && options.children.length){
-		options.children.forEach((element: widget) => {
+		options.children.forEach((element: any) => {
 			if(element == null) return;
+
+			if(element instanceof window.Text) element = element.textContent;
 			widget.add(element!);
 		});
 	}

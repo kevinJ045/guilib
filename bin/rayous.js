@@ -33,6 +33,7 @@ function resolvePath(routePath){
 
 function createFile(filename, filecontent){
 	console.log('Creating file:', filename);
+	if(fs.existsSync(filename)) return console.log('Exists:', filename);
 	if(filecontent){
 		fs.writeFileSync(filename, filecontent);
 	} else {
@@ -48,21 +49,26 @@ if(subcommand[0]){
 			tailwind: true,
 			name: "App",
 			author: "",
-			envprod: false
+			envprod: false,
+			jsx: false
 		};
 
 		function createFiles(){
 			createFile('./app');
 			createFile('./static');
 			createFile('./styles');
-			createFile('./app/page.ts', `import { Component, Text, Widget } from "rayous";
-	import { buildProps } from "rayous/extra";
-
-	export default class extends Component {
-		build(props: buildProps) {
-			return new Widget({ children: [new Text("/ folder")] });
-		}
-	}`);
+			createFile('./app/page.'+(options.ts ? 'ts' : 'js'), `import { Component, Text, Widget } from "rayous";
+import { buildProps } from "rayous/extra";
+${options.jsx ? `import { React } from "rayous/react";\n` : ''}
+export default class extends Component {
+	build(props${options.ts ? ': buildProps':''}) {
+		return new Widget({
+			children: [
+				${options.jsx ? `<Text>Hello, Rayous!</Text>` : `new Text("Hello, Rayous!")`}
+			]
+		});
+	}
+}`);
 			createFile('./rayous.json', JSON.stringify({
 				title: options.name,
 				meta: { author: options.author },
@@ -75,7 +81,8 @@ if(subcommand[0]){
 					"esModuleInterop": true,
 					"paths": {
 						"@/*": ["./*"]
-					}
+					},
+					"jsx": options.jsx ? "react" : "preserve"
 				}
 			}, null, 2));
 			if(options.tailwind) createFile('./tailwind.config.js', `/** @type {import('tailwindcss').Config} */\nmodule.exports = `+JSON.stringify({
@@ -89,6 +96,11 @@ if(subcommand[0]){
 				},
 				plugins: [],
 			}, null, 2));
+			if(options.jsx) createFile('./app/jsx.d.ts', `declare namespace JSX {
+	interface IntrinsicElements {
+		[elementName: string]: any;
+	}
+};`);
 		}
 
 		let defname = "", defauth = "";
@@ -111,20 +123,30 @@ if(subcommand[0]){
 				} else {
 					options.tailwind = false;
 				}
-				rl.question('Enter the project name'+(defname ? ' ('+defname+')' : '')+': ', (name) => {
-					options.name = name || defname;
-		
-					rl.question('Enter the author name'+(defauth ? ' ('+defauth+')' : '')+': ', (author) => {
-						options.author = author || defauth;
-		
-						rl.question('Do you want to set project to production environment(no by default)? (y/n): ', (answer) => {
-							if (answer.toLowerCase() === 'yes' || answer.toLowerCase() === 'y') {
-								options.envprod = true;
-							}
-							rl.close();
-							createFiles();
+				rl.question("Do you want to use jsx(no by default)? (y/n): ", (answer) => {
+					if (answer.toLowerCase() === 'yes' || answer.toLowerCase() == 'y') {
+						options.jsx = true;
+					} else {
+						options.jsx = false;
+					}
+
+					rl.question('Enter the project name'+(defname ? ' ('+defname+')' : '')+': ', (name) => {
+						options.name = name || defname;
+			
+						rl.question('Enter the author name'+(defauth ? ' ('+defauth+')' : '')+': ', (author) => {
+							options.author = author || defauth;
+			
+							rl.question('Do you want to set project to production environment(no by default)? (y/n): ', (answer) => {
+								if (answer.toLowerCase() === 'yes' || answer.toLowerCase() === 'y') {
+									options.envprod = true;
+								}
+								rl.close();
+								createFiles();
+								console.log('Run\n\t$ npx rayous\nto start dev server.');
+							});
 						});
 					});
+
 				});
 			});
 		});

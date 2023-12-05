@@ -182,6 +182,8 @@ class WidgetProps {
 			this.addWidget(child, subchild);
 		} else if(isHTMLElement(child)){
 			this.addHTMLElement(child as HTMLGUIWidget, subchild);
+		} else if(typeof child == "string") {
+			findEl(this.id!).at(0).append(new window.Text(child));
 		} else {
 			console.log(child, ' was given');
 			throw new Error('Only Widgets or HTMLElements Allowed, The given child was logged.');
@@ -607,7 +609,7 @@ class WidgetProps {
 	text(text: string){
 		if(this.sealed === true) return this;
 		findEl(this.id!).text(text)
-		return findEl(this.id!).text() || this;
+		return text ? this : findEl(this.id!).text(text);
 	}
 
 	/**

@@ -74,7 +74,9 @@ class options {
 	size?: sizeOptions | null = {};
 	attr?: attr | null = {};
 	props?: attr | null = {};
-	children?: widget[] | [] | null = [];
+
+	children?: (widget | null | Element | HTMLElement | Node | string)[] | [] | null = [];
+	
 	private?: boolean | null = false;
 	reset?: boolean | null = false;
 	value?: string | number | null = "";

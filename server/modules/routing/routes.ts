@@ -124,7 +124,7 @@ export default class Routes {
 
     let requestedPath = sanitizePath(pathRequested);
     let pathname = path.join('./app', requestedPath, '404.ts');
-    let pathname_js = path.join('./app', requestedPath, '404.ts');
+    let pathname_js = path.join('./app', requestedPath, '404.js');
     let p;
 
     if(fs.existsSync(pathname)){
@@ -162,14 +162,17 @@ export default class Routes {
       const currentPath = segments.slice(0, i).join('/');
       const layoutPath = path.join(currentPath, 'layout.ts');
       const layoutPathJs = path.join(currentPath, 'layout.js');
+      const layoutPathTsx = path.join(currentPath, 'layout.tsx');
+      const layoutPathJsx = path.join(currentPath, 'layout.jsx');
       
 
-      if (fs.existsSync(layoutPath) || fs.existsSync(layoutPathJs)) {
+      if (fs.existsSync(layoutPath) || fs.existsSync(layoutPathJs) || fs.existsSync(layoutPathTsx) || fs.existsSync(layoutPathJsx)) {
         // If there's no ignoreLayoutsPath, add the layout to the list
-        layouts.push(layoutPath);
-        if (fs.existsSync(layoutPathJs)) {
-          layouts.push(layoutPathJs);
-        }
+        if (fs.existsSync(layoutPath)) layouts.push(layoutPath);
+        else if (fs.existsSync(layoutPathTsx)) layouts.push(layoutPathTsx);
+        else if (fs.existsSync(layoutPathJs)) layouts.push(layoutPathJs);
+        else if (fs.existsSync(layoutPathJsx)) layouts.push(layoutPathJsx);
+
       } else if (ignorePreviousLayouts && i !== segments.length) {
         break;
       }
