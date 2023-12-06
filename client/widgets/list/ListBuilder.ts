@@ -1,7 +1,7 @@
 import Widget from "../main/Widget";
-import getDefaults, { options } from "../../utils/options.js";
-import { findEl } from "../../utils/elman.js";
-import Store from "../../data/Store.js";
+import getDefaults, { options } from "../../utils/options";
+import { findEl } from "../../utils/elman";
+import Store from "../../data/Store";
 import Controller from "../../data/Controller";
 
 class ListBuilder<T = any, U extends options = options> extends Widget<U> {

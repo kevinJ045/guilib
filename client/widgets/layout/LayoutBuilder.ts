@@ -1,7 +1,7 @@
 ;
-import Widget from "../main/Widget.js";
-import getDefaults, { options } from "../../utils/options.js";
-import { findEl } from "../../utils/elman.js";
+import Widget from "../main/Widget";
+import getDefaults, { options } from "../../utils/options";
+import { findEl } from "../../utils/elman";
 
 function checkQuery(w: any, h: any, pw: any, ph: any, vw: any, vh: any, query: any) {
   const cases = [];

@@ -1,9 +1,9 @@
-import Widget from "../main/Widget.js";
-import getDefaults from "../../utils/options.js";
-import Text from "../main/Text.js";
-import Store from "../../data/Store.js";
-import { findEl } from "../../utils/elman.js";
-import Link from "../main/Link.js";
+import Widget from "../main/Widget";
+import getDefaults from "../../utils/options";
+import Text from "../main/Text";
+import Store from "../../data/Store";
+import { findEl } from "../../utils/elman";
+import Link from "../main/Link";
 
 const defaultButton = (more: any, link: any) => getDefaults({
 	element: { name: link ? 'a' : 'button' },

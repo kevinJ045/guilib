@@ -1,6 +1,6 @@
 import Widget from "./Widget";
 import getDefaults, { options } from "../../utils/options";
-import Store from "../../data/Store.js";
+import Store from "../../data/Store";
 import Controller from "../../data/Controller";
 import { child } from "../_ghost/WidgetProps";
 

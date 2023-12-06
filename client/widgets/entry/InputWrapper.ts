@@ -1,7 +1,7 @@
 import Controller from "../../data/Controller";
 import { findEl } from "../../utils/elman";
 import { options } from "../../utils/options";
-import Widget from "../main/Widget.js";
+import Widget from "../main/Widget";
 
 export class EntryController extends Controller<string> {
 	constructor(val: string){super(val)}

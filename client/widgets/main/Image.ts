@@ -1,6 +1,6 @@
-import Widget from "./Widget.js";
-import getDefaults, { options } from "../../utils/options.js";
-import { findEl } from "../../utils/elman.js";
+import Widget from "./Widget";
+import getDefaults, { options } from "../../utils/options";
+import { findEl } from "../../utils/elman";
 
 const defaultImage = () =>
   getDefaults({

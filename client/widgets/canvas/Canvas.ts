@@ -1,6 +1,6 @@
-import Widget from "../main/Widget.js";
-import getDefaults from "../../utils/options.js";
-import { findEl } from "../../utils/elman.js";
+import Widget from "../main/Widget";
+import getDefaults from "../../utils/options";
+import { findEl } from "../../utils/elman";
 
 class Canvas extends Widget {
 

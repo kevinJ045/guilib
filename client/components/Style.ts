@@ -1,9 +1,9 @@
-import { WidgetEventTarget } from "../utils/eventtarget.js";
-import voca from "../modules/voca.js";
-import { findEl } from "../utils/elman.js";
-import { isHTMLElement, isWidget } from "../utils/type.js";
-import Widget from "../widgets/main/Widget.js";
-import generateRandomID from "../utils/id.js";
+import { WidgetEventTarget } from "../utils/eventtarget";
+import voca from "../modules/voca";
+import { findEl } from "../utils/elman";
+import { isHTMLElement, isWidget } from "../utils/type";
+import Widget from "../widgets/main/Widget";
+import generateRandomID from "../utils/id";
 
 type styleProp = string | number | (string | number | boolean)[] | boolean;
 interface props {

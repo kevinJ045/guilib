@@ -3,7 +3,7 @@ import Dom from "../../utils/dom";
 import { findEl } from "../../utils/elman";
 import { options } from "../../utils/options";
 import Text from "../main/Text";
-import Widget, { widget } from "../main/Widget.js";
+import Widget, { widget } from "../main/Widget";
 
 export interface SelectableOptions {
 	title: widget | string,

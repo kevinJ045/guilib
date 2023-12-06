@@ -1,7 +1,7 @@
 
-import anime from "../modules/anime.js";
-import { findEl } from "../utils/elman.js";
-import { widget } from "../widgets/_ghost/WidgetProps.js";
+import anime from "../modules/anime";
+import { findEl } from "../utils/elman";
+import { widget } from "../widgets/_ghost/WidgetProps";
 
 export type animationValue = string | number | Record<string, any> | (string | number)[] | CallableFunction;
 

@@ -1,23 +1,23 @@
-import Widget from "./widgets/main/Widget.js";
-import Component from "./widgets/main/Component.js";
-import Text from "./widgets/main/Text.js";
-import List, { ListItem } from "./widgets/list/List.js";
-import Button from "./widgets/buttons/Button.js";
-import Link from "./widgets/main/Link.js";
-import Image from "./widgets/main/Image.js";
-import Canvas from "./widgets/canvas/Canvas.js";
-import InputWrapper from "./widgets/entry/InputWrapper.js";
-import LayoutBuilder from "./widgets/layout/LayoutBuilder.js";
-import Checkbox from "./widgets/buttons/Checkbox.js";
-import Radio from "./widgets/buttons/Radio.js";
-import Container from "./widgets/containers/Container.js";
-import Selectbox, { SelectableOption } from "./widgets/entry/SelectBox.js";
-import { Center, Column, Row } from "./widgets/containers/DirectedContainer.js";
-import Span from "./widgets/main/Span.js";
-import Video from "./widgets/media/Video.js";
-import Audio from "./widgets/media/Audio.js";
-import Grid from "./widgets/containers/Grid.js";
-import { Table, TableRow } from "./widgets/list/Table.js";
+import Widget from "./widgets/main/Widget";
+import Component from "./widgets/main/Component";
+import Text from "./widgets/main/Text";
+import List, { ListItem } from "./widgets/list/List";
+import Button from "./widgets/buttons/Button";
+import Link from "./widgets/main/Link";
+import Image from "./widgets/main/Image";
+import Canvas from "./widgets/canvas/Canvas";
+import InputWrapper from "./widgets/entry/InputWrapper";
+import LayoutBuilder from "./widgets/layout/LayoutBuilder";
+import Checkbox from "./widgets/buttons/Checkbox";
+import Radio from "./widgets/buttons/Radio";
+import Container from "./widgets/containers/Container";
+import Selectbox, { SelectableOption } from "./widgets/entry/SelectBox";
+import { Center, Column, Row } from "./widgets/containers/DirectedContainer";
+import Span from "./widgets/main/Span";
+import Video from "./widgets/media/Video";
+import Audio from "./widgets/media/Audio";
+import Grid from "./widgets/containers/Grid";
+import { Table, TableRow } from "./widgets/list/Table";
 
 
 export {

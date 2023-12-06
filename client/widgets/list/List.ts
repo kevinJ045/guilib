@@ -1,8 +1,8 @@
-import Widget from "../main/Widget.js";
-import getDefaults, { options } from "../../utils/options.js";
-import { findEl } from "../../utils/elman.js";
-import ListBuilder from "./ListBuilder.js";
-import Text from "../main/Text.js";
+import Widget from "../main/Widget";
+import getDefaults, { options } from "../../utils/options";
+import { findEl } from "../../utils/elman";
+import ListBuilder from "./ListBuilder";
+import Text from "../main/Text";
 import Controller from "../../data/Controller";
 
 export interface ListItemOptions extends options {

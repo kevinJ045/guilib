@@ -1,8 +1,8 @@
 import Widget from "./Widget";
-import getDefaults, { options } from "../../utils/options.js";
-import Text from "./Text.js";
-import Store from "../../data/Store.js";
-import { findEl } from "../../utils/elman.js";
+import getDefaults, { options } from "../../utils/options";
+import Text from "./Text";
+import Store from "../../data/Store";
+import { findEl } from "../../utils/elman";
 import Dom from "../../utils/dom";
 import { Controller } from "../../extra";
 

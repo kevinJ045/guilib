@@ -1,5 +1,5 @@
-import getDefaults from "../../utils/options.js";
-import Checkbox, { CheckboxOptions } from "./Checkbox.js";
+import getDefaults from "../../utils/options";
+import Checkbox, { CheckboxOptions } from "./Checkbox";
 
 const defaults = getDefaults({ element: { name: "input" }, class: 'radio', attr: {type: 'radio'} });
 

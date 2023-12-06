@@ -1,5 +1,5 @@
-import Widget from "../main/Widget.js";
-import getDefaults, { options } from "../../utils/options.js";
+import Widget from "../main/Widget";
+import getDefaults, { options } from "../../utils/options";
 
 class Container extends Widget {
 
