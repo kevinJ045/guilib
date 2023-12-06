@@ -1,6 +1,6 @@
 {
   "name": "rayous",
-  "version": "2.5.6",
+  "version": "2.5.7",
   "author": "makano",
   "description": "A mini router X ui kit with ts",
   "main": "./client/index.ts",
@@ -13,7 +13,6 @@
     "./html": "./client/html.ts",
     "./svg": "./client/svg.ts",
     "./server": "./server",
-
     "./bundle": "./index.js",
     "./bundle/react": "./react/index.js",
     "./bundle/extra": "./extra/index.js",
@@ -66,6 +65,7 @@
   "dependencies": {
     "console": "^0.7.2",
     "itty-router": "^4.0.23",
+    "macy": "^2.5.1",
     "postcss": "^8.4.31",
     "postcss-url": "^10.1.3",
     "sass": "^1.64.1",

@@ -3,7 +3,9 @@ import getDefaults, { options } from "../../utils/options";
 import { findEl, registerElement } from "../../utils/elman";
 import ListBuilder from "../list/ListBuilder";
 import Controller from "../../data/Controller";
-import Macy from "../../components/Macy";
+
+// @ts-ignore
+import Macy from "macy";
 
 type items = Controller<any[]> | any[]
 
@@ -63,7 +65,7 @@ function _initGrid(list: Grid, state: Record<string, any>){
 	}
 }
 
-class Grid<T = any, U = GridOptions> extends ListBuilder<T, U> {
+class Grid<T = any, U extends options = GridOptions> extends ListBuilder<T, U> {
 
 	constructor(selectedOptions: GridOptions){
 		const options = {...defaultGrid(), ...selectedOptions};
