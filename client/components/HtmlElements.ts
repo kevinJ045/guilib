@@ -1148,7 +1148,7 @@ export class Optgroup extends WebkitWidget {
 }
 	
 
-export class Object extends WebkitWidget {
+export class ObjectElement extends WebkitWidget {
 	constructor(options: Record<string, any> = {}){
 		let attributes = ["name","contenteditable","data","height","width"];
 		if(!options.attr) options.attr = {};

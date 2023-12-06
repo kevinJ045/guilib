@@ -45,7 +45,7 @@ declare class Widget<O extends options = options> extends WidgetProps {
             _onBuild?: Function;
             store: Store;
             __events__: import("../_ghost/WidgetProps").event[];
-            style: import("../../components/Style").styleProps | import("../../components/Style").default<Record<string, any>>;
+            style: import("../../components/Style").default<Record<string, any>> | import("../../components/Style").styleProps;
             padding: string;
             margin: string;
             name: string;

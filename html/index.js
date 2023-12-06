@@ -13786,7 +13786,7 @@ class Optgroup extends WebkitWidget {
   }
 }
 
-class Object2 extends WebkitWidget {
+class ObjectElement extends WebkitWidget {
   constructor(options5 = {}) {
     let attributes = ["name", "contenteditable", "data", "height", "width"];
     if (!options5.attr)
@@ -15229,7 +15229,7 @@ export {
   Option,
   Optgroup,
   Ol,
-  Object2 as Object,
+  ObjectElement,
   Mod,
   Meter,
   Meta,

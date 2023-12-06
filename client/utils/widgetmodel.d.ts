@@ -123,7 +123,7 @@ export declare function createWidgetModel<T extends options = options, U = Recor
         _onBuild?: Function;
         store: import("../data/Store").default;
         __events__: import("../widgets/_ghost/WidgetProps").event[];
-        style: import("../components/Style").styleProps | import("../components/Style").default<Record<string, any>>;
+        style: import("../components/Style").default<Record<string, any>> | import("../components/Style").styleProps;
         padding: string;
         margin: string;
         name: string;

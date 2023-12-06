@@ -1,17 +1,17 @@
 {
   "name": "rayous",
-  "version": "2.5.1",
+  "version": "2.5.3",
   "author": "makano",
   "description": "A mini router X ui kit with ts",
-  "main": "./client/index.ts",
+  "main": "./client/index",
   "exports": {
-    ".": "./client/index.ts",
+    ".": "./client/index",
     "./client": "./client",
-    "./react": "./react/index.ts",
+    "./react": "./react/index",
     "./react/wrapper": "./react/wrapper.ts",
-    "./extra": "./client/extra.ts",
-    "./html": "./client/html.ts",
-    "./svg": "./client/svg.ts",
+    "./extra": "./client/extra",
+    "./html": "./client/html",
+    "./svg": "./client/svg",
     "./server": "./server",
 
     "./bundle/.": "./index.js",
@@ -30,6 +30,7 @@
     "extra/",
     "svg/",
     "types/",
+    "bundle/",
     "index.d.ts",
     "index.js"
   ],
