@@ -1,5 +1,5 @@
 export * from "./client/index"
-export * as RayousExtra from "./extra/index"
+export * from "./extra/index"
+export * from "./react/index"
 export * as RayousWebkit from "./html/index"
 export * as RayousSVG from "./svg/index"
-export * from "./react/index"

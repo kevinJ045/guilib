@@ -14318,124 +14318,6 @@ class Grid extends ListBuilder_default {
 }
 var Grid_default = Grid;
 // extra/index.js
-var exports_extra = {};
-__export(exports_extra, {
-  voca: () => {
-    {
-      return voca_default2;
-    }
-  },
-  uiwidget: () => {
-    {
-      return uiwidget2;
-    }
-  },
-  typeref: () => {
-    {
-      return typeref2;
-    }
-  },
-  ref: () => {
-    {
-      return ref2;
-    }
-  },
-  options: () => {
-    {
-      return options33;
-    }
-  },
-  onComponent: () => {
-    {
-      return onComponent2;
-    }
-  },
-  mergeOptions: () => {
-    {
-      return mergeOptions2;
-    }
-  },
-  getComponentExports: () => {
-    {
-      return getComponentExports2;
-    }
-  },
-  componentEvents: () => {
-    {
-      return componentEvents2;
-    }
-  },
-  buildComponent: () => {
-    {
-      return buildComponent2;
-    }
-  },
-  asyncComponent: () => {
-    {
-      return asyncComponent2;
-    }
-  },
-  anime: () => {
-    {
-      return anime_default2;
-    }
-  },
-  WidgetEventTarget: () => {
-    {
-      return WidgetEventTarget2;
-    }
-  },
-  TableController: () => {
-    {
-      return TableController2;
-    }
-  },
-  Style: () => {
-    {
-      return Style_default2;
-    }
-  },
-  SelectController: () => {
-    {
-      return SelectController2;
-    }
-  },
-  Ref: () => {
-    {
-      return Ref2;
-    }
-  },
-  ListBuilder: () => {
-    {
-      return ListBuilder_default2;
-    }
-  },
-  EntryController: () => {
-    {
-      return EntryController2;
-    }
-  },
-  Controller: () => {
-    {
-      return Controller_default2;
-    }
-  },
-  ComponentStyles: () => {
-    {
-      return ComponentStyles2;
-    }
-  },
-  CheckboxController: () => {
-    {
-      return CheckboxController2;
-    }
-  },
-  ArrayController: () => {
-    {
-      return ArrayController2;
-    }
-  }
-});
 var mergeOptions2 = function(defaults4, options33) {
   return _merge2(defaults4, options33);
 };
@@ -27630,6 +27512,40 @@ class Ref2 {
       this.value = value;
   }
 }
+// client/widgets/react/jsx.ts
+function createWidgetElement(tag, props = {}, ...children) {
+  let element;
+  if (typeof tag == "string") {
+    element = document.createElement(tag);
+    if (props)
+      for (const [key, value] of Object.entries(props)) {
+        element.setAttribute(key, value);
+      }
+    for (const child2 of children) {
+      if (typeof child2 === "string") {
+        element.appendChild(document.createTextNode(child2));
+      } else if (child2 instanceof Widget_default) {
+        element.appendChild(findEl(child2.id).at(0));
+      } else {
+        element.appendChild(child2);
+      }
+    }
+  } else {
+    if (!props)
+      props = {};
+    if (children.length == 1 && typeof children[0] == "string") {
+      props.text = children.pop();
+    }
+    element = new tag({
+      ...props,
+      children
+    });
+  }
+  return element;
+}
+var React = {
+  createElement: createWidgetElement
+};
 // html/index.js
 var exports_html = {};
 __export(exports_html, {
@@ -56038,69 +55954,57 @@ class SVGRect extends Widget_default4 {
     this.attr({ height });
   }
 }
-// client/widgets/react/jsx.ts
-function createWidgetElement(tag, props = {}, ...children) {
-  let element;
-  if (typeof tag == "string") {
-    element = document.createElement(tag);
-    if (props)
-      for (const [key, value] of Object.entries(props)) {
-        element.setAttribute(key, value);
-      }
-    for (const child2 of children) {
-      if (typeof child2 === "string") {
-        element.appendChild(document.createTextNode(child2));
-      } else if (child2 instanceof Widget_default) {
-        element.appendChild(findEl(child2.id).at(0));
-      } else {
-        element.appendChild(child2);
-      }
-    }
-  } else {
-    if (!props)
-      props = {};
-    if (children.length == 1 && typeof children[0] == "string") {
-      props.text = children.pop();
-    }
-    element = new tag({
-      ...props,
-      children
-    });
-  }
-  return element;
-}
-var React = {
-  createElement: createWidgetElement
-};
 export {
+  voca_default2 as voca,
+  uiwidget2 as uiwidget,
+  typeref2 as typeref,
+  ref2 as ref,
+  options33 as options,
+  onComponent2 as onComponent,
+  mergeOptions2 as mergeOptions,
+  getComponentExports2 as getComponentExports,
   createWidgetElement,
+  componentEvents2 as componentEvents,
+  buildComponent2 as buildComponent,
+  asyncComponent2 as asyncComponent,
+  anime_default2 as anime,
+  WidgetEventTarget2 as WidgetEventTarget,
   Widget_default as Widget,
   Video_default as Video,
   Text_default as Text,
   TableRow,
+  TableController2 as TableController,
   Table,
+  Style_default2 as Style,
   Span_default as Span,
   Selectbox,
   SelectableOption,
+  SelectController2 as SelectController,
   Row,
+  Ref2 as Ref,
   React,
   exports_html as RayousWebkit,
   exports_svg as RayousSVG,
-  exports_extra as RayousExtra,
   Radio_default as Radio,
   ListItem,
+  ListBuilder_default2 as ListBuilder,
   List_default as List,
   Link_default as Link,
   LayoutBuilder_default as LayoutBuilder,
   InputWrapper_default as InputWrapper,
   Image_default as Image,
   Grid_default as Grid,
+  EntryController2 as EntryController,
+  Controller_default2 as Controller,
   Container_default as Container,
+  ComponentStyles2 as ComponentStyles,
   Component,
   Column,
+  CheckboxController2 as CheckboxController,
   Checkbox_default as Checkbox,
   Center,
   Canvas_default as Canvas,
   Button_default as Button,
-  Audio_default as Audio
+  Audio_default as Audio,
+  ArrayController2 as ArrayController
 };
