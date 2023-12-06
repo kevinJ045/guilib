@@ -16,8 +16,8 @@ var __toESM = (mod, isNodeMode, target) => {
 };
 var __commonJS = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
 
-// client/components/Macy.js
-var require_Macy = __commonJS((exports, module) => {
+// node_modules/macy/dist/macy.js
+var require_macy = __commonJS((exports, module) => {
   (function(t, n) {
     typeof exports == "object" && typeof module != "undefined" ? module.exports = n() : typeof define == "function" && define.amd ? define(n) : t.Macy = n();
   })(exports, function() {
@@ -13084,9 +13084,6 @@ class Widget7 extends WidgetProps_default {
 }
 var Widget_default = Widget7;
 
-// client/extra.ts
-var Macy = __toESM(require_Macy(), 1);
-
 // client/data/Controller.ts
 class Controller {
   value;
@@ -14240,7 +14237,7 @@ class Audio extends Widget_default {
 var Audio_default = Audio;
 
 // client/widgets/containers/Grid.ts
-var Macy3 = __toESM(require_Macy(), 1);
+var import_macy = __toESM(require_macy(), 1);
 var _initGrid = function(list, state) {
   if (state[list.options.itemsStateName] && Array.isArray(state[list.options.itemsStateName])) {
     if (list.options.empty !== false)
@@ -14276,7 +14273,7 @@ class Grid extends ListBuilder_default {
     const options33 = { ...defaultGrid2(), ...selectedOptions };
     super(options33, _initGrid);
     if (options33.grid) {
-      let macy = Macy3.default({
+      let macy = import_macy.default({
         container: findEl(this.id).at(0),
         ...options33.grid
       });
