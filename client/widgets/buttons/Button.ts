@@ -1,9 +1,6 @@
-import Widget from "../main/Widget";
-import getDefaults from "../../utils/options";
+import getDefaults, { options } from "../../utils/options";
 import Text from "../main/Text";
-import Store from "../../data/Store";
-import { findEl } from "../../utils/elman";
-import Link from "../main/Link";
+import Link, { LinkOptions } from "../main/Link";
 
 const defaultButton = (more: any, link: any) => getDefaults({
 	element: { name: link ? 'a' : 'button' },
@@ -11,11 +8,13 @@ const defaultButton = (more: any, link: any) => getDefaults({
 	accepts: false,
 });
 
-class Button extends Link {
+export interface ButtonOptions extends LinkOptions {}
 
-	constructor(selectedOptions: string | Record<string, any>, otheroptions: Record<string, any> | null = null){
-		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultButton(null, otheroptions?.url || (selectedOptions as Record<string, any>)?.url));
-		super(options);
+class Button<T extends options = ButtonOptions> extends Link<T> {
+
+	constructor(selectedOptions: string | T, otheroptions: T | null = null){
+		const options = Text.resolveOptions(selectedOptions, otheroptions, defaultButton(null, otheroptions?.url || (selectedOptions as T)?.url));
+		super(options as any);
 	}
 	
 }

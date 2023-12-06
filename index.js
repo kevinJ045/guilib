@@ -13933,8 +13933,8 @@ var defaultButton = (more, link2) => getDefaults({
 
 class Button extends Link_default {
   constructor(selectedOptions, otheroptions = null) {
-    const options15 = Text_default.resolveOptions(selectedOptions, otheroptions, defaultButton(null, otheroptions?.url || selectedOptions?.url));
-    super(options15);
+    const options16 = Text_default.resolveOptions(selectedOptions, otheroptions, defaultButton(null, otheroptions?.url || selectedOptions?.url));
+    super(options16);
   }
 }
 var Button_default = Button;
@@ -13949,12 +13949,12 @@ var defaultImage = () => getDefaults({
 
 class Image extends Widget_default {
   constructor(selectedOptions, otheroptions = null) {
-    const options17 = Image.resolveOptions(selectedOptions, otheroptions, defaultImage());
-    super(options17);
-    if (options17.width)
-      this.width(options17.width);
-    if (options17.height)
-      this.height(options17.height);
+    const options18 = Image.resolveOptions(selectedOptions, otheroptions, defaultImage());
+    super(options18);
+    if (options18.width)
+      this.width(options18.width);
+    if (options18.height)
+      this.height(options18.height);
   }
   static resolveOptions(selectedOptions, otheroptions, defaults3) {
     if (typeof selectedOptions == "string" || selectedOptions instanceof Blob) {
@@ -14009,17 +14009,17 @@ var checkQuery = function(w, h, pw, ph, vw, vh, query) {
   });
   return overallResult;
 };
-var handleResize = (widget3, options20) => {
+var handleResize = (widget3, options21) => {
   if (widget3.handlingResize)
     return;
   widget3.handlingResize = true;
   const parentWidth = widget3.parent().width();
   const parentHeight = widget3.parent().height();
   widget3.emit("resize", { width: widget3.width(), height: widget3.height(), viewportWidth: window.innerWidth, viewportHeight: window.innerHeight });
-  if (options20.queries) {
+  if (options21.queries) {
     const prevChildren = Array.from(widget3.children()).map((child2) => findEl(child2.id));
     prevChildren.forEach((child2) => child2.remove());
-    const matchedQuery = Object.entries(options20.queries).find(([query, builderFn]) => {
+    const matchedQuery = Object.entries(options21.queries).find(([query, builderFn]) => {
       return checkQuery(widget3.width(), widget3.height(), parentWidth, parentHeight, window.innerWidth, window.innerHeight, query);
     });
     if (matchedQuery) {
@@ -14038,11 +14038,11 @@ var handleResize = (widget3, options20) => {
 
 class LayoutBuilder extends Widget_default {
   constructor(selectedOptions) {
-    const options20 = {
+    const options21 = {
       ...getDefaults({ element: { name: "div" }, class: "layout-builder" }),
       ...selectedOptions
     };
-    super(options20);
+    super(options21);
   }
   _onMount(parent) {
     super._onMount(parent);
@@ -14056,8 +14056,8 @@ var LayoutBuilder_default = LayoutBuilder;
 var defaults3 = getDefaults({ element: { name: "input" }, class: "radio", attr: { type: "radio" } });
 
 class Radio extends Checkbox_default {
-  constructor(options21) {
-    super({ ...defaults3, ...options21 });
+  constructor(options22) {
+    super({ ...defaults3, ...options22 });
   }
 }
 var Radio_default = Radio;
@@ -14073,7 +14073,7 @@ var Container_default = Container;
 // client/widgets/containers/DirectedContainer.ts
 class DirectedWidget extends Widget_default {
   constructor(selectedOptions, type5) {
-    const options25 = { ...getDefaults({
+    const options26 = { ...getDefaults({
       element: { name: "div" },
       style: {
         display: "flex",
@@ -14081,12 +14081,12 @@ class DirectedWidget extends Widget_default {
         flexDirection: type5
       }
     }), ...selectedOptions, _setters: ["gap", "crossAxisAlignment", "mainAxisAlignment", "wrap"] };
-    super(options25);
-    if (options25.height) {
-      this.height(options25.height);
+    super(options26);
+    if (options26.height) {
+      this.height(options26.height);
     }
-    if (options25.width) {
-      this.width(options25.width);
+    if (options26.width) {
+      this.width(options26.width);
     }
   }
   set crossAxisAlignment(value) {
@@ -14143,12 +14143,12 @@ var defaultVideo = () => getDefaults({
 
 class Video extends Widget_default {
   constructor(selectedOptions, otheroptions = null) {
-    const options29 = Video.resolveOptions(selectedOptions, otheroptions, defaultVideo());
-    super(options29);
-    if (options29.width)
-      this.width(options29.width);
-    if (options29.height)
-      this.height(options29.height);
+    const options30 = Video.resolveOptions(selectedOptions, otheroptions, defaultVideo());
+    super(options30);
+    if (options30.width)
+      this.width(options30.width);
+    if (options30.height)
+      this.height(options30.height);
   }
   static resolveOptions(selectedOptions, otheroptions, defaults4) {
     if (typeof selectedOptions === "string") {
@@ -14201,8 +14201,8 @@ var defaultAudio = () => getDefaults({
 
 class Audio extends Widget_default {
   constructor(selectedOptions, otheroptions = null) {
-    const options31 = Audio.resolveOptions(selectedOptions, otheroptions, defaultAudio());
-    super(options31);
+    const options32 = Audio.resolveOptions(selectedOptions, otheroptions, defaultAudio());
+    super(options32);
   }
   static resolveOptions(selectedOptions, otheroptions, defaults4) {
     if (typeof selectedOptions === "string") {
@@ -14279,17 +14279,17 @@ var defaultGrid2 = () => getDefaults({
 
 class Grid extends ListBuilder_default {
   constructor(selectedOptions) {
-    const options33 = { ...defaultGrid2(), ...selectedOptions };
-    super(options33, _initGrid);
-    if (options33.grid) {
+    const options34 = { ...defaultGrid2(), ...selectedOptions };
+    super(options34, _initGrid);
+    if (options34.grid) {
       let macy = import_macy.default({
         container: findEl(this.id).at(0),
-        ...options33.grid
+        ...options34.grid
       });
       registerElement(macy, this.id + "-grid");
     }
-    if (options33.gridClass)
-      findEl(this.id).addClass(options33.gridClass);
+    if (options34.gridClass)
+      findEl(this.id).addClass(options34.gridClass);
   }
   gridClass(gridClass, gridReplacer) {
     let r = (gridReplacer ? gridReplacer + "-" : "") + "grid-cols-([0-9]+)";
@@ -14300,8 +14300,8 @@ class Grid extends ListBuilder_default {
     }
     return !gridClass ? findEl(this.id).attr("class").match(new RegExp(r))?.[1] : this;
   }
-  _onUpdate(options33) {
-    if (options33.grid && findEl(this.id + "-grid")) {
+  _onUpdate(options34) {
+    if (options34.grid && findEl(this.id + "-grid")) {
       findEl(this.id + "-grid").reInit();
     }
   }
@@ -14318,8 +14318,8 @@ class Grid extends ListBuilder_default {
 }
 var Grid_default = Grid;
 // extra/index.js
-var mergeOptions2 = function(defaults4, options33) {
-  return _merge2(defaults4, options33);
+var mergeOptions2 = function(defaults4, options34) {
+  return _merge2(defaults4, options34);
 };
 var getDefaults2 = function(opts) {
   let defaults4 = {
@@ -15440,9 +15440,9 @@ var trim2 = function(subject, whitespace2) {
   return trimRight2(trimLeft2(subjectString, whitespaceString), whitespaceString);
 };
 var wordWrap2 = function(subject) {
-  var options33 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var options34 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var subjectString = coerceToString2(subject);
-  var _determineOptions = determineOptions2(options33), width = _determineOptions.width, newLine = _determineOptions.newLine, indent = _determineOptions.indent, cut = _determineOptions.cut;
+  var _determineOptions = determineOptions2(options34), width = _determineOptions.width, newLine = _determineOptions.newLine, indent = _determineOptions.indent, cut = _determineOptions.cut;
   if (subjectString === "" || width <= 0) {
     return indent;
   }
@@ -15480,12 +15480,12 @@ var wordWrap2 = function(subject) {
   }
   return wrappedLine;
 };
-var determineOptions2 = function(options33) {
+var determineOptions2 = function(options34) {
   return {
-    width: coerceToNumber2(options33[OPTION_WIDTH2], 75),
-    newLine: coerceToString2(options33[OPTION_NEW_LINE2], "\n"),
-    indent: coerceToString2(options33[OPTION_INDENT2], ""),
-    cut: coerceToBoolean2(options33[OPTION_CUT2], false)
+    width: coerceToNumber2(options34[OPTION_WIDTH2], 75),
+    newLine: coerceToString2(options34[OPTION_NEW_LINE2], "\n"),
+    indent: coerceToString2(options34[OPTION_INDENT2], ""),
+    cut: coerceToBoolean2(options34[OPTION_CUT2], false)
   };
 };
 var endsWith2 = function(subject, end, position) {
@@ -16197,36 +16197,36 @@ var generateRandomID2 = function(length = 12) {
   return elementList2[randomID] ? generateRandomID2(length) : randomID;
 };
 var id_default2 = generateRandomID2;
-var _merge2 = function(defaults4, options33) {
+var _merge2 = function(defaults4, options34) {
   let o = { ...defaults4 };
-  for (let i in options33) {
+  for (let i in options34) {
     if (o[i]) {
-      if (typeof o[i] == typeof options33[i]) {
+      if (typeof o[i] == typeof options34[i]) {
         if (typeof o[i] == "object") {
           if (Array.isArray(o[i])) {
             if (mergableOptions2.includes(i))
-              o[i].push(...options33[i]);
+              o[i].push(...options34[i]);
             else
-              o[i] = options33[i];
+              o[i] = options34[i];
           } else {
-            mergeOptions2(o[i], options33[i]);
+            mergeOptions2(o[i], options34[i]);
           }
         } else if (mergableOptions2.includes(i)) {
-          o[i] += (mergeSeparator2[i] || "") + options33[i];
+          o[i] += (mergeSeparator2[i] || "") + options34[i];
         } else {
-          o[i] = options33[i];
+          o[i] = options34[i];
         }
       } else {
-        o[i] = options33[i];
+        o[i] = options34[i];
       }
     } else {
-      o[i] = options33[i];
+      o[i] = options34[i];
     }
   }
   return o;
 };
 
-class options33 {
+class options34 {
   id;
   animation;
   element = {};
@@ -17713,7 +17713,7 @@ var _inheritStore2 = function(store, parentStore) {
   }
 };
 
-class Store5 extends EventTarget {
+class Store5 extends WidgetEventTarget2 {
   stores = {
     state: {}
   };
@@ -17725,7 +17725,7 @@ class Store5 extends EventTarget {
     if (!this.stores[store])
       this.stores[store] = {};
     this.stores[store][key] = value;
-    this.dispatchEvent(new Event("change"));
+    this.emit("change");
   }
   get(key, store = "state") {
     return this.stores[store][key];
@@ -17745,7 +17745,7 @@ class Store5 extends EventTarget {
     return this.stores;
   }
   inherit(store) {
-    store.addEventListener("change", () => {
+    store.on("change", () => {
       _inheritStore2(this, store);
     });
     _inheritStore2(this, store);
@@ -18929,7 +18929,7 @@ var _init2 = function(widget22, options62) {
     });
     element.at(0).GUIWIDGET = widget22;
     registerElement2(element, widget22.id);
-    widget22.store.addEventListener("change", () => {
+    widget22.store.on("change", () => {
       widget22.emit("state:change", widget22.store);
     });
   }
@@ -27890,8 +27890,8 @@ __export(exports_html, {
     }
   }
 });
-var mergeOptions3 = function(defaults5, options34) {
-  return _merge3(defaults5, options34);
+var mergeOptions3 = function(defaults5, options35) {
+  return _merge3(defaults5, options35);
 };
 var getDefaults3 = function(opts) {
   let defaults5 = {
@@ -27932,19 +27932,19 @@ var getDefaults3 = function(opts) {
 var createWidgetModel3 = function(model, _options, widget3 = Widget_default3) {
   const classGenerated = class extends widget3 {
     options = {};
-    constructor(options34 = _options) {
+    constructor(options35 = _options) {
       let wo = {};
       if (model.widgetOptions) {
         for (let i in model.widgetOptions)
-          wo[i] = resolveValue3(model.widgetOptions[i], { type: "list", value: options34 }).value;
+          wo[i] = resolveValue3(model.widgetOptions[i], { type: "list", value: options35 }).value;
       }
       const config = mergeOptions3({
         ...wo,
         element: { name: getSelectorContent3(model.selector).element },
         class: getSelectorContent3(model.selector).classes,
         children: model.children ? model.children.map(modelToWidget3) : [],
-        _setters: Object.keys(options34)
-      }, options34);
+        _setters: Object.keys(options35)
+      }, options35);
       if (getSelectorContent3(model.selector).id)
         config.id = getSelectorContent3(model.selector).id;
       super(config);
@@ -28062,30 +28062,30 @@ var generateRandomID3 = function(length = 12) {
   return elementList3[randomID] ? generateRandomID3(length) : randomID;
 };
 var id_default3 = generateRandomID3;
-var _merge3 = function(defaults5, options34) {
+var _merge3 = function(defaults5, options35) {
   let o = { ...defaults5 };
-  for (let i in options34) {
+  for (let i in options35) {
     if (o[i]) {
-      if (typeof o[i] == typeof options34[i]) {
+      if (typeof o[i] == typeof options35[i]) {
         if (typeof o[i] == "object") {
           if (Array.isArray(o[i])) {
             if (mergableOptions3.includes(i))
-              o[i].push(...options34[i]);
+              o[i].push(...options35[i]);
             else
-              o[i] = options34[i];
+              o[i] = options35[i];
           } else {
-            mergeOptions3(o[i], options34[i]);
+            mergeOptions3(o[i], options35[i]);
           }
         } else if (mergableOptions3.includes(i)) {
-          o[i] += (mergeSeparator3[i] || "") + options34[i];
+          o[i] += (mergeSeparator3[i] || "") + options35[i];
         } else {
-          o[i] = options34[i];
+          o[i] = options35[i];
         }
       } else {
-        o[i] = options34[i];
+        o[i] = options35[i];
       }
     } else {
-      o[i] = options34[i];
+      o[i] = options35[i];
     }
   }
   return o;
@@ -30436,9 +30436,9 @@ var trim3 = function(subject, whitespace3) {
   return trimRight3(trimLeft3(subjectString, whitespaceString), whitespaceString);
 };
 var wordWrap3 = function(subject) {
-  var options34 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var options35 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var subjectString = coerceToString3(subject);
-  var _determineOptions = determineOptions3(options34), width = _determineOptions.width, newLine = _determineOptions.newLine, indent = _determineOptions.indent, cut = _determineOptions.cut;
+  var _determineOptions = determineOptions3(options35), width = _determineOptions.width, newLine = _determineOptions.newLine, indent = _determineOptions.indent, cut = _determineOptions.cut;
   if (subjectString === "" || width <= 0) {
     return indent;
   }
@@ -30476,12 +30476,12 @@ var wordWrap3 = function(subject) {
   }
   return wrappedLine;
 };
-var determineOptions3 = function(options34) {
+var determineOptions3 = function(options35) {
   return {
-    width: coerceToNumber3(options34[OPTION_WIDTH3], 75),
-    newLine: coerceToString3(options34[OPTION_NEW_LINE3], "\n"),
-    indent: coerceToString3(options34[OPTION_INDENT3], ""),
-    cut: coerceToBoolean3(options34[OPTION_CUT3], false)
+    width: coerceToNumber3(options35[OPTION_WIDTH3], 75),
+    newLine: coerceToString3(options35[OPTION_NEW_LINE3], "\n"),
+    indent: coerceToString3(options35[OPTION_INDENT3], ""),
+    cut: coerceToBoolean3(options35[OPTION_CUT3], false)
   };
 };
 var endsWith3 = function(subject, end, position) {
@@ -39294,7 +39294,7 @@ var _inheritStore3 = function(store, parentStore) {
   }
 };
 
-class Store6 extends EventTarget {
+class Store6 extends WidgetEventTarget3 {
   stores = {
     state: {}
   };
@@ -39306,7 +39306,7 @@ class Store6 extends EventTarget {
     if (!this.stores[store])
       this.stores[store] = {};
     this.stores[store][key] = value;
-    this.dispatchEvent(new Event("change"));
+    this.emit("change");
   }
   get(key, store = "state") {
     return this.stores[store][key];
@@ -39326,7 +39326,7 @@ class Store6 extends EventTarget {
     return this.stores;
   }
   inherit(store) {
-    store.addEventListener("change", () => {
+    store.on("change", () => {
       _inheritStore3(this, store);
     });
     _inheritStore3(this, store);
@@ -39757,9 +39757,9 @@ class WidgetProps23 {
   set name(value) {
     findEl3(this.id).attr({ name: value });
   }
-  setOptions(options34) {
+  setOptions(options35) {
   }
-  _optionChange(options34) {
+  _optionChange(options35) {
   }
   addHTMLElement(child2, subchild) {
     let hadGUI = child2.GUIWIDGET;
@@ -40076,21 +40076,21 @@ class WidgetProps23 {
     }
   }
   clone(selectedOptions = {}) {
-    let options34 = { cloneChildren: true, cloneEvents: false, ...selectedOptions };
+    let options35 = { cloneChildren: true, cloneEvents: false, ...selectedOptions };
     let el = findEl3(this.id);
     let cloned = el.clone(true, true);
     let events2 = {};
-    if (options34.cloneEvents) {
+    if (options35.cloneEvents) {
       this.__events__.forEach((evt) => {
         events2[evt.event] = evt.callback;
       });
     }
-    let opts = { ...this.options, children: [], ...options34 };
+    let opts = { ...this.options, children: [], ...options35 };
     if (!Array.isArray(opts.children))
       opts.children = [];
-    let children = options34.cloneChildren == "options" ? this.options.children : this.children();
-    if (children && options34.cloneChildren) {
-      opts.children = children.map((item) => item.clone({ cloneChildren: options34.cloneChildren, cloneEvents: options34.cloneEvents })).concat(opts.children);
+    let children = options35.cloneChildren == "options" ? this.options.children : this.children();
+    if (children && options35.cloneChildren) {
+      opts.children = children.map((item) => item.clone({ cloneChildren: options35.cloneChildren, cloneEvents: options35.cloneEvents })).concat(opts.children);
     }
     return new (this.constructor || Widget_default3)({
       element: { raw: cloned[0] },
@@ -40510,7 +40510,7 @@ var _init3 = function(widget22, options52) {
     });
     element.at(0).GUIWIDGET = widget22;
     registerElement3(element, widget22.id);
-    widget22.store.addEventListener("change", () => {
+    widget22.store.on("change", () => {
       widget22.emit("state:change", widget22.store);
     });
   }
@@ -43088,8 +43088,8 @@ __export(exports_svg, {
     }
   }
 });
-var mergeOptions4 = function(defaults6, options34) {
-  return _merge4(defaults6, options34);
+var mergeOptions4 = function(defaults6, options35) {
+  return _merge4(defaults6, options35);
 };
 var getDefaults4 = function(opts) {
   let defaults6 = {
@@ -43130,19 +43130,19 @@ var getDefaults4 = function(opts) {
 var createWidgetModel4 = function(model, _options, widget3 = Widget_default4) {
   const classGenerated = class extends widget3 {
     options = {};
-    constructor(options34 = _options) {
+    constructor(options35 = _options) {
       let wo = {};
       if (model.widgetOptions) {
         for (let i in model.widgetOptions)
-          wo[i] = resolveValue4(model.widgetOptions[i], { type: "list", value: options34 }).value;
+          wo[i] = resolveValue4(model.widgetOptions[i], { type: "list", value: options35 }).value;
       }
       const config = mergeOptions4({
         ...wo,
         element: { name: getSelectorContent4(model.selector).element },
         class: getSelectorContent4(model.selector).classes,
         children: model.children ? model.children.map(modelToWidget4) : [],
-        _setters: Object.keys(options34)
-      }, options34);
+        _setters: Object.keys(options35)
+      }, options35);
       if (getSelectorContent4(model.selector).id)
         config.id = getSelectorContent4(model.selector).id;
       super(config);
@@ -43240,30 +43240,30 @@ var siblings4 = function(element) {
 var elementList4 = {};
 var specificTypes4 = "large|transparent|outline".split("|");
 var typedElements4 = "button|input".split("|");
-var _merge4 = function(defaults6, options34) {
+var _merge4 = function(defaults6, options35) {
   let o = { ...defaults6 };
-  for (let i in options34) {
+  for (let i in options35) {
     if (o[i]) {
-      if (typeof o[i] == typeof options34[i]) {
+      if (typeof o[i] == typeof options35[i]) {
         if (typeof o[i] == "object") {
           if (Array.isArray(o[i])) {
             if (mergableOptions4.includes(i))
-              o[i].push(...options34[i]);
+              o[i].push(...options35[i]);
             else
-              o[i] = options34[i];
+              o[i] = options35[i];
           } else {
-            mergeOptions4(o[i], options34[i]);
+            mergeOptions4(o[i], options35[i]);
           }
         } else if (mergableOptions4.includes(i)) {
-          o[i] += (mergeSeparator4[i] || "") + options34[i];
+          o[i] += (mergeSeparator4[i] || "") + options35[i];
         } else {
-          o[i] = options34[i];
+          o[i] = options35[i];
         }
       } else {
-        o[i] = options34[i];
+        o[i] = options35[i];
       }
     } else {
-      o[i] = options34[i];
+      o[i] = options35[i];
     }
   }
   return o;
@@ -45634,9 +45634,9 @@ var trim4 = function(subject, whitespace4) {
   return trimRight4(trimLeft4(subjectString, whitespaceString), whitespaceString);
 };
 var wordWrap4 = function(subject) {
-  var options34 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var options35 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var subjectString = coerceToString4(subject);
-  var _determineOptions = determineOptions4(options34), width = _determineOptions.width, newLine = _determineOptions.newLine, indent = _determineOptions.indent, cut = _determineOptions.cut;
+  var _determineOptions = determineOptions4(options35), width = _determineOptions.width, newLine = _determineOptions.newLine, indent = _determineOptions.indent, cut = _determineOptions.cut;
   if (subjectString === "" || width <= 0) {
     return indent;
   }
@@ -45674,12 +45674,12 @@ var wordWrap4 = function(subject) {
   }
   return wrappedLine;
 };
-var determineOptions4 = function(options34) {
+var determineOptions4 = function(options35) {
   return {
-    width: coerceToNumber4(options34[OPTION_WIDTH4], 75),
-    newLine: coerceToString4(options34[OPTION_NEW_LINE4], "\n"),
-    indent: coerceToString4(options34[OPTION_INDENT4], ""),
-    cut: coerceToBoolean4(options34[OPTION_CUT4], false)
+    width: coerceToNumber4(options35[OPTION_WIDTH4], 75),
+    newLine: coerceToString4(options35[OPTION_NEW_LINE4], "\n"),
+    indent: coerceToString4(options35[OPTION_INDENT4], ""),
+    cut: coerceToBoolean4(options35[OPTION_CUT4], false)
   };
 };
 var endsWith4 = function(subject, end, position) {
@@ -54492,7 +54492,7 @@ var _inheritStore4 = function(store, parentStore) {
   }
 };
 
-class Store7 extends EventTarget {
+class Store7 extends WidgetEventTarget4 {
   stores = {
     state: {}
   };
@@ -54504,7 +54504,7 @@ class Store7 extends EventTarget {
     if (!this.stores[store])
       this.stores[store] = {};
     this.stores[store][key] = value;
-    this.dispatchEvent(new Event("change"));
+    this.emit("change");
   }
   get(key, store = "state") {
     return this.stores[store][key];
@@ -54524,7 +54524,7 @@ class Store7 extends EventTarget {
     return this.stores;
   }
   inherit(store) {
-    store.addEventListener("change", () => {
+    store.on("change", () => {
       _inheritStore4(this, store);
     });
     _inheritStore4(this, store);
@@ -54955,9 +54955,9 @@ class WidgetProps24 {
   set name(value) {
     findEl4(this.id).attr({ name: value });
   }
-  setOptions(options34) {
+  setOptions(options35) {
   }
-  _optionChange(options34) {
+  _optionChange(options35) {
   }
   addHTMLElement(child2, subchild) {
     let hadGUI = child2.GUIWIDGET;
@@ -55274,21 +55274,21 @@ class WidgetProps24 {
     }
   }
   clone(selectedOptions = {}) {
-    let options34 = { cloneChildren: true, cloneEvents: false, ...selectedOptions };
+    let options35 = { cloneChildren: true, cloneEvents: false, ...selectedOptions };
     let el = findEl4(this.id);
     let cloned = el.clone(true, true);
     let events2 = {};
-    if (options34.cloneEvents) {
+    if (options35.cloneEvents) {
       this.__events__.forEach((evt) => {
         events2[evt.event] = evt.callback;
       });
     }
-    let opts = { ...this.options, children: [], ...options34 };
+    let opts = { ...this.options, children: [], ...options35 };
     if (!Array.isArray(opts.children))
       opts.children = [];
-    let children = options34.cloneChildren == "options" ? this.options.children : this.children();
-    if (children && options34.cloneChildren) {
-      opts.children = children.map((item) => item.clone({ cloneChildren: options34.cloneChildren, cloneEvents: options34.cloneEvents })).concat(opts.children);
+    let children = options35.cloneChildren == "options" ? this.options.children : this.children();
+    if (children && options35.cloneChildren) {
+      opts.children = children.map((item) => item.clone({ cloneChildren: options35.cloneChildren, cloneEvents: options35.cloneEvents })).concat(opts.children);
     }
     return new (this.constructor || Widget_default4)({
       element: { raw: cloned[0] },
@@ -55708,7 +55708,7 @@ var _init4 = function(widget22, options52) {
     });
     element.at(0).GUIWIDGET = widget22;
     registerElement4(element, widget22.id);
-    widget22.store.addEventListener("change", () => {
+    widget22.store.on("change", () => {
       widget22.emit("state:change", widget22.store);
     });
   }
@@ -55959,7 +55959,7 @@ export {
   uiwidget2 as uiwidget,
   typeref2 as typeref,
   ref2 as ref,
-  options33 as options,
+  options34 as options,
   onComponent2 as onComponent,
   mergeOptions2 as mergeOptions,
   getComponentExports2 as getComponentExports,

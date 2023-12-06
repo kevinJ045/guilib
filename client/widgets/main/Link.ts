@@ -42,7 +42,7 @@ export interface LinkOptions extends options {
 
 class Link<T extends LinkOptions = LinkOptions> extends Text<T> {
 
-	constructor(selectedOptions: string | LinkOptions, otheroptions: LinkOptions | null = null){
+	constructor(selectedOptions: string | T, otheroptions: T | null = null){
 		const options = Text.resolveOptions(selectedOptions, otheroptions, {...defaultLink()}) as options;
 		super(options);
 	}
