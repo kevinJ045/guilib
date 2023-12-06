@@ -1,3 +1,4 @@
+import { WidgetEventTarget } from "../utils/eventtarget";
 
 function _inheritStore(store: Store, parentStore: Store){
 	let stores = parentStore.getStores();
@@ -6,7 +7,7 @@ function _inheritStore(store: Store, parentStore: Store){
 	}
 }
 
-class Store extends EventTarget {
+class Store extends WidgetEventTarget<any, any> {
 
 	stores: Record<string, Record<string, any>> = {
 		state: {}
@@ -20,7 +21,7 @@ class Store extends EventTarget {
 	set(key: string, value: any, store = 'state'){
 		if(!this.stores[store]) this.stores[store] = {};
 		this.stores[store][key] = value;
-		this.dispatchEvent(new Event('change'));
+		this.emit('change');
 	}
 
 	get(key: string, store: string = 'state'){
@@ -44,7 +45,7 @@ class Store extends EventTarget {
 	}
 
 	inherit(store: Store){
-		store.addEventListener('change', () => {
+		store.on('change', () => {
 			_inheritStore(this, store);
 		});
 		_inheritStore(this, store);

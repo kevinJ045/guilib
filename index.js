@@ -11709,7 +11709,7 @@ var _inheritStore = function(store, parentStore) {
   }
 };
 
-class Store extends EventTarget {
+class Store extends WidgetEventTarget {
   stores = {
     state: {}
   };
@@ -11721,7 +11721,7 @@ class Store extends EventTarget {
     if (!this.stores[store])
       this.stores[store] = {};
     this.stores[store][key] = value;
-    this.dispatchEvent(new Event("change"));
+    this.emit("change");
   }
   get(key, store = "state") {
     return this.stores[store][key];
@@ -11741,7 +11741,7 @@ class Store extends EventTarget {
     return this.stores;
   }
   inherit(store) {
-    store.addEventListener("change", () => {
+    store.on("change", () => {
       _inheritStore(this, store);
     });
     _inheritStore(this, store);
@@ -12985,7 +12985,7 @@ var _init = function(widget2, options5) {
     });
     element.at(0).GUIWIDGET = widget2;
     registerElement(element, widget2.id);
-    widget2.store.addEventListener("change", () => {
+    widget2.store.on("change", () => {
       widget2.emit("state:change", widget2.store);
     });
   }

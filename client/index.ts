@@ -19,7 +19,6 @@ import Audio from "./widgets/media/Audio";
 import Grid from "./widgets/containers/Grid";
 import { Table, TableRow } from "./widgets/list/Table";
 
-
 export {
 	Component,
 	Text,

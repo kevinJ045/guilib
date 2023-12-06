@@ -93,7 +93,7 @@ function _init(widget: widgetF, options: options){
 
 
 		
-		widget.store.addEventListener('change', () => {
+		widget.store.on('change', () => {
 			widget.emit('state:change', widget.store);
 		});
 
