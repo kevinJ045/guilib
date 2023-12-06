@@ -10,3 +10,5 @@ buildpath svg/
 buildpath extra/
 buildpath react/
 buildpath html/
+
+bun run ./gendist.ts

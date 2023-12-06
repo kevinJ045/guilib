@@ -1,0 +1,17 @@
+import WidgetProps, { HTMLGUIWidget } from "../widgets/_ghost/WidgetProps";
+import Dom from "./dom";
+declare const elementList: Record<string, any>;
+type attr = Record<string, number | string | boolean>;
+type attrNullable = Record<string, number | string | boolean | null>;
+type attrOptions = Record<string, WidgetProps | HTMLGUIWidget | number | string | boolean | null>;
+declare function registerElement(element: any, id: String): void;
+declare function findEl(id: string): Dom | any;
+declare function createElement(element: string, classes: string, attr: attr): HTMLElement;
+declare function setAttributeMap(element: HTMLElement, attr: attr): void;
+declare function setObjectProps(element: HTMLElement, attr: attr): void;
+declare function setClasses(element: HTMLElement, classes: string, type?: 'add' | 'remove' | 'toggle' | 'contains'): void;
+declare function setCss(element: HTMLElement, values: string | Record<string, any>, value?: string | number | null): string;
+declare function emptyElement(element: HTMLElement): void;
+declare function siblings(element: HTMLElement): HTMLElement[];
+export { registerElement, findEl, elementList as GUIDOMTREE, createElement, setAttributeMap, setObjectProps, setClasses, setCss, emptyElement, siblings };
+export type { attr, attrNullable, attrOptions };

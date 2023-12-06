@@ -13478,13 +13478,13 @@ function onComponent(target, propertyKey) {
     key = propertyKey;
   let eventKey = getEventKeyByName(key);
   if (eventKey && !target.events) {
-    let afterConstruct = function() {
+    let prev = target.afterConstruct;
+    const afterConstruct = function() {
       let that = this;
       that.on(key, target[key]);
       if (typeof prev == "function")
         prev.call(that);
     };
-    let prev = target.afterConstruct;
     target.afterConstruct = afterConstruct;
   }
 }

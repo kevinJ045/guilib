@@ -17,5 +17,6 @@ typeof define === 'function' && define.amd ? define(factory) :
 })));
 	`
 	);
+	console.log('Built dist');
 });
 

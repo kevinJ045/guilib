@@ -208,7 +208,7 @@ export function onComponent(target: any, propertyKey: string | Record<string, an
 	let eventKey = getEventKeyByName(key);
 	if(eventKey && !target.events){
 		let prev = target.afterConstruct;
-		function afterConstruct(){
+		const afterConstruct = function(){
 			// @ts-ignore
 			let that = this;
 			that.on(key, target[key]);

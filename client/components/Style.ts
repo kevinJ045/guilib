@@ -9930,7 +9930,7 @@ class Style<variableMap = Record<string, any>> extends WidgetEventTarget<StyleEv
 	}
 
 	static fromElement(element: HTMLElement, name: any = null){
-		const styles = getComputedStyle(element);
+		const styles: any = getComputedStyle(element);
     const csss: Record<string, any> = {};
     for (const property of styles) {
       const value = styles.getPropertyValue(property);
