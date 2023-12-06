@@ -1,0 +1,36 @@
+<html ><head><title>Rayous Docs</title><meta name="author" content="makano"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="https://raw.githubusercontent.com/kevinJ045/guilib/main/assets/logo.png" /></head><script id="app_script" src="Browser/index.js"  onerror="let s=document.createElement('script');s.src='index.js';document.head.appendChild(s);this.remove();"></script><body ><script _type="base">(function(){// app/loading.ts
+function loading() {
+  const loading2 = document.createElement("div");
+  loading2.id = "loader-widget";
+  return loading2;
+}
+
+// tmp/loader.ts
+(function() {
+  let loaderOn = "app/loading.ts", loader, after = false;
+  if (loaderOn) {
+    try {
+      if (typeof loading == "function") {
+        loader = loading({ route: { path: "/page/Browser", params: { page: "Browser" } } });
+        if (typeof loader.to == "function") {
+          loader.to(document.body);
+        } else if (!loader instanceof HTMLElement) {
+          throw new TypeError("Loader from app/loading.ts is not a returning a function that returns a widget!");
+        } else {
+          if (loader?.removeAfterLoad)
+            after = true;
+          (document.body || document.rootElement || document).appendChild(loader);
+        }
+      } else {
+        throw new TypeError("Loader from app/loading.ts is not a returning a function that returns a widget!");
+      }
+    } catch (e) {
+      document.write(e);
+      throw e;
+    }
+  }
+  window.loader = loader;
+  window.loaderAfter = after;
+  window.loaderOn = loaderOn;
+})();
+})();</script></body></html>
