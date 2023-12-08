@@ -11412,271 +11412,6 @@ class Store extends WidgetEventTarget {
 }
 var Store_default = Store;
 
-// client/utils/dom.ts
-var doAll = (all, cb) => {
-  let response = [];
-  all.forEach((element) => {
-    let r = cb(element);
-    if (r)
-      response.push(r);
-  });
-  response = response.filter((item) => !(item instanceof Dom));
-  if (response.length) {
-    response = response.shift();
-  } else {
-    response = all;
-  }
-  return Array.isArray(response) ? all : response;
-};
-
-class Dom {
-  elements = [];
-  constructor(element, classes = null, attributes = null) {
-    if (element instanceof HTMLElement) {
-      this.elements.push(element);
-    } else {
-      let el = document.querySelectorAll(element);
-      el.forEach((el2) => this.elements.push(el2));
-    }
-    if (classes) {
-      this.addClass(classes);
-    }
-    if (attributes) {
-      this.attr(attributes);
-    }
-  }
-  at(index) {
-    return this.elements.at(index);
-  }
-  push(child) {
-    if (child instanceof Widget_default) {
-      this.elements.push(findEl(child.id));
-    } else {
-      this.elements.push(child);
-    }
-    return this;
-  }
-  unshift(child) {
-    if (child instanceof Widget_default) {
-      this.elements.unshift(findEl(child.id));
-    } else {
-      this.elements.unshift(child);
-    }
-    return this;
-  }
-  shift() {
-    return this.elements.shift();
-  }
-  pop() {
-    return this.elements.pop();
-  }
-  forEach(callback) {
-    this.elements.forEach(callback);
-    return this;
-  }
-  get length() {
-    return this.elements.length;
-  }
-  addClass(classes) {
-    return doAll(this, (el) => setClasses(el, classes, "add"));
-  }
-  removeClass(classes) {
-    return doAll(this, (el) => setClasses(el, classes, "remove"));
-  }
-  toggleClass(classes) {
-    return doAll(this, (el) => setClasses(el, classes, "toggle"));
-  }
-  hasClass(classes) {
-    return this.elements.at(0).classList.contains(classes);
-  }
-  attr(attr2) {
-    if (typeof attr2 == "object")
-      doAll(this, (el) => setAttributeMap(el, attr2));
-    return typeof attr2 == "string" ? this.elements.at(0).attributes[attr2].value : this;
-  }
-  getAttr(attr2) {
-    return this.elements.at(0).attributes[attr2].value;
-  }
-  prop(attr2) {
-    if (typeof attr2 == "object")
-      doAll(this, (el) => setObjectProps(el, attr2));
-    return typeof attr2 == "string" ? this.elements.at(0)[attr2] : this;
-  }
-  getProp(attr2) {
-    return this.elements.at(0)[attr2];
-  }
-  html(html) {
-    if (html)
-      this.elements.at(0).innerHTML = html;
-    return this.elements.at(0).innerHTML;
-  }
-  width(width = null) {
-    if (width)
-      doAll(this, (el) => el.style.width = typeof width == "number" ? width + "px" : width);
-    return width ? this : this.at(0).getBoundingClientRect().width;
-  }
-  height(height = null) {
-    if (height)
-      doAll(this, (el) => el.style.height = typeof height == "number" ? height + "px" : height);
-    return height ? this : this.at(0).getBoundingClientRect().height;
-  }
-  text(text) {
-    if (typeof text == "string")
-      this.elements.at(0).innerText = text;
-    return this.elements.at(0).innerText;
-  }
-  append(element) {
-    if (element instanceof Dom) {
-      element.forEach((element2) => this.at(0).appendChild(element2));
-    } else {
-      this.at(0).appendChild(element);
-    }
-    return this;
-  }
-  appendTo(element) {
-    return doAll(this, (el) => element.appendChild(el));
-  }
-  prepend(element) {
-    if (element instanceof Dom) {
-      element.forEach((element2) => this.at(0).insertBefore(element2, this.at(0).firstChild));
-    } else {
-      this.at(0).insertBefore(element, this.at(0).firstChild);
-    }
-    return this;
-  }
-  prependTo(element) {
-    return doAll(this, (el) => element.insertBefore(el, element.firstChild));
-  }
-  css(values, value) {
-    return doAll(this, (el) => setCss(el, values, value));
-  }
-  remove() {
-    return doAll(this, (el) => el.remove());
-  }
-  empty() {
-    return doAll(this, (el) => emptyElement(el));
-  }
-  click() {
-    return doAll(this, (el) => el.click());
-  }
-  focus() {
-    return doAll(this, (el) => el.focus());
-  }
-  children() {
-    return Dom.from(this.at(0).children.length ? this.at(0).children : []);
-  }
-  siblings() {
-    return Dom.from(siblings(this.at(0)));
-  }
-  parent() {
-    return this.at(0).parentNode ? new Dom(this.at(0).parentNode) : null;
-  }
-  closest(selector) {
-    return new Dom(this.at(0).closest(selector));
-  }
-  find(arg) {
-    if (typeof arg === "string") {
-      return Dom.from(Array.from(this.at(0).querySelectorAll(arg)));
-    } else if (typeof arg === "function") {
-      return Array.prototype.find.call(this, arg);
-    }
-    return;
-  }
-  on(event, callback) {
-    doAll(this, (el) => {
-      if (!el.domEventListeners)
-        el.domEventListeners = [];
-      el.domEventListeners.push({ event, callback });
-      el.addEventListener(event, callback);
-    });
-    return this;
-  }
-  is(selector) {
-    const element = this.elements.at(0);
-    if ("matches" in element) {
-      return element.matches(selector);
-    } else if (("msMatchesSelector" in element) && typeof element.msMatchesSelector === "function") {
-      return element.msMatchesSelector(selector);
-    } else if (("webkitMatchesSelector" in element) && typeof element.msMatchesSelector === "function") {
-      return element.webkitMatchesSelector(selector);
-    } else if (("mozMatchesSelector" in element) && typeof element.msMatchesSelector === "function") {
-      return element.mozMatchesSelector(selector);
-    } else {
-      const matches2 = document.querySelectorAll(selector);
-      return Array.from(matches2).indexOf(element) !== -1;
-    }
-  }
-  off(name, callback = null) {
-    doAll(this, (el) => {
-      if (!el.domEventListeners)
-        el.domEventListeners = [];
-      el.domEventListeners.forEach((event) => {
-        if (callback) {
-          if (event.event === name && event.callback == callback)
-            el.removeEventListener(name, callback);
-        } else {
-          if (event.event === name)
-            el.removeEventListener(name, event.callback);
-        }
-      });
-      el.domEventListeners = el.domEventListeners.filter((event) => {
-        if (callback) {
-          return event.event !== name && event.callback !== callback;
-        } else {
-          return event.event !== name;
-        }
-      });
-    });
-    return this;
-  }
-  trigger(event, data) {
-    doAll(this, (el) => {
-      el.dispatchEvent(new Event(event, data));
-    });
-    return this;
-  }
-  show() {
-    return doAll(this, (el) => {
-      el.style.display = "";
-    });
-  }
-  hide() {
-    return doAll(this, (el) => {
-      el.style.display = "none";
-    });
-  }
-  toggle() {
-    return doAll(this, (el) => {
-      el.style.display = el.style.display === "none" ? "" : "none";
-    });
-  }
-  enable() {
-    return doAll(this, (el) => {
-      if (isHTMLElement(el)) {
-        el.disabled = false;
-        el.setAttribute("disabled", "false");
-      }
-    });
-  }
-  disable() {
-    return doAll(this, (el) => {
-      if (isHTMLElement(el)) {
-        el.disabled = true;
-        el.setAttribute("disabled", "true");
-      }
-    });
-  }
-  static from(elements) {
-    let e = new Dom(Array.from(elements).shift());
-    Array.from(elements).forEach((el) => e.push(el));
-    return e;
-  }
-  static create(element, classes = "", attr2 = {}) {
-    return new Dom(createElement(element, classes, attr2));
-  }
-}
-var dom_default = Dom;
-
 // client/utils/events.ts
 var createEventData = function(e, name, widget = null) {
   return {
@@ -12533,11 +12268,11 @@ var selectorCase = function(selectors, widget, value, option) {
 };
 var typeCase = function(widget, option, valueRaw) {
   let value = determineValue(valueRaw, widget, option);
-  let type4 = determineType(value.value);
+  let type3 = determineType(value.value);
   if ("any" in option)
     selectorCase(option.any, widget, value, option);
-  if (type4 in option)
-    selectorCase(option[type4], widget, value, option);
+  if (type3 in option)
+    selectorCase(option[type3], widget, value, option);
   else if ("else" in option)
     selectorCase(option.else, widget, value, option);
 };
@@ -12618,9 +12353,9 @@ var _init = function(widget2, options5) {
     element.attr({ class: "", style: "" });
   element.addClass(options5.class);
   if (options5.position) {
-    let { type: type5, centered, top, left, right, bottom } = options5.position;
+    let { type: type4, centered, top, left, right, bottom } = options5.position;
     element.css({
-      position: isPosition(type5) ? type5 : null
+      position: isPosition(type4) ? type4 : null
     });
     if (centered) {
       element.css({
@@ -12733,7 +12468,7 @@ var setterFunctions = [
   "style"
 ];
 
-class Widget7 extends WidgetProps_default {
+class Widget6 extends WidgetProps_default {
   component;
   options = {};
   constructor(options5) {
@@ -12748,7 +12483,7 @@ class Widget7 extends WidgetProps_default {
     this._optionChange(currentOptions);
   }
   static from(child2) {
-    return new Widget7({ element: { raw: new dom_default(child2).at(0) } });
+    return new Widget6({ element: { raw: new dom_default(child2).at(0) } });
   }
   static model(model, options5 = {}) {
     return createWidgetModel(model, options5, this);
@@ -12760,13 +12495,279 @@ class Widget7 extends WidgetProps_default {
     return new this(options5);
   }
 }
-var Widget_default = Widget7;
+var Widget_default = Widget6;
+
+// client/utils/dom.ts
+var doAll = (all, cb) => {
+  let response = [];
+  all.forEach((element) => {
+    let r = cb(element);
+    if (r)
+      response.push(r);
+  });
+  response = response.filter((item) => !(item instanceof Dom));
+  if (response.length) {
+    response = response.shift();
+  } else {
+    response = all;
+  }
+  return Array.isArray(response) ? all : response;
+};
+
+class Dom {
+  elements = [];
+  constructor(element, classes = null, attributes = null) {
+    if (element instanceof HTMLElement) {
+      this.elements.push(element);
+    } else {
+      let el = document.querySelectorAll(element);
+      el.forEach((el2) => this.elements.push(el2));
+    }
+    if (classes) {
+      this.addClass(classes);
+    }
+    if (attributes) {
+      this.attr(attributes);
+    }
+  }
+  at(index) {
+    return this.elements.at(index);
+  }
+  push(child2) {
+    if (child2 instanceof Widget_default) {
+      this.elements.push(findEl(child2.id));
+    } else {
+      this.elements.push(child2);
+    }
+    return this;
+  }
+  unshift(child2) {
+    if (child2 instanceof Widget_default) {
+      this.elements.unshift(findEl(child2.id));
+    } else {
+      this.elements.unshift(child2);
+    }
+    return this;
+  }
+  shift() {
+    return this.elements.shift();
+  }
+  pop() {
+    return this.elements.pop();
+  }
+  forEach(callback) {
+    this.elements.forEach(callback);
+    return this;
+  }
+  get length() {
+    return this.elements.length;
+  }
+  addClass(classes) {
+    return doAll(this, (el) => setClasses(el, classes, "add"));
+  }
+  removeClass(classes) {
+    return doAll(this, (el) => setClasses(el, classes, "remove"));
+  }
+  toggleClass(classes) {
+    return doAll(this, (el) => setClasses(el, classes, "toggle"));
+  }
+  hasClass(classes) {
+    return this.elements.at(0).classList.contains(classes);
+  }
+  attr(attr3) {
+    if (typeof attr3 == "object")
+      doAll(this, (el) => setAttributeMap(el, attr3));
+    return typeof attr3 == "string" ? this.elements.at(0).attributes[attr3].value : this;
+  }
+  getAttr(attr3) {
+    return this.elements.at(0).attributes[attr3].value;
+  }
+  prop(attr3) {
+    if (typeof attr3 == "object")
+      doAll(this, (el) => setObjectProps(el, attr3));
+    return typeof attr3 == "string" ? this.elements.at(0)[attr3] : this;
+  }
+  getProp(attr3) {
+    return this.elements.at(0)[attr3];
+  }
+  html(html) {
+    if (html)
+      this.elements.at(0).innerHTML = html;
+    return this.elements.at(0).innerHTML;
+  }
+  width(width = null) {
+    if (width)
+      doAll(this, (el) => el.style.width = typeof width == "number" ? width + "px" : width);
+    return width ? this : this.at(0).getBoundingClientRect().width;
+  }
+  height(height = null) {
+    if (height)
+      doAll(this, (el) => el.style.height = typeof height == "number" ? height + "px" : height);
+    return height ? this : this.at(0).getBoundingClientRect().height;
+  }
+  text(text) {
+    if (typeof text == "string")
+      this.elements.at(0).innerText = text;
+    return this.elements.at(0).innerText;
+  }
+  append(element) {
+    if (element instanceof Dom) {
+      element.forEach((element2) => this.at(0).appendChild(element2));
+    } else {
+      this.at(0).appendChild(element);
+    }
+    return this;
+  }
+  appendTo(element) {
+    return doAll(this, (el) => element.appendChild(el));
+  }
+  prepend(element) {
+    if (element instanceof Dom) {
+      element.forEach((element2) => this.at(0).insertBefore(element2, this.at(0).firstChild));
+    } else {
+      this.at(0).insertBefore(element, this.at(0).firstChild);
+    }
+    return this;
+  }
+  prependTo(element) {
+    return doAll(this, (el) => element.insertBefore(el, element.firstChild));
+  }
+  css(values, value) {
+    return doAll(this, (el) => setCss(el, values, value));
+  }
+  remove() {
+    return doAll(this, (el) => el.remove());
+  }
+  empty() {
+    return doAll(this, (el) => emptyElement(el));
+  }
+  click() {
+    return doAll(this, (el) => el.click());
+  }
+  focus() {
+    return doAll(this, (el) => el.focus());
+  }
+  children() {
+    return Dom.from(this.at(0).children.length ? this.at(0).children : []);
+  }
+  siblings() {
+    return Dom.from(siblings(this.at(0)));
+  }
+  parent() {
+    return this.at(0).parentNode ? new Dom(this.at(0).parentNode) : null;
+  }
+  closest(selector) {
+    return new Dom(this.at(0).closest(selector));
+  }
+  find(arg) {
+    if (typeof arg === "string") {
+      return Dom.from(Array.from(this.at(0).querySelectorAll(arg)));
+    } else if (typeof arg === "function") {
+      return Array.prototype.find.call(this, arg);
+    }
+    return;
+  }
+  on(event, callback) {
+    doAll(this, (el) => {
+      if (!el.domEventListeners)
+        el.domEventListeners = [];
+      el.domEventListeners.push({ event, callback });
+      el.addEventListener(event, callback);
+    });
+    return this;
+  }
+  is(selector) {
+    const element = this.elements.at(0);
+    if ("matches" in element) {
+      return element.matches(selector);
+    } else if (("msMatchesSelector" in element) && typeof element.msMatchesSelector === "function") {
+      return element.msMatchesSelector(selector);
+    } else if (("webkitMatchesSelector" in element) && typeof element.msMatchesSelector === "function") {
+      return element.webkitMatchesSelector(selector);
+    } else if (("mozMatchesSelector" in element) && typeof element.msMatchesSelector === "function") {
+      return element.mozMatchesSelector(selector);
+    } else {
+      const matches2 = document.querySelectorAll(selector);
+      return Array.from(matches2).indexOf(element) !== -1;
+    }
+  }
+  off(name, callback = null) {
+    doAll(this, (el) => {
+      if (!el.domEventListeners)
+        el.domEventListeners = [];
+      el.domEventListeners.forEach((event) => {
+        if (callback) {
+          if (event.event === name && event.callback == callback)
+            el.removeEventListener(name, callback);
+        } else {
+          if (event.event === name)
+            el.removeEventListener(name, event.callback);
+        }
+      });
+      el.domEventListeners = el.domEventListeners.filter((event) => {
+        if (callback) {
+          return event.event !== name && event.callback !== callback;
+        } else {
+          return event.event !== name;
+        }
+      });
+    });
+    return this;
+  }
+  trigger(event, data) {
+    doAll(this, (el) => {
+      el.dispatchEvent(new Event(event, data));
+    });
+    return this;
+  }
+  show() {
+    return doAll(this, (el) => {
+      el.style.display = "";
+    });
+  }
+  hide() {
+    return doAll(this, (el) => {
+      el.style.display = "none";
+    });
+  }
+  toggle() {
+    return doAll(this, (el) => {
+      el.style.display = el.style.display === "none" ? "" : "none";
+    });
+  }
+  enable() {
+    return doAll(this, (el) => {
+      if (isHTMLElement(el)) {
+        el.disabled = false;
+        el.setAttribute("disabled", "false");
+      }
+    });
+  }
+  disable() {
+    return doAll(this, (el) => {
+      if (isHTMLElement(el)) {
+        el.disabled = true;
+        el.setAttribute("disabled", "true");
+      }
+    });
+  }
+  static from(elements) {
+    let e = new Dom(Array.from(elements).shift());
+    Array.from(elements).forEach((el) => e.push(el));
+    return e;
+  }
+  static create(element, classes = "", attr3 = {}) {
+    return new Dom(createElement(element, classes, attr3));
+  }
+}
+var dom_default = Dom;
 
 // client/widgets/react/jsx.ts
 function createWidgetElement(tag, props = {}, ...children) {
   let element;
   if (typeof tag == "string") {
     element = document.createElement(tag);
+    element.dom = new dom_default(element);
     if (props && props.className)
       (element.className = props.className) && delete props.className;
     if (props)

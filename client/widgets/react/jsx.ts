@@ -20,13 +20,14 @@ export const React = {
 
 export function createWidgetElement(tag: string | (new (options: options) => Widget), props: null | Record<string, any> = {}, ...children: any[]) {
 	let element;
+	// mess
 	if(typeof tag == "string"){
 		element = document.createElement(tag);
+		(element as any).dom = new Dom(element);
 		if(props && props.className) (element.className = props.className) && (delete props.className);
 		if(props) for (const [key, value] of Object.entries(props)) {
 			element.setAttribute(key, value as string);
 		}
-		// mess
 		for (const child of children) {
 			if (typeof child === 'string') {
 				element.appendChild(document.createTextNode(child));

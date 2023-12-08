@@ -27517,6 +27517,7 @@ function createWidgetElement(tag, props = {}, ...children) {
   let element;
   if (typeof tag == "string") {
     element = document.createElement(tag);
+    element.dom = new dom_default(element);
     if (props && props.className)
       (element.className = props.className) && delete props.className;
     if (props)
