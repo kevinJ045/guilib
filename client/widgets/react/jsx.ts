@@ -21,6 +21,7 @@ export function createWidgetElement(tag: string | (new (options: options) => Wid
 	let element;
 	if(typeof tag == "string"){
 		element = document.createElement(tag);
+		if(props && props.className) (element.className = props.className) && (delete props.className);
 		if(props) for (const [key, value] of Object.entries(props)) {
 			element.setAttribute(key, value as string);
 		}

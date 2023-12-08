@@ -12767,6 +12767,8 @@ function createWidgetElement(tag, props = {}, ...children) {
   let element;
   if (typeof tag == "string") {
     element = document.createElement(tag);
+    if (props && props.className)
+      (element.className = props.className) && delete props.className;
     if (props)
       for (const [key, value] of Object.entries(props)) {
         element.setAttribute(key, value);
