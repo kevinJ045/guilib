@@ -7,7 +7,7 @@ A simple form independent radio button.
 ```javascript
 constructor(options: object): extends Checkbox
 ``` 
-> Radio only extends Checkbox, and has no special options or methods.
+> Radio only extends `Checkbox`, and has no special options or methods.
 
 #### Example
 ```ts
