@@ -16254,30 +16254,18 @@ class options34 {
   events = {};
   _setters = [];
   holdDuration = 1000;
-  build = () => {
-  };
-  onClick = () => {
-  };
-  onHold = () => {
-  };
-  onContextmenu = () => {
-  };
-  onMouseEnter = () => {
-  };
-  onMouseMove = () => {
-  };
-  onMouseDown = () => {
-  };
-  onKeyDown = () => {
-  };
-  onKeyUp = () => {
-  };
-  onKey = () => {
-  };
-  onChange = () => {
-  };
-  onMount = () => {
-  };
+  build;
+  onClick;
+  onHold;
+  onContextmenu;
+  onMouseEnter;
+  onMouseMove;
+  onMouseDown;
+  onKeyDown;
+  onKeyUp;
+  onKey;
+  onChange;
+  onMount;
 }
 var mergableOptions2 = "class|type|_setters|children".split("|");
 var mergeSeparator2 = {
