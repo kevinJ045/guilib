@@ -29,9 +29,12 @@ export function createWidgetElement(tag: string | (new (options: options) => Wid
 			if (typeof child === 'string') {
 				element.appendChild(document.createTextNode(child));
 			} else if (child instanceof Widget) {
-				element.appendChild(findEl(child.id!).at(0));
+				child.to(element);
 			} else {
 				element.appendChild(child);
+				if(tag == 'svg'){
+					element.outerHTML += ' ';
+				}
 			}
 		}
 	} else {

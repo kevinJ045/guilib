@@ -27527,9 +27527,12 @@ function createWidgetElement(tag, props = {}, ...children) {
       if (typeof child2 === "string") {
         element.appendChild(document.createTextNode(child2));
       } else if (child2 instanceof Widget_default) {
-        element.appendChild(findEl(child2.id).at(0));
+        child2.to(element);
       } else {
         element.appendChild(child2);
+        if (tag == "svg") {
+          element.outerHTML += " ";
+        }
       }
     }
   } else {

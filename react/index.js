@@ -1,3 +1,14 @@
+// client/utils/type.ts
+var isPosition = function(pos) {
+  return pos == "absolute" || pos == "relative" || pos == "static" || pos == "fixed" || pos == "inherit" || pos == "sticky";
+};
+var isWidget = function(thing) {
+  return thing instanceof Widget_default;
+};
+var isHTMLElement = function(thing) {
+  return thing instanceof HTMLElement;
+};
+
 // client/utils/elman.ts
 var registerElement = function(element, id) {
   elementList[id] = element;
@@ -64,17 +75,6 @@ var siblings = function(element) {
 var elementList = {};
 var specificTypes = "large|transparent|outline".split("|");
 var typedElements = "button|input".split("|");
-
-// client/utils/type.ts
-var isPosition = function(pos) {
-  return pos == "absolute" || pos == "relative" || pos == "static" || pos == "fixed" || pos == "inherit" || pos == "sticky";
-};
-var isWidget = function(thing) {
-  return thing instanceof Widget_default;
-};
-var isHTMLElement = function(thing) {
-  return thing instanceof HTMLElement;
-};
 
 // client/utils/id.ts
 var generateRandomID = function(length = 12) {
@@ -12777,9 +12777,12 @@ function createWidgetElement(tag, props = {}, ...children) {
       if (typeof child2 === "string") {
         element.appendChild(document.createTextNode(child2));
       } else if (child2 instanceof Widget_default) {
-        element.appendChild(findEl(child2.id).at(0));
+        child2.to(element);
       } else {
         element.appendChild(child2);
+        if (tag == "svg") {
+          element.outerHTML += " ";
+        }
       }
     }
   } else {
