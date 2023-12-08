@@ -17901,6 +17901,12 @@ class Dom2 {
   empty() {
     return doAll2(this, (el) => emptyElement2(el));
   }
+  click() {
+    return doAll2(this, (el) => el.click());
+  }
+  focus() {
+    return doAll2(this, (el) => el.focus());
+  }
   children() {
     return Dom2.from(this.at(0).children.length ? this.at(0).children : []);
   }
@@ -39482,6 +39488,12 @@ class Dom3 {
   empty() {
     return doAll3(this, (el) => emptyElement3(el));
   }
+  click() {
+    return doAll3(this, (el) => el.click());
+  }
+  focus() {
+    return doAll3(this, (el) => el.focus());
+  }
   children() {
     return Dom3.from(this.at(0).children.length ? this.at(0).children : []);
   }
@@ -54679,6 +54691,12 @@ class Dom4 {
   }
   empty() {
     return doAll4(this, (el) => emptyElement4(el));
+  }
+  click() {
+    return doAll4(this, (el) => el.click());
+  }
+  focus() {
+    return doAll4(this, (el) => el.focus());
   }
   children() {
     return Dom4.from(this.at(0).children.length ? this.at(0).children : []);

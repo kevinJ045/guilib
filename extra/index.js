@@ -1730,30 +1730,18 @@ class options {
   events = {};
   _setters = [];
   holdDuration = 1000;
-  build = () => {
-  };
-  onClick = () => {
-  };
-  onHold = () => {
-  };
-  onContextmenu = () => {
-  };
-  onMouseEnter = () => {
-  };
-  onMouseMove = () => {
-  };
-  onMouseDown = () => {
-  };
-  onKeyDown = () => {
-  };
-  onKeyUp = () => {
-  };
-  onKey = () => {
-  };
-  onChange = () => {
-  };
-  onMount = () => {
-  };
+  build;
+  onClick;
+  onHold;
+  onContextmenu;
+  onMouseEnter;
+  onMouseMove;
+  onMouseDown;
+  onKeyDown;
+  onKeyUp;
+  onKey;
+  onChange;
+  onMount;
 }
 function getDefaults(opts) {
   let defaults = {
