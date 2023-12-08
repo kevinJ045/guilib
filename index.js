@@ -27540,7 +27540,7 @@ function createWidgetElement(tag, props = {}, ...children) {
         child2.dom?.trigger("mount", {});
       }
     }
-  } else {
+  } else if (typeof tag == "function" && tag.prototype instanceof Widget_default) {
     if (!props)
       props = {};
     if (children.length == 1 && typeof children[0] == "string") {
@@ -27550,6 +27550,13 @@ function createWidgetElement(tag, props = {}, ...children) {
       ...props,
       children
     });
+  } else if (typeof tag == "function") {
+    element = tag({
+      ...props,
+      children
+    });
+    if (!isWidget(element) && !isHTMLElement(element))
+      throw new TypeError("Only HTMLElements and Widgets are allowed inside a jsx nest");
   }
   return element;
 }
@@ -28014,11 +28021,11 @@ var setObjectProps3 = function(element, attr3) {
     element[i] = attr3[i];
   }
 };
-var setClasses3 = function(element, classes, type5 = "add") {
+var setClasses3 = function(element, classes, type6 = "add") {
   if (!classes.trim())
     return;
   const classNames = classes.trim().match(" ") ? classes.trim().split(" ") : [classes.trim()];
-  classNames.forEach((className) => element.classList[type5](className));
+  classNames.forEach((className) => element.classList[type6](className));
 };
 var setCss4 = function(element, values, value = null) {
   if (typeof values === "string") {
@@ -40490,9 +40497,9 @@ var _init3 = function(widget22, options52) {
     element.attr({ class: "", style: "" });
   element.addClass(options52.class);
   if (options52.position) {
-    let { type: type5, centered, top, left, right, bottom } = options52.position;
+    let { type: type52, centered, top, left, right, bottom } = options52.position;
     element.css({
-      position: isPosition3(type5) ? type5 : null
+      position: isPosition3(type52) ? type52 : null
     });
     if (centered) {
       element.css({
@@ -43218,11 +43225,11 @@ var setObjectProps4 = function(element, attr3) {
     element[i] = attr3[i];
   }
 };
-var setClasses4 = function(element, classes, type5 = "add") {
+var setClasses4 = function(element, classes, type6 = "add") {
   if (!classes.trim())
     return;
   const classNames = classes.trim().match(" ") ? classes.trim().split(" ") : [classes.trim()];
-  classNames.forEach((className) => element.classList[type5](className));
+  classNames.forEach((className) => element.classList[type6](className));
 };
 var setCss5 = function(element, values, value = null) {
   if (typeof values === "string") {
@@ -55694,9 +55701,9 @@ var _init4 = function(widget22, options52) {
     element.attr({ class: "", style: "" });
   element.addClass(options52.class);
   if (options52.position) {
-    let { type: type5, centered, top, left, right, bottom } = options52.position;
+    let { type: type52, centered, top, left, right, bottom } = options52.position;
     element.css({
-      position: isPosition4(type5) ? type5 : null
+      position: isPosition4(type52) ? type52 : null
     });
     if (centered) {
       element.css({

@@ -1,3 +1,4 @@
+import { isHTMLElement, isWidget } from "../../utils/type";
 import { options } from "../../extra";
 import Dom from "../../utils/dom";
 import { findEl } from "../../utils/elman";
@@ -18,7 +19,9 @@ export const React = {
 
 /** @jsx createWidgetElement */
 
-export function createWidgetElement(tag: string | (new (options: options) => Widget), props: null | Record<string, any> = {}, ...children: any[]) {
+
+type widgetConstructor = new (options: options) => Widget;
+export function createWidgetElement(tag: string | widgetConstructor | ((props?: any) => Widget | Element), props: null | Record<string, any> = {}, ...children: any[]) {
 	let element;
 	// mess
 	if(typeof tag == "string"){
@@ -44,15 +47,22 @@ export function createWidgetElement(tag: string | (new (options: options) => Wid
 				(child as any).dom?.trigger('mount', {})
 			}
 		}
-	} else {
+	} else if(typeof tag == "function" && tag.prototype instanceof Widget) {
 		if(!props) props = {};
 		if(children.length == 1 && typeof children[0] == "string"){
 			props.text = children.pop();
 		}
-		element = new tag({
+		element = new (tag as widgetConstructor)({
 			...props,
 			children
 		});
+	} else if(typeof tag == "function"){
+		element = (tag as any)({
+			...props,
+			children
+		});
+
+		if(!isWidget(element) && !isHTMLElement(element)) throw new TypeError('Only HTMLElements and Widgets are allowed inside a jsx nest');
 	}
 	return element!;
 }
