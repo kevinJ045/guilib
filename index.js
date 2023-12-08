@@ -11893,6 +11893,12 @@ class Dom {
   empty() {
     return doAll(this, (el) => emptyElement(el));
   }
+  click() {
+    return doAll(this, (el) => el.click());
+  }
+  focus() {
+    return doAll(this, (el) => el.focus());
+  }
   children() {
     return Dom.from(this.at(0).children.length ? this.at(0).children : []);
   }

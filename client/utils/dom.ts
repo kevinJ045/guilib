@@ -177,6 +177,14 @@ class Dom {
 		return doAll(this, (el: HTMLElement) => emptyElement(el));
 	}
 
+	click() : Dom {
+		return doAll(this, (el: HTMLElement) => el.click());
+	}
+
+	focus() : Dom {
+		return doAll(this, (el: HTMLElement) => el.focus());
+	}
+
 	children(): Dom {
 		return Dom.from(this.at(0).children.length ?  this.at(0).children : []);
 	}
