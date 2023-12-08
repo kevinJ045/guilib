@@ -27525,18 +27525,18 @@ function createWidgetElement(tag, props = {}, ...children) {
       }
     for (const child2 of children) {
       if (typeof child2 === "string") {
-        element.dom = new dom_default(element);
         element.appendChild(document.createTextNode(child2));
-        element.dom?.trigger("mount", {});
+        child2.dom?.trigger("mount", {});
       } else if (child2 instanceof Widget_default) {
         child2.to(element);
       } else {
-        element.appendChild(child2);
         if (tag == "svg") {
           element.dom?.on("mount", () => {
             element.outerHTML += " ";
           });
         }
+        element.appendChild(child2);
+        child2.dom?.trigger("mount", {});
       }
     }
   } else {
@@ -56016,6 +56016,7 @@ export {
   Image_default as Image,
   Grid_default as Grid,
   EntryController2 as EntryController,
+  dom_default2 as Dom,
   Controller_default2 as Controller,
   Container_default as Container,
   ComponentStyles2 as ComponentStyles,
