@@ -2,10 +2,11 @@ import Style from "./components/Style";
 import Controller, { ArrayController } from "./data/Controller";
 import anime from "./modules/anime";
 import voca from "./modules/voca";
+import Dom from "./utils/dom";
 import { mergeOptions } from "./utils/options";
 import ListBuilder from "./widgets/list/ListBuilder";
 
-export { ArrayController, ListBuilder, Controller, Style, mergeOptions, anime, voca };
+export { ArrayController, ListBuilder, Controller, Style, mergeOptions, anime, Dom, voca };
 export { EntryController } from "./widgets/entry/InputWrapper";
 export { SelectController } from "./widgets/entry/SelectBox";
 export { CheckboxController } from "./widgets/buttons/Checkbox";

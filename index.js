@@ -27525,13 +27525,17 @@ function createWidgetElement(tag, props = {}, ...children) {
       }
     for (const child2 of children) {
       if (typeof child2 === "string") {
+        element.dom = new dom_default(element);
         element.appendChild(document.createTextNode(child2));
+        element.dom?.trigger("mount", {});
       } else if (child2 instanceof Widget_default) {
         child2.to(element);
       } else {
         element.appendChild(child2);
         if (tag == "svg") {
-          element.outerHTML += " ";
+          element.dom?.on("mount", () => {
+            element.outerHTML += " ";
+          });
         }
       }
     }

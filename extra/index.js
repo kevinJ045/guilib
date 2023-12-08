@@ -13241,6 +13241,7 @@ export {
   Ref,
   ListBuilder_default as ListBuilder,
   EntryController,
+  dom_default as Dom,
   Controller_default as Controller,
   ComponentStyles,
   CheckboxController,

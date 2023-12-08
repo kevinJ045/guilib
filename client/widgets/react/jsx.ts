@@ -1,4 +1,5 @@
 import { options } from "../../extra";
+import Dom from "../../utils/dom";
 import { findEl } from "../../utils/elman";
 import Widget from "../main/Widget";
 
@@ -27,13 +28,17 @@ export function createWidgetElement(tag: string | (new (options: options) => Wid
 		}
 		for (const child of children) {
 			if (typeof child === 'string') {
+				(element as any).dom = new Dom(element);
 				element.appendChild(document.createTextNode(child));
+				(element as any).dom?.trigger('mount', {})
 			} else if (child instanceof Widget) {
 				child.to(element);
 			} else {
 				element.appendChild(child);
 				if(tag == 'svg'){
-					element.outerHTML += ' ';
+					(element as any).dom?.on('mount', () => {
+						(element! as any).outerHTML += ' ';
+					});
 				}
 			}
 		}
