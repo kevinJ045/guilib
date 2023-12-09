@@ -58,7 +58,7 @@ async function startServer(){
 
 	router.all("*", (req: Request) => serve({port, env}, req));
 
-	console.log('localhost:'+port);
+	console.log(`◯ \x1b[38;5;38mServer Started\x1b[0m [\x1b[33m127.0.0.1:${port}\x1b[0m]`);
 	// @ts-ignore
 	const server = Bun.serve({
 		port,

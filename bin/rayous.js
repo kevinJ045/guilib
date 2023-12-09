@@ -55,26 +55,44 @@ function createFile(filename, filecontent){
 
 function startServe(){
 	rl.close();
-	console.log(' ◯ \x1b[38;5;38mStarting\x1b[0m [\x1b[33m'+(path.basename(path.dirname(process.cwd()))+'/'+path.basename(process.cwd()))+'\x1b[0m]');
+	console.log('╭ \x1b[38;5;38mStarting\x1b[0m [\x1b[33m'+(path.basename(path.dirname(process.cwd()))+'/'+path.basename(process.cwd()))+'\x1b[0m]');
 
 	const child = spawn(buncommand, rbun(["run", serverScriptPath]));
 
-  child.stdout.on("data", (data) => {
-    console.log(data.toString().trim());
-  });
+  startedChild(child);
 
-  child.on("error", (error) => {
-    console.error(`${error}`.trim());
-  });
+	let exitted = false;
+	const exitHandler = (e) => {
+		process.stdout.write('\r  ')
+		process.stdout.write('\r')
+		exitted = true;
+	}
 
-  child.on("close", (code) => {
-    process.exit(code);
-  });
+	process.on('exit', exitHandler);	
+
+	process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+}
+
+function startedChild(child){
+	child.stdout.on("data", (data) => {
+		if(!data.toString().trim()) return '';
+		console.log('│');
+		console.log('├', data.toString().trim().replace(/\n/g, '\n├ '));
+	});
+
+	child.on("error", (error) => {
+		console.error(`├ \x1b[31m✗\x1b[0m'${error}`.trim());
+	});
+	child.on("close", (code) => {
+		console.log('│');
+		console.log('╰ Done');
+		process.exit(code);
+	});
 }
 
 if(subcommand[0]){
 	if(subcommand[0] == 'create'){
-		console.log('╭ Starting create...');
+		console.log('╭ \x1b[38;5;38mStarting Create...\x1b[0m');
 		let options = {
 			ts: true,
 			tailwind: true,
@@ -203,7 +221,8 @@ export default class extends Component {
 
 								const done = () => {
 									rl.close();
-									console.log('╰  Run $ npx rayous to start dev server.');
+									console.log('│');
+									console.log('╰ Run \x1b[38;5;208m$ \x1b[38;5;48mnpx rayous\x1b[0m to start dev server.');
 								}
 
 								if(options.installDeps){
@@ -229,23 +248,15 @@ export default class extends Component {
 			});
 		});
 	} else if(subcommand[0] == 'build') {
-		console.log('Starting build...');
+		console.log('╭ \x1b[38;5;38mStarting build...\x1b[0m');
 		const child = spawn(buncommand, rbun(["run", builderScriptPath, ...subcommand.splice(1)]));
-		child.stdout.on("data", (data) => {
-			console.log(data.toString().trim());
-		});
-	
-		child.on("error", (error) => {
-			console.error(`${error}`.trim());
-		});
-		child.on("close", (code) => {
-			process.exit(code);
-		});
+		startedChild(child);
 	} else if(subcommand[0] == 'route'){
 		let routePath = path.join(resolvePath(subcommand[1]), 'route.ts');
 		let folder = path.dirname(routePath);
 		if(!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true});
 		if(!fs.existsSync(routePath)) fs.writeFileSync(routePath, `async function GET(){ return "empty"; }`);
+		process.exit();
 	} else if(subcommand[0] == 'page'){
 		let routePath = path.join(resolvePath(subcommand[1]), 'page.ts');
 		let folder = path.dirname(routePath);
@@ -262,6 +273,7 @@ export default class extends Component {
 		});
 	}
 }`);
+		process.exit();
 	} else if(subcommand[0] == 'serve') {
 		startServe();
 	} else {

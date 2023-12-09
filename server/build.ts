@@ -108,7 +108,7 @@ async function build(path: string){
 				console.log('Path is dynamic: ', path);
 			}
 		} else if(route){
-			console.log('Building', path);
+			console.log('\x1b[38;5;38mBuilding\x1b[0m', '[\x1b[33m'+path+'\x1b[0m]');
 			if(route.type == 'page'){
 				if(!fs.existsSync(_public('client/'+route.path))) fs.mkdirSync(_public('client/'+route.path), { recursive: true });
 				routes.findLayouts(route as route);
@@ -123,7 +123,7 @@ async function build(path: string){
 						fs.writeFileSync(_public('client/'+route.path+'/index.js'), builtScript.response);
 					}
 				} catch(e){
-					console.log(e)
+					console.log(e);
 				}
 			} else {
 				const config = JSON.parse(fs.readFileSync('./rayous.json').toString());
@@ -262,7 +262,9 @@ app.listen(${port}, () => console.log('localhost:${port}'));
 			} else {
 				console.log('route '+path+' does not exist');
 				console.log('routes:');
-				console.log([...routes.paths.keys()]);
+				[...routes.paths.keys()].forEach(route => {
+					console.log('◯ '+(route || '/'));
+				});
 			}
 		}
 	} catch(e){
