@@ -21,7 +21,7 @@ export const React = {
 
 
 type widgetConstructor = new (options: options) => Widget;
-export function createWidgetElement(tag: string | widgetConstructor | ((props?: any) => Widget | Element), props: null | Record<string, any> = {}, ...children: any[]) {
+export function createWidgetElement(tag: string | widgetConstructor | ((props?: any, ...children: any[]) => Widget | Element), props: null | Record<string, any> = {}, ...children: any[]) {
 	let element;
 	// mess
 	if(typeof tag == "string"){
@@ -31,6 +31,7 @@ export function createWidgetElement(tag: string | widgetConstructor | ((props?: 
 		if(props) for (const [key, value] of Object.entries(props)) {
 			element.setAttribute(key, value as string);
 		}
+		if(Array.isArray(children[0]) && children.length == 1) children = children[0];
 		for (const child of children) {
 			if (typeof child === 'string') {
 				element.appendChild(document.createTextNode(child));
@@ -57,10 +58,7 @@ export function createWidgetElement(tag: string | widgetConstructor | ((props?: 
 			children
 		});
 	} else if(typeof tag == "function"){
-		element = (tag as any)({
-			...props,
-			children
-		});
+		element = (tag as any)(props, ...children);
 
 		if(!isWidget(element) && !isHTMLElement(element)) throw new TypeError('Only HTMLElements and Widgets are allowed inside a jsx nest');
 	}

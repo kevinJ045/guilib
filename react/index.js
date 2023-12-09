@@ -12796,6 +12796,8 @@ function createWidgetElement(tag, props = {}, ...children) {
       for (const [key, value] of Object.entries(props)) {
         element.setAttribute(key, value);
       }
+    if (Array.isArray(children[0]) && children.length == 1)
+      children = children[0];
     for (const child2 of children) {
       if (typeof child2 === "string") {
         element.appendChild(document.createTextNode(child2));
@@ -12823,10 +12825,7 @@ function createWidgetElement(tag, props = {}, ...children) {
       children
     });
   } else if (typeof tag == "function") {
-    element = tag({
-      ...props,
-      children
-    });
+    element = tag(props, ...children);
     if (!isWidget(element) && !isHTMLElement(element))
       throw new TypeError("Only HTMLElements and Widgets are allowed inside a jsx nest");
   }

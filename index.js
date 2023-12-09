@@ -18154,6 +18154,7 @@ var mounted2 = function(parent, child2) {
     child2._onMount(parent);
   child2?.emit("mount", { parent });
 };
+var additionRules2 = [];
 
 class WidgetProps22 {
   tree = [];
@@ -18233,8 +18234,13 @@ class WidgetProps22 {
     } else if (typeof child2 == "string") {
       findEl2(this.id).at(0).append(new window.Text(child2));
     } else {
-      console.log(child2, " was given");
-      throw new Error("Only Widgets or HTMLElements Allowed, The given child was logged.");
+      const rule = additionRules2.find((rule2) => rule2.testcase(child2));
+      if (rule && typeof rule.additionFunction == "function") {
+        rule.additionFunction.call(this, this, child2, subchild);
+      } else {
+        console.log(child2, " was given");
+        throw new Error("Only Widgets or HTMLElements Allowed, The given child was logged.");
+      }
     }
     return this;
   }
@@ -18562,6 +18568,22 @@ class WidgetProps22 {
   }
   set $id(id4) {
     this._id = id4, findEl2(this.id).attr({ id: id4 });
+  }
+  static additionRule(testcase, additionFunction) {
+    let rule = additionRules2.find((rule2) => rule2.testcase == testcase);
+    if (!rule) {
+      if (typeof testcase !== "function")
+        return;
+      if (typeof additionFunction !== "function")
+        return;
+      rule = { testcase, additionFunction };
+      additionRules2.push(rule);
+    }
+    return {
+      remove() {
+        additionRules2.splice(additionRules2.indexOf(rule), 1);
+      }
+    };
   }
 }
 
@@ -27546,6 +27568,8 @@ function createWidgetElement(tag, props = {}, ...children) {
       for (const [key, value] of Object.entries(props)) {
         element.setAttribute(key, value);
       }
+    if (Array.isArray(children[0]) && children.length == 1)
+      children = children[0];
     for (const child2 of children) {
       if (typeof child2 === "string") {
         element.appendChild(document.createTextNode(child2));
@@ -27573,10 +27597,7 @@ function createWidgetElement(tag, props = {}, ...children) {
       children
     });
   } else if (typeof tag == "function") {
-    element = tag({
-      ...props,
-      children
-    });
+    element = tag(props, ...children);
     if (!isWidget(element) && !isHTMLElement(element))
       throw new TypeError("Only HTMLElements and Widgets are allowed inside a jsx nest");
   }
@@ -39758,6 +39779,7 @@ var mounted3 = function(parent, child2) {
     child2._onMount(parent);
   child2?.emit("mount", { parent });
 };
+var additionRules3 = [];
 
 class WidgetProps23 {
   tree = [];
@@ -39837,8 +39859,13 @@ class WidgetProps23 {
     } else if (typeof child2 == "string") {
       findEl3(this.id).at(0).append(new window.Text(child2));
     } else {
-      console.log(child2, " was given");
-      throw new Error("Only Widgets or HTMLElements Allowed, The given child was logged.");
+      const rule = additionRules3.find((rule2) => rule2.testcase(child2));
+      if (rule && typeof rule.additionFunction == "function") {
+        rule.additionFunction.call(this, this, child2, subchild);
+      } else {
+        console.log(child2, " was given");
+        throw new Error("Only Widgets or HTMLElements Allowed, The given child was logged.");
+      }
     }
     return this;
   }
@@ -40166,6 +40193,22 @@ class WidgetProps23 {
   }
   set $id(id22) {
     this._id = id22, findEl3(this.id).attr({ id: id22 });
+  }
+  static additionRule(testcase, additionFunction) {
+    let rule = additionRules3.find((rule2) => rule2.testcase == testcase);
+    if (!rule) {
+      if (typeof testcase !== "function")
+        return;
+      if (typeof additionFunction !== "function")
+        return;
+      rule = { testcase, additionFunction };
+      additionRules3.push(rule);
+    }
+    return {
+      remove() {
+        additionRules3.splice(additionRules3.indexOf(rule), 1);
+      }
+    };
   }
 }
 
@@ -54962,6 +55005,7 @@ var mounted4 = function(parent, child2) {
     child2._onMount(parent);
   child2?.emit("mount", { parent });
 };
+var additionRules4 = [];
 
 class WidgetProps24 {
   tree = [];
@@ -55041,8 +55085,13 @@ class WidgetProps24 {
     } else if (typeof child2 == "string") {
       findEl4(this.id).at(0).append(new window.Text(child2));
     } else {
-      console.log(child2, " was given");
-      throw new Error("Only Widgets or HTMLElements Allowed, The given child was logged.");
+      const rule = additionRules4.find((rule2) => rule2.testcase(child2));
+      if (rule && typeof rule.additionFunction == "function") {
+        rule.additionFunction.call(this, this, child2, subchild);
+      } else {
+        console.log(child2, " was given");
+        throw new Error("Only Widgets or HTMLElements Allowed, The given child was logged.");
+      }
     }
     return this;
   }
@@ -55370,6 +55419,22 @@ class WidgetProps24 {
   }
   set $id(id22) {
     this._id = id22, findEl4(this.id).attr({ id: id22 });
+  }
+  static additionRule(testcase, additionFunction) {
+    let rule = additionRules4.find((rule2) => rule2.testcase == testcase);
+    if (!rule) {
+      if (typeof testcase !== "function")
+        return;
+      if (typeof additionFunction !== "function")
+        return;
+      rule = { testcase, additionFunction };
+      additionRules4.push(rule);
+    }
+    return {
+      remove() {
+        additionRules4.splice(additionRules4.indexOf(rule), 1);
+      }
+    };
   }
 }
 
