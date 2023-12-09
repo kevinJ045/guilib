@@ -12142,6 +12142,7 @@ var mounted = function(parent, child) {
     child._onMount(parent);
   child?.emit("mount", { parent });
 };
+var additionRules = [];
 
 class WidgetProps2 {
   tree = [];
@@ -12221,8 +12222,13 @@ class WidgetProps2 {
     } else if (typeof child == "string") {
       findEl(this.id).at(0).append(new window.Text(child));
     } else {
-      console.log(child, " was given");
-      throw new Error("Only Widgets or HTMLElements Allowed, The given child was logged.");
+      const rule = additionRules.find((rule2) => rule2.testcase(child));
+      if (rule && typeof rule.additionFunction == "function") {
+        rule.additionFunction.call(this, this, child, subchild);
+      } else {
+        console.log(child, " was given");
+        throw new Error("Only Widgets or HTMLElements Allowed, The given child was logged.");
+      }
     }
     return this;
   }
@@ -12550,6 +12556,22 @@ class WidgetProps2 {
   }
   set $id(id2) {
     this._id = id2, findEl(this.id).attr({ id: id2 });
+  }
+  static additionRule(testcase, additionFunction) {
+    let rule = additionRules.find((rule2) => rule2.testcase == testcase);
+    if (!rule) {
+      if (typeof testcase !== "function")
+        return;
+      if (typeof additionFunction !== "function")
+        return;
+      rule = { testcase, additionFunction };
+      additionRules.push(rule);
+    }
+    return {
+      remove() {
+        additionRules.splice(additionRules.indexOf(rule), 1);
+      }
+    };
   }
 }
 

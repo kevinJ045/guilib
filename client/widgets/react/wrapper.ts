@@ -12,6 +12,16 @@ export interface ReactWidgetOptions extends options {
 	rootOptions?: ReactDOM.RootOptions
 }
 
+Widget.additionRule(
+	(child: any) => React.isValidElement(child),
+	(parent: Widget, child: any) => { 
+		const wrapper = document.createElement('div');
+		const root = ReactDOM.createRoot(wrapper, parent.options.rootOptions);
+		root.render(child);
+		parent.add(wrapper);
+	}
+)
+
 export class ReactWidget extends Widget<ReactWidgetOptions> {
 	
 	add(child: any){

@@ -39,6 +39,7 @@ function mounted(parent: widget, child: widget){
 	child?.emit('mount', { parent });
 }
 
+const additionRules: {testcase: (item: any) => boolean, additionFunction: (parent: any, child: any, subchild?: any) => any}[] = [];
 
 class WidgetProps {
 
@@ -119,7 +120,6 @@ class WidgetProps {
 		findEl(this.id!).attr({ "name": value });
 	}
 
-
 	/**
 	 * The setOptions method changes the default widget options into the given options
 	 * @param {options} options the options to replace the default widget options
@@ -185,8 +185,13 @@ class WidgetProps {
 		} else if(typeof child == "string") {
 			findEl(this.id!).at(0).append(new window.Text(child));
 		} else {
-			console.log(child, ' was given');
-			throw new Error('Only Widgets or HTMLElements Allowed, The given child was logged.');
+			const rule = additionRules.find(rule => rule.testcase(child));
+			if(rule && typeof rule.additionFunction == "function"){
+				rule.additionFunction.call(this, this, child, subchild);
+			} else {
+				console.log(child, ' was given');
+				throw new Error('Only Widgets or HTMLElements Allowed, The given child was logged.');
+			}
 		}
 		return this;
 	}
@@ -1104,6 +1109,43 @@ class WidgetProps {
 	}
 
 	set $id(id: string) { this._id = id, findEl(this.id!).attr({'id': id}); };
+
+	/**
+	 * Addition Rules can help your widgets understand other components, for example, you can add an addition rule
+	 * to add components from other libraries
+	 * @param testcase A function to test if the object is what you want
+	 * @param additionFunction A function to do the addition
+	 * 
+	 * 
+	 * @example
+	 * const rule = Widget.additionRule(
+	 * 	(child: any) => typeof child == "object" && !!child.text, // tests if child is an object and has property of "text"
+	 * 	(parent: Widget, child: any) => parent.add(new Text(child.text)); // add a wrapper for the normal object.
+	 * )
+	 * 
+	 * new Widget({
+	 * 		children: [
+	 * 			{
+	 * 				text: "Hello!"
+	 * 			}
+	 * 		]
+	 * })
+	 */
+	static additionRule(testcase: (item: any) => boolean, additionFunction: (parent: any, child: any, subchild?: any) => any){
+		let rule = additionRules.find(rule => rule.testcase == testcase);
+		if(!rule) {
+			if(typeof testcase !== "function") return;
+			if(typeof additionFunction !== "function") return;
+			
+			rule = { testcase, additionFunction };
+			additionRules.push(rule);
+		}
+		return {
+			remove(){
+				additionRules.splice(additionRules.indexOf(rule!), 1);
+			}
+		};
+	}
 }
 
 
