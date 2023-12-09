@@ -22,7 +22,7 @@ export async function bundleBun(env: string, options: any = {}){
 
 	// @ts-ignore
 	const bundled = await Bun.build({
-		entrypoints: [(options.file || './tmp/file.ts')],
+		entrypoints: [(options.file || './tmp/build.js')],
 		// external: ['*'],
 		root: ".",
 		minify: options.minify || env == 'prod',

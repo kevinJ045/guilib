@@ -5,6 +5,8 @@ import Store from "../../data/Store";
 import Controller from "../../data/Controller";
 
 class ListBuilder<T = any, U extends options = options> extends Widget<U> {
+	private __controller__callback?: CallableFunction;
+	private __controller?: Controller<any>;
 
 	state = new Store({items: []});
 
@@ -18,6 +20,7 @@ class ListBuilder<T = any, U extends options = options> extends Widget<U> {
 
 		this.on('state:change', (e: any) => {
 			_initList(this, this.getStore());
+			this.emit('list:update', {});
 		});
 	}
 
@@ -36,12 +39,15 @@ class ListBuilder<T = any, U extends options = options> extends Widget<U> {
 		if(options.items){
 			const doItems = () => {
 				if(options.items instanceof Controller){
+					if(!this.options.multiControllers) this._stripController();
 					if(!options.items.isTakenBy(this)) {
 						this.setStore({[options.itemsStateName]: options.items.get()});
 						options.items.take(this);
-						options.items.onChange(() => {
+						this.__controller = options.items;
+						this.__controller__callback = () => {
 							this.setStore({[options.itemsStateName]: options.items.get()});
-						});
+						};
+						options.items.onChange(this.__controller__callback);
 					}
 				} else {
 					this.setStore({[options.itemsStateName]: options.items});
@@ -73,25 +79,32 @@ class ListBuilder<T = any, U extends options = options> extends Widget<U> {
 
 	_onUpdate(any: any){}
 
-	addItem(...items: any[]){
-		this.setStore({items: [...items].concat(this.getStore()[(this.options as any).itemsStateName])});
+	_stripController(){
+		if(this.__controller__callback && this.__controller){
+			this.__controller.unTake(this);
+			this.__controller.offChange(this.__controller__callback);
+		}
+	}
+
+	addItem(...items: T[]){
+		this.setStore({[this.options.itemsStateName]: [...items].concat(this.getStore()[(this.options as any).itemsStateName])});
 		return this;
 	}
 
-	removeItems(...itemsToRemove: any[]) {
+	removeItems(...itemsToRemove: T[]) {
     const currentItems = this.getStore()[(this.options as any).itemsStateName];
 
-    const remain = currentItems.filter((item: any, index: number) => {
+    const remain = currentItems.filter((item: T, index: number) => {
       let shouldRemove = false;
 
       itemsToRemove.forEach(it => {
 
-				if(index == it.index) {
+				if(index == currentItems.indexOf(it)) {
 					shouldRemove = true;
           return;
 				}
 				
-        const allPropertiesMatch = Object.keys(it).every(prop => item[prop] === it[prop]);
+        const allPropertiesMatch = typeof it == "object" ? Object.keys(it as object).every(prop => (item as any)[prop as string] === (it as any)[prop]) : it == item;
 
         if (allPropertiesMatch) {
           shouldRemove = true;
@@ -102,9 +115,16 @@ class ListBuilder<T = any, U extends options = options> extends Widget<U> {
       return !shouldRemove;
     });
 
-    this.setStore({ items: remain });
+		if(currentItems.length === remain.length) return this;
+
+    this.setStore({ [this.options.itemsStateName]: remain });
 		return this;
   }
+
+	hasItem(item: T){
+		const currentItems: T[] = this.getStore()[(this.options as any).itemsStateName];
+		return currentItems.includes(item) || currentItems.find(it => typeof it == "object" ? Object.keys(item as object).every(prop => (it as any)[prop as string] === (item as any)[prop]) : it == item)
+	}
 
 	onItems(event: string, handler: CallableFunction, subchild: any){
 		this.children(subchild).forEach((child, index) => {

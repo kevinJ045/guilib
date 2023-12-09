@@ -65,7 +65,7 @@ class ListItem extends Widget<ListItemOptions> {
 
 }
 
-class List<T = any> extends ListBuilder<T, ListOptions> {
+class List<T = any, U extends ListOptions = ListOptions> extends ListBuilder<T, U> {
 
 	constructor(selectedOptions: ListOptions<T>){
 		const options = {...defaultList(), ...selectedOptions};

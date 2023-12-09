@@ -356,6 +356,11 @@ export default class Component extends WidgetEventTarget<ComponentEvent> {
 	static scripts: string[] = [];
 
 	/**
+	 * A widget list to be added dynamically into the head, like styles, meta tags and such
+	 */
+	static headContent?: (props?: buildProps | any) => Widget[];
+
+	/**
 	 * Update mode refers to how the page updates when you
 	 * made changes to your files.
 	 * 

@@ -931,8 +931,10 @@ class WidgetProps {
 		return this;
 	}
 
-	raw(){
+	raw() : Dom {
+		// @ts-ignore
 		if(this.sealed === true) return this;
+		// @ts-ignore
 		return this.private ? this : findEl(this.id!);
 	}
 
@@ -1136,7 +1138,7 @@ class WidgetProps {
 		if(!rule) {
 			if(typeof testcase !== "function") return;
 			if(typeof additionFunction !== "function") return;
-			
+
 			rule = { testcase, additionFunction };
 			additionRules.push(rule);
 		}

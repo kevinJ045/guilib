@@ -12877,6 +12877,9 @@ class Controller {
   isTakenBy(taker) {
     return this.taken.indexOf(taker) > -1;
   }
+  unTake(taker) {
+    this.taken.splice(this.taken.indexOf(taker), 1);
+  }
   set(newValue, doNoyNotify = false) {
     this.value = newValue;
     if (doNoyNotify !== true)
@@ -12887,6 +12890,11 @@ class Controller {
   }
   onChange(callback) {
     this.changeListeners.push(callback);
+    return this;
+  }
+  offChange(callback) {
+    this.changeListeners.splice(this.changeListeners.indexOf(callback), 1);
+    return this;
   }
   notifyChangeListeners(notify = false) {
     let ignoreIndex = typeof notify == "function" ? this.changeListeners.indexOf(notify) : -1;
@@ -12902,13 +12910,13 @@ class ArrayController extends Controller {
   constructor() {
     super(...arguments);
   }
-  push(item) {
-    this.value.push(item);
+  push(...items) {
+    this.value.push(...items);
     this.notifyChangeListeners();
     return this;
   }
-  unshift(item) {
-    this.value.unshift(item);
+  unshift(...items) {
+    this.value.unshift(...items);
     this.notifyChangeListeners();
     return this;
   }
@@ -12930,11 +12938,56 @@ class ArrayController extends Controller {
     this.set(array);
     return this;
   }
+  map(callback, castToNew = false) {
+    const newArray = this.get().map(callback);
+    return castToNew ? new ArrayController(newArray) : this.setArray(newArray);
+  }
+  filter(callback, castToNew = false) {
+    const newArray = this.get().filter(callback);
+    return castToNew ? new ArrayController(newArray) : this.setArray(newArray);
+  }
+  find(callback) {
+    return this.get().find(callback);
+  }
+  indexOf(item) {
+    return this.get().indexOf(item);
+  }
+  includes(item) {
+    return this.get().includes(item);
+  }
+  at(index) {
+    return this.get().at(index);
+  }
+  join(separator) {
+    return this.get().join(separator);
+  }
+  splice(start, deleteCount, castToNew = false, fromOmitted = false) {
+    const newArray = this.get().splice(start, deleteCount);
+    return castToNew ? new ArrayController(fromOmitted ? newArray : this.get()) : this.setArray(fromOmitted ? newArray : this.get());
+  }
+  slice(start, deleteCount, castToNew = false) {
+    const newArray = this.get().slice(start, deleteCount);
+    return castToNew ? new ArrayController(newArray) : this.setArray(newArray);
+  }
+  sort(callback, castToNew = false) {
+    const newArray = this.get().sort(callback);
+    return castToNew ? new ArrayController(newArray) : this.setArray(newArray);
+  }
+  reverse(castToNew = false) {
+    const newArray = this.get().reverse();
+    return castToNew ? new ArrayController(newArray) : this.setArray(newArray);
+  }
+  copy(controller) {
+    this.set(controller.get());
+    return this;
+  }
 }
 var Controller_default = Controller;
 
 // client/widgets/list/ListBuilder.ts
 class ListBuilder extends Widget_default {
+  __controller__callback;
+  __controller;
   state = new Store_default({ items: [] });
   constructor(selectedOptions, _initList) {
     const options6 = { ...selectedOptions };
@@ -12943,6 +12996,7 @@ class ListBuilder extends Widget_default {
     _initList(this, this.getStore());
     this.on("state:change", (e) => {
       _initList(this, this.getStore());
+      this.emit("list:update", {});
     });
   }
   _fromTemplate(item, index) {
@@ -12961,12 +13015,16 @@ class ListBuilder extends Widget_default {
     if (options6.items) {
       const doItems = () => {
         if (options6.items instanceof Controller_default) {
+          if (!this.options.multiControllers)
+            this._stripController();
           if (!options6.items.isTakenBy(this)) {
             this.setStore({ [options6.itemsStateName]: options6.items.get() });
             options6.items.take(this);
-            options6.items.onChange(() => {
+            this.__controller = options6.items;
+            this.__controller__callback = () => {
               this.setStore({ [options6.itemsStateName]: options6.items.get() });
-            });
+            };
+            options6.items.onChange(this.__controller__callback);
           }
         } else {
           this.setStore({ [options6.itemsStateName]: options6.items });
@@ -12996,8 +13054,14 @@ class ListBuilder extends Widget_default {
   }
   _onUpdate(any) {
   }
+  _stripController() {
+    if (this.__controller__callback && this.__controller) {
+      this.__controller.unTake(this);
+      this.__controller.offChange(this.__controller__callback);
+    }
+  }
   addItem(...items) {
-    this.setStore({ items: [...items].concat(this.getStore()[this.options.itemsStateName]) });
+    this.setStore({ [this.options.itemsStateName]: [...items].concat(this.getStore()[this.options.itemsStateName]) });
     return this;
   }
   removeItems(...itemsToRemove) {
@@ -13005,11 +13069,11 @@ class ListBuilder extends Widget_default {
     const remain = currentItems.filter((item, index) => {
       let shouldRemove = false;
       itemsToRemove.forEach((it) => {
-        if (index == it.index) {
+        if (index == currentItems.indexOf(it)) {
           shouldRemove = true;
           return;
         }
-        const allPropertiesMatch = Object.keys(it).every((prop) => item[prop] === it[prop]);
+        const allPropertiesMatch = typeof it == "object" ? Object.keys(it).every((prop) => item[prop] === it[prop]) : it == item;
         if (allPropertiesMatch) {
           shouldRemove = true;
           return;
@@ -13017,8 +13081,14 @@ class ListBuilder extends Widget_default {
       });
       return !shouldRemove;
     });
-    this.setStore({ items: remain });
+    if (currentItems.length === remain.length)
+      return this;
+    this.setStore({ [this.options.itemsStateName]: remain });
     return this;
+  }
+  hasItem(item) {
+    const currentItems = this.getStore()[this.options.itemsStateName];
+    return currentItems.includes(item) || currentItems.find((it) => typeof it == "object" ? Object.keys(item).every((prop) => it[prop] === item[prop]) : it == item);
   }
   onItems(event, handler, subchild) {
     this.children(subchild).forEach((child2, index) => {

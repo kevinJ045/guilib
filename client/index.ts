@@ -18,6 +18,7 @@ import Video from "./widgets/media/Video";
 import Audio from "./widgets/media/Audio";
 import Grid from "./widgets/containers/Grid";
 import { Table, TableRow } from "./widgets/list/Table";
+import Space from "./widgets/other/Space";
 
 export {
 	Component,
@@ -44,5 +45,6 @@ export {
 	Audio,
 	Grid,
 	Table,
-	TableRow
+	TableRow,
+	Space
 };

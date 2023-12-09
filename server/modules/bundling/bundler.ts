@@ -70,13 +70,12 @@ function start(){
 const pages = window.pages || [];
 if(!window.pages) window.pages = pages;
 
-if(typeof Page0.title === "string") document.title = Page0.title;
 
-const buildProps = (props: any) => (
+const buildProps = (props) => (
 	{ ...base_props, wrap(object){ return {...this, ...object}; }, addArgument(...args){if(!Array.isArray(base_props.args)) base_props.args = [];base_props.args.push(...args);return buildProps();}, add(prop, value){base_props[prop] = value; return buildProps();}, ...props }
 )
 
-
+if(typeof Page0.title === "string") document.title = Page0.title;
 if(typeof Page0.title === "function") document.title = Page0.title(buildProps({page: made0}));
 if(Array.isArray(Page0.links)){
 	Page0.links.forEach(url => {
@@ -97,6 +96,12 @@ if(Array.isArray(Page0.scripts)){
 		let script = document.createElement('script');
 		script.src = url;
 		document.head.appendChild(script);
+	});
+}
+
+if(typeof Page0.headContent == "function"){
+	Page0.headContent(buildProps())?.forEach(item => {
+		item?.to?.(document.head)
 	});
 }
 
@@ -162,7 +167,7 @@ ${options.export ? `(() => {
 })()` : 'start()'}
 	`;
 	if(!existsSync('./tmp')) mkdirSync('./tmp');
-	writeFileSync('./tmp/file.ts', script);
+	writeFileSync('./tmp/build.js', script);
 	return script;
 }
 
@@ -246,7 +251,7 @@ window.loaderAfter = after;
 window.loaderOn = loaderOn;
 })();`;
 	if(!existsSync('./tmp')) mkdirSync('./tmp');
-	writeFileSync('./tmp/loader.ts', script);
+	writeFileSync('./tmp/loader.js', script);
 	return script;
 }
 
@@ -258,7 +263,7 @@ export async function bundle(route: route, {port, env}: portAndEnv, paths: Recor
 	let file = await bundleBun(env, {nocss: params.nocss, minify: params.minify == 'true'});
 
 	if(route.loader) makeLoaderFile(route);
-	let loader = route.loader ? `body::(function(){${(await bundleBun(env, {minify: params.minify == 'true', file: './tmp/loader.ts'})).result}})();` : '';
+	let loader = route.loader ? `body::(function(){${(await bundleBun(env, {minify: params.minify == 'true', file: './tmp/loader.js'})).result}})();` : '';
 
 	scripts.push(`(function(){${file.result}})();`);
 	let origin = params.origin, otherOrigin = null;
@@ -276,6 +281,8 @@ export async function getHead() {
 	
 	if(config.title){
 		html += '<title>'+config.title+'</title>';
+	} else {
+		html += '<title>Rayous App</title>';
 	}
 
 	if(config.meta){
