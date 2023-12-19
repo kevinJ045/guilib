@@ -23,11 +23,11 @@ const htmlPseudos = [
   ':checked',
 ];
 
-function filteredChildren(children: Widget | any | Widget[], makeOne = false, giveNull = false){
+function filteredChildren(children: Widget | any | Widget[], makeOne = false, giveNull = false, widgetify = false){
   const filtered = Array.isArray(children) ? children : ((children instanceof Widget ? children
     .toArray() : children.elements)
-    .filter((element: HTMLGUIWidget) => element.GUIWIDGET)
-    .map((element: HTMLGUIWidget) => element.GUIWIDGET));
+    .filter((element: HTMLGUIWidget) => widgetify ? true : element.GUIWIDGET)
+    .map((element: HTMLGUIWidget) => widgetify && !element.GUIWIDGET ? Widget.from(element) : element.GUIWIDGET));
   const isOne = filtered.length == 1 && makeOne;
   if(isOne){
     filtered[0].toArray = () => WidgetList.from([filtered[0]]);

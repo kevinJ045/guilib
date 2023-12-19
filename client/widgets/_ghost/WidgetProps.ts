@@ -353,14 +353,15 @@ class WidgetProps {
 	 * // Retrieve children within the 'subchild'
 	 * const subchildChildren = widget.children('.subchild');
 	 */
-	children(subchild: string | null = null): WidgetList {
-		return WidgetList.from(filteredChildren(resolveSubchild(findEl(this.id!), subchild).children()));
+	children(subchild: string | null = null, widgetify: boolean = false): WidgetList {
+		return WidgetList.from(filteredChildren(resolveSubchild(findEl(this.id!), subchild).children(), false, false, widgetify));
 	}
 
 	/**
 	 * Finds and retrieves a single child widget or element that matches the specified HTML selector within the widget or a subchild.
 	 * 
 	 * @param {string} q - The HTML selector to search for within the widget or subchild.
+	 * @param {boolean | null} [widgetify=false] - Search widgetless elements
 	 * @param {string | null} [subchild=null] - The subchild selector inside the widget (default is null).
 	 * 
 	 * @returns {Widget | null} - A single child widget or element that matches the selector or null if none is found.
@@ -385,8 +386,8 @@ class WidgetProps {
 	 * // Find all children within the widget
 	 * const allChildren = widget.find('*');
 	 */
-	find(q: string, subchild: string | null = null): Widget {
-		return q == '*' ? this.children() : filteredChildren(resolveSubchild(findEl(this.id!), subchild).find(q), true);
+	find(q: string, widgetify: boolean = false, subchild: string | null = null): Widget {
+		return q == '*' ? this.children() : filteredChildren(resolveSubchild(findEl(this.id!), subchild).find(q), true, false, widgetify);
 	}
 
 	/**
@@ -417,8 +418,8 @@ class WidgetProps {
 	 * // Find all children within the widget
 	 * const allChildren = widget.findAll('*');
 	 */
-	findAll(q: string, subchild: string | null = null): Widget[] {
-		return q == '*' ? this.children() : filteredChildren(resolveSubchild(findEl(this.id!), subchild).find(q));
+	findAll(q: string, widgetify: boolean = false, subchild: string | null = null): Widget[] {
+		return q == '*' ? this.children() : filteredChildren(resolveSubchild(findEl(this.id!), subchild).find(q), false, false, widgetify);
 	}
 
 	/**
@@ -446,8 +447,8 @@ class WidgetProps {
 	 * // If no matching parent widget is found, it returns null
 	 * const nonExistentParent = childWidget.closest('.non-existent-selector');
 	 */
-	closest(q: string){
-		return filteredChildren(findEl(this.id!).closest(q), true, true);
+	closest(q: string, widgetify: boolean = false) : WidgetProps | null {
+		return filteredChildren(findEl(this.id!).closest(q), true, true, widgetify);
 	}
 
 	/**
@@ -476,7 +477,7 @@ class WidgetProps {
 	 * // If no parent widget is found, it returns null
 	 * const nonExistentParent = parentWidget.parent();
 	 */
-	parent(container: boolean = false){
+	parent(container: boolean = false) : Widget | null{
 		let parent = findEl(this.id!).parent();
 		if(!parent && !this.private) return Widget.from(document.body);
 		if(container) return this.container();
@@ -508,7 +509,7 @@ class WidgetProps {
 	 * // If no parent widget is found, it returns null
 	 * const nonExistentParent = parentWidget.container();
 	 */
-	container(){
+	container() : Widget | null {
 		let parent = findEl(this.id!).parent();
 		return Widget.from(parent.at(0));
 	}
@@ -531,7 +532,7 @@ class WidgetProps {
 	 * // Set a single attribute as a string
 	 * widget.attr('data-custom', 'value');
 	 */
-	attr(props: attr | string){
+	attr(props: attr | string) : this | string {
 		if(this.sealed === true) return this;
 		if(typeof props == "object") findEl(this.id!).attr(props);
 		return typeof props == "string" ? findEl(this.id!).attr(props) : this;
@@ -555,7 +556,7 @@ class WidgetProps {
 	 * // Set a single property as a string
 	 * widget.prop('value', 'custom-value');
 	 */
-	prop(props: attr | string){
+	prop(props: attr | string) : this | string {
 		if(this.sealed === true) return this;
 		if(typeof props == "object") findEl(this.id!).prop(props);
 		return typeof props == "string" ? findEl(this.id!).prop(props) : this;
@@ -574,7 +575,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.css({ color: 'red', fontSize: '16px' });
 	 */
-	css(props: attr){
+	css(props: attr) : this | string {
 		if(this.sealed === true) return this;
 		if(typeof props == "object") findEl(this.id!).css(props);
 		return typeof props == "string" ? findEl(this.id!).css(props) : this;
@@ -593,7 +594,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * const fontSize = widget.styleProp('fontSize'); // Returns the font size as a string.
 	 */
-	styleProp(prop: string){
+	styleProp(prop: string) : this | string {
 		if(typeof prop !== 'string') return this;
 		return findEl(this.id!).css(prop);
 	}
@@ -611,7 +612,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.text('Hello, World!');
 	 */
-	text(text: string){
+	text(text: string) : this | string {
 		if(this.sealed === true) return this;
 		findEl(this.id!).text(text)
 		return text ? this : findEl(this.id!).text(text);
@@ -630,7 +631,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.height(100); // Sets the height to 100 pixels.
 	 */
-	height(h: number | string | null = null){
+	height(h: number | string | null = null) : string | number | this {
 		if(this.sealed === true) return this;
 		findEl(this.id!).height(h)
 		return h ? this : findEl(this.id!).height();
@@ -649,7 +650,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.width(200); // Sets the width to 200 pixels.
 	 */
-	width(w: number | string | null = null){
+	width(w: number | string | null = null) : string | number | this{
 		if(this.sealed === true) return this;
 		findEl(this.id!).width(w)
 		return w ? this : findEl(this.id!).width();
@@ -668,7 +669,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.html('<div>Hello, World!</div>'); // Sets the inner HTML content.
 	 */
-	html(text: string | null = null){
+	html(text: string | null = null) : string | this {
 		if(this.sealed === true) return this;
 		findEl(this.id!).html(text)
 		return text ? this : findEl(this.id!).html();
@@ -687,7 +688,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.addClass('custom-class another-class');
 	 */
-	addClass(classes: string){
+	addClass(classes: string) : this {
 		findEl(this.id!).addClass(classes);
 		return this;
 	}
@@ -706,7 +707,7 @@ class WidgetProps {
 	 * const hasClass = widget.hasClass('custom-class');
 	 */
 
-	hasClass(classes: string){
+	hasClass(classes: string) : this {
 		return findEl(this.id!).hasClass(classes);
 	}
 
@@ -723,7 +724,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.removeClass('custom-class another-class');
 	 */
-	removeClass(classes: string){
+	removeClass(classes: string) : this {
 		findEl(this.id!).removeClass(classes);
 		return this;
 	}
@@ -741,12 +742,12 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.toggleClass('custom-class another-class');
 	 */
-	toggleClass(classes: string){
+	toggleClass(classes: string) : this {
 		findEl(this.id!).toggleClass(classes);
 		return this;
 	}
 
-	rect(){
+	rect() : ClientRect {
 		return findEl(this.id!).at(0).getBoundingClientRect();
 	}
 
@@ -791,7 +792,7 @@ class WidgetProps {
 	 * const parent = new Widget();
 	 * widget.to(parent, 'before'); // Appends the widget before the parent's children.
 	 */
-	to(parent: child, direction: string | null = null){
+	to(parent: child, direction: string | null = null) : this {
 		if(isWidget(parent)){
 			this.toWidget(parent as widget, direction);
 		} else if(isHTMLElement(parent)){
@@ -816,7 +817,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.on('click', () => console.log('Widget clicked!'));
 	 */
-	on(event: string | string[], callback : Function){
+	on(event: string | string[], callback : Function) : this {
 		if(Array.isArray(event)){
 			event.forEach(event => registerEvent(this, event, callback));
 		} else {
@@ -839,7 +840,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.off('click'); // Removes all click event listeners.
 	 */
-	off(event: string | string[], callback : Function | null = null){
+	off(event: string | string[], callback : Function | null = null) : this {
 		if(Array.isArray(event)){
 			event.forEach(event => findEl(this.id!).off(event, callback));
 		} else {
@@ -862,7 +863,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.emit('customEvent', { message: 'Hello, World!' });
 	 */
-	emit(event: string, data: any){
+	emit(event: string, data: any) : this {
 		findEl(this.id!).trigger(event, data);
 		return this;
 	}
@@ -880,7 +881,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.hide(500); // Hides the widget with a 500ms animation.
 	 */
-	hide(time: number | null){
+	hide(time: number | null) : this {
 		findEl(this.id!).hide(time);
 		return this;
 	}
@@ -898,7 +899,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.show(500); // Shows the widget with a 500ms animation.
 	 */
-	show(time: number | null){
+	show(time: number | null) : this {
 		findEl(this.id!).show(time);
 		return this;
 	}
@@ -916,7 +917,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.toggle(500); // Toggles the visibility of the widget with a 500ms animation.
 	 */
-	toggle(time: number | null){
+	toggle(time: number | null) : this {
 		findEl(this.id!).toggle(time);
 		return this;
 	}
@@ -999,7 +1000,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.animate('.child-widget', { duration: 500, easing: 'linear' }); // Apply animation to child widgets with the class 'child-widget'.
 	 */
-	animate(children: string, animation: animation){
+	animate(children: string, animation: animation) : this {
 		animateWidgets(this.findAll(children), animation);
 		return this;
 	}
@@ -1019,7 +1020,7 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * const stateStore = widget.getStore('customStore'); // Retrieve a custom state store.
 	 */
-	getStore(store = 'state'){
+	getStore(store = 'state') : any {
 		return this.store.getStore(store);
 	}
 
@@ -1035,8 +1036,9 @@ class WidgetProps {
 	 * const widget = new Widget();
 	 * widget.setStore({ count: 10 }, 'customStore'); // Set or update properties in a custom state store.
 	 */
-	setStore(props: Record<string, any>, store = 'state'){
+	setStore(props: Record<string, any>, store = 'state') : this {
 		this.store.setStore(props, store);
+		return this;
 	}
 
 	_onMount(parent: widget){

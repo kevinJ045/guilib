@@ -1,3 +1,8 @@
 {
-	"ignorePreviousLayouts": true
+	"ignorePreviousLayouts": true,
+	"title": "hii",
+	"meta": {
+		"viewport": "any"
+	},
+	"merge": true
 }

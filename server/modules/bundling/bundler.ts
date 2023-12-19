@@ -1,8 +1,6 @@
-import { webpack } from "webpack";
 import { route } from "../routing/routes";
 import path from "node:path";
 import { existsSync, writeFileSync, mkdirSync, readFileSync } from "node:fs";
-import { WebpackBuild } from "./webpack";
 import { bundleBun } from "./bun";
 
 export type portAndEnv = { port: number, env: 'dev' | 'prod' };
@@ -117,7 +115,7 @@ window.loadFunction = () => {
 
 	if(window.lastPage && Page0.inheritState !== false) page0._inheritState(window.lastPage);
 
-	if(Page0.updateMode == "refresh") window.__refresh_on_update = true;
+	${env.env == 'dev' ? `if(Page0.updateMode == "refresh") window.__refresh_on_update = true;` : ''}
 
 	if(Page0.bodyClass) document.body.setAttribute('class', Page0.bodyClass);
 
@@ -125,14 +123,14 @@ window.loadFunction = () => {
 
 	${filepath.map((filepath, index) => `page${index}.emit('initState', { component: page${index}, props: buildProps() });\nlet made${index} = page${index}.make(buildProps({init: initResponse, page: ${index > 0 && index < filepath.length-2 ? 'made'+(index-1) : 'null'}}));\npage${index}.emit('buildStart', { widget: made${index}, component: page${index}, props: buildProps() });`).join('\n')}
 
-	if(Page0.layouts === false){
+	${filepath.length == 1 ? '' : `if(Page0.layouts === false){`}
 		made0.to(document.body);
 		page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));
 		page0.emit('buildEnd', { widget: made0, component: page0, props: buildProps() });
-	} else {
+	${filepath.length == 1 ? '' : `} else {
 		${filepath.map((file, index) => `${(index+1 == filepath.length ? `made${index}.to(document.body)` : '')+`;page${index}.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));page${index}.emit('buildEnd', { widget: made${index}, component: page${index}, props: buildProps() });`}`).join('\n')}
 		${filepath.length == 1 ? 'page0.afterBuild(buildProps({page: made0}), ...(Array.isArray(buildProps().args) ? buildProps().args : []));\npage0.emit(\'buildEnd\', { widget: made0, component: page0, props: buildProps() });' : ''}
-	}
+	}`}
 
 	
 
@@ -255,10 +253,21 @@ window.loaderOn = loaderOn;
 	return script;
 }
 
+function getJson(string: string){
+	try{
+		return JSON.parse(string);
+	} catch(e){
+		return {};
+	}
+}
+
 export async function bundle(route: route, {port, env}: portAndEnv, paths: Record<any, any>, params: Record<string, any> = {}){
 	const scripts: string[] = [];
 
 	makeImportFile({export: params.export == 'true'}, {port, env}, route, paths, route.correspondingFile, ...(route.layouts ? route.layouts : []));
+
+	const routeOptionsPath = path.join(route.correspondingFile, '../route.json');
+	const routeOptions: Record<string, any> = existsSync(routeOptionsPath) ? getJson(readFileSync(routeOptionsPath).toString()) : {};
 
 	let file = await bundleBun(env, {nocss: params.nocss, minify: params.minify == 'true'});
 
@@ -271,19 +280,39 @@ export async function bundle(route: route, {port, env}: portAndEnv, paths: Recor
 		otherOrigin = origin.split('|')[1];
 		origin = origin.split('|')[0];
 	}
-	return params.onlyjs == 'true' ? scripts.join('\n') : await templateHtml(params.script == 'true' ? [loader, ...scripts] : [loader], (params.script == 'true' ? '' : '<script id="app_script" src="'+(origin || '?onlyjs=true'+(params.minify == 'true' ? '&minify=true' : ''))+'" '+(otherOrigin ? ` onerror="let s=document.createElement(\'script\');s.src='${otherOrigin}';document.head.appendChild(s);this.remove();"` : '')+'></script>')+(env == 'dev' ? getListenerSocket(port, file) : ''));
+	return params.onlyjs == 'true' ? scripts.join('\n') : await templateHtml(params.script == 'true' ? [loader, ...scripts] : [loader], (params.script == 'true' ? '' : '<script id="app_script" src="'+(origin || '?onlyjs=true'+(params.minify == 'true' ? '&minify=true' : ''))+'" '+(otherOrigin ? ` onerror="let s=document.createElement(\'script\');s.src='${otherOrigin}';document.head.appendChild(s);this.remove();"` : '')+'></script>')+(env == 'dev' ? getListenerSocket(port, file) : ''), routeOptions);
 }
 
-export async function getHead() {
+export async function getHead(pageConfig: Record<string, any> = {}) {
 	let html = "<head>";
 	// @ts-ignore
-	const config = await import(path.join(process.cwd(), 'rayous.json'));
-	
-	if(config.title){
-		html += '<title>'+config.title+'</title>';
-	} else {
-		html += '<title>Rayous App</title>';
+	const defaultConfig = await import(path.join(process.cwd(), 'rayous.json'));
+	let config = {...defaultConfig, ...pageConfig};
+
+	if(pageConfig && pageConfig.merge === true){
+		config = {...defaultConfig};
+		for(let i in pageConfig){
+			if(config[i]){
+				if(typeof config[i] == typeof pageConfig[i]){
+					if(typeof config[i] == 'object'){
+						if(Array.isArray(config[i])){
+							config[i].push(...pageConfig[i]);
+						} else {
+							config[i] = {...config[i], ...pageConfig[i]};
+						}
+					} else {
+						config[i] = pageConfig[i];
+					}
+				} else {
+					config[i] = pageConfig[i];
+				}
+			} else {
+				config[i] = pageConfig[i];
+			}
+		}
 	}
+	
+	html += '<title>'+(config.title || "Rayous App")+'</title>';
 
 	if(config.meta){
 		for(let i in config.meta){
@@ -326,6 +355,6 @@ async function getAttrs(el: string){
 	return attrs.join(' ');
 }
 
-export async function templateHtml(scripts: string[], additional: string = ""){
-	return `<html ${await getAttrs('html')}>${await getHead()}${scripts.filter(item => !item.startsWith('body::')).map((script, index) => `<script _type="base">${script}</script>`).join('')}${additional}<body ${await getAttrs('body')}>${scripts.filter(item => item.startsWith('body::')).map((script, index) => `<script _type="base">${script.replace('body::', '')}</script>`).join('')}</body></html>`
+export async function templateHtml(scripts: string[], additional: string = "", config = {}){
+	return `<html ${await getAttrs('html')}>${await getHead(config)}${scripts.filter(item => !item.startsWith('body::')).map((script, index) => `<script _type="base">${script}</script>`).join('')}${additional}<body ${await getAttrs('body')}>${scripts.filter(item => item.startsWith('body::')).map((script, index) => `<script _type="base">${script.replace('body::', '')}</script>`).join('')}</body></html>`
 }

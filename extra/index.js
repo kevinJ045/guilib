@@ -3592,8 +3592,8 @@ var onTextInput = function(widget, callback) {
 };
 
 // client/utils/misc.ts
-var filteredChildren = function(children, makeOne = false, giveNull = false) {
-  const filtered = Array.isArray(children) ? children : (children instanceof Widget_default ? children.toArray() : children.elements).filter((element) => element.GUIWIDGET).map((element) => element.GUIWIDGET);
+var filteredChildren = function(children, makeOne = false, giveNull = false, widgetify = false) {
+  const filtered = Array.isArray(children) ? children : (children instanceof Widget_default ? children.toArray() : children.elements).filter((element) => widgetify ? true : element.GUIWIDGET).map((element) => widgetify && !element.GUIWIDGET ? Widget_default.from(element) : element.GUIWIDGET);
   const isOne = filtered.length == 1 && makeOne;
   if (isOne) {
     filtered[0].toArray = () => WidgetList.from([filtered[0]]);
@@ -3818,17 +3818,17 @@ class WidgetProps2 {
       return htmlPseudos.indexOf(stateName) == -1 ? findEl(this.id).at(0)[stateName] : findEl(this.id).is(stateName);
     }
   }
-  children(subchild = null) {
-    return WidgetList.from(filteredChildren(resolveSubchild(findEl(this.id), subchild).children()));
+  children(subchild = null, widgetify = false) {
+    return WidgetList.from(filteredChildren(resolveSubchild(findEl(this.id), subchild).children(), false, false, widgetify));
   }
-  find(q, subchild = null) {
-    return q == "*" ? this.children() : filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q), true);
+  find(q, widgetify = false, subchild = null) {
+    return q == "*" ? this.children() : filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q), true, false, widgetify);
   }
-  findAll(q, subchild = null) {
-    return q == "*" ? this.children() : filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q));
+  findAll(q, widgetify = false, subchild = null) {
+    return q == "*" ? this.children() : filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q), false, false, widgetify);
   }
-  closest(q) {
-    return filteredChildren(findEl(this.id).closest(q), true, true);
+  closest(q, widgetify = false) {
+    return filteredChildren(findEl(this.id).closest(q), true, true, widgetify);
   }
   parent(container = false) {
     let parent = findEl(this.id).parent();
@@ -4018,6 +4018,7 @@ class WidgetProps2 {
   }
   setStore(props, store = "state") {
     this.store.setStore(props, store);
+    return this;
   }
   _onMount(parent) {
     if (parent instanceof Widget_default) {
@@ -4664,7 +4665,7 @@ class Widget6 extends WidgetProps_default {
     this._optionChange(currentOptions);
   }
   static from(child2) {
-    return new Widget6({ element: { raw: new dom_default(child2).at(0) } });
+    return new this({ element: { raw: new dom_default(child2).at(0) } });
   }
   static model(model, options6 = {}) {
     return createWidgetModel(model, options6, this);

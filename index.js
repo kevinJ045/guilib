@@ -12076,8 +12076,8 @@ var onTextInput = function(widget, callback) {
 };
 
 // client/utils/misc.ts
-var filteredChildren = function(children, makeOne = false, giveNull = false) {
-  const filtered = Array.isArray(children) ? children : (children instanceof Widget_default ? children.toArray() : children.elements).filter((element) => element.GUIWIDGET).map((element) => element.GUIWIDGET);
+var filteredChildren = function(children, makeOne = false, giveNull = false, widgetify = false) {
+  const filtered = Array.isArray(children) ? children : (children instanceof Widget_default ? children.toArray() : children.elements).filter((element) => widgetify ? true : element.GUIWIDGET).map((element) => widgetify && !element.GUIWIDGET ? Widget_default.from(element) : element.GUIWIDGET);
   const isOne = filtered.length == 1 && makeOne;
   if (isOne) {
     filtered[0].toArray = () => WidgetList.from([filtered[0]]);
@@ -12302,17 +12302,17 @@ class WidgetProps2 {
       return htmlPseudos.indexOf(stateName) == -1 ? findEl(this.id).at(0)[stateName] : findEl(this.id).is(stateName);
     }
   }
-  children(subchild = null) {
-    return WidgetList.from(filteredChildren(resolveSubchild(findEl(this.id), subchild).children()));
+  children(subchild = null, widgetify = false) {
+    return WidgetList.from(filteredChildren(resolveSubchild(findEl(this.id), subchild).children(), false, false, widgetify));
   }
-  find(q, subchild = null) {
-    return q == "*" ? this.children() : filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q), true);
+  find(q, widgetify = false, subchild = null) {
+    return q == "*" ? this.children() : filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q), true, false, widgetify);
   }
-  findAll(q, subchild = null) {
-    return q == "*" ? this.children() : filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q));
+  findAll(q, widgetify = false, subchild = null) {
+    return q == "*" ? this.children() : filteredChildren(resolveSubchild(findEl(this.id), subchild).find(q), false, false, widgetify);
   }
-  closest(q) {
-    return filteredChildren(findEl(this.id).closest(q), true, true);
+  closest(q, widgetify = false) {
+    return filteredChildren(findEl(this.id).closest(q), true, true, widgetify);
   }
   parent(container = false) {
     let parent = findEl(this.id).parent();
@@ -12502,6 +12502,7 @@ class WidgetProps2 {
   }
   setStore(props, store = "state") {
     this.store.setStore(props, store);
+    return this;
   }
   _onMount(parent) {
     if (parent instanceof Widget_default) {
@@ -13107,7 +13108,7 @@ class Widget7 extends WidgetProps_default {
     this._optionChange(currentOptions);
   }
   static from(child2) {
-    return new Widget7({ element: { raw: new dom_default(child2).at(0) } });
+    return new this({ element: { raw: new dom_default(child2).at(0) } });
   }
   static model(model, options5 = {}) {
     return createWidgetModel(model, options5, this);
@@ -27384,6 +27385,9 @@ class Controller9 {
   isTakenBy(taker) {
     return this.taken.indexOf(taker) > -1;
   }
+  unTake(taker) {
+    this.taken.splice(this.taken.indexOf(taker), 1);
+  }
   set(newValue, doNoyNotify = false) {
     this.value = newValue;
     if (doNoyNotify !== true)
@@ -27394,6 +27398,11 @@ class Controller9 {
   }
   onChange(callback) {
     this.changeListeners.push(callback);
+    return this;
+  }
+  offChange(callback) {
+    this.changeListeners.splice(this.changeListeners.indexOf(callback), 1);
+    return this;
   }
   notifyChangeListeners(notify = false) {
     let ignoreIndex = typeof notify == "function" ? this.changeListeners.indexOf(notify) : -1;
@@ -27409,13 +27418,13 @@ class ArrayController2 extends Controller9 {
   constructor() {
     super(...arguments);
   }
-  push(item) {
-    this.value.push(item);
+  push(...items) {
+    this.value.push(...items);
     this.notifyChangeListeners();
     return this;
   }
-  unshift(item) {
-    this.value.unshift(item);
+  unshift(...items) {
+    this.value.unshift(...items);
     this.notifyChangeListeners();
     return this;
   }
@@ -27437,10 +27446,55 @@ class ArrayController2 extends Controller9 {
     this.set(array);
     return this;
   }
+  map(callback, castToNew = false) {
+    const newArray = this.get().map(callback);
+    return castToNew ? new ArrayController2(newArray) : this.setArray(newArray);
+  }
+  filter(callback, castToNew = false) {
+    const newArray = this.get().filter(callback);
+    return castToNew ? new ArrayController2(newArray) : this.setArray(newArray);
+  }
+  find(callback) {
+    return this.get().find(callback);
+  }
+  indexOf(item) {
+    return this.get().indexOf(item);
+  }
+  includes(item) {
+    return this.get().includes(item);
+  }
+  at(index) {
+    return this.get().at(index);
+  }
+  join(separator) {
+    return this.get().join(separator);
+  }
+  splice(start, deleteCount, castToNew = false, fromOmitted = false) {
+    const newArray = this.get().splice(start, deleteCount);
+    return castToNew ? new ArrayController2(fromOmitted ? newArray : this.get()) : this.setArray(fromOmitted ? newArray : this.get());
+  }
+  slice(start, deleteCount, castToNew = false) {
+    const newArray = this.get().slice(start, deleteCount);
+    return castToNew ? new ArrayController2(newArray) : this.setArray(newArray);
+  }
+  sort(callback, castToNew = false) {
+    const newArray = this.get().sort(callback);
+    return castToNew ? new ArrayController2(newArray) : this.setArray(newArray);
+  }
+  reverse(castToNew = false) {
+    const newArray = this.get().reverse();
+    return castToNew ? new ArrayController2(newArray) : this.setArray(newArray);
+  }
+  copy(controller) {
+    this.set(controller.get());
+    return this;
+  }
 }
 var Controller_default2 = Controller9;
 
 class ListBuilder6 extends Widget_default2 {
+  __controller__callback;
+  __controller;
   state = new Store_default2({ items: [] });
   constructor(selectedOptions, _initList2) {
     const options62 = { ...selectedOptions };
@@ -27449,6 +27503,7 @@ class ListBuilder6 extends Widget_default2 {
     _initList2(this, this.getStore());
     this.on("state:change", (e) => {
       _initList2(this, this.getStore());
+      this.emit("list:update", {});
     });
   }
   _fromTemplate(item, index) {
@@ -27467,12 +27522,16 @@ class ListBuilder6 extends Widget_default2 {
     if (options62.items) {
       const doItems = () => {
         if (options62.items instanceof Controller_default2) {
+          if (!this.options.multiControllers)
+            this._stripController();
           if (!options62.items.isTakenBy(this)) {
             this.setStore({ [options62.itemsStateName]: options62.items.get() });
             options62.items.take(this);
-            options62.items.onChange(() => {
+            this.__controller = options62.items;
+            this.__controller__callback = () => {
               this.setStore({ [options62.itemsStateName]: options62.items.get() });
-            });
+            };
+            options62.items.onChange(this.__controller__callback);
           }
         } else {
           this.setStore({ [options62.itemsStateName]: options62.items });
@@ -27502,8 +27561,14 @@ class ListBuilder6 extends Widget_default2 {
   }
   _onUpdate(any) {
   }
+  _stripController() {
+    if (this.__controller__callback && this.__controller) {
+      this.__controller.unTake(this);
+      this.__controller.offChange(this.__controller__callback);
+    }
+  }
   addItem(...items) {
-    this.setStore({ items: [...items].concat(this.getStore()[this.options.itemsStateName]) });
+    this.setStore({ [this.options.itemsStateName]: [...items].concat(this.getStore()[this.options.itemsStateName]) });
     return this;
   }
   removeItems(...itemsToRemove) {
@@ -27511,11 +27576,11 @@ class ListBuilder6 extends Widget_default2 {
     const remain = currentItems.filter((item, index) => {
       let shouldRemove = false;
       itemsToRemove.forEach((it) => {
-        if (index == it.index) {
+        if (index == currentItems.indexOf(it)) {
           shouldRemove = true;
           return;
         }
-        const allPropertiesMatch = Object.keys(it).every((prop) => item[prop] === it[prop]);
+        const allPropertiesMatch = typeof it == "object" ? Object.keys(it).every((prop) => item[prop] === it[prop]) : it == item;
         if (allPropertiesMatch) {
           shouldRemove = true;
           return;
@@ -27523,8 +27588,14 @@ class ListBuilder6 extends Widget_default2 {
       });
       return !shouldRemove;
     });
-    this.setStore({ items: remain });
+    if (currentItems.length === remain.length)
+      return this;
+    this.setStore({ [this.options.itemsStateName]: remain });
     return this;
+  }
+  hasItem(item) {
+    const currentItems = this.getStore()[this.options.itemsStateName];
+    return currentItems.includes(item) || currentItems.find((it) => typeof it == "object" ? Object.keys(item).every((prop) => it[prop] === item[prop]) : it == item);
   }
   onItems(event, handler, subchild) {
     this.children(subchild).forEach((child2, index) => {

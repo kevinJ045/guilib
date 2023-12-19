@@ -210,7 +210,7 @@ class Widget<O extends options = options> extends WidgetProps {
 	}
 
 	static from(child: HTMLElement | string){
-		return new Widget({ element: {	raw: new Dom(child).at(0) } });
+		return new this({ element: {	raw: new Dom(child).at(0) } });
 	}
 
 	/**

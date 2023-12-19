@@ -91,6 +91,12 @@ function runthroughAppGetUses(pathName: string | null = null) {
 	return _files;
 }
 
+const options = {
+	inlineScripts: false,
+	minify: true,
+	clientOnly: false
+};
+
 async function build(path: string){
 	try{
 		if(!fs.existsSync(_public(''))) fs.mkdirSync(_public(''));
@@ -110,22 +116,23 @@ async function build(path: string){
 		} else if(route){
 			console.log('\x1b[38;5;38mBuilding\x1b[0m', '[\x1b[33m'+path+'\x1b[0m]');
 			if(route.type == 'page'){
-				if(!fs.existsSync(_public('client/'+route.path))) fs.mkdirSync(_public('client/'+route.path), { recursive: true });
+				if(!fs.existsSync(_public((options.clientOnly ? '' : 'client/')+route.path))) fs.mkdirSync(_public((options.clientOnly ? '' : 'client/')+route.path), { recursive: true });
 				routes.findLayouts(route as route);
 				routes.findLoader(route as route);
 				let builder = new Builder(route as route, routes);
 				try{
-					const built = await builder.build({url: 'http://localhost:1001'+path+'?origin='+(pathJoin('./',basename(path),'index.js'+'|'+pathJoin('./','index.js')))} as Request, {port: 1001, env: 'prod'});
-					const builtScript = await builder.build({url: 'http://localhost:1001'+path+'?onlyjs=true&minify=true'} as Request, {port: 1001, env: 'prod'});
+					const built = await builder.build({url: 'http://localhost:1001'+path+'?origin='+(pathJoin('./',basename(path),'index.js'+'|'+pathJoin('./','index.js')))+(options.inlineScripts ? '&script=true&minify='+options.minify : '')} as Request, {port: 1001, env: 'prod'});
+					const builtScript = options.inlineScripts ? {} as any : await builder.build({url: 'http://localhost:1001'+path+'?onlyjs=true&minify='+options.minify} as Request, {port: 1001, env: 'prod'});
 					if (built.status == 404) return;
 					else {
-						fs.writeFileSync(_public('client/'+route.path+'/index.html'), built.response);
-						fs.writeFileSync(_public('client/'+route.path+'/index.js'), builtScript.response);
+						fs.writeFileSync(_public((options.clientOnly ? '' : 'client/')+route.path+'/index.html'), built.response);
+						if(!options.inlineScripts) fs.writeFileSync(_public((options.clientOnly ? '' : 'client/')+route.path+'/index.js'), builtScript.response);
 					}
 				} catch(e){
 					console.log(e);
 				}
 			} else {
+				if(options.clientOnly) return;
 				const config = JSON.parse(fs.readFileSync('./rayous.json').toString());
 				let port = config.port || 3000;
 				ts.createProgram([route.correspondingFile], {
@@ -276,7 +283,9 @@ let args = process.argv.splice(2, process.argv.length);
 
 async function buildAll(){
 	for(let i of args){
-		await build(i);
+		if(i.startsWith('--')){
+			(options as any)[i.replace('--', '')] = !(options as any)[i.replace('--', '')];
+		} else await build(i);
 	}
 }
 
